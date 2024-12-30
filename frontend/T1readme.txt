@@ -35,3 +35,25 @@ API 통신 관련:
 
 예정 :
 SWIPER
+
+
+
+프론트엔드 컴포넌트 폴더 별 기능
+
+common : 공통으로 사용하는 컴포넌트
+
+features :  기능 담당 저장소
+    auth : 인증 기능 담당
+    product : 상품 담당
+
+layout :  레이아웃 컴포넌트
+
+constans : 상수 저장소
+
+hooks : 커스텀 Hook 저장소
+
+pages : 페이지 컴포넌트 저장소
+
+services : axios 등 통신 관련 기능 저장소
+
+store : 상태 , 전역 상태 등 상태 관리 기능
