@@ -11,4 +11,9 @@ class BackendApplicationTests {
 		System.out.println("Hello World");
 	}
 
+	@Test
+	void helloworld(){
+		System.out.println("반갑노");
+	}
+
 }
