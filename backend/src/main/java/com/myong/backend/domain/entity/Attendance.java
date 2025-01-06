@@ -36,7 +36,7 @@ public class Attendance {
     @Column(nullable = false ,name = "at_date")
     private LocalDateTime date;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "d_key")
-//    Designer designer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "d_id")
+    Designer designer;
 }

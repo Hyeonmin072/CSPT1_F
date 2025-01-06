@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +62,6 @@ public class Designer {
     private Shop shop;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "designer")
-    private List<Attendance> attendance;
+    private List<Attendance> attendance = new ArrayList<>();
 
 }

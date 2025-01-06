@@ -31,12 +31,12 @@ public class Menu {
     private String discount;
 
 //    가게고유키
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "s_id")
-//    Shop shop;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "s_id")
+    private Shop shop;
 
-//디자이너 고유키
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "d_id")
-//    Designer designer;
+// 디자이너 고유키
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "d_id")
+    private Designer designer;
 }

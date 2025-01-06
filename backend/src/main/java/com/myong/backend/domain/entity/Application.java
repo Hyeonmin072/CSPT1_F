@@ -13,11 +13,11 @@ public class Application {
 
     //희망 근무요일
     @Column(nullable = false, name = "ap_wantday")
-    private String wantday;
+    private String wantDay;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "d_key")
-//    Designer designer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "d_id")
+    Designer designer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jp_id")

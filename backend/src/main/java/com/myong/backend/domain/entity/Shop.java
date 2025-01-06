@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -61,6 +62,6 @@ public class Shop {
     private Long category; // 카테고리코드
 
     @OneToMany(mappedBy = "shop")
-    private List<Designer> designer;
+    private List<Designer> designer = new ArrayList<>();
 
 }

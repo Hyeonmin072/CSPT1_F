@@ -31,13 +31,13 @@ public class JobPost {
     // 근무 형태
     @Column(name = "jp_work")
     @Enumerated(EnumType.STRING)
-    Work work = Work.FULLTIME; //정규직 디폴트
+    private Work work = Work.FULLTIME; //정규직 디폴트
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "s_id")
-//    Shop shop;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "s_id")
+    private Shop shop;
 
     @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL)
-    List<Application> applicationList = new ArrayList<>();
+    private List<Application> applicationList = new ArrayList<>();
 
 }

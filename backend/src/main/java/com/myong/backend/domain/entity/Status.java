@@ -1,5 +1,5 @@
 package com.myong.backend.domain.entity;
 
 public enum Status {
-    결근, 출근, 퇴근, 휴가, 휵직
+    NO, LATE, WORK, LEAVE, VACATION, REST  //    결근, 지각, 출근, 퇴근, 휴가, 휴직
 }
