@@ -3,8 +3,8 @@ spring:
     name: backend
   datasource:
     url: jdbc:mysql://localhost:3306/myong_db # 각자 포트 번호랑 DB이름으로 변경
-    username: guest # 각자 이름으로 변경
-    password: 1234 # 각자 비번으로 변경
+    username: me # 각자 이름으로 변경
+    password: 1136 # 각자 비번으로 변경
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
