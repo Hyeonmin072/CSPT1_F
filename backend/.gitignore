@@ -35,6 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### yml 깃 제외 ###
-*.yml
