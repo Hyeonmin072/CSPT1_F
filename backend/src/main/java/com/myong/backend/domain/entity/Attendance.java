@@ -18,7 +18,7 @@ public class Attendance {
     //근무 상태
     @Column(nullable = false, name = "at_status")
     @Enumerated(EnumType.STRING)
-    Status status = Status.결근;
+    Status status = Status.NO;
 
     //출근일시
     @Column(name = "at_in")
