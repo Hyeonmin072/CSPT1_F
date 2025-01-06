@@ -1,16 +1,24 @@
-import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
+import MainPage from "./pages/main/MainPage";
 
 function App() {
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="rounded-lg bg-white p-8 shadow-lg">
-        <h1 className="text-2xl font-bold text-gray-800">
-          HAIRTALK TEST
-        </h1>
+    <Router>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+
+            {/* 추가 라우트는 여기에 설정 */}
+          </Routes>
+        </main>
+        <Footer />
       </div>
-    </div>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
