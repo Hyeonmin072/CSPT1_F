@@ -6,10 +6,12 @@ import lombok.Getter;
 @Entity
 @Getter
 public class Application {
+   //구직 지원서 고유키
     @Id
     @Column(name ="ap_id")
     private String id;
 
+    //희망 근무요일
     @Column(nullable = false, name = "ap_wantday")
     private String wantday;
 
