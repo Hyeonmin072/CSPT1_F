@@ -2,7 +2,6 @@ import MainLogo from "../../components/layout/MainLogo";
 import IconGrid from "../../components/layout/IconGrid";
 import MainRLSpace from "../../components/layout/MainRLSpace";
 import MainBottomAd from "../../components/layout/MainBottomAd";
-// import mainBg from "../../assets/main_bg.jpg";
 
 export default function MainPage() {
   return (
