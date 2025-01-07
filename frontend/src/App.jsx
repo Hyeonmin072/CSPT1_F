@@ -15,7 +15,7 @@ function App() {
             {/* 추가 라우트는 여기에 설정 */}
           </Routes>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Router>
   );
