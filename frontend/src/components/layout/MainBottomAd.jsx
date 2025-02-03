@@ -9,6 +9,7 @@ import ad3 from "../../assets/AD/ad3.png";
 import ad4 from "../../assets/AD/ad4.png";
 
 export default function MainBottomAd({ className, height }) {
+  // 광고 이미지 데이터
   const adImages = [
     { id: 1, img: ad1, alt: "ad1" },
     { id: 2, img: ad2, alt: "ad2" },
@@ -17,6 +18,7 @@ export default function MainBottomAd({ className, height }) {
   ];
 
   return (
+    // 광고 이미지 슬라이더
     <div className={`w-300px sm:mt-2 ${className}`}>
       <Swiper
         modules={[Autoplay]}

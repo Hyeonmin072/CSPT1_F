@@ -3,6 +3,7 @@ import RegisterButton from "./RegisterButton";
 
 export default function Header() {
   return (
+    // 상단바
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
@@ -27,7 +28,9 @@ export default function Header() {
             </a>
           </nav>
           <div className="flex space-x-4">
+            {/* 회원 가입 버튼 */}
             <RegisterButton />
+            {/* 로그인 버튼 */}
             <LoginButton />
           </div>
         </div>
