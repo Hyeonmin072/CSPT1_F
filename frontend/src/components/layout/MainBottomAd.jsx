@@ -8,6 +8,7 @@ import ad2 from "../../assets/AD/ad2.png";
 import ad3 from "../../assets/AD/ad3.png";
 import ad4 from "../../assets/AD/ad4.png";
 
+//eslint-disable-next-line
 export default function MainBottomAd({ className, height }) {
   // 광고 이미지 데이터
   const adImages = [
