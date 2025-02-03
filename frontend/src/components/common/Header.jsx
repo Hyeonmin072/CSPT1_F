@@ -1,5 +1,5 @@
-import LoginButton from "./LoginButton";
-import RegisterButton from "./RegisterButton";
+import LoginButton from "../button/LoginButton";
+import RegisterButton from "../button/RegisterButton";
 
 export default function Header() {
   return (

@@ -6,7 +6,7 @@ export function ShopSearch() {
         <div className="flex items-center">
           <MapPin className="w-5 h-5" />
           <span className="text-sm mx-2">서울 역삼동</span>
-          <LocateFixed className="w-5 h-5 bg-red-200 rounded-full p-1" />
+          <LocateFixed className="w-5 h-5 bg-[#70EFDE] rounded-full p-1" />
         </div>
         <div className="mx-4 h-6 w-px bg-gray-200"></div>
         <div className="flex-1 flex items-center">
