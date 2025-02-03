@@ -34,13 +34,13 @@ function App() {
                         <LuUser size={30} color="black" className="mr-1 ml-4"/>
                         <input type="text"
                                placeholder="유저 이름"
-                               className="w-full pt-3 pb-3 pl-1 border-none rounded-lg focus:outline-none "/>
+                               className="w-full pt-3 pb-3 pl-1 border-none rounded-lg focus:outline-none placeholder-gray-700 font-bold"/>
                     </div>
-                    <div className="flex items-center mb-3 border rounded-lg">
+                    <div className="flex items-center mb-3 border rounded-lg ">
                         <LuLockKeyhole size={30} color="black" className="mr-1 ml-4"/>
                         <input type="password"
                                placeholder="비밀번호"
-                               className="w-full pt-3 pb-3 pl-1  border-none rounded-lg focus:outline-none"/>
+                               className="w-full pt-3 pb-3 pl-1  border-none rounded-lg focus:outline-none placeholder-gray-700 font-bold"/>
                     </div>
                     <div className="flex justify-center mt-4">
                         <button
@@ -63,7 +63,7 @@ function App() {
                 </div>
 
                 <div className="flex justify-center mt-4">
-                    <button className="w-[100px] bg-teal-900 text-white font-black p-1 rounded-xl hover:bg-black">회원가입</button>
+                    <button className="w-[80px] bg-teal-900 text-xs text-white font-black p-1 rounded-lg hover:bg-black">회원가입</button>
                 </div>
             </div>
 
