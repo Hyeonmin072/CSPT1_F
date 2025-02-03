@@ -8,11 +8,7 @@ import ad2 from "../../assets/AD/ad2.png";
 import ad3 from "../../assets/AD/ad3.png";
 import ad4 from "../../assets/AD/ad4.png";
 
-export default function MainBottomAd({
-  height = 120,
-  className = "",
-  children,
-}) {
+export default function MainBottomAd({ className, height }) {
   const adImages = [
     { id: 1, img: ad1, alt: "ad1" },
     { id: 2, img: ad2, alt: "ad2" },
@@ -21,7 +17,7 @@ export default function MainBottomAd({
   ];
 
   return (
-    <div className={`w-full mt-2 sm:mt-2 ${className}`}>
+    <div className={`w-300px sm:mt-2 ${className}`}>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={0}
@@ -31,11 +27,10 @@ export default function MainBottomAd({
           delay: 5000,
           disableOnInteraction: false,
         }}
-        style={{ minHeight: `${height}px` }}
       >
         {adImages.map((ad) => (
           <SwiperSlide key={ad.id}>
-            <div className="bg-gray-100 rounded-lg w-full h-full">
+            <div className="rounded-lg w-full h-full">
               <img
                 src={ad.img}
                 alt={ad.alt}
