@@ -14,6 +14,7 @@ export default function Header() {
             </span>
           </div>
           <nav className="flex space-x-8 gap-[60px] font-bold">
+            {/* # 부분을 눌럿을 때 넘어가는 페이지로 조정 */}
             <a href="#" className="text-gray-700">
               홈
             </a>
