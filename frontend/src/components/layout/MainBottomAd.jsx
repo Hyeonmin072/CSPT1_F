@@ -45,7 +45,6 @@ export default function MainBottomAd({ className, height }) {
     <div
       className={`w-300px sm:mt-2 ${className}`}
       // 마우스 이벤트 핸들러 2종 등록
-
       // 마우스가 영역에 들어올 때
       onMouseEnter={handleMouseEnter}
       // 마우스가 영역을 벗어날 때
