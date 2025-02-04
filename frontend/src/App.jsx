@@ -67,12 +67,15 @@ function App() {
                 </div>
             </div>
 
-                {/*/!* 오른쪽 살롱 이미지 *!/*/}
-                {/*<div className="w-1/2 h-screen bg-cover bg-center" style={{ backgroundImage: `url(${salonImage})` }}>*/}
-                {/*    /!* 살롱 이미지가 배경으로 적용됨 *!/*/}
-                {/*</div>*/}
+                {/* 오른쪽 유저 폼 */}
+            <div className="w-1/2 flex flex-col items-center justify-center text-center">
+                <img src={logo} alt="HAIRISM Logo" className="w-[200px] h-auto mb-4"/>
+                <h1 className="text-[6rem] font-bold leading-[0.8]">HAIRISM</h1>
+                <h2 className="text-[2.75rem] text-black leading-[1.0] font-semibold">MY HAIR PARTNER</h2>
+                <p className="text-[2.0rem] text-black font-semibold mt-4">회원 유형을 선택하세요</p>
             </div>
-            );
-            }
+        </div>
+    );
+}
 
-            export default App;
+export default App;
