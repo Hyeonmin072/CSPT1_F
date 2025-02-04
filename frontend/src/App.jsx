@@ -89,10 +89,16 @@ function App() {
                         디자이너에요
                     </button>
                 </div>
+                {/* 밑에 다음버튼 */}
                 <button className="absolute bottom-10 right-48 text-3xl">
                     <LuArrowRight size={30} color="black" className="mr-1 ml-4"/>
                 </button>
+                {/*위에 뒤로가기 버튼*/}
+                <button className="absolute top-3 -ml-[700px] text-3xl">
+                    <LuArrowLeft size={30} color="black" className="mr-1 ml-4"/>
+                </button>
             </div>
+
         </div>
     );
 }
