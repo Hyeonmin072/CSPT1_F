@@ -3,6 +3,7 @@ import { DesignerCard } from "../../components/designer/DesignerCard";
 import { RecommendationBox } from "../../components/designer/RecommendationBox.jsx";
 
 export default function DesignerPage() {
+  //이 부분은 나중에 바인딩 시 무한 스크롤로 대체
   const designers = [
     {
       name: "머시기 디자이너",

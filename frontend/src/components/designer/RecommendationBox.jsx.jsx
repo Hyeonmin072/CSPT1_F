@@ -1,5 +1,6 @@
 import hairLogo from "../../assets/logo/hairlogo.png";
 
+//딱히 설명할게 없음
 export const RecommendationBox = () => {
   return (
     <div className="fixed top-1/2 right-[100px] transform -translate-y-1/2 bg-white rounded-lg shadow-md p-4 h-[300px] w-[200px]">
