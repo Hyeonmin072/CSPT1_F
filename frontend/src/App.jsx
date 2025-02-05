@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import logo from "./images/logo.jpg";
 import google from "./images/google.png";
 import kakao from "./images/kakao.png";
-import { LuUser } from "react-icons/lu";
-import { LuLockKeyhole } from "react-icons/lu";
-import { LuArrowRight } from "react-icons/lu";
-import { LuArrowLeft } from "react-icons/lu";
+import loginImage from "./images/login.png";
+import { LuUser , LuLockKeyhole , LuArrowRight , LuArrowLeft} from "react-icons/lu";
 
 function App() {
+    const [isSignup, setIsSignup] = useState(false);
+
+    const handleSignupClick = () => {
+        setIsSignup(true);
+    };
+
+    const handleBackClick = () => {
+        setIsSignup(false);
+    };
+
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen relative overflow-hidden">
             {/* 왼쪽 로그인 폼 */}
-            <div className="w-1/2 flex flex-col items-center justify-center bg-white p-10">
+            <div className="w-1/2 flex flex-col items-center justify-center bg-white p-10 ">
                 <img src={logo} alt="HAIRISM Logo" className="w-[200px] h-auto mb-4"/>
                 <h1 className="text-[6rem] font-bold leading-[0.8]">HAIRISM</h1>
                 <h2 className="text-[2.75rem] text-black leading-[1.0] font-semibold">MY HAIR PARTNER</h2>
@@ -65,11 +73,14 @@ function App() {
                 </div>
 
                 <div className="flex justify-center mt-4">
-                    <button className="w-[80px] bg-teal-900 text-xs text-white font-black p-1 rounded-lg hover:bg-black shadow-md shadow-gray-700">회원가입</button>
+                    <button onClick={handleSignupClick}
+                            className="w-[80px] bg-teal-900 text-xs text-white font-black p-1 rounded-lg hover:bg-black shadow-md shadow-gray-700">회원가입
+                    </button>
                 </div>
             </div>
 
-                {/* 오른쪽 유저 폼 */}
+
+            {/* 오른쪽 유저 폼 */}
             <div className="w-1/2 -mt-32 flex flex-col items-center justify-center text-center">
                 <img src={logo} alt="HAIRISM Logo" className="w-[200px] h-auto mb-4"/>
                 <h1 className="text-[6rem] font-bold leading-[0.8]">HAIRISM</h1>
@@ -94,11 +105,14 @@ function App() {
                     <LuArrowRight size={30} color="black" className="mr-1 ml-4"/>
                 </button>
                 {/*위에 뒤로가기 버튼*/}
-                <button className="absolute top-3 -ml-[700px] text-3xl">
+                <button onClick={handleBackClick} className="absolute top-3 -ml-[700px] text-3xl">
                     <LuArrowLeft size={30} color="black" className="mr-1 ml-4"/>
                 </button>
             </div>
-
+            <div
+                className={`absolute right-0 top-0 h-full w-1/2 transition-transform duration-500 ${isSignup ? 'transform -translate-x-full ' : ''}`}>
+                <img src={loginImage} alt="Login" className="object-cover w-full h-full"/>
+            </div>
         </div>
     );
 }
