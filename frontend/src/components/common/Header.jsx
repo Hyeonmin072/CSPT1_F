@@ -16,7 +16,7 @@ export default function Header() {
             <a href="#" className="text-gray-700">
               홈
             </a>
-            <a href="#" className="text-gray-700">
+            <a href="/hairshop" className="text-gray-700">
               헤어샵
             </a>
             <a href="#" className="text-gray-700">
