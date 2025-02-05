@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/coupon/CouponMainModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +35,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "frontend-mycoupon",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/layout",
     "node.js.detected.package.eslint": "true",
@@ -101,11 +99,22 @@
       <workItem from="1738641259307" duration="6140000" />
       <workItem from="1738647475485" duration="12142000" />
       <workItem from="1738660532378" duration="411000" />
-      <workItem from="1738728028298" duration="16378000" />
+      <workItem from="1738728028298" duration="18714000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
