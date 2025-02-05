@@ -1,5 +1,6 @@
 import LoginButton from "../button/LoginButton";
 import RegisterButton from "../button/RegisterButton";
+import HamburgerButton from "../button/HamburgerButton";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -34,6 +35,8 @@ export default function Header() {
             <RegisterButton />
             {/* 로그인 버튼 */}
             <LoginButton />
+            {/* 햄버거 버튼 */}
+            <HamburgerButton />
           </div>
         </div>
       </div>
