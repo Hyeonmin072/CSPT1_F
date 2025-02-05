@@ -8,6 +8,7 @@ export default {
     extend: {},
   },
   plugins: [
+    //eslint-disable-next-line
     require('tailwind-scrollbar-hide')
   ],
 }
