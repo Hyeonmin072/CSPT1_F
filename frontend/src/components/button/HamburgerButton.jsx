@@ -1,14 +1,12 @@
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
 
-const HamburgerButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
+//eslint-disable-next-line
+const HamburgerButton = ({ isOpen, onClick }) => {
   return (
     <button
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={onClick}
       className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
-      aria-label="메뉴 버튼"
+      aria-label="메뉴 열기"
     >
       {isOpen ? (
         <X className="w-6 h-6 text-gray-600" />
