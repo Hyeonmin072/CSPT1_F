@@ -20,7 +20,7 @@ function App() {
     return (
         <div className="flex min-h-screen relative overflow-hidden">
             {/* 왼쪽 로그인 폼 */}
-            <div className="w-1/2 flex flex-col items-center justify-center bg-white p-10 ">
+            <div className={`w-1/2 flex flex-col items-center justify-center bg-white p-10 transition-all duration-500 ease-in-out ${isSignup ? 'opacity-0' : 'translate-x-0 opacity-100'}`}>
                 <img src={logo} alt="HAIRISM Logo" className="w-[200px] h-auto mb-4"/>
                 <h1 className="text-[6rem] font-bold leading-[0.8]">HAIRISM</h1>
                 <h2 className="text-[2.75rem] text-black leading-[1.0] font-semibold">MY HAIR PARTNER</h2>
@@ -109,6 +109,7 @@ function App() {
                     <LuArrowLeft size={30} color="black" className="mr-1 ml-4"/>
                 </button>
             </div>
+            {/* */}
             <div
                 className={`absolute right-0 top-0 h-full w-1/2 transition-transform duration-500 ${isSignup ? 'transform -translate-x-full ' : ''}`}>
                 <img src={loginImage} alt="Login" className="object-cover w-full h-full"/>
