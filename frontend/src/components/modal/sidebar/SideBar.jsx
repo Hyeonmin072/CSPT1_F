@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Zap, LogOut, Bell } from "lucide-react";
 import { Overlay } from "../../overlay/OverLay";
 
+//사이드바 컴포넌트 자체
+
 //eslint-disable-next-line
 const Sidebar = ({ isOpen, onClose }) => {
-  // 각각 페이지가 완성되면 path
+  // 각각 페이지가 완성되면 path 추가
   const menuItems = [
     { id: 1, title: "현재 예약" },
     { id: 2, title: "헤어샵", path: "/hairshop" },
@@ -38,6 +40,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               <span>김봉팔</span>
             </div>
           </div>
+          {/* 알림 버튼을 눌렀을 때 모달이 알림 모음을 볼 수 있는 창으로 전환되게 수정 */}
           <button
             className="flex mt-auto p-1 rounded-lg hover:bg-gray-100 focus:outline-none ml-[300px]"
             aria-label="알림"

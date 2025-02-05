@@ -14,7 +14,6 @@ export default function MainBottomAd({ className, height }) {
   const swiperRef = useRef(null); // Swiper 참조를 위한 ref 생성
 
   // hover 이벤트 핸들러 2종
-
   // 마우스가 영역에 들어왔을 때 실행
   const handleMouseEnter = () => {
     //swiperRef.current가 존재하고 autoplay 속성인지 확인

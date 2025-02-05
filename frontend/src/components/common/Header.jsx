@@ -7,10 +7,11 @@ import { useState } from "react";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // 햄버거 버튼 클릭 시 메뉴 토글
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  // 메뉴닫기
   const closeMenu = () => {
     setIsOpen(false);
   };
