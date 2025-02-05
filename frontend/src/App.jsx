@@ -8,13 +8,16 @@ import { LuUser , LuLockKeyhole , LuArrowRight , LuArrowLeft} from "react-icons/
 
 function App() {
     const [isSignup, setIsSignup] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const handleSignupClick = () => {
         setIsSignup(true);
+        setIsVisible(true);
     };
 
     const handleBackClick = () => {
         setIsSignup(false);
+        setIsVisible(false);
     };
 
     return (
@@ -72,6 +75,7 @@ function App() {
                     </button>
                 </div>
 
+                {/* 회원가입 버튼 클릭시 우측 이미지가 슬라이드되서 좌측으로 이동 */}
                 <div className="flex justify-center mt-4">
                     <button onClick={handleSignupClick}
                             className="w-[80px] bg-teal-900 text-xs text-white font-black p-1 rounded-lg hover:bg-black shadow-md shadow-gray-700">회원가입
@@ -81,7 +85,7 @@ function App() {
 
 
             {/* 오른쪽 유저 폼 */}
-            <div className="w-1/2 -mt-32 flex flex-col items-center justify-center text-center">
+            <div className={`w-1/2 -mt-32 flex flex-col items-center justify-center text-center transition-all duration-500 ease-in-out ${isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                 <img src={logo} alt="HAIRISM Logo" className="w-[200px] h-auto mb-4"/>
                 <h1 className="text-[6rem] font-bold leading-[0.8]">HAIRISM</h1>
                 <h2 className="text-[2.75rem] text-black leading-[1.0] font-semibold">MY HAIR PARTNER</h2>
@@ -100,19 +104,20 @@ function App() {
                         디자이너에요
                     </button>
                 </div>
-                {/* 밑에 다음버튼 */}
+                {/* 우측하단 다음 버튼 */}
                 <button className="absolute bottom-10 right-48 text-3xl">
                     <LuArrowRight size={30} color="black" className="mr-1 ml-4"/>
                 </button>
-                {/*위에 뒤로가기 버튼*/}
+                {/*좌측상단 뒤로가기 버튼*/}
+                {/* 뒤로가기 버튼 클릭시 좌측으로 슬라이드 된 이미지가 우측으로 다시 슬라이드됨*/}
                 <button onClick={handleBackClick} className="absolute top-3 -ml-[700px] text-3xl">
                     <LuArrowLeft size={30} color="black" className="mr-1 ml-4"/>
                 </button>
             </div>
-            {/* */}
+            {/* 우측 미용실 이미지 */}
             <div
-                className={`absolute right-0 top-0 h-full w-1/2 transition-transform duration-500 ${isSignup ? 'transform -translate-x-full ' : ''}`}>
-                <img src={loginImage} alt="Login" className="object-cover w-full h-full"/>
+                className={`absolute right-0 top-0 h-full w-1/2 transition-transform duration-500 ${isSignup ? 'transform -translate-x-full ' : ''} overflow-hidden`}>
+                <img src={loginImage} alt="Login" className={`object-cover w-full h-full ${isSignup ? 'rounded-tr-xl rounded-br-xl' : 'rounded-bl-xl rounded-tl-xl'}`} />
             </div>
         </div>
     );
