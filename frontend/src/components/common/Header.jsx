@@ -1,6 +1,6 @@
 import LoginButton from "../button/LoginButton";
 import RegisterButton from "../button/RegisterButton";
-import HamburgerButton from "../button/HamburgerButton";
+import UserHamburgerButton from "../button/UserHamburgerButton";
 import Sidebar from "../modal/sidebar/SideBar";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -9,6 +9,10 @@ export default function Header() {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -40,14 +44,14 @@ export default function Header() {
             <div className="flex space-x-4">
               <RegisterButton />
               <LoginButton />
-              <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+              <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
             </div>
           </div>
         </div>
       </header>
 
       {/* 사이드바 컴포넌트 추가 */}
-      <Sidebar isOpen={isOpen} />
+      <Sidebar isOpen={isOpen} onClose={closeMenu} />
     </>
   );
 }

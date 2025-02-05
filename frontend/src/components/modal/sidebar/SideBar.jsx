@@ -1,59 +1,82 @@
 import { Link } from "react-router-dom";
-import { Zap, LogOut } from "lucide-react";
+import { Zap, LogOut, Bell } from "lucide-react";
+import { Overlay } from "../../overlay/OverLay";
 
 //eslint-disable-next-line
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, onClose }) => {
+  // 각각 페이지가 완성되면 path
   const menuItems = [
-    { id: 1, title: "예약 관리" },
-    { id: 2, title: "디자이너 관리" },
-    { id: 3, title: "메뉴 설정" },
-    { id: 4, title: "이벤트 및 쿠폰 관리" },
-    { id: 5, title: "블랙리스트 관리" },
-    { id: 6, title: "리뷰 관리" },
-    { id: 7, title: "매출 관리" },
-    { id: 8, title: "근태 관리" },
-    { id: 9, title: "구인구직" },
-    { id: 10, title: "정보 수정" },
+    { id: 1, title: "현재 예약" },
+    { id: 2, title: "헤어샵", path: "/hairshop" },
+    { id: 3, title: "디자이너", path: "/designerpage" },
+    { id: 4, title: "채팅" },
+    { id: 5, title: "프로필", path: "/userprofile" },
+    { id: 6, title: "쿠폰함" },
+    { id: 7, title: "좋아하는 디자이너" },
   ];
 
+  //클릭 핸들러
+  const handleClick = () => {
+    onClose(); // 사이드바 닫기
+    // 추가로 실행하고 싶은 다른 동작이 있다면 여기에 추가
+  };
+
   return (
-    <div
-      className={`fixed top-0 right-0 w-64 h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
-        isOpen ? "-translate-x-0" : "translate-x-full"
-      }`}
-    >
-      {/* 사이드바 헤더 */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center gap-2 text-lg font-bold">
-          <Zap className="w-5 h-5" />
-          <span>김봉필 헤어</span>
+    <>
+      <Overlay isOpen={isOpen} onClose={onClose} />
+      <div
+        className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        {/* 사이드바 헤더 */}
+        <div className="p-4">
+          <div className="flex items-start justify-center p-3">
+            <div className="flex items-center gap-2 text-lg font-bold">
+              <Zap className="w-10 h-10 bg-black stroke-white" />
+              {/* 이름 부분은 나중에 정보를 받아오면 받아온 정보로 수정 */}
+              <span>김봉팔</span>
+            </div>
+          </div>
+          <button
+            className="flex mt-auto p-1 rounded-lg hover:bg-gray-100 focus:outline-none ml-[300px]"
+            aria-label="알림"
+          >
+            <Bell className="w-8 h-8 text-gray-600" />
+          </button>
+        </div>
+
+        {/* 메뉴 아이템 */}
+        <nav className="py-4">
+          <ul className="space-y-2 font-bold p-5 -mt-[40px]">
+            {/* menuItems를 순회하며 있는 내용들을 출력 */}
+            {menuItems.map((item) => (
+              <li key={item.id}>
+                {/* 라우트 기능 */}
+                <Link
+                  // item.path에 있는 곳으로 가라
+                  to={item.path}
+                  //onClick 에 클릭핸들러 사용
+                  onClick={handleClick}
+                  className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* 로그아웃 버튼 */}
+        {/* 여기도 나중에 온클릭 시 close랑 로그아웃하게 수정 */}
+        <div className="absolute bottom-4 w-full px-4">
+          <button className="flex items-center gap-2 text-md text-gray-600 hover:text-gray-900 p-5 font-bold">
+            <LogOut className="w-4 h-4" />
+            <span>로그아웃</span>
+          </button>
         </div>
       </div>
-
-      {/* 메뉴 아이템 */}
-      <nav className="py-4">
-        <ul className="space-y-1">
-          {menuItems.map((item) => (
-            <li key={item.id}>
-              <Link
-                to="#"
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-              >
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* 로그아웃 버튼 */}
-      <div className="absolute bottom-4 w-full px-4">
-        <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-          <LogOut className="w-4 h-4" />
-          <span>로그아웃</span>
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 

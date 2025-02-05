@@ -1,3 +1,5 @@
+// 모달에서 사용하는 오버레이 컴포넌트
+
 //eslint-disable-next-line
 export const Overlay = ({ isOpen, onClose }) =>
   isOpen && (
