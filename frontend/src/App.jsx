@@ -7,9 +7,9 @@ import UserProfile from "./pages/profile/UserProfile";
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col scrollbar-hide">
         {/* 헤더 */}
-        <Header />
+        <Header className="overflow-y-scroll" />
         <main className="flex-1">
           {/* 라우트 설정 구간 */}
           <Routes>

@@ -19,9 +19,9 @@ export default function Header() {
   return (
     <>
       {/* 상단바 */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
+      <header className="bg-white shadow-sm w-full ">
+        <div className="max-w-7xl mx-auto px-4 py-4 w-full">
+          <div className="flex justify-between items-center w-full">
             <div className="leading-[0.85]">
               <h1 className="text-[26px] font-[900] font-sans">HAIRISM</h1>
               <span className="text-[13px] text-black font-[700] flex justify-center">

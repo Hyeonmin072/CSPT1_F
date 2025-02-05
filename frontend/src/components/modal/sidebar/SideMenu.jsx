@@ -15,7 +15,9 @@ export const SlideMenu = () => {
 
   return (
     <>
+      {/* 온클릭 시 openMenu함수 실행 */}
       <MenuButton onClick={openMenu} />
+      {/* closeMenu함수로 오버레이도 통제 */}
       <Overlay isOpen={isOpen} onClose={closeMenu} />
       <Sidebar isOpen={isOpen} onClose={closeMenu} />
     </>

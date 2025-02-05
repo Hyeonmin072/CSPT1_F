@@ -14,7 +14,7 @@ export default function DesignerPage() {
   ];
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen">
+    <div className="min-h-screen custom-scrollbar-hide">
       <div className="max-w-[900px] mx-auto mt-10">
         {designers.map((designer, index) => (
           <DesignerCard key={index} designer={designer} />
