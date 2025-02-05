@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
-import DesignerPage from "./pages/main/DesignerPage";
+import DesignerPage from "./pages/designer/DesignerPage";
 
 function App() {
   return (

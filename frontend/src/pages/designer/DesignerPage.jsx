@@ -1,6 +1,5 @@
-// pages/designer/DesignerPage.jsx
-import { DesignerCard } from "../../components/designer/DesignerCard";
-import { RecommendationBox } from "../../components/designer/RecommendationBox.jsx";
+import { DesignerCard } from "../../components/designer/DesignerCard.jsx";
+import { RecommendationBox } from "../../components/designer/RecommendationBox.jsx.jsx";
 
 export default function DesignerPage() {
   //이 부분은 나중에 바인딩 시 무한 스크롤로 대체
