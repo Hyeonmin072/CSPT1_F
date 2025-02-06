@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import h1 from "../../../assets/hairshop/h1.jpg";
-import logo from "../../../assets/logo/logo.png";
+import h1 from "../../assets/hairshop/h1.jpg";
+import logo from "../../assets/logo/logo.png";
 import HairSearch from "./HairSearch.jsx";
 
 export default function ShopPage({ containerRef }) {

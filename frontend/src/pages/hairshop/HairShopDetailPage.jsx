@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ShopDetail from "../../components/common/hairshopdetail/Detail.jsx"
+import ShopDetail from "../../components/hairshopdetail/Detail.jsx"
 
 export default function HairShopDetailPage () {
     return (

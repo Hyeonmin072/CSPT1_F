@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import h1 from "../../../assets/hairshop/h1.jpg";
+import h1 from "../../assets/hairshop/h1.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function DetailTab({ activeTab, handleShopDetailClick, handleReservationClick, handleReviewClick }){

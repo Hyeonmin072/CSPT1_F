@@ -3,6 +3,7 @@ import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
 import HairShopPage from "./pages/hairshop/HairShopPage"
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx"
+import ReservationPage from "./pages/reservation/ReservationPage.jsx"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/hairshop" element={<HairShopPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
+            <Route path="/reservation" element={<ReservationPage />} />
             {/* 추가 라우트는 여기에 설정 */}
           </Routes>
         </main>

@@ -1,17 +1,16 @@
-import React from 'react';
-import { X } from 'lucide-react'; // Lucide 아이콘 import
-import 'tailwindcss/tailwind.css';
+import { X } from 'lucide-react';
 import logo from "../../assets/logo/logo.png";
 
-const coupons = [
-    { id: 1, image:logo, discount: '10,000원 할인', validity: '26-06-07까지', range:"100,000원 이상시 사용가능"},
-    { id: 2, image:logo, discount: '99% 할인', validity: '26-06-07까지', range: "???" },
-    { id: 3, image:logo, discount: '99% 할인', validity: '26-06-07까지', range: "마감세일"},
-    { id: 4, image:logo, discount: '1,000원 할인', validity: '26-06-07까지', range: "10,000원 이상시 사용가능" },
-    { id: 5, image:logo, discount: '5,000원 할인', validity: '26-06-07까지', range: "50,000원 이상시 사용가능" }
-];
-
 export default function CouponModal({ isOpen, onClose }) {
+    const coupons = [
+        { id: 1, image:logo, discount: '10,000원 할인', validity: '26-06-07까지', range:"100,000원 이상시 사용가능"},
+        { id: 2, image:logo, discount: '99% 할인', validity: '26-06-07까지', range: "???" },
+        { id: 3, image:logo, discount: '99% 할인', validity: '26-06-07까지', range: "마감세일"},
+        { id: 4, image:logo, discount: '1,000원 할인', validity: '26-06-07까지', range: "10,000원 이상시 사용가능" },
+        { id: 5, image:logo, discount: '5,000원 할인', validity: '26-06-07까지', range: "50,000원 이상시 사용가능" }
+    ];
+
+
     if (!isOpen) return null;
         return (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

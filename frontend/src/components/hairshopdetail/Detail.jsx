@@ -10,14 +10,14 @@ import {
     X
 } from "lucide-react";
 
-import HairShopDetailReview from "../../layout/HairShopDetailReview"
-import DesignerInfo from "../../layout/DesignerInfo"
-import ShopHeader from "./DetailHeader";
+import HairShopDetailReview from "../layout/HairShopDetailReview.jsx"
+import DesignerInfo from "../layout/DesignerInfo.jsx"
+import ShopHeader from "./DetailHeader.jsx";
 import GiveCoupon from "./CouponGive.jsx";
 import DetailTab from "./DetailTab.jsx";
 
-import reviewEX from "../../../assets/hairshop/reviewEX.jpg";
-import h1 from "../../../assets/hairshop/h1.jpg";
+import reviewEX from "../../assets/hairshop/reviewEX.jpg";
+import h1 from "../../assets/hairshop/h1.jpg";
 
 export default function ShopDetail() {
     const [activeTab, setActiveTab] = useState("ShopDetail");
