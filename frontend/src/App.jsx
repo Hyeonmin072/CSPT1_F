@@ -4,7 +4,7 @@ import logo from "./images/logo.jpg";
 import google from "./images/google.png";
 import kakao from "./images/kakao.png";
 import loginImage from "./images/login.png";
-import { LuUser , LuLockKeyhole , LuArrowRight , LuArrowLeft} from "react-icons/lu";
+import { LuUser , LuLockKeyhole , LuArrowLeft} from "react-icons/lu";
 
 function App() {
     const [isSignup, setIsSignup] = useState(false);
@@ -104,14 +104,10 @@ function App() {
                         디자이너에요
                     </button>
                 </div>
-                {/* 우측하단 다음 버튼 */}
-                <button className="absolute bottom-10 right-48 text-3xl">
-                    <LuArrowRight size={30} color="black" className="mr-1 ml-4"/>
-                </button>
                 {/*좌측상단 뒤로가기 버튼*/}
                 {/* 뒤로가기 버튼 클릭시 좌측으로 슬라이드 된 이미지가 우측으로 다시 슬라이드됨*/}
-                <button onClick={handleBackClick} className="absolute top-3 -ml-[700px] text-3xl">
-                    <LuArrowLeft size={30} color="black" className="mr-1 ml-4"/>
+                <button onClick={handleBackClick} className="absolute top-8 -ml-[700px] text-3xl">
+                    <LuArrowLeft size={40} color="black" className="mr-1 ml-4"/>
                 </button>
             </div>
             {/* 우측 미용실 이미지 */}
