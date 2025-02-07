@@ -13,6 +13,7 @@ const UserProfileEdit = () => {
     email: "test@gmail.com",
     membership: "일반",
   });
+
   const [bannerImage, setBannerImage] = useState(d1);
   const [profileImage, setProfileImage] = useState(d1);
 
@@ -24,14 +25,58 @@ const UserProfileEdit = () => {
   };
 
   const handleSubmit = () => {
+    // 비밀번호 변경 시 유효성 검사
+    if (
+      passwordData.newPassword ||
+      passwordData.confirmPassword ||
+      passwordData.currentPassword
+    ) {
+      // 모든 필드가 채워져 있는지 확인
+      if (
+        !passwordData.currentPassword ||
+        !passwordData.newPassword ||
+        !passwordData.confirmPassword
+      ) {
+        alert("모든 비밀번호 필드를 입력해주세요.");
+        return;
+      }
+
+      // 새 비밀번호 유효성 검사
+      const passwordRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
+      if (!passwordRegex.test(passwordData.newPassword)) {
+        alert("새 비밀번호는 영문, 숫자, 특수문자를 포함한 8-20자여야 합니다.");
+        return;
+      }
+
+      // 새 비밀번호 일치 확인
+      if (passwordData.newPassword !== passwordData.confirmPassword) {
+        alert("새 비밀번호가 일치하지 않습니다.");
+        return;
+      }
+    }
+
     // API 호출하여 변경된 정보 저장
     // 성공 시 프로필 페이지로 이동
-    navigate("/userprofile");
+    navigate("/profile");
   };
 
   const handleCancel = () => {
     // 변경 사항 없이 프로필 페이지로 이동
     navigate("/userprofile");
+  };
+
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const handlePasswordChange = (key, value) => {
+    setPasswordData((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
   return (
@@ -91,6 +136,59 @@ const UserProfileEdit = () => {
             <h2 className="text-gray-600 text-sm mb-2">내 멤버십 등급</h2>
             <div className="w-96 p-3 bg-gray-100 rounded text-gray-500">
               {userData.membership}
+            </div>
+          </div>
+        </div>
+
+        {/* 비밀번호 변경 섹션 */}
+        <h2 className="text-xl font-bold -mb-10 flex justify-center">
+          비밀번호 변경
+        </h2>
+        <div className="mt-12 mb-8 flex justify-center">
+          <div className="grid grid-cols-1 gap-y-6">
+            {/* 현재 비밀번호 */}
+            <div>
+              <h2 className="text-gray-600 text-sm mb-2 w-72">현재 비밀번호</h2>
+              <input
+                type="password"
+                value={passwordData.currentPassword}
+                onChange={(e) =>
+                  handlePasswordChange("currentPassword", e.target.value)
+                }
+                className="w-[1500px] max-w-lg p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="현재 비밀번호를 입력하세요"
+              />
+            </div>
+
+            {/* 새 비밀번호 */}
+            <div>
+              <h2 className="text-gray-600 text-sm mb-2 w-96">새 비밀번호</h2>
+              <input
+                type="password"
+                value={passwordData.newPassword}
+                onChange={(e) =>
+                  handlePasswordChange("newPassword", e.target.value)
+                }
+                className="w-full max-w-lg p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="새 비밀번호를 입력하세요"
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                영문, 숫자, 특수문자 조합 8-20자
+              </p>
+            </div>
+
+            {/* 새 비밀번호 확인 */}
+            <div>
+              <h2 className="text-gray-600 text-sm mb-2">새 비밀번호 확인</h2>
+              <input
+                type="password"
+                value={passwordData.confirmPassword}
+                onChange={(e) =>
+                  handlePasswordChange("confirmPassword", e.target.value)
+                }
+                className="w-full max-w-lg p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="새 비밀번호를 다시 입력하세요"
+              />
             </div>
           </div>
         </div>
