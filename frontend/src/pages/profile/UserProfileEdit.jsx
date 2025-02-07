@@ -205,7 +205,7 @@ const UserProfileEdit = () => {
           <h2 className="text-xl font-bold flex justify-center">
             비밀번호 변경
           </h2>
-          <div className="w-[850px]">
+          <div className="w-[830px]">
             <div className="grid grid-cols-1 gap-y-6">
               {/* 현재 비밀번호 */}
               <div>
