@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
-import DesignerPage from "./pages/main/DesignerPage";
-import CouponMainModal from "./pages/coupon/CouponMainModal.jsx"
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
 
@@ -17,7 +15,6 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/designerpage" element={<DesignerPage />} />
-            <Route path="/coupon" element={<CouponMainModal />} />
             <Route path="/userprofile" element={<UserProfile />} />
           </Routes>
         </main>
