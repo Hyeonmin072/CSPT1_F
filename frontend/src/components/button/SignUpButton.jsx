@@ -1,5 +1,3 @@
-import React from "react";
-
 const SignUpButton = ({onClick}) => {
     return (
         <div className="flex justify-center mt-4">

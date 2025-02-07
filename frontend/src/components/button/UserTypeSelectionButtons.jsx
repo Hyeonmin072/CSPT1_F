@@ -1,5 +1,3 @@
-import React from "react";
-
 {/* 역할 선택 버튼 */}
 export default function UserTypeSelectionButtons () {
     return (

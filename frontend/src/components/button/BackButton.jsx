@@ -1,5 +1,4 @@
 import {LuArrowLeft} from "react-icons/lu";
-import React from "react";
 
 const BackButton = ({ onClick }) => {
     return (
