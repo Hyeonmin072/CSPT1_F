@@ -3,6 +3,8 @@ import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
 import HairShopPage from "./pages/hairshop/HairShopPage"
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx"
+import DesignerPage from "./pages/designer/DesignerPage";
+import UserProfile from "./pages/profile/UserProfile";
 
 function App() {
   return (
@@ -15,7 +17,6 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/designerpage" element={<DesignerPage />} />
-            <Route path="/coupon" element={<CouponMainModal />} />
             <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/hairshop" element={<HairShopPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />

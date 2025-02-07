@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshop/HairSearch.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/CouponGive.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/DetailTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/HairShop.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshop/HairShop.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,9 +33,9 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "frontend-hairshop",
+    "git-widget-placeholder": "frontend-mycoupon",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop",
+    "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/modal/coupon",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -59,9 +50,11 @@
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hair" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hairshop" />
-      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\layout" />
-      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\modal\coupon" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\coupon" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\button" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\slider" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\reservation\designerselect" />
     </key>
   </component>
   <component name="RunManager">
@@ -108,7 +101,8 @@
       <workItem from="1738660532378" duration="411000" />
       <workItem from="1738728028298" duration="19237000" />
       <workItem from="1738820678561" duration="832000" />
-      <workItem from="1738821537421" duration="8325000" />
+      <workItem from="1738821537421" duration="9656000" />
+      <workItem from="1738901323394" duration="11714000" />
     </task>
     <servers />
   </component>

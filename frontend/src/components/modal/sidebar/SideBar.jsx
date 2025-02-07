@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zap, LogOut, Bell } from "lucide-react";
 import { Overlay } from "../../overlay/OverLay";
+import CouponModal from "../coupon/CouponModal.jsx"
 
 //사이드바 컴포넌트 자체
 
@@ -13,7 +15,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: 3, title: "디자이너", path: "/designerpage" },
     { id: 4, title: "채팅" },
     { id: 5, title: "프로필", path: "/userprofile" },
-    { id: 6, title: "쿠폰함", path: "/coupon" },
+    { id: 6, title: "쿠폰함", modal: true},
     { id: 7, title: "좋아하는 디자이너" },
   ];
 
@@ -22,6 +24,8 @@ const Sidebar = ({ isOpen, onClose }) => {
     onClose(); // 사이드바 닫기
     // 추가로 실행하고 싶은 다른 동작이 있다면 여기에 추가
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -56,15 +60,31 @@ const Sidebar = ({ isOpen, onClose }) => {
             {menuItems.map((item) => (
               <li key={item.id}>
                 {/* 라우트 기능 */}
-                <Link
-                  // item.path에 있는 곳으로 가라
-                  to={item.path}
-                  //onClick 에 클릭핸들러 사용
-                  onClick={handleClick}
-                  className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
-                >
-                  {item.title}
-                </Link>
+                {item.path ? (
+                    // 경로가 있으면 Link 사용
+                    <Link
+                        // item.path에 있는 곳으로 가라
+                        to={item.path}
+                        // onClick에 클릭핸들러 사용
+                        onClick={handleClick}
+                        className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
+                    >
+                      {item.title}
+                    </Link>
+                ) : item.modal ? (
+                    // 모달 열기 버튼
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="block w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
+                    >
+                      {item.title}
+                    </button>
+                ) : (
+                    // 그냥 클릭만 되는 항목
+                    <span className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md">
+                    {item.title}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
@@ -79,6 +99,9 @@ const Sidebar = ({ isOpen, onClose }) => {
           </button>
         </div>
       </div>
+
+      {/* 쿠폰 모달 */}
+      <CouponModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 };
