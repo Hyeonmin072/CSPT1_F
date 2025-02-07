@@ -2,10 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import h1 from "../../assets/hairshop/h1.jpg";
 import logo from "../../assets/logo/logo.png";
+
+
 import HairSearch from "./HairSearch.jsx";
+import ReservationButton from "../button/ReservationButton.jsx"
 
 export default function ShopPage({ containerRef }) {
-  // shops 데이터 배열
   const shops = [
     { id: 1, name: "HAIRSHOP 1", subject: "subject1", description: "설명 1", image: h1 },
     { id: 2, name: "HAIRSHOP 2", subject: "subject2", description: "설명 2", image: h1 },

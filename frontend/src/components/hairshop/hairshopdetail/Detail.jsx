@@ -10,14 +10,14 @@ import {
     X
 } from "lucide-react";
 
-import HairShopDetailReview from "../layout/HairShopDetailReview.jsx"
-import DesignerInfo from "../layout/DesignerInfo.jsx"
-import ShopHeader from "./DetailHeader.jsx";
+import HairShopDetailReview from "../../layout/HairShopDetailReview.jsx"
+import DesignerInfo from "../../layout/DesignerInfo.jsx"
+import DetailHeader from "./DetailHeader.jsx";
 import GiveCoupon from "./CouponGive.jsx";
 import DetailTab from "./DetailTab.jsx";
 
-import reviewEX from "../../assets/hairshop/reviewEX.jpg";
-import h1 from "../../assets/hairshop/h1.jpg";
+import reviewEX from "../../../assets/hairshop/reviewEX.jpg";
+import h1 from "../../../assets/hairshop/h1.jpg";
 
 export default function ShopDetail() {
     const [activeTab, setActiveTab] = useState("ShopDetail");
@@ -29,7 +29,7 @@ export default function ShopDetail() {
     };
     // 예약하기 클릭시
     const handleReservationClick = () => {
-        navigate("/reservation");
+        navigate("/designerselect");
     };
     // 리뷰 클릭시
     const handleReviewClick = () => {
@@ -38,10 +38,10 @@ export default function ShopDetail() {
     };
 
     return (
-        <div className="flex mx-20 mr-10 my-0 px-10 py-0 gap-6">
+        <div className="flex flex-col lg:flex-row mx-4 lg:mx-20 my-4 lg:my-0 gap-6">
             {/* 왼쪽: 가게 상세 정보 */}
-            <div className="w-[700px] w-4/6">
-                <ShopHeader/>
+            <div className="w-full lg:w-2/3 lg:flex lg:flex-col">
+                <DetailHeader/>
 
                 <div className="mb-4 flex items-center">
                     <DetailTab
@@ -63,21 +63,24 @@ export default function ShopDetail() {
                     <p className="text-gray-500">운영 시간: 10:00 - 21:00</p>
                 </div>
 
-                <div className="p-5 flex gap-20 mb-5 items-center justify-center">
-                    <div>
-                        <StarHalf/><p className="mt-5">평점</p>
+                <div className="p-5 flex flex-wrap gap-6 lg:gap-20 mb-5 items-center justify-center">
+                    <div className="flex flex-col items-center">
+                        <StarHalf className="w-6 h-6"/>
+                        <p className="mt-2">평점</p>
                     </div>
-                    <div>
-                        <MapPin/><p className="mt-5">위치</p>
+                    <div className="flex flex-col items-center">
+                        <MapPin className="w-6 h-6"/>
+                        <p className="mt-2">위치</p>
                     </div>
-                    <div>
-                        <PhoneCall/><p className="mt-5">전화</p>
+                    <div className="flex flex-col items-center">
+                        <PhoneCall className="w-6 h-6"/>
+                        <p className="mt-2">전화</p>
                     </div>
-                    <div>
-                        <Link/><p className="mt-5">공유</p>
+                    <div className="flex flex-col items-center">
+                        <Link className="w-6 h-6"/>
+                        <p className="mt-2">공유</p>
                     </div>
                 </div>
-
 
                 {/*쿠폰 받기 */}
                 <GiveCoupon/>
@@ -93,37 +96,15 @@ export default function ShopDetail() {
                         </h3>
                         <div className="flex flex-col mb-6">
                             {/* 이미지들 */}
-                            <div className="grid grid-cols-4 gap-4">
-                                <img
-                                    src={reviewEX}
-                                    alt="리뷰 1"
-                                    className="w-full h-40 object-cover rounded-lg"
-                                />
-                                <img
-                                    src={reviewEX}
-                                    alt="리뷰 2"
-                                    className="w-full h-40 object-cover rounded-lg"
-                                />
-                                <img
-                                    src={reviewEX}
-                                    alt="리뷰 3"
-                                    className="w-full h-40 object-cover rounded-lg"
-                                />
-                                <img
-                                    src={reviewEX}
-                                    alt="리뷰 4"
-                                    className="w-full h-40 object-cover rounded-lg"
-                                />
-                                <img
-                                    src={reviewEX}
-                                    alt="리뷰 5"
-                                    className="w-full h-40 object-cover rounded-lg"
-                                />
-                                <img
-                                    src={reviewEX}
-                                    alt="리뷰 6"
-                                    className="w-full h-40 object-cover rounded-lg"
-                                />
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {Array.from({length: 6}, (_, index) => (
+                                    <img
+                                        key={index}
+                                        src={reviewEX}
+                                        alt={`리뷰 ${index + 1}`}
+                                        className="w-full h-40 object-cover rounded-lg"
+                                    />
+                                ))}
                             </div>
 
                             {/* 구분선 */}
@@ -135,7 +116,9 @@ export default function ShopDetail() {
             </div>
 
             {/* 오른쪽: 디자이너 정보 */}
-            <DesignerInfo/>
+            <div className="w-full lg:w-1/3 lg:h-auto lg:sticky lg:top-4">
+                <DesignerInfo/>
+            </div>
         </div>
     );
 }
