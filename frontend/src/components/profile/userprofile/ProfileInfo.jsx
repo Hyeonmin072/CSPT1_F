@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const ProfileInfo = ({ name, phone, email, membership }) => {
   const infoItems = [
     { label: "이름", value: name },

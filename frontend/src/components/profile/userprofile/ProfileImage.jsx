@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const ProfileImage = ({ profileImage }) => {
   return (
     <div className="absolute left-1/2 -bottom-12 transform -translate-x-1/2">

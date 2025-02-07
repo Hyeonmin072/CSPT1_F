@@ -5,6 +5,7 @@ import ProfileInfo from "../../components/profile/userprofile/ProfileInfo";
 import MyCouponButton from "../../components/button/MyCouponButton";
 import ProfileEditButton from "../../components/button/ProfileEditButton";
 
+//유저의 임시데이터
 const UserProfile = () => {
   const userData = {
     name: "홍길동",

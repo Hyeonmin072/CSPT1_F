@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const ProfileBanner = ({ bannerImage }) => {
   return (
     <div className="w-full h-48 bg-teal-100 rounded-lg overflow-hidden">
