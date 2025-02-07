@@ -1,5 +1,4 @@
-
-
+// 회원가입 창에서 유저 선택 버튼 (디자이너버튼)
 export default function BossButton () {
     return (
         <button

@@ -1,4 +1,4 @@
-
+// 회원가입 창에서 유저 선택 버튼 (손님버튼)
 export default function SignUpGuestButton () {
     return (
         <button

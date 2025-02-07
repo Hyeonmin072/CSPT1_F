@@ -1,5 +1,4 @@
-
-
+// 회원가입 창에서 유저 선택 버튼 (사장버튼)
 export default function SignUpBossButton () {
     return (
         <button
