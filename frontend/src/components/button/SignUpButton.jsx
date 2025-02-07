@@ -1,3 +1,4 @@
+// 회원가입 버튼 , 이 버튼을 누르면 우측 미용실 이미지가 슬라이드되며 우측에 회원가입 창이 나옴
 const SignUpButton = ({onClick}) => {
     return (
         <div className="flex justify-center mt-4">

@@ -1,5 +1,6 @@
 import google from "../../images/google.png";
 
+// 파일명 그대로 구글 로그인 버튼
 export default function KaKaoLoginButton() {
     return (
         <button className="w-full flex items-center justify-center p-3 border rounded-lg bg-white">

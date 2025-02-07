@@ -1,3 +1,4 @@
+// 왼쪽 로그인 폼 로그인 버튼
 export default function UserTypeSelectionButtons () {
     return (
         <div className="flex justify-center mt-4">
