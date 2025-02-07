@@ -5,24 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/button/HairReservationButton.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/button/SelectButton.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailIcon.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/DesignerSelect.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/coupon/AllCouponGive.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/ShopHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/ShopHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshop/HairSearch.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshop/HairShop.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/CouponGive.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/Detail.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/DetailHeader.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/DetailTab.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/coupon/CouponMainModal.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/CouponGive.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +107,7 @@
       <workItem from="1738728028298" duration="19237000" />
       <workItem from="1738820678561" duration="832000" />
       <workItem from="1738821537421" duration="9656000" />
-      <workItem from="1738901323394" duration="16984000" />
+      <workItem from="1738901323394" duration="17641000" />
     </task>
     <servers />
   </component>

@@ -5,7 +5,7 @@ import { MapPin,} from "lucide-react";
 import HairShopDetailReview from "../../layout/HairShopDetailReview.jsx"
 import DesignerInfo from "../../layout/DesignerInfo.jsx"
 import DetailHeader from "./DetailHeader.jsx";
-import GiveCoupon from "./CouponGive.jsx";
+import GiveCoupon from "../../modal/coupon/AllCouponGive.jsx";
 import DetailTab from "./DetailTab.jsx";
 import ReviewImg from "./DetailReviewimg.jsx"
 import DetailIcon from "./DetailIcon.jsx"
