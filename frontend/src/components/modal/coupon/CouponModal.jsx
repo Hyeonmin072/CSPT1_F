@@ -1,6 +1,5 @@
 import { X } from "lucide-react"; // Lucide 아이콘 import
-import "tailwindcss/tailwind.css";
-import logo from "../../assets/logo/logo.png";
+import logo from "../../../assets/logo/logo.png"; // 로고 이미지 import
 
 const coupons = [
   {
@@ -60,12 +59,6 @@ export default function CouponModal({ isOpen, onClose }) {
             msOverflowStyle: "none",
           }}
         >
-          <style jsx>{`
-            /* 스크롤바를 숨기기 위한 스타일 */
-            .no-scrollbar::-webkit-scrollbar {
-              display: none;
-            }
-          `}</style>
           {coupons.map((coupon) => (
             <div
               key={coupon.id}

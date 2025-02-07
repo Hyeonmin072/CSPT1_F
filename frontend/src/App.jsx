@@ -1,13 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
-<<<<<<< HEAD
-import DesignerPage from "./pages/main/DesignerPage";
-import CouponMainModal from "./pages/coupon/CouponMainModal.jsx"
-=======
-import DesignerPage from "./pages/designer/DesignerPage";
+import CouponMainModal from "./pages/coupon/CouponMainModal.jsx";
 import UserProfile from "./pages/profile/UserProfile";
->>>>>>> frontend-userprofile
+import DesignerPage from "./pages/designer/DesignerPage.jsx";
 
 function App() {
   return (
@@ -20,11 +16,8 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/designerpage" element={<DesignerPage />} />
-<<<<<<< HEAD
             <Route path="/coupon" element={<CouponMainModal />} />
-=======
             <Route path="/userprofile" element={<UserProfile />} />
->>>>>>> frontend-userprofile
           </Routes>
         </main>
       </div>

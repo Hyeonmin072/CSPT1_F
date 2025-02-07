@@ -13,7 +13,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: 3, title: "디자이너", path: "/designerpage" },
     { id: 4, title: "채팅" },
     { id: 5, title: "프로필", path: "/userprofile" },
-    { id: 6, title: "쿠폰함" },
+    { id: 6, title: "쿠폰함", path: "/coupon" },
     { id: 7, title: "좋아하는 디자이너" },
   ];
 
