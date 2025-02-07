@@ -5,6 +5,38 @@ import ProfileBannerEdit from "../../components/profile/userprofile/ProfileBanne
 import ProfileImageEdit from "../../components/profile/userprofile/ProfileImageEdit";
 import d1 from "../../assets/designer/d1.png";
 
+// 비밀번호 검증용 함수
+const validatePassword = (password) => {
+  const hasLetter = /[A-Za-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecial = /[@$!%*#?&]/.test(password);
+  const isValidLength = password.length >= 8 && password.length <= 20;
+
+  const requirements = {
+    hasLetter,
+    hasNumber,
+    hasSpecial,
+    isValidLength,
+  };
+
+  return requirements;
+};
+
+const isPasswordValid = (requirements) => {
+  return Object.values(requirements).every(Boolean);
+};
+
+const PasswordRequirement = ({ met, text }) => (
+  <div className="flex items-center gap-2">
+    <div
+      className={`w-2 h-2 rounded-full ${met ? "bg-green-500" : "bg-gray-300"}`}
+    />
+    <span className={`text-sm ${met ? "text-green-500" : "text-gray-500"}`}>
+      {text}
+    </span>
+  </div>
+);
+
 const UserProfileEdit = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -17,6 +49,21 @@ const UserProfileEdit = () => {
   const [bannerImage, setBannerImage] = useState(d1);
   const [profileImage, setProfileImage] = useState(d1);
 
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    hasLetter: false,
+    hasNumber: false,
+    hasSpecial: false,
+    isValidLength: false,
+  });
+
+  const [passwordError, setPasswordError] = useState("");
+
   const handleInputChange = (key, value) => {
     setUserData((prev) => ({
       ...prev,
@@ -24,34 +71,61 @@ const UserProfileEdit = () => {
     }));
   };
 
+  const handlePasswordChange = (key, value) => {
+    setPasswordData((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+
+    // 새 비밀번호 입력 시 실시간 유효성 검사
+    if (key === "newPassword") {
+      const requirements = validatePassword(value);
+      setPasswordRequirements(requirements);
+      setPasswordError("");
+
+      // 비밀번호 확인과 일치 여부 체크
+      if (
+        passwordData.confirmPassword &&
+        value !== passwordData.confirmPassword
+      ) {
+        setPasswordError("비밀번호가 일치하지 않습니다.");
+      }
+    }
+
+    // 비밀번호 확인 실시간 체크
+    if (key === "confirmPassword") {
+      if (value !== passwordData.newPassword) {
+        setPasswordError("비밀번호가 일치하지 않습니다.");
+      } else {
+        setPasswordError("");
+      }
+    }
+  };
+
   const handleSubmit = () => {
-    // 비밀번호 변경 시 유효성 검사
+    // 비밀번호 변경 시도 시 검증
     if (
       passwordData.newPassword ||
       passwordData.confirmPassword ||
       passwordData.currentPassword
     ) {
-      // 모든 필드가 채워져 있는지 확인
-      if (
-        !passwordData.currentPassword ||
-        !passwordData.newPassword ||
-        !passwordData.confirmPassword
-      ) {
-        alert("모든 비밀번호 필드를 입력해주세요.");
+      if (!passwordData.currentPassword) {
+        alert("현재 비밀번호를 입력해주세요.");
         return;
       }
 
-      // 새 비밀번호 유효성 검사
-      const passwordRegex =
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
-      if (!passwordRegex.test(passwordData.newPassword)) {
-        alert("새 비밀번호는 영문, 숫자, 특수문자를 포함한 8-20자여야 합니다.");
+      if (!isPasswordValid(passwordRequirements)) {
+        alert("새 비밀번호가 요구사항을 충족하지 않습니다.");
         return;
       }
 
-      // 새 비밀번호 일치 확인
       if (passwordData.newPassword !== passwordData.confirmPassword) {
         alert("새 비밀번호가 일치하지 않습니다.");
+        return;
+      }
+
+      if (passwordData.newPassword === passwordData.currentPassword) {
+        alert("새 비밀번호는 현재 비밀번호와 달라야 합니다.");
         return;
       }
     }
@@ -62,21 +136,7 @@ const UserProfileEdit = () => {
   };
 
   const handleCancel = () => {
-    // 변경 사항 없이 프로필 페이지로 이동
     navigate("/userprofile");
-  };
-
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-
-  const handlePasswordChange = (key, value) => {
-    setPasswordData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
   };
 
   return (
@@ -141,54 +201,74 @@ const UserProfileEdit = () => {
         </div>
 
         {/* 비밀번호 변경 섹션 */}
-        <h2 className="text-xl font-bold -mb-10 flex justify-center">
-          비밀번호 변경
-        </h2>
-        <div className="mt-12 mb-8 flex justify-center">
-          <div className="grid grid-cols-1 gap-y-6">
-            {/* 현재 비밀번호 */}
-            <div>
-              <h2 className="text-gray-600 text-sm mb-2 w-72">현재 비밀번호</h2>
-              <input
-                type="password"
-                value={passwordData.currentPassword}
-                onChange={(e) =>
-                  handlePasswordChange("currentPassword", e.target.value)
-                }
-                className="w-[1500px] max-w-lg p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="현재 비밀번호를 입력하세요"
-              />
-            </div>
+        <div className="flex flex-col items-center w-full">
+          <h2 className="text-xl font-bold flex justify-center">
+            비밀번호 변경
+          </h2>
+          <div className="w-[850px]">
+            <div className="grid grid-cols-1 gap-y-6">
+              {/* 현재 비밀번호 */}
+              <div>
+                <h2 className="text-gray-600 text-sm mb-2">현재 비밀번호</h2>
+                <input
+                  type="password"
+                  value={passwordData.currentPassword}
+                  onChange={(e) =>
+                    handlePasswordChange("currentPassword", e.target.value)
+                  }
+                  className="w-full p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  placeholder="현재 비밀번호를 입력하세요"
+                />
+              </div>
 
-            {/* 새 비밀번호 */}
-            <div>
-              <h2 className="text-gray-600 text-sm mb-2 w-96">새 비밀번호</h2>
-              <input
-                type="password"
-                value={passwordData.newPassword}
-                onChange={(e) =>
-                  handlePasswordChange("newPassword", e.target.value)
-                }
-                className="w-full max-w-lg p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="새 비밀번호를 입력하세요"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                영문, 숫자, 특수문자 조합 8-20자
-              </p>
-            </div>
+              {/* 새 비밀번호 */}
+              <div>
+                <h2 className="text-gray-600 text-sm mb-2">새 비밀번호</h2>
+                <input
+                  type="password"
+                  value={passwordData.newPassword}
+                  onChange={(e) =>
+                    handlePasswordChange("newPassword", e.target.value)
+                  }
+                  className="w-full p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  placeholder="새 비밀번호를 입력하세요"
+                />
+                <div className="mt-2 space-y-1">
+                  <PasswordRequirement
+                    met={passwordRequirements.hasLetter}
+                    text="영문자 포함"
+                  />
+                  <PasswordRequirement
+                    met={passwordRequirements.hasNumber}
+                    text="숫자 포함"
+                  />
+                  <PasswordRequirement
+                    met={passwordRequirements.hasSpecial}
+                    text="특수문자 포함"
+                  />
+                  <PasswordRequirement
+                    met={passwordRequirements.isValidLength}
+                    text="8-20자 길이"
+                  />
+                </div>
+              </div>
 
-            {/* 새 비밀번호 확인 */}
-            <div>
-              <h2 className="text-gray-600 text-sm mb-2">새 비밀번호 확인</h2>
-              <input
-                type="password"
-                value={passwordData.confirmPassword}
-                onChange={(e) =>
-                  handlePasswordChange("confirmPassword", e.target.value)
-                }
-                className="w-full max-w-lg p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="새 비밀번호를 다시 입력하세요"
-              />
+              {/* 새 비밀번호 확인 */}
+              <div>
+                <h2 className="text-gray-600 text-sm mb-2">새 비밀번호 확인</h2>
+                <input
+                  type="password"
+                  value={passwordData.confirmPassword}
+                  onChange={(e) =>
+                    handlePasswordChange("confirmPassword", e.target.value)
+                  }
+                  className="w-full p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  placeholder="새 비밀번호를 다시 입력하세요"
+                />
+                {passwordError && (
+                  <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
