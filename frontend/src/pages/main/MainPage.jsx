@@ -7,6 +7,7 @@ export default function MainPage() {
       <ShopData />
       <div className="flex justify-center -mt-1">
         <div className="max-w-3xl w-full px-4">
+          {/* AD 컴포넌트 */}
           <MainBottomAd height={150} className="bg-gray-50">
             <div>커스텀 광고 내용</div>
           </MainBottomAd>

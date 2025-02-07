@@ -1,3 +1,5 @@
+//차후 수정시 eslint 해제
+//eslint-disable-next-line
 const InquiryButton = ({ onClick }) => {
   return (
     <button
