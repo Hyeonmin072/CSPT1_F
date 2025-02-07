@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
-import HairShopPage from "./pages/hairshop/HairShopPage"
-import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx"
+import HairShopPage from "./pages/hairshop/HairShopPage";
+import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
+import UserProfileEdit from "./pages/profile/UserProfileEdit";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/hairshop" element={<HairShopPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
+            <Route path="/userprofileedit" element={<UserProfileEdit />} />
           </Routes>
         </main>
       </div>
