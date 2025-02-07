@@ -5,6 +5,7 @@ import HairShopPage from "./pages/hairshop/HairShopPage"
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx"
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
+import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/hairshop" element={<HairShopPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
+            <Route path="/designerselect" element={<DesignerSelectPage />} />
           </Routes>
         </main>
       </div>

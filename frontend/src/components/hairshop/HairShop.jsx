@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import h1 from "../../../assets/hairshop/h1.jpg";
-import logo from "../../../assets/logo/logo.png";
+import h1 from "../../assets/hairshop/h1.jpg";
+import logo from "../../assets/logo/logo.png";
+
 import HairSearch from "./HairSearch.jsx";
+import HairReservationButton from "../button/HairReservationButton.jsx"
 
 export default function ShopPage({ containerRef }) {
   // shops 데이터 배열
@@ -22,7 +24,7 @@ export default function ShopPage({ containerRef }) {
     // 초기 상태를 표시하는 타이머 설정
     setTimeout(() => {
       setIsVisible(new Array(shops.length).fill(true));
-    }, 500);
+    }, 200);
   }, [shops.length]); // shops 배열의 길이가 변경되면 실행되도록 설정
 
   const navigate = useNavigate();
@@ -73,14 +75,11 @@ export default function ShopPage({ containerRef }) {
                       <h2 className="text-base font-medium">{shop.description}</h2>
                     </div>
 
-                    <div className="flex mt-4">
-                      <button
-                          className="px-6 py-2 text-black font-semibold rounded-lg hover:bg-[#03DAC5] transition"
-                          onClick={() => navigate("/reservation")}
-                      >
-                        예약하기
-                      </button>
-                    </div>
+                      <div className="flex mt-4">
+                          <HairReservationButton/>
+                      </div>
+
+
                   </div>
                 </div>
             ))}

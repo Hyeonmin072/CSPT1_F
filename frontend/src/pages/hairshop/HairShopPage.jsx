@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import ShopPage from "../../components/common/hairshop/HairShop.jsx";
+import ShopPage from "../../components/hairshop/HairShop.jsx";
 
 export default function HairShopPage () {
     const [isVisible, setIsVisible] = useState(false);

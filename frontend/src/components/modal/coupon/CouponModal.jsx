@@ -29,7 +29,7 @@ export default function CouponModal({ isOpen, onClose }) {
     if (!isOpen) return null;
     return (
         <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 no-scrollbar z-10"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 no-scrollbar z-40"
             onClick={onClose}
         >
             <div className="bg-white p-8 rounded-lg shadow-lg" style={{ width: '600px', height: '85vh' }}>
