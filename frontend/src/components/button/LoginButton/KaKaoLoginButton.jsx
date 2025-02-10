@@ -1,4 +1,4 @@
-import kakao from "../../images/kakao.png";
+import kakao from "../../../images/kakao.png";
 
 // 파일명 그대로 카카오 로그인 버튼
 export default function KaKaoLoginButton() {

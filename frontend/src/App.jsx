@@ -120,11 +120,15 @@
 // }
 //
 // export default App;
-import LeftLoginForm from "./components/LeftLoginForm.jsx"
+import LeftLoginForm from "./components/LeftLoginForm/LeftLoginForm.jsx"
+import RightLoginForm from "./components/RightLoginForm/RightLoginForm.jsx";
 
 function App() {
     return (
-            <LeftLoginForm />
+        <div>
+            <LeftLoginForm/>
+            <RightLoginForm />
+        </div>
     );
 }
 

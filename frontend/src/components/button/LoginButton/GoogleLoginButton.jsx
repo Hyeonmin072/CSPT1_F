@@ -1,4 +1,4 @@
-import google from "../../images/google.png";
+import google from "../../../images/google.png";
 
 // 파일명 그대로 구글 로그인 버튼
 export default function GoogleLoginButton() {

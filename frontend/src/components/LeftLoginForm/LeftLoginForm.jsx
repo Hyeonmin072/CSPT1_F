@@ -1,7 +1,7 @@
-import UserTypeSelectionButtons from "./LoginButton/UserTypeSelectionButtons.jsx";
-import Logo from "./Logo/Logo.jsx";
-import LoginButton from "./LoginButton/LoginButton.jsx"
-import SocialLoginButton from "./LoginButton/SocialLoginButton.jsx";
+import UserTypeSelectionButtons from "../button/LoginButton/UserTypeSelectionButtons.jsx";
+import Logo from "../Logo/Logo.jsx";
+import LoginButton from "../button/LoginButton/LoginButton.jsx"
+import SocialLoginButton from "../button/LoginButton/SocialLoginButton.jsx";
 import {LuLockKeyhole, LuUser} from "react-icons/lu";
 
 export default function LeftLoginForm () {
