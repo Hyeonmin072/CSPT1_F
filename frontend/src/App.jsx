@@ -120,16 +120,43 @@
 // }
 //
 // export default App;
-import LeftLoginForm from "./components/LeftLoginForm/LeftLoginForm.jsx"
+import { useState } from "react";
+import "./App.css";
 import RightLoginForm from "./components/RightLoginForm/RightLoginForm.jsx";
+import LeftLoginForm from "./components/LeftLoginForm/LeftLoginForm.jsx";
+import SlidingImage from "./components/SlidingImage/SlidingImage.jsx";
 
 function App() {
+    const [isSignup, setIsSignup] = useState(false);
+
+    // const handleSignupClick = () => setIsSignup(true);
+    const handleBackClick = () => setIsSignup(false);
+
+    const handleSignupClick = () => {
+        console.log("회원가입 클릭됨");  // 확인용 콘솔
+        setIsSignup(true);
+    };
+
     return (
-        <div>
-            <LeftLoginForm/>
-            <RightLoginForm />
+        <div className={"relative"}>
+            {/* 왼쪽 로그인 폼 */}
+            <LeftLoginForm
+                onSignupClick={handleSignupClick}
+                isVisible={!isSignup}
+            />
+
+            {/* 오른쪽 회원가입 폼 */}
+            <RightLoginForm
+                onBackClick={handleBackClick}
+                isVisible={isSignup}
+            />
+
+            {/* 우측 미용실 이미지 슬라이딩 */}
+            <SlidingImage isSliding={isSignup} />
         </div>
     );
 }
 
 export default App;
+
+

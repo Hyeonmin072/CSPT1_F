@@ -3,8 +3,9 @@ import Logo from "../Logo/Logo.jsx";
 import LoginButton from "../button/LoginButton/LoginButton.jsx"
 import SocialLoginButton from "../button/LoginButton/SocialLoginButton.jsx";
 import {LuLockKeyhole, LuUser} from "react-icons/lu";
+import SignUpButton from "../button/LoginButton/SignUpButton.jsx";
 
-export default function LeftLoginForm () {
+export default function LeftLoginForm ({ onSignupClick, isHidden }) {
     return (
         <div className="flex min-h-screen relative overflow-hidden">
             <div
@@ -31,6 +32,8 @@ export default function LeftLoginForm () {
                 <div className="w-full max-w-sm mt-4 space-y-2">
                     <SocialLoginButton/>
                 </div>
+
+                <SignUpButton onSignupClick={onSignupClick} />
             </div>
 
             </div>
