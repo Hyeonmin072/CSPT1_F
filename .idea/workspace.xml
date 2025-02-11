@@ -5,14 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshop/HairSearch.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/CouponGive.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/DetailTab.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/HairShop.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshop/HairShop.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/button/SelectButton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/button/SelectButton.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/ShopHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/ShopHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/HairShop.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/HairShop.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/main/MainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/main/MainPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/reservation/DesignerSelectPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/DesignerSelectPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +45,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "frontend-hairshop",
+    "git-widget-placeholder": "frontend-reservation",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop",
     "node.js.detected.package.eslint": "true",
