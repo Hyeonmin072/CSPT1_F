@@ -18,6 +18,8 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/hairshop" element={<HairShopPage />} />
+            <Route path="/userprofile" element={<UserProfile />} />
+            <Route path="/designerpage" element={<DesignerPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
             <Route path="/userprofileedit" element={<UserProfileEdit />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
