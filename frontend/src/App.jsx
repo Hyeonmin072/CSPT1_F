@@ -3,8 +3,6 @@ import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
 import HairShopPage from "./pages/hairshop/HairShopPage"
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx"
-import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx"
-import CouponModalPage from "./pages/coupon/CouponMainModal.jsx"
 
 function App() {
   return (
@@ -17,7 +15,6 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/hairshop" element={<HairShopPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
-            <Route path="/designerselect" element={<DesignerSelectPage />} />
             {/* 추가 라우트는 여기에 설정 */}
           </Routes>
         </main>

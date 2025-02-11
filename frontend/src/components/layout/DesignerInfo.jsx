@@ -11,20 +11,20 @@ export default function DesignerInfo() {
     ])
 
     return (
-        <div className="mt-4 lg:mt-0">
+        <div className="mt-4">
             <Swiper
                 spaceBetween={10}
                 slidesPerView={"auto"}
-                className="flex w-full lg:w-4/6"
+                className="flex w-4/6"
                 loop
             >
                 {designerList.map((designer) => (
-                    <SwiperSlide key={designer.id} className="w-[240px]">
+                    <SwiperSlide key={designer.id} className="w-[200px]">
                         <div className="bg-gray-900 text-white p-6 rounded-lg ">
                             <img
                                 src={designerEX}
                                 alt="디자이너"
-                                className="w-[300px] h-70 rounded-lg"
+                                className="w-[300px] h-70 object-cover rounded-lg" // 이미지 크기는 그대로
                             />
                             <div className="mt-2 mb-2">
                                 <h3 className="text-lg font-bold mt-2">{designer.name}</h3>
