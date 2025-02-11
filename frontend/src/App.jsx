@@ -17,6 +17,8 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/hairshop" element={<HairShopPage />} />
+            <Route path="/userprofile" element={<UserProfile />} />
+            <Route path="/designerpage" element={<DesignerPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
             {/* 추가 라우트는 여기에 설정 */}
