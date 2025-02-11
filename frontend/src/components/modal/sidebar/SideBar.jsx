@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zap, LogOut, Bell } from "lucide-react";
 import { Overlay } from "../../overlay/OverLay";
-import CouponModal from "../coupon/CouponModal.jsx"
+import CouponModal from "../coupon/CouponModal.jsx";
+import NotificationModal from "../../notification/NotificationModal.jsx";
 
 //사이드바 컴포넌트 자체
 
@@ -15,7 +16,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: 3, title: "디자이너", path: "/designerpage" },
     { id: 4, title: "채팅" },
     { id: 5, title: "프로필", path: "/userprofile" },
-    { id: 6, title: "쿠폰함", modal: true},
+    { id: 6, title: "쿠폰함", modal: true },
     { id: 7, title: "좋아하는 디자이너" },
   ];
 
@@ -26,7 +27,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   return (
     <>
       <Overlay isOpen={isOpen} onClose={onClose} />
@@ -48,6 +49,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <button
             className="flex mt-auto p-1 rounded-lg hover:bg-gray-100 focus:outline-none ml-[300px]"
             aria-label="알림"
+            onClick={() => setIsNotificationOpen(true)} // 수정
           >
             <Bell className="w-8 h-8 text-gray-600" />
           </button>
@@ -61,27 +63,27 @@ const Sidebar = ({ isOpen, onClose }) => {
               <li key={item.id}>
                 {/* 라우트 기능 */}
                 {item.path ? (
-                    // 경로가 있으면 Link 사용
-                    <Link
-                        // item.path에 있는 곳으로 가라
-                        to={item.path}
-                        // onClick에 클릭핸들러 사용
-                        onClick={handleClick}
-                        className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
-                    >
-                      {item.title}
-                    </Link>
+                  // 경로가 있으면 Link 사용
+                  <Link
+                    // item.path에 있는 곳으로 가라
+                    to={item.path}
+                    // onClick에 클릭핸들러 사용
+                    onClick={handleClick}
+                    className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
+                  >
+                    {item.title}
+                  </Link>
                 ) : item.modal ? (
-                    // 모달 열기 버튼
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="block w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
-                    >
-                      {item.title}
-                    </button>
+                  // 모달 열기 버튼
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="block w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
+                  >
+                    {item.title}
+                  </button>
                 ) : (
-                    // 그냥 클릭만 되는 항목
-                    <span className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md">
+                  // 그냥 클릭만 되는 항목
+                  <span className="block px-4 py-2 text-gray-500 hover:bg-gray-100 text-md">
                     {item.title}
                   </span>
                 )}
@@ -102,6 +104,11 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* 쿠폰 모달 */}
       <CouponModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* 알림모달 */}
+      <NotificationModal
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+      />
     </>
   );
 };

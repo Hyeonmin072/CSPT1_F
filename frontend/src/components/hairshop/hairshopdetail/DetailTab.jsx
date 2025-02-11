@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import h1 from "../../../assets/hairshop/h1.jpg";
 import { useNavigate } from "react-router-dom";
 
+import HairReservationButton from "../../button/HairReservationButton.jsx"
+
 export default function DetailTab({ activeTab, handleShopDetailClick, handleReservationClick, handleReviewClick }){
     return (
         <div className="mb-4 flex flex-col gap-4">
@@ -34,12 +36,9 @@ export default function DetailTab({ activeTab, handleShopDetailClick, handleRese
                 </div>
 
                 {/* 예약하기 버튼 (오른쪽으로 이동) */}
-                <button
-                    className="bg-[#03DAC5] text-white px-4 py-2 rounded-lg ml-auto"
-                    onClick={handleReservationClick}
-                >
-                    예약하기
-                </button>
+                <div className="bg-[#03DAC5] text-white rounded-lg ml-auto">
+                    <HairReservationButton/>
+                </div>
             </div>
         </div>
     )

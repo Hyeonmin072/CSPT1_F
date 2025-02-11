@@ -1,6 +1,9 @@
 // components/profile/UserProfileEdit.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+//import ProfileBannerEdit from "../../components/profile/userprofile/ProfileBannerEdit";
+//import ProfileImageEdit from "../../components/profile/userprofile/ProfileImageEdit";
+
 import ProfileBannerEdit from "../../components/profile/userprofile/ProfileBannerEdit";
 import ProfileImageEdit from "../../components/profile/userprofile/ProfileImageEdit";
 import d1 from "../../assets/designer/d1.png";
@@ -26,6 +29,7 @@ const isPasswordValid = (requirements) => {
   return Object.values(requirements).every(Boolean);
 };
 
+//eslint-disable-next-line
 const PasswordRequirement = ({ met, text }) => (
   <div className="flex items-center gap-2">
     <div

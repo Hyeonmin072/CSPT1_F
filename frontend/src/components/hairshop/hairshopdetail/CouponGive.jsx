@@ -29,18 +29,6 @@ export default function GiveCoupon() {
         });
     };
 
-    // 모달이 열릴 때 body에 overflow-hidden 추가
-    useEffect(() => {
-        if (isModalOpen) {
-            document.body.style.overflow = "hidden"; // 스크롤 비활성화
-        } else {
-            document.body.style.overflow = "auto"; // 스크롤 활성화
-        }
-        return () => {
-            document.body.style.overflow = "auto"; // 컴포넌트가 언마운트 될 때 스크롤 복원
-        };
-    }, [isModalOpen]);
-
     return (
         <div className="mb-4 flex flex-col justify-center items-center w-full">
             <button

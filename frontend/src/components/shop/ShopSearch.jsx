@@ -1,7 +1,7 @@
 import { Search, LocateFixed, MapPin } from "lucide-react";
 export function ShopSearch() {
   return (
-    <div className="flex justify-center w-full mb-4">
+    <div className="flex justify-center w-full mb-4 mt-4">
       <div className="flex items-center bg-white rounded-lg shadow-sm py-2 px-4 w-[700px]">
         <div className="flex items-center">
           <MapPin className="w-5 h-5" />
