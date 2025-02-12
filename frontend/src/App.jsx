@@ -125,12 +125,23 @@ import "./App.css";
 import RightLoginForm from "./components/RightLoginForm/RightLoginForm.jsx";
 import LeftLoginForm from "./components/LeftLoginForm/LeftLoginForm.jsx";
 import SlidingImage from "./components/SlidingImage/SlidingImage.jsx";
+import GuestSignUpPage from "./components/GuestSignUpPage/GuestSignUpPage.jsx";
+import SignUpGuestButton from "./components/button/SignUpButton/SignUpGuestButton.jsx";
 
 function App() {
     const [isSignup, setIsSignup] = useState(false);
+    const [isGuestSelected, setIsGuestSelected] = useState(false);
 
     // const handleSignupClick = () => setIsSignup(true);
-    const handleBackClick = () => setIsSignup(false);
+    const handleBackClick = () => {
+        setIsSignup(false);
+        setIsGuestSelected(false);
+    }
+    const handleGuestClick = () => {
+        console.log("손님 버튼 클릭됨");
+        setIsGuestSelected(true);
+        setIsSignup(true);
+    }
 
     const handleSignupClick = () => {
         console.log("회원가입 클릭됨");  // 확인용 콘솔
@@ -148,11 +159,12 @@ function App() {
             {/* 오른쪽 회원가입 폼 */}
             <RightLoginForm
                 onBackClick={handleBackClick}
-                isVisible={isSignup}
+                isVisible={isSignup && !isGuestSelected}
             />
-
             {/* 우측 미용실 이미지 슬라이딩 */}
             <SlidingImage isSliding={isSignup} />
+
+
         </div>
     );
 }

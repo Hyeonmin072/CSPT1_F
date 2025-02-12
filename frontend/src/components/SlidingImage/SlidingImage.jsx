@@ -8,6 +8,7 @@
                     src={loginImage}
                     alt="Login"
                     className={`object-cover w-full h-full ${isSliding ? 'rounded-tr-xl rounded-br-xl' : 'rounded-bl-xl rounded-tl-xl'}`}
+                    style={{ objectFit: 'cover' }}
                 />
             </div>
         );
