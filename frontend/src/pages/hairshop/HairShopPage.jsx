@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import ShopPage from "../../components/hairshop/HairShop.jsx";
 
 export default function HairShopPage () {
@@ -33,7 +33,7 @@ export default function HairShopPage () {
     }, []);
 
     return (
-        <div className="p-4" >
+        <div className="p-4">
             <ShopPage containerRef={containerRef}/>
         </div>
     );
