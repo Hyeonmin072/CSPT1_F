@@ -6,7 +6,7 @@
                 className={`absolute right-0 top-0 h-full w-1/2 transition-transform duration-500 ${isSliding ? '-translate-x-full' : ''} z-20`}>
                 <img
                     src={loginImage}
-                    alt="Login"
+                    alt="Login슬라이드이미지"
                     className={`object-cover w-full h-full ${isSliding ? 'rounded-tr-xl rounded-br-xl' : 'rounded-bl-xl rounded-tl-xl'}`}
                 />
             </div>

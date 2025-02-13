@@ -1,9 +1,9 @@
-import UserTypeSelectionButtons from "../button/LoginButton/UserTypeSelectionButtons.jsx";
-import Logo from "../Logo/Logo.jsx";
-import LoginButton from "../button/LoginButton/LoginButton.jsx"
-import SocialLoginButton from "../button/LoginButton/SocialLoginButton.jsx";
+import UserTypeSelectionButtons from "../../../components/button/LoginPageButton/UserTypeSelectionButtons.jsx";
+import Logo from "../../../components/Logo/Logo.jsx";
+import LoginButton from "../../../components/button/LoginPageButton/LoginButton.jsx"
+import SocialLoginButton from "../../../components/button/LoginPageButton/SocialLoginButton.jsx";
 import {LuLockKeyhole, LuUser} from "react-icons/lu";
-import SignUpButton from "../button/LoginButton/SignUpButton.jsx";
+import SignUpButton from "../../../components/button/LoginPageButton/SignUpButton.jsx";
 
 export default function LeftLoginForm ({ onSignupClick, isHidden }) {
     return (

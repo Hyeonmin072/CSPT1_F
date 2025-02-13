@@ -1,7 +1,7 @@
 import { useState } from "react"
-import Logo from "../Logo/Logo.jsx";
-import SignUpRoleSelectionButton from "../button/SignUpButton/SignUpRoleSelectionButton.jsx";
-import BackButton from "../button/SignUpButton/BackButton.jsx"
+import Logo from "../../../components/Logo/Logo.jsx";
+import SignUpRoleSelectionButton from "../../../components/button/SignUpButton/SignUpRoleSelectionButton.jsx";
+import BackButton from "../../../components/button/SignUpButton/BackButton.jsx"
 import GuestSignUpPage from "../GuestSignUpPage/GuestSignUpPage.jsx";
 
 export default function RightLoginForm({ isVisible ,onBackClick, onGuestClick, onBossClick, onDesignerClick }) {

@@ -7,6 +7,7 @@ import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
+import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
             <Route path="/designerselect" element={<DesignerSelectPage />} />
             <Route path="/designerpage" element={<DesignerPage />} />
             <Route path="/userprofile" element={<UserProfile />} />
+            <Route path="/loginandregister" element={<LoginAndRegisterPage />} />
+
             {/* 추가 라우트는 여기에 설정 */}
           </Routes>
         </main>

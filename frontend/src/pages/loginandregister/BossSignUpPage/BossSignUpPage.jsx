@@ -1,7 +1,7 @@
-import Logo from "../Logo/Logo.jsx"
-import InputGroup from "../Input/InputGroup.jsx";
-import BackButton from "../button/SignUpButton/BackButton.jsx";
-import NextButton from "../button/SignUpButton/NextButton.jsx";
+import Logo from "../../../components/Logo/Logo.jsx"
+import InputGroup from "../../../components/Input/InputGroup.jsx";
+import BackButton from "../../../components/button/SignUpButton/BackButton.jsx";
+import NextButton from "../../../components/button/SignUpButton/NextButton.jsx";
 
 export default function BossSignUpPage({ onBackClick }) {
     return (
