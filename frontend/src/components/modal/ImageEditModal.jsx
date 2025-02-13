@@ -1,3 +1,4 @@
+import React from "react";
 //eslint-disable-next-line
 const ImageEditModal = ({ isOpen, onClose, onUpload, imageType }) => {
   // eslint-disable-next-line

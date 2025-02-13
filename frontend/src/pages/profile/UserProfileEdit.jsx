@@ -140,7 +140,7 @@ const UserProfileEdit = () => {
   };
 
   const handleCancel = () => {
-    navigate("/userprofile");
+    navigate("/userprofileedit");
   };
 
   return (

@@ -8,6 +8,7 @@ import UserProfile from "./pages/profile/UserProfile";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
 import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
+import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
 
 function App() {
   return (
@@ -19,15 +20,21 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/hairshop" element={<HairShopPage />} />
-            <Route path="/userprofile" element={<UserProfile />} />
-            <Route path="/designerpage" element={<DesignerPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
+            <Route path="/designerpage" element={<DesignerPage />} />
+            <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/userprofileedit" element={<UserProfileEdit />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
             <Route path="/designerpage" element={<DesignerPage />} />
             <Route path="/userprofile" element={<UserProfile />} />
-            <Route path="/loginandregister" element={<LoginAndRegisterPage />} />
-
+            <Route
+              path="/loginandregister"
+              element={<LoginAndRegisterPage />}
+            />
+            <Route
+              path="/subscriptdesigner"
+              element={<SubscriptDesignerPage />}
+            />
             {/* 추가 라우트는 여기에 설정 */}
           </Routes>
         </main>
