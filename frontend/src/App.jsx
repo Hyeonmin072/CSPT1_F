@@ -6,8 +6,8 @@ import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
-import UserProfileEdit from "./pages/profile/UserProfileEdit";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
+import UserProfileEdit from "./pages/profile/UserProfileEdit.jsx";
 
 function App() {
   return (
@@ -19,13 +19,11 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/hairshop" element={<HairShopPage />} />
-            <Route path="/userprofile" element={<UserProfile />} />
-            <Route path="/designerpage" element={<DesignerPage />} />
             <Route path="/detail" element={<HairShopDetailPage />} />
+            <Route path="/designerpage" element={<DesignerPage />} />
+            <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/userprofileedit" element={<UserProfileEdit />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
-            <Route path="/designerpage" element={<DesignerPage />} />
-            <Route path="/userprofile" element={<UserProfile />} />
             <Route
               path="/subscriptdesigner"
               element={<SubscriptDesignerPage />}

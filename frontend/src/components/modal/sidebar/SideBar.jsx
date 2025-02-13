@@ -18,6 +18,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: 5, title: "프로필", path: "/userprofile" },
     { id: 6, title: "쿠폰함", modal: true },
     { id: 7, title: "좋아하는 디자이너", path: "subscriptdesigner" },
+    { id: 8, title: "나만의 디자이너 찾기" },
   ];
 
   //클릭 핸들러

@@ -8,7 +8,7 @@ const ProfileImage = ({ profileImage }) => {
           alt="Profile"
           className="w-full h-full object-cover"
         />
-      </div>
+      </div>    
     </div>
   );
 };
