@@ -45,7 +45,7 @@ export default function DesignerSelect({handleDesignerSelect}) {
             <div className="lg:flex-row mx-10 lg:mx-20 my-10 lg:my-0 gap-6">
                 <div className="flex flex-col items-center p-8 w-full">
                     <h1 className="font-semibold text-xl mb-6 w-full text-left text-gray-400">디자이너 선택</h1>
-                    <div className="w-full border-t border-gray-300 mb-4"></div>
+                    <div className="w-full border-t border-gray-300 mb-6"></div>
 
                     {designers.map((designer) => (
                         <div key={designer.id} className="flex p-6 mb-6 w-full border-b border-gray-300">
@@ -74,11 +74,12 @@ export default function DesignerSelect({handleDesignerSelect}) {
                                     </div>
                                 </div>
                             </div>
-                            <SelectButton onClick={handleCalendarClick}/>
+                            <div onClick={handleCalendarClick}>
+                                <SelectButton />
+                            </div>
                         </div>
                     ))}
 
-                    <div className="w-full mt-4"></div>
                 </div>
             </div>
         </>
