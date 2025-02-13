@@ -74,7 +74,7 @@ export default function ShopDetail() {
             </div>
 
             {/* 오른쪽: 디자이너 정보 */}
-            <div className="w-full md:w-2/6 h-auto sticky md:top-4">
+            <div className="w-full w-2/6 min-h-screen sticky top-4">
                 <DesignerInfo/>
             </div>
         </div>
