@@ -143,6 +143,12 @@ function App() {
         setIsDesignerSelected(false);
         setIsBossSelected(false);
     }
+    const handleSignupBackClick = () => {
+        console.log("Back 버튼 클릭됨")
+        setIsGuestSelected(false);
+        setIsDesignerSelected(false);
+        setIsBossSelected(false);
+    };
     const handleGuestClick = () => {
         console.log("손님 버튼 클릭됨");
         setIsGuestSelected(true);
@@ -187,17 +193,17 @@ function App() {
              {/*손님 회원가입 폼 (손님 버튼 클릭 시 표시)*/}
             {isGuestSelected && (
                 <div className={"absolute w-1/2 right-0 top-[70px] flex items-center justify-center z-20"}>
-                    <GuestSignUpPage />
+                    <GuestSignUpPage onBackClick={handleSignupBackClick} />
                 </div>
                 )}
             {isDesignerSelected && (
                 <div className={"absolute w-1/2 right-0 top-[70px] flex items-center justify-center z-20"}>
-                    <DesignerSignUpPage />
+                    <DesignerSignUpPage onBackClick={handleSignupBackClick} />
                 </div>
             )}
             {isBossSelected && (
                 <div className={"absolute w-1/2 right-0 top-[70px] flex items-center justify-center z-20"}>
-                    <BossSignUpPage />
+                    <BossSignUpPage onBackClick={handleSignupBackClick} />
                 </div>
             )}
 
