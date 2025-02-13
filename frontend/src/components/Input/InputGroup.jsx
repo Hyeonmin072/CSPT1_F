@@ -7,7 +7,7 @@ import Birth from "./Birth.jsx"
 
 export default function InputGroup() {
     return (
-        <div>
+        <div className={"w-full h-auto mt-3 space-y-4"}>
             <UserName/>
             <PassWord/>
             <PassWordCheck/>

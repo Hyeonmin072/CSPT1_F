@@ -127,20 +127,39 @@ import LeftLoginForm from "./components/LeftLoginForm/LeftLoginForm.jsx";
 import SlidingImage from "./components/SlidingImage/SlidingImage.jsx";
 import GuestSignUpPage from "./components/GuestSignUpPage/GuestSignUpPage.jsx";
 import SignUpGuestButton from "./components/button/SignUpButton/SignUpGuestButton.jsx";
+import DesignerSignUpPage from "./components/DesignerSignUpPage/DesignerSignUpPage.jsx";
+import BossSignUpPage from "./components/BossSignUpPage/BossSignUpPage.jsx";
 
 function App() {
     const [isSignup, setIsSignup] = useState(false);
-    const [isGuestSelected, setIsGuestSelected] = useState(false);
+    const [isGuestSelected, setIsGuestSelected ,] = useState(false);
+    const [isDesignerSelected, setIsDesignerSelected] = useState(false);
+    const [isBossSelected, setIsBossSelected] = useState(false);
 
     // const handleSignupClick = () => setIsSignup(true);
     const handleBackClick = () => {
         setIsSignup(false);
         setIsGuestSelected(false);
+        setIsDesignerSelected(false);
+        setIsBossSelected(false);
     }
     const handleGuestClick = () => {
         console.log("손님 버튼 클릭됨");
         setIsGuestSelected(true);
-        setIsSignup(true);
+        setIsDesignerSelected(false);
+        setIsBossSelected(false);
+    }
+    const handleDesignerClick = () => {
+        console.log("디자이너 버튼 클릭됨");
+        setIsGuestSelected(false);
+        setIsDesignerSelected(true);
+        setIsBossSelected(false);
+    }
+    const handleBossClick  = () => {
+        console.log("사장 버튼 클릭됨");
+        setIsGuestSelected(false);
+        setIsDesignerSelected(false);
+        setIsBossSelected(true);
     }
 
     const handleSignupClick = () => {
@@ -159,8 +178,29 @@ function App() {
             {/* 오른쪽 회원가입 폼 */}
             <RightLoginForm
                 onBackClick={handleBackClick}
-                isVisible={isSignup && !isGuestSelected}
+                onGuestClick={handleGuestClick}
+                onBossClick={handleBossClick}
+                onDesignerClick={handleDesignerClick}
+                isVisible={isSignup && !isGuestSelected  && !isDesignerSelected && !isBossSelected}
             />
+
+             {/*손님 회원가입 폼 (손님 버튼 클릭 시 표시)*/}
+            {isGuestSelected && (
+                <div className={"absolute w-1/2 right-0 top-[70px] flex items-center justify-center z-20"}>
+                    <GuestSignUpPage />
+                </div>
+                )}
+            {isDesignerSelected && (
+                <div className={"absolute w-1/2 right-0 top-[70px] flex items-center justify-center z-20"}>
+                    <DesignerSignUpPage />
+                </div>
+            )}
+            {isBossSelected && (
+                <div className={"absolute w-1/2 right-0 top-[70px] flex items-center justify-center z-20"}>
+                    <BossSignUpPage />
+                </div>
+            )}
+
             {/* 우측 미용실 이미지 슬라이딩 */}
             <SlidingImage isSliding={isSignup} />
 

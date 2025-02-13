@@ -4,20 +4,23 @@ import SignUpRoleSelectionButton from "../button/SignUpButton/SignUpRoleSelectio
 import BackButton from "../button/SignUpButton/BackButton.jsx"
 import GuestSignUpPage from "../GuestSignUpPage/GuestSignUpPage.jsx";
 
-export default function RightLoginForm({ isVisible ,onBackClick }) {
+export default function RightLoginForm({ isVisible ,onBackClick, onGuestClick, onBossClick, onDesignerClick }) {
     const [ selectedRole, setSelectedRole ] = useState(null);
 
     const handleGuestClick = () => {
         setSelectedRole("guest");
+        onGuestClick();
     };
 
-    // const handleBossClick = () => {
-    //     setSelectedRole("boss");
-    // };
-    //
-    // const handleDesignerClick = () => {
-    //     setSelectedRole("designer");
-    // };
+    const handleBossClick = () => {
+        setSelectedRole("boss");
+        onBossClick();
+    };
+
+    const handleDesignerClick = () => {
+        setSelectedRole("designer");
+        onDesignerClick();
+    };
 
 
 
@@ -33,23 +36,9 @@ export default function RightLoginForm({ isVisible ,onBackClick }) {
 
                 <SignUpRoleSelectionButton
                     onGuestClick={handleGuestClick}
-                    // onBossClick={handleBossClick()}
-                    // onDesignerClick={handleDesignerClick()}
+                    onBossClick={handleBossClick}
+                    onDesignerClick={handleDesignerClick}
                 />
-            {/* 로그인 폼을 selectedRole이 null일 때만 표시 */}
-            {selectedRole === null && (
-                <div className="w-full h-full relative">
-                    {/* 로그인 폼 내용 여기에 추가 */}
-                </div>
-            )}
-
-            {/* selectedRole이 "guest"일 때 회원가입 창을 우측에 덮어씌우도록 */}
-            {selectedRole === "guest" && (
-                <div className="absolute top-0 left-0 w-full">
-                    <GuestSignUpPage />
-                </div>
-            )}
-
                 <BackButton onBackClick={onBackClick}/>
 
         </div>
