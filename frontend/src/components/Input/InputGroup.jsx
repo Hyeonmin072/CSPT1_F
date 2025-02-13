@@ -8,7 +8,7 @@ import BusinessNumber from "./BusinessNumber.jsx";
 
 export default function InputGroup({ role }) {
     return (
-        <div className={"w-full h-auto mt-3 space-y-4"}>
+        <div className={"w-full h-auto mt-9 space-y-4"}>
             <UserName/>
             <PassWord/>
             <PassWordCheck/>
