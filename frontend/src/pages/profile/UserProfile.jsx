@@ -6,6 +6,7 @@ import ProfileImageEdit from "../../components/profile/userprofile/ProfileImageE
 import ProfileInfo from "../../components/profile/userprofile/ProfileInfo";
 import MyCouponButton from "../../components/button/MyCouponButton";
 import ProfileEditButton from "../../components/button/ProfileEditButton";
+import Header from "../../components/common/Header";
 
 //유저의 임시데이터
 const UserProfile = () => {
@@ -17,17 +18,22 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full mt-12">
-      <div className="relative mb-16 w-[1200px]">
-        <ProfileBanner bannerImage={d1} />
-        <ProfileImage profileImage={d1} />
+    <div>
+      <div>
+        <Header />
       </div>
+      <div className="flex flex-col items-center w-full mt-12">
+        <div className="relative mb-16 w-[1200px]">
+          <ProfileBanner bannerImage={d1} />
+          <ProfileImage profileImage={d1} />
+        </div>
 
-      <div className="max-w-4xl mx-auto px-4">
-        <ProfileInfo {...userData} />
-        <div className="flex justify-center gap-4">
-          <MyCouponButton />
-          <ProfileEditButton />
+        <div className="max-w-4xl mx-auto px-4">
+          <ProfileInfo {...userData} />
+          <div className="flex justify-center gap-4">
+            <MyCouponButton />
+            <ProfileEditButton />
+          </div>
         </div>
       </div>
     </div>

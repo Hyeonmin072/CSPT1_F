@@ -1,8 +1,11 @@
 import MainBottomAd from "../../components/layout/MainBottomAd";
 import ShopData from "../../components/common/ShopData";
+import Header from "../../components/common/Header";
 export default function MainPage() {
   return (
     <div>
+      <Header />
+
       {/* 메인 컨텐츠 */}
       <ShopData />
       <div className="flex justify-center -mt-1">

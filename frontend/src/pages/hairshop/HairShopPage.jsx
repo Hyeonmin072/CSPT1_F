@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ShopPage from "../../components/hairshop/HairShop.jsx";
-
+import Header from "../../components/common/Header.jsx";
 export default function HairShopPage() {
   //eslint-disable-next-line
   const [isVisible, setIsVisible] = useState(false);
@@ -35,8 +35,13 @@ export default function HairShopPage() {
   }, []);
 
   return (
-    <div className="p-4">
-      <ShopPage containerRef={containerRef} />
+    <div>
+      <div>
+        <Header />
+      </div>
+      <div className="p-4">
+        <ShopPage containerRef={containerRef} />
+      </div>
     </div>
   );
 }

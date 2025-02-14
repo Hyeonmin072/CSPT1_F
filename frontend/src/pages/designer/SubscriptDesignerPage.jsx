@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import d1 from "../../assets/designer/d1.png";
+import Header from "../../components/common/Header";
 
 const DesignerCard = ({ designer }) => {
   const [liked, setLiked] = useState(designer.isLiked || false);
@@ -80,31 +81,38 @@ const SubscriptDesignerPage = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto my-8 mt-[100px]">
-      <h2 className="text-2xl font-bold text-center mb-8">좋아하는 디자이너</h2>
-      <div className="relative">
-        <button
-          onClick={() => scrollContainer("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
+    <div>
+      <div>
+        <Header />
+      </div>
+      <div className="w-full max-w-6xl mx-auto my-8 mt-[100px]">
+        <h2 className="text-2xl font-bold text-center mb-8">
+          좋아하는 디자이너
+        </h2>
+        <div className="relative">
+          <button
+            onClick={() => scrollContainer("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
 
-        <div
-          id="designer-container"
-          className="flex overflow-x-auto scroll-smooth hide-scrollbar gap-4 px-12"
-        >
-          {designers.map((designer) => (
-            <DesignerCard key={designer.id} designer={designer} />
-          ))}
+          <div
+            id="designer-container"
+            className="flex overflow-x-auto scroll-smooth hide-scrollbar gap-4 px-12"
+          >
+            {designers.map((designer) => (
+              <DesignerCard key={designer.id} designer={designer} />
+            ))}
+          </div>
+
+          <button
+            onClick={() => scrollContainer("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
         </div>
-
-        <button
-          onClick={() => scrollContainer("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
       </div>
     </div>
   );

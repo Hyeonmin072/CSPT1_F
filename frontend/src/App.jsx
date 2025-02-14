@@ -14,8 +14,6 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        {/* 헤더 */}
-        <Header />
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -25,8 +23,6 @@ function App() {
             <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/userprofileedit" element={<UserProfileEdit />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
-            <Route path="/designerpage" element={<DesignerPage />} />
-            <Route path="/userprofile" element={<UserProfile />} />
             <Route
               path="/loginandregister"
               element={<LoginAndRegisterPage />}

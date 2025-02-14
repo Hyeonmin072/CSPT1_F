@@ -1,5 +1,6 @@
 import { DesignerCard } from "../../components/designer/DesignerCard.jsx";
 import { RecommendationBox } from "../../components/designer/RecommendationBox.jsx";
+import Header from "../../components/common/Header.jsx";
 
 export default function DesignerPage() {
   //이 부분은 나중에 바인딩 시 무한 스크롤로 대체
@@ -14,13 +15,18 @@ export default function DesignerPage() {
   ];
 
   return (
-    <div className="min-h-screen custom-scrollbar-hide">
-      <div className="max-w-[900px] mx-auto mt-10">
-        {designers.map((designer, index) => (
-          <DesignerCard key={index} designer={designer} />
-        ))}
+    <div>
+      <div>
+        <Header />
       </div>
-      <RecommendationBox />
+      <div className="min-h-screen custom-scrollbar-hide">
+        <div className="max-w-[900px] mx-auto mt-10">
+          {designers.map((designer, index) => (
+            <DesignerCard key={index} designer={designer} />
+          ))}
+        </div>
+        <RecommendationBox />
+      </div>
     </div>
   );
 }

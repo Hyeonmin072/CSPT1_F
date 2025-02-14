@@ -3,7 +3,6 @@ import Logo from "../../../components/loginandregisterlogo/Logo.jsx";
 
 import SignUpRoleSelectionButton from "../../../components/button/SignUpPageButton/SignUpRoleSelectionButton.jsx";
 import BackButton from "../../../components/button/SignUpPageButton/BackButton.jsx";
-import GuestSignUpPage from "../GuestSignUpPage/GuestSignUpPage.jsx";
 
 export default function RightLoginForm({
   isVisible,
