@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/common/Header";
 import MainPage from "./pages/main/MainPage";
 import HairShopPage from "./pages/hairshop/HairShopPage";
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";

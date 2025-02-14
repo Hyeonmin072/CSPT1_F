@@ -4,6 +4,7 @@ import { Zap, LogOut, Bell } from "lucide-react";
 import { Overlay } from "../../overlay/OverLay";
 import CouponModal from "../coupon/CouponModal.jsx";
 import NotificationModal from "../../notification/NotificationModal.jsx";
+import ForMeStart from "../designerforme/ForMeStart.jsx";
 
 //사이드바 컴포넌트 자체
 
@@ -16,9 +17,9 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: 3, title: "디자이너", path: "/designerpage" },
     { id: 4, title: "채팅" },
     { id: 5, title: "프로필", path: "/userprofile" },
-    { id: 6, title: "쿠폰함", modal: true },
+    { id: 6, title: "쿠폰함", modal: "coupon" },
     { id: 7, title: "좋아하는 디자이너", path: "subscriptdesigner" },
-    { id: 8, title: "나만의 디자이너 찾기" },
+    { id: 8, title: "나만의 디자이너 찾기", modal: "forme" },
   ];
 
   //클릭 핸들러
@@ -29,6 +30,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isForMeModalOpen, setIsForMeModalOpen] = useState(false);
   return (
     <>
       <Overlay isOpen={isOpen} onClose={onClose} />
@@ -75,9 +77,19 @@ const Sidebar = ({ isOpen, onClose }) => {
                     {item.title}
                   </Link>
                 ) : item.modal ? (
-                  // 모달 열기 버튼
                   <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                      console.log("상태값들:", {
+                        isModalOpen,
+                        isNotificationOpen,
+                        isForMeModalOpen,
+                      });
+                      if (item.modal === "coupon") {
+                        setIsModalOpen(true);
+                      } else if (item.modal === "forme") {
+                        setIsForMeModalOpen(true);
+                      }
+                    }}
                     className="block w-full text-left px-4 py-2 text-gray-500 hover:bg-gray-100 text-md"
                   >
                     {item.title}
@@ -102,14 +114,28 @@ const Sidebar = ({ isOpen, onClose }) => {
           </button>
         </div>
       </div>
-
-      {/* 쿠폰 모달 */}
-      <CouponModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      {/* 알림모달 */}
-      <NotificationModal
-        isOpen={isNotificationOpen}
-        onClose={() => setIsNotificationOpen(false)}
-      />
+      {(isModalOpen || isNotificationOpen || isForMeModalOpen) && ( // isForMeModalOpen도 조건에 추가
+        <div className="fixed inset-0 z-50 pointer-events-none">
+          {/* 쿠폰 모달 */}
+          <CouponModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            className="pointer-events-auto"
+          />
+          {/* 알림모달 */}
+          <NotificationModal
+            isOpen={isNotificationOpen}
+            onClose={() => setIsNotificationOpen(false)}
+            className="pointer-events-auto"
+          />
+          {/* ForMeStart 모달 */}
+          <ForMeStart
+            isOpen={isForMeModalOpen} // 이 값이 true로 변경되는지 확인
+            onClose={() => setIsForMeModalOpen(false)}
+            className="pointer-events-auto"
+          />
+        </div>
+      )}
     </>
   );
 };
