@@ -1,20 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, X } from "lucide-react";
-
-
 import DesignerInfo from "../../layout/DesignerInfo.jsx";
 import DetailHeader from "./DetailHeader.jsx";
-
-import ScrollHeader from "./ScrollHeader.jsx"
-import ScrollDetail from "./ScrollDetail.jsx"
-
+import ScrollDetail from "./ScrollDetail.jsx";
 import reviewEX from "../../../assets/hairshop/reviewEX.jpg";
 import h1 from "../../../assets/hairshop/h1.jpg";
 
 export default function ShopDetail() {
     const navigate = useNavigate();
 
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const handleScroll = () => {
+        setScrollPosition(window.scrollY * -1); // 음수 값으로 변환
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY); // 스크롤에 따라 위치 업데이트
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    const handleWheel = (event) => {
+        setScrollPosition((prev) => Math.min(Math.max(prev - event.deltaY, -800), 0)); // 스크롤 한계 설정
+    };
 
     const [selectedCoupons, setSelectedCoupons] = useState([]);
     const [coupons] = useState([
@@ -24,12 +38,8 @@ export default function ShopDetail() {
     ]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const handleModalOpen = () => {
-        setIsModalOpen(true);
-    };
-    const handleModalClose = () => {
-        setIsModalOpen(false);
-    };
+    const handleModalOpen = () => setIsModalOpen(true);
+    const handleModalClose = () => setIsModalOpen(false);
 
     const handleCouponSelect = (coupon) => {
         setSelectedCoupons((prevCoupons) => {
@@ -38,39 +48,28 @@ export default function ShopDetail() {
     };
 
     useEffect(() => {
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden"; // 모달 열 때 스크롤 방지
         return () => {
             document.body.style.overflow = "auto";
         };
     }, []);
 
     return (
-        <div className="flex flex-col md:flex-row px-20 gap-6">
+        <div className="flex flex-col md:flex-row px-20 gap-6" onWheel={handleWheel}>
             {/* 왼쪽: 가게 상세 정보 */}
             <div className="flex flex-col px-10 w-3/4 mb-0 z-40">
-                <DetailHeader/>
-
-                {/* 이미지 */}
-                <div className="relative z-40"> {/* position: relative 추가 */}
+                <DetailHeader />
+                <div className="relative z-40">
                     <img
                         src={h1}
                         alt="샵 사진"
                         className="w-[890px] h-[370px] rounded-lg"
                     />
-
-
-                    <div className="relative w-full ">
-                        {/* 상세 내용, 리뷰, 예약하기 포함 */}
-                        <ScrollHeader />
-
-                        {/* 상세 내용 세부사항 */}
-                        <ScrollDetail/>
+                    <div className="relative w-full">
+                        <ScrollDetail scrollPosition={scrollPosition} />
                     </div>
-
                 </div>
 
-
-                {/* 모달창 오픈 */}
                 {isModalOpen && (
                     <div className="flex z-50 fixed top-0 left-0 right-0 bottom-0 bg-opacity-50 bg-gray-700 items-center justify-center">
                         <div className="bg-white p-10 rounded-lg text-center relative w-[600px] h-[600px] z-60">
@@ -80,9 +79,7 @@ export default function ShopDetail() {
                             >
                                 <X />
                             </button>
-
                             <h2 className="text-2xl font-bold pb-4">쿠폰 한 번에 보기</h2>
-
                             <div className="flex-col mt-4 p-5 flex justify-center items-center mx-auto">
                                 {coupons.map((coupon) => (
                                     <div
@@ -98,17 +95,12 @@ export default function ShopDetail() {
                         </div>
                     </div>
                 )}
-
-
             </div>
 
             {/* 오른쪽: 디자이너 정보 */}
             <div className="flex flex-col w-2/5 min-h-screen top-4">
-                <DesignerInfo/>
+                <DesignerInfo />
             </div>
-
-
-
         </div>
     );
 }

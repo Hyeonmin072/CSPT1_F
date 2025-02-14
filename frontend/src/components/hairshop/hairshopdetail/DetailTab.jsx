@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import h1 from "../../../assets/hairshop/h1.jpg";
 import { useNavigate } from "react-router-dom";
 

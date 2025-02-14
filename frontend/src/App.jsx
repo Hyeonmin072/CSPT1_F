@@ -7,6 +7,7 @@ import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx"
 import CalendarSelectPage from "./pages/reservation/CalendarSelectPage.jsx"
+import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/detail" element={<HairShopDetailPage />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
             <Route path="/calendarselect" element={<CalendarSelectPage />} />
+            <Route path="/menuselect" element={<MenuSelectPage />} />
             {/* 추가 라우트는 여기에 설정 */}
           </Routes>
         </main>

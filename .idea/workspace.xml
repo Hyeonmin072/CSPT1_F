@@ -5,20 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/menu/FinalMenuModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/menu/MenuSelectModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuHeader.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuItems.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuSelect.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuTabs.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/MenuSelectPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/button/HairReservationButton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/button/HairReservationButton.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/HairSearch.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/HairSearch.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/HairShop.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/HairShop.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/CouponGive.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/coupon/AllCouponGive.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/coupon/AllCouponGive.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/reservation/DesignerSelect.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/reservation/designerselect/DesignerSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/reservation/designerselect/DesignerSelect.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/reservation/DesignerSelectPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/DesignerSelectPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollHeader.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +27,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaScript File" />
         <option value="JSX File" />
       </list>
     </option>
@@ -123,7 +123,9 @@
       <workItem from="1738820678561" duration="832000" />
       <workItem from="1738821537421" duration="8325000" />
       <workItem from="1739250062508" duration="16245000" />
-      <workItem from="1739333887413" duration="10421000" />
+      <workItem from="1739333887413" duration="12243000" />
+      <workItem from="1739419904363" duration="17984000" />
+      <workItem from="1739505766800" duration="10712000" />
     </task>
     <servers />
   </component>
