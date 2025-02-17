@@ -57,16 +57,16 @@ export default function ShopDetail() {
     return (
         <div className="flex flex-col md:flex-row px-20 gap-6" onWheel={handleWheel}>
             {/* 왼쪽: 가게 상세 정보 */}
-            <div className="flex flex-col px-10 w-3/4 mb-0 z-40">
+            <div className="flex flex-col px-10 w-3/4 mb-0 bg-white">
                 <DetailHeader />
-                <div className="relative z-40">
+                <div className="relative">
                     <img
                         src={h1}
                         alt="샵 사진"
                         className="w-[890px] h-[370px] rounded-lg"
                     />
                     <div className="relative w-full">
-                        <ScrollDetail scrollPosition={scrollPosition} />
+                        <ScrollDetail scrollPosition={scrollPosition} handleModalOpen={handleModalOpen} />
                     </div>
                 </div>
 
@@ -83,8 +83,10 @@ export default function ShopDetail() {
                             <div className="flex-col mt-4 p-5 flex justify-center items-center mx-auto">
                                 {coupons.map((coupon) => (
                                     <div
-                                        className="border p-10 mb-4"
                                         key={coupon.id}
+                                        className={`border p-10 mb-4 cursor-pointer ${
+                                            selectedCoupons.some((c) => c.id === coupon.id) ? "bg-[#70EFDE]" : "bg-white"
+                                        }`}
                                         onClick={() => handleCouponSelect(coupon)}
                                     >
                                         <h3 className="font-bold">{coupon.name}</h3>
