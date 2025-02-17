@@ -5,13 +5,13 @@ import HairShopPage from "./pages/hairshop/HairShopPage";
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
-import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
 import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx"
 import CalendarSelectPage from "./pages/reservation/CalendarSelectPage.jsx"
 import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx"
+import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
             <Route path="/designerselect" element={<DesignerSelectPage />} />
             <Route path="/calendarselect" element={<CalendarSelectPage />} />
             <Route path="/menuselect" element={<MenuSelectPage />} />
+            <Route path="/reviews" element={<ReviewsPage />} />
             <Route
               path="/loginandregister"
               element={<LoginAndRegisterPage />}

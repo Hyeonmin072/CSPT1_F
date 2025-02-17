@@ -20,10 +20,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
     // 탭 클릭 핸들러
     const handleShopDetailClick = () => setActiveTab("ShopDetail");
     const handleReservationClick = () => navigate("/designerselect");
-    const handleReviewClick = () => {
-        setActiveTab("Review");
-        navigate("/reviews");
-    };
+    const handleReviewClick = () => navigate("/reviews");
 
     // 스크롤 전: scrollPosition > -370
     if (scrollPosition > headerFixedThreshold) {
