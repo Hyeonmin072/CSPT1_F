@@ -78,27 +78,21 @@ const ForMeTest = ({ isOpen, onClose }) => {
                 const diff = swiper.touches.diff;
                 if (diff < -50) {
                   showFeedbackMessage("싫어요");
-                  swiper.slideTo(1, 300);
+                  // 왼쪽으로 사라지는 애니메이션
+                  swiper.el.style.transform = "translateX(-120%) rotate(-5deg)";
+                  swiper.el.style.opacity = "0";
+                  swiper.el.style.transition = "all 0.3s ease";
                 } else if (diff > 50) {
                   showFeedbackMessage("좋아요");
-                  swiper.slideTo(1, 300);
+                  // 오른쪽으로 사라지는 애니메이션
+                  swiper.el.style.transform = "translateX(120%) rotate(5deg)";
+                  swiper.el.style.opacity = "0";
+                  swiper.el.style.transition = "all 0.3s ease";
                 }
-                setTimeout(() => {
-                  swiper.slideTo(0);
-                }, 500);
               }}
             >
               <SwiperSlide>
                 <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
-                  <img
-                    src={d1}
-                    alt="헤어스타일"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden opacity-0">
                   <img
                     src={d1}
                     alt="헤어스타일"
