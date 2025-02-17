@@ -5,7 +5,6 @@ import HairShopPage from "./pages/hairshop/HairShopPage";
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
-import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
 import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
