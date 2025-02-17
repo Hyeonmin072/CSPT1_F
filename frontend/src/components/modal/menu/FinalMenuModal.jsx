@@ -8,11 +8,11 @@ export default function FinalMenuModal({ reservation, onClose }){
                 <button onClick={onClose} className="absolute top-2 right-2">
                     <X className="w-6 h-6 text-gray-600"/>
                 </button>
-                <h2 className="flex justify-center items-center text-2xl font-bold mb-4">최종 예약 확인</h2>
+                <h2 className="flex justify-center items-center text-2xl font-bold">최종 예약 확인</h2>
 
-                <div className="p-10 justify-center items-center font-bold ">
-                    <div className="flex flex-col font-bold">
-                        <p className="text-gray-500 font-semibold text-xl">예약 정보</p>
+                <div className="m-5 justify-center items-center font-bold ">
+                    <p className="text-gray-500 font-semibold text-xl">예약 정보</p>
+                    <div className="flex flex-col font-bold p-5">
                         <div className="flex w-full mt-2">
                             <div className="w-1/3 text-left">헤어샵:</div>
                             <div className="w-2/3 text-right">{reservation.salonName}</div>
@@ -25,10 +25,15 @@ export default function FinalMenuModal({ reservation, onClose }){
                             <div className="w-1/3 text-left">날짜:</div>
                             <div className="w-2/3 text-right">{reservation.date}</div>
                         </div>
-                        <div className="flex w-full mt-2">
-                            <div className="w-1/3 text-left">메뉴:</div>
-                            <div className="w-2/3 text-right">{reservation.title}</div>
+                        <div className="flex flex-col w-full mt-2">
+                            <div className="text-left font-semibold">메뉴</div>
+                            <div className="flex items-center gap-6 m-5">
+                                <img src={reservation.imageUrl} alt="메뉴 이미지"
+                                     className="h-[100px] w-[100px]"/>
+                                <p className="w-4/5 text-right">{reservation.title}</p>
+                            </div>
                         </div>
+
                         <div className="flex w-full mt-2">
                             <div className="w-1/3 text-left">총 합 가격:</div>
                             <div className="w-2/3 text-right">{reservation.price}원</div>
@@ -80,10 +85,10 @@ export default function FinalMenuModal({ reservation, onClose }){
                             </div>
                         </div>
                     </div>
-                    <hr className=" w-full border-t border-gray-300 mb-6 mt-6"/>
+                    <hr className=" w-full border-t border-gray-300 m-3"/>
                     <p className="text-lg font-bold mt-2 px-5">최종 결제 금액: {reservation.finalPrice}원</p>
                     <div className="flex flex-col justify-center items-center m-5 w-full">
-                        <button onClick={onClose} className="bg-green-500 text-white px-4 py-2 rounded-lg">예약 완료
+                        <button onClick={onClose} className="bg-[#00B3A6] text-white px-6 py-3 rounded-lg">예약 완료
                         </button>
                     </div>
                 </div>
