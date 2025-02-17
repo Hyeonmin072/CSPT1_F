@@ -33,12 +33,17 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
                     position: "relative",
                     width: "100%",
                     transform: `translateY(${scrollPosition}px)`,
-                    transition: "transform 0.3s ease-in-out",
+                    transition: "transform 0.3s ease-out",
                 }}
             >
                 {/* Header: 컨테이너 내부에서 고정된 오프셋(-60px) */}
-                <div style={{ position: "absolute", top: `${headerInitial}px`, width: "100%" }}>
-                    <div className="bg-white p-5 rounded-lg">
+                <div
+                    style={{
+                    position: "absolute",
+                    top: `${headerInitial}px`,
+                    width: "100%"
+                }}>
+                    <div className="duration-700 bg-white p-5 rounded-lg">
                         <DetailTab
                             activeTab={activeTab}
                             setActiveTab={setActiveTab}
@@ -91,8 +96,8 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
                 <div
                     style={{
                         position: "fixed",
-                        top: `-380px`,
-                        width: "100%",
+                        top: `150px`,
+                        width: "60%",
                         zIndex: 50
                 }}
                     >
@@ -111,9 +116,9 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
                 <div
                     className="duration-500 bg-white p-5 rounded-lg"
                     style={{
-                        top: `-370px`,
+                        position: 'relative',
+                        top: `-270px`,
                         transform: `translateY(${detailTranslate}px)`,
-                        transition: "transform 0.3s ease-in-out",
                     }}
                 >
                     <div className="px-3">
@@ -140,7 +145,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
                         </div>
 
                         <div className="mb-6">
-                            <ReviewImg />
+                            <ReviewImg handleReviewClick={handleReviewClick} />
                             <HairShopDetailReview />
                         </div>
                     </div>

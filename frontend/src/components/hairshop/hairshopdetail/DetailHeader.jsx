@@ -3,7 +3,7 @@ import ShopHeader from "../../common/ShopHeader.jsx"
 
 export default function DetailHeader() {
     return (
-        <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center justify-between px-4 py-2 z-40">
             {/* 왼쪽: 뒤로 가기 버튼 + 샵 이름 */}
             <ShopHeader/>
 

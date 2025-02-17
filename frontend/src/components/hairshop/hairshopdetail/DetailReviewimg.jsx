@@ -1,6 +1,6 @@
 import reviewEX from "../../../assets/hairshop/reviewEX.jpg";
 
-export default function ReviewImg() {
+export default function ReviewImg({ handleReviewClick }) {
 
     const reviews = [
         { id: 1, src: reviewEX, alt: "리뷰 1" },
@@ -15,7 +15,8 @@ export default function ReviewImg() {
 
     return (
         <div className="border-t p-4 border-b border-gray-300">
-            <h3 className="text-lg font-semibold mb-6 cursor-pointer">
+            <h3 className="text-lg font-semibold mb-6 cursor-pointer"
+            onClick={handleReviewClick}>
                 고객 리뷰 30 &gt;
             </h3>
             <div className="flex flex-col mb-6">
