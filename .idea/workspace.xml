@@ -5,17 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/menu/FinalMenuModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/menu/MenuSelectModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuHeader.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuItems.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuSelect.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuTabs.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/MenuSelectPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/button/SelectButton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/button/SelectButton.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/ShopHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/ShopHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/coupon/CouponModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/HairShop.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/HairShop.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/main/MainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/main/MainPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/reservation/DesignerSelectPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/DesignerSelectPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollHeader.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,11 +27,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaScript File" />
         <option value="JSX File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -41,22 +49,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "frontend-reservation",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Run",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-reservation&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hair" />
@@ -80,6 +88,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.dev" />
+        <item itemvalue="npm.dev" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -112,6 +122,10 @@
       <workItem from="1738728028298" duration="19237000" />
       <workItem from="1738820678561" duration="832000" />
       <workItem from="1738821537421" duration="8325000" />
+      <workItem from="1739250062508" duration="16245000" />
+      <workItem from="1739333887413" duration="12243000" />
+      <workItem from="1739419904363" duration="17984000" />
+      <workItem from="1739505766800" duration="10712000" />
     </task>
     <servers />
   </component>

@@ -24,31 +24,17 @@ export default function DesignerSelect({handleDesignerSelect}) {
     
     // 임시 디자이너 리스트
     const designers = [
-        {
-            id: 1,
-            name: '디자이너 해나',
-            experience: '7년',
-            description: '앞머리 컬러링 및 건강하게 센스있게',
-            likes: '3.9K',
-            rating: 5.0,
-            reviews: 521,
-            image: designerEX
-        },
-        {
-            id: 2,
-            name: '디자이너 유용운',
-            experience: '9년',
-            description: '세련된 감각과 아름다움을 선물해드립니다.',
-            likes: '1.4K',
-            rating: 4.5,
-            reviews: 466,
-            image: d1
-        }
+        { id: 1, name: '디자이너 해나', experience: '7년', description: '앞머리 컬러링 및 건강하게 센스있게', likes: '3.9K', rating: 5.0, reviews: 521, image: designerEX},
+        { id: 2, name: '디자이너 유용운', experience: '9년', description: '세련된 감각과 아름다움을 선물해드립니다.', likes: '1.4K', rating: 4.5, reviews: 466, image: d1}
     ];
 
     const handleReviewClick = () => {
         navigate("/reviews");
     };
+
+    const handleCalendarClick = () => {
+        navigate("/calendarselect");
+    }
 
     return (
         <>
@@ -59,7 +45,7 @@ export default function DesignerSelect({handleDesignerSelect}) {
             <div className="lg:flex-row mx-10 lg:mx-20 my-10 lg:my-0 gap-6">
                 <div className="flex flex-col items-center p-8 w-full">
                     <h1 className="font-semibold text-xl mb-6 w-full text-left text-gray-400">디자이너 선택</h1>
-                    <div className="w-full border-t border-gray-300 mb-4"></div>
+                    <div className="w-full border-t border-gray-300 mb-6"></div>
 
                     {designers.map((designer) => (
                         <div key={designer.id} className="flex p-6 mb-6 w-full border-b border-gray-300">
@@ -88,11 +74,12 @@ export default function DesignerSelect({handleDesignerSelect}) {
                                     </div>
                                 </div>
                             </div>
-                            <SelectButton/>
+                            <div onClick={handleCalendarClick}>
+                                <SelectButton />
+                            </div>
                         </div>
                     ))}
 
-                    <div className="w-full mt-4"></div>
                 </div>
             </div>
         </>

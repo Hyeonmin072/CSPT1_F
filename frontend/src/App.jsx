@@ -9,6 +9,9 @@ import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
 import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
+import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx"
+import CalendarSelectPage from "./pages/reservation/CalendarSelectPage.jsx"
+import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx"
 
 function App() {
   return (
@@ -23,6 +26,8 @@ function App() {
             <Route path="/userprofile" element={<UserProfile />} />
             <Route path="/userprofileedit" element={<UserProfileEdit />} />
             <Route path="/designerselect" element={<DesignerSelectPage />} />
+            <Route path="/calendarselect" element={<CalendarSelectPage />} />
+            <Route path="/menuselect" element={<MenuSelectPage />} />
             <Route
               path="/loginandregister"
               element={<LoginAndRegisterPage />}

@@ -5,7 +5,8 @@ export default function HairReservationButton({onClick}){
 
     return (
         <button
-            className="px-6 py-2 text-black font-semibold rounded-lg hover:bg-[#03DAC5] transition"
+            className="px-4 py-2 text-black font-semibold
+            rounded-lg hover:bg-[#03DAC5] transition duration-200"
             onClick={() => navigate("/designerselect")}
         >
             예약하기

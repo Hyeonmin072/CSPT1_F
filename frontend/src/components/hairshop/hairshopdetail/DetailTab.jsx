@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import h1 from "../../../assets/hairshop/h1.jpg";
 import { useNavigate } from "react-router-dom";
 
@@ -7,15 +7,8 @@ import HairReservationButton from "../../button/HairReservationButton.jsx"
 export default function DetailTab({ activeTab, handleShopDetailClick, handleReservationClick, handleReviewClick }){
     return (
         <div className="mb-4 flex flex-col gap-4">
-            {/* 이미지 */}
-            <img
-                src={h1}
-                alt="샵 사진"
-                className="w-[800px] h-[400px] rounded-lg"
-            />
-
             {/* 버튼 그룹 + 예약하기 버튼 */}
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center justify-center">
                 <div className="flex gap-4">
                     <button
                         onClick={handleShopDetailClick}
@@ -36,7 +29,7 @@ export default function DetailTab({ activeTab, handleShopDetailClick, handleRese
                 </div>
 
                 {/* 예약하기 버튼 (오른쪽으로 이동) */}
-                <div className="bg-[#03DAC5] text-white rounded-lg ml-auto">
+                <div className="flex bg-[#03DAC5] text-white rounded-lg ml-auto">
                     <HairReservationButton/>
                 </div>
             </div>

@@ -8,10 +8,10 @@ export default function DetailHeader() {
             <ShopHeader/>
 
             {/* 오른쪽: 영업 상태 + 시간 정보 */}
-            <div className="flex items-center space-x-2">
-        <span className="bg-teal-200 text-teal-700 px-2 py-1 rounded-full text-xs font-bold">
-            OPEN
-        </span>
+            <div className="flex items-center space-x-5">
+                <span className="bg-teal-200 text-teal-700 px-2 py-1 rounded-full text-xs font-bold">
+                    OPEN
+                </span>
                 <div>
                     <p className="text-lg font-bold">10:00 ~ 21:00</p>
                     <p className="text-sm text-gray-500">
