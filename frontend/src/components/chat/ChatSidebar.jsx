@@ -2,8 +2,6 @@ import { useState } from "react"
 import { Search } from 'lucide-react';
 
 const ChatSidebar = ({ setSelectedChat, selectedChat}) => {
-    const [search, setSearch] = useState("");
-
 
     const chats = [
         { id: 1, name: "디자이너A", lastMessage: "너무 잘 어울려요!!", time: "18:00"},

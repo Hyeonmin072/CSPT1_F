@@ -1,15 +1,16 @@
-import React from "react";
 import ChatSidebar from "../../components/chat/ChatSidebar.jsx";
 import ChatWindow from "./ChatWindow";
 
 const ChattingPage = () => {
     return (
-        <div className="flex h-screen bg-gray-100">
-            {/* 채팅 목록 */}
-            <ChatSidebar />
+        <div className="flex w-full h-auto bg-white justify-center items-center">
+            <div className={"flex w-full max-w-[1300px] h-[90vh] bg-white rounded-lg overflow-hidden"}>
+                {/* 채팅 목록 */}
+                <ChatSidebar />
 
-            {/* 채팅창 */}
-            <ChatWindow />
+                {/* 채팅창 */}
+                <ChatWindow />
+            </div>
         </div>
     );
 };

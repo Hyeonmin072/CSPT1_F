@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { format } from "date-fns"; //npm install date-fns 설치하여 시간 포맷팅 적용
 
 const ChatWindow = () => {
     const [messages,setMessages] = useState([
@@ -10,20 +11,21 @@ const ChatWindow = () => {
 
     const sendMessage = () => {
         if (!input.trim()) return;
-        setMessages([...messages, { text: input, sender: "user", time: new Date().toLocaleString() }]);
+        const currentTime = format(new Date(), "HH:mm");
+        setMessages([...messages, { text: input, sender: "user", time: currentTime }]);
         setInput("");
     };
     return (
-        <div className={"flex flex-col w-full h-screen bg-gray-100"}>
+        <div className={"flex flex-col w-full h-[90vh] bg-white"}>
         {/*  채팅 헤더  */}
-            <div className={"p-4 bg-white shadow-md"}>디자이너 B</div>
+            <div className={"mt-[18px] p-4 bg-white shadow-md"}>디자이너 B</div>
 
         {/* 채팅 메시지 */}
-            <div className={"flex-1 p-4 space-y-2 overflow-y-auto bg-blue-100"}>
+            <div className={"flex-1 p-4 space-y-4 overflow-y-auto bg-blue-100"}>
                 {messages.map((msg, index) => (
-                    <div key={index} className={`p-2 rounded-md ${msg.sender === "user" ? "bg-green-400 text-white self-end" : "bg-white"}`}>
+                    <div key={index} className={`w-[500px] p-2 rounded-md ${msg.sender === "user" ? "bg-green-400 text-white ml-auto" : "bg-white"}`}>
                         <p>{msg.text}</p>
-                        <span className={"text-xs"}>{msg.time}</span>
+                        <span className={"text-xs ml-[450px]"}>{msg.time}</span>
                     </div>
                 ))}
             </div>
@@ -35,9 +37,9 @@ const ChatWindow = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) =>e.key === "Enter" && sendMessage()}
-                    placeholder="Message..."
+                    placeholder="Message"
                     className={"flex-1 border border-gray-300 p-2 rounded-md"}/>
-                <button onClick={sendMessage} className={"ml-2 p-2 bg-blue-500 text-white rounded-md"}>Send</button>
+                <button onClick={sendMessage} className={"ml-2 p-2 bg-blue-500 text-white rounded-md"}>전송</button>
             </div>
 
         </div>
