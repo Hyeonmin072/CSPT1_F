@@ -1,14 +1,14 @@
 import Header from "../../components/common/Header.jsx";
-import Reviews from "../../components/reviews/Reviews.jsx";
+import PhotoReviews from "../../components/reviews/photoreviews/PhotoReviews.jsx";
 
-export default function ReviewsPage(){
+export default function photoReview(){
     return (
         <div>
             <div>
-                <Header />
+                <Header/>
             </div>
             <div className="p-7">
-                <Reviews/>
+                <PhotoReviews/>
             </div>
         </div>
     );
