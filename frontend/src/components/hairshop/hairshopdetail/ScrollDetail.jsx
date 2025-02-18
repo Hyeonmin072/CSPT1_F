@@ -11,7 +11,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
     const headerInitial = -60;                   // 컨테이너 내 Header의 시작 오프셋
     const headerFixedThreshold = -370;           // 스크롤이 이 값 이하가 되면 Header 고정
     const headerHeight = Math.abs(headerFixedThreshold - headerInitial);
-    const detailTranslate = Math.max(Math.min(scrollPosition + 370, 0), -430);
+    const detailTranslate = Math.max(Math.min(scrollPosition + 300, 0), -480);
 
 
     const [activeTab, setActiveTab] = useState("ShopDetail");
@@ -30,7 +30,6 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
                     position: "relative",
                     width: "100%",
                     transform: `translateY(${scrollPosition}px)`,
-                    transition: "transform 0.3s ease-out",
                 }}
             >
                 {/* Header: 컨테이너 내부에서 고정된 오프셋(-60px) */}
@@ -40,7 +39,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
                     top: `${headerInitial}px`,
                     width: "100%"
                 }}>
-                    <div className="duration-700 bg-white p-5 rounded-lg">
+                    <div className="duration-500 bg-white p-5 rounded-lg">
                         <DetailTab
                             activeTab={activeTab}
                             setActiveTab={setActiveTab}
@@ -111,7 +110,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
 
                 {/* Detail 컨텐츠: Header 아래에서 추가 스크롤 적용 */}
                 <div
-                    className="duration-500 bg-white p-5 rounded-lg"
+                    className="duration-300 bg-white p-10 rounded-lg"
                     style={{
                         position: 'relative',
                         top: `-270px`,

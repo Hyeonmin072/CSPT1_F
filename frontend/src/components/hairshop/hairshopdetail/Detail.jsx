@@ -59,7 +59,7 @@ export default function ShopDetail() {
             {/* 왼쪽: 가게 상세 정보 */}
             <div className="flex flex-col px-10 w-3/4 mb-0 bg-white">
                 <DetailHeader />
-                <div className="relative">
+                <div>
                     <img
                         src={h1}
                         alt="샵 사진"
