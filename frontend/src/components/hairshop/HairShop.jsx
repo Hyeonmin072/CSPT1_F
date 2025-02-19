@@ -31,11 +31,11 @@ export default function ShopPage({ containerRef }) {
     return (
         <div className="max-w-7xl mx-auto px-4 flex justify-center items-center">
             <div className="flex flex-col items-center gap-6 mx-auto w-full">
-                <div className="flex justify-center w-full ">
+                <div className="flex justify-center w-full pt-4">
                     <HairSearch/>
                 </div>
 
-                <div ref={containerRef} className="px-4 mt-2 rounded-lg w-[1000px]">
+                <div ref={containerRef} className="mt-2 rounded-lg w-[1000px]">
                     <div className="flex flex-col items-center gap-4 mx-auto">
                         {shops.map((shop, index) => (
                             <div
@@ -58,7 +58,7 @@ export default function ShopPage({ containerRef }) {
                                     </div>
 
                                     {/* Shop Details */}
-                                    <div className="p-4 rounded-lg">
+                                    <div className="p-5 rounded-lg">
                                         <div
                                             className=" flex items-start space-x-4"
                                             onClick={() => navigate("/detail")}

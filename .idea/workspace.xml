@@ -5,19 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/menu/FinalMenuModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/menu/MenuSelectModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuHeader.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuItems.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuSelect.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/reservation/menuselect/MenuTabs.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/MenuSelectPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailTab.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +47,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend-reservation&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-reviewspage&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -126,6 +120,9 @@
       <workItem from="1739333887413" duration="12243000" />
       <workItem from="1739419904363" duration="17984000" />
       <workItem from="1739505766800" duration="10712000" />
+      <workItem from="1739765101278" duration="19713000" />
+      <workItem from="1739851594332" duration="15912000" />
+      <workItem from="1739939587974" duration="5063000" />
     </task>
     <servers />
   </component>

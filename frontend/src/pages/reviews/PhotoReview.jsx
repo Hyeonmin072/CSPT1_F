@@ -1,13 +1,14 @@
-import MenuSelect from "../../components/reservation/menuselect/MenuSelect.jsx"
 import Header from "../../components/common/Header.jsx";
-export default function MenuSelectPage(){
+import PhotoReviews from "../../components/reviews/photoreviews/PhotoReviews.jsx";
+
+export default function photoReview(){
     return (
         <div>
             <div>
                 <Header/>
             </div>
-            <div className="p-4">
-                <MenuSelect/>
+            <div className="p-7">
+                <PhotoReviews/>
             </div>
         </div>
     );
