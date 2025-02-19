@@ -15,6 +15,7 @@ const ChatWindow = () => {
         setMessages([...messages, { text: input, sender: "user", time: currentTime }]);
         setInput("");
     };
+
     return (
         <div className={"flex flex-col w-full h-[90vh] bg-white"}>
         {/*  채팅 헤더  */}
@@ -23,9 +24,9 @@ const ChatWindow = () => {
         {/* 채팅 메시지 */}
             <div className={"flex-1 p-4 space-y-4 overflow-y-auto bg-blue-100"}>
                 {messages.map((msg, index) => (
-                    <div key={index} className={`w-[500px] p-2 rounded-md ${msg.sender === "user" ? "bg-green-400 text-white ml-auto" : "bg-white"}`}>
-                        <p>{msg.text}</p>
-                        <span className={"text-xs ml-[450px]"}>{msg.time}</span>
+                    <div key={index} className={`relative max-w-[75%] w-fit p-2 rounded-md ${msg.sender === "user" ? "bg-green-400 text-white ml-auto self-end" : "bg-white self-start"}`}>
+                        <p className={"whitespace-pre-wrap"}>{msg.text}</p>
+                        <span className={"block text-right text-xs text-gray-400 w-full"}>{msg.time}</span>
                     </div>
                 ))}
             </div>
@@ -38,7 +39,7 @@ const ChatWindow = () => {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) =>e.key === "Enter" && sendMessage()}
                     placeholder="Message"
-                    className={"flex-1 border border-gray-300 p-2 rounded-md"}/>
+                    className={"flex-1 border border-gray-300 p-2 rounded-md resize-none overflow-hidden"}/>
                 <button onClick={sendMessage} className={"ml-2 p-2 bg-blue-500 text-white rounded-md"}>전송</button>
             </div>
 

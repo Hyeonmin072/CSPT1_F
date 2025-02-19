@@ -14,14 +14,14 @@ const ChatSidebar = ({ setSelectedChat, selectedChat}) => {
         <div className={"w-1/4 h-screen bg-white border-r"}>
         {/* 검색창 */}
             <div className={"p-4 border-b"}>
-                <div className={"flex items-center border rounded-r"}>
+                <div className={"flex items-center border rounded-xl"}>
                     {/* search 아이콘*/}
                     <Search size={20} className={"text-gray-500 ml-2"}/>
 
                 <input
                     type="text"
                     placeholder="검색"
-                    className={"w-full p-2 mt-0 focus:outline-none border-none rounded-md"}/>
+                    className={"w-full p-2 mt-0 focus:outline-none border-none rounded-xl"}/>
                 </div>
             </div>
 
