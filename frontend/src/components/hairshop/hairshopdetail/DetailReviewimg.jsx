@@ -14,8 +14,8 @@ export default function ReviewImg({ handleReviewClick }) {
     ];
 
     return (
-        <div className="border-t p-4 border-b border-gray-300">
-            <h3 className="text-lg font-semibold mb-6 cursor-pointer"
+        <div className="border-t px-4 border-b border-gray-300">
+            <h3 className="text-lg font-semibold m-4 cursor-pointer"
             onClick={handleReviewClick}>
                 고객 리뷰 30 &gt;
             </h3>

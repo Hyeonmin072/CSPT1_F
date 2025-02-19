@@ -19,7 +19,7 @@ export default function Header() {
   return (
       <>
         {/* 상단바 */}
-        <header className="bg-white shadow-sm w-full ">
+        <header className="bg-white shadow-sm w-full z-40">
           <div className="max-w-7xl mx-auto px-4 py-4 w-full">
             <div className="flex justify-between items-center w-full">
               <div className="leading-[0.85]">
