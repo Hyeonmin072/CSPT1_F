@@ -1,5 +1,5 @@
 import ChatSidebar from "../../components/chat/ChatSidebar.jsx";
-import ChatWindow from "./ChatWindow";
+import ChatWindow from "../../components/chat/ChatWindow.jsx";
 
 const ChattingPage = () => {
     return (

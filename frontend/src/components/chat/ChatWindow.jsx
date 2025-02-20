@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { format, isSameDay, parse } from "date-fns";
 import { Search, MoreVertical } from "lucide-react"; // Lucide 아이콘 사용
 
@@ -12,6 +12,8 @@ const ChatWindow = () => {
     const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
     const [searchOpen, setSearchOpen] = useState(false); // 검색창 보이기/숨기기 상태
     const [menuOpen, setMenuOpen] = useState(false); // 메뉴 상태 추가
+
+    const messagesEndRef = useRef(null);  // 메시지 끝 부분을 참조하는 useRef
 
     const sendMessage = () => {
         if (!input.trim()) return;
@@ -32,8 +34,15 @@ const ChatWindow = () => {
         }
     };
 
+    // 메시지가 추가될 때마다 자동 스크롤
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);  // messages가 변경될 때마다 실행
+
     return (
-        <div className="flex flex-col w-full h-[90vh] bg-white">
+        <div className="flex flex-col w-full h-full bg-white">
             {/* 채팅 헤더 */}
             <div className="mt-[18px] p-4 bg-white shadow-md flex justify-between items-center">
                 <span className="text-lg font-bold">디자이너 B</span>
@@ -74,7 +83,7 @@ const ChatWindow = () => {
             </div>
 
             {/* 채팅 메시지 */}
-            <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-blue-100">
+            <div className="chat-window flex-1 p-4 space-y-4 bg-blue-100 max-h-[70vh] overflow-y-auto">
                 {filteredMessages.map((msg, index) => {
                     const currentMessageDate = parse(msg.time, "yyyy-MM-dd HH:mm", new Date());
                     const previousMessageDate = index > 0
@@ -100,6 +109,8 @@ const ChatWindow = () => {
                         </div>
                     );
                 })}
+                {/* 자동 스크롤을 위한 ref 추가 */}
+                <div ref={messagesEndRef} />
             </div>
 
             {/* 메시지 입력창 */}

@@ -11,7 +11,7 @@ const ChatSidebar = ({ setSelectedChat, selectedChat}) => {
     ];
 
     return (
-        <div className={"w-1/4 h-screen bg-white border-r"}>
+        <div className={"w-1/4 h-full bg-white border-r"}>
         {/* 검색창 */}
             <div className={"p-4 border-b"}>
                 <div className={"flex items-center border rounded-xl"}>
