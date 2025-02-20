@@ -14,35 +14,48 @@ import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx"
 import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
+import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 
 function App() {
+  // 임시 역할 설정(customer, designer, business)
+  const userRole = 'customer';
+
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
         <main className="flex-1">
           <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/hairshop" element={<HairShopPage />} />
-            <Route path="/detail" element={<HairShopDetailPage />} />
-            <Route path="/designerpage" element={<DesignerPage />} />
-            <Route path="/userprofile" element={<UserProfile />} />
-            <Route path="/userprofileedit" element={<UserProfileEdit />} />
-            <Route path="/designerselect" element={<DesignerSelectPage />} />
-            <Route path="/calendarselect" element={<CalendarSelectPage />} />
-            <Route path="/menuselect" element={<MenuSelectPage />} />
-            <Route path="/reviews" element={<ReviewsPage />} />
-            <Route path="/reviews/photo" element={<PhotoReview />} />
-            <Route path="/reservationcheck" element={<ReservationCheckPage />} />
+            {/* 공통 */}
+            <Route
+                path="/loginandregister"
+                element={<LoginAndRegisterPage />}
+            />
 
-            <Route
-              path="/loginandregister"
-              element={<LoginAndRegisterPage />}
-            />
-            <Route
-              path="/subscriptdesigner"
-              element={<SubscriptDesignerPage />}
-            />
-            {/* 추가 라우트는 여기에 설정 */}
+            {/* 고객 전용 */}
+            {userRole === 'customer' && (
+                <>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="/hairshop" element={<HairShopPage />} />
+                  <Route path="/detail" element={<HairShopDetailPage />} />
+                  <Route path="/designerpage" element={<DesignerPage />} />
+                  <Route path="/userprofile" element={<UserProfile />} />
+                  <Route path="/userprofileedit" element={<UserProfileEdit />} />
+                  <Route path="/designerselect" element={<DesignerSelectPage />} />
+                  <Route path="/calendarselect" element={<CalendarSelectPage />} />
+                  <Route path="/menuselect" element={<MenuSelectPage />} />
+                  <Route path="/reviews" element={<ReviewsPage />} />
+                  <Route path="/reviews/photo" element={<PhotoReview />} />
+                  <Route path="/reservationcheck" element={<ReservationCheckPage />} />
+                  <Route path="/subscriptdesigner" element={<SubscriptDesignerPage />} />
+                </>
+            )}
+
+            {/* 디자이너 전용 */}
+            {userRole === 'designer' && (
+                <>
+                  <Route path="/" element={<DesignerMainPage />} />
+                </>
+            )}
           </Routes>
         </main>
       </div>
