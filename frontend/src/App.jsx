@@ -13,6 +13,7 @@ import CalendarSelectPage from "./pages/reservation/CalendarSelectPage.jsx"
 import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx"
 import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
+import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/menuselect" element={<MenuSelectPage />} />
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/reviews/photo" element={<PhotoReview />} />
+            <Route path="/reservationcheck" element={<ReservationCheckPage />} />
 
             <Route
               path="/loginandregister"
