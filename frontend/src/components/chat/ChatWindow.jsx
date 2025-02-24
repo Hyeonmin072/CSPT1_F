@@ -1,31 +1,25 @@
 import { useState, useRef, useEffect } from "react";
 import { format, isSameDay, parse } from "date-fns";
-import { Search, MoreVertical } from "lucide-react"; // Lucide 아이콘 사용
+import { Search, MoreVertical } from "lucide-react";
 
-const ChatWindow = () => {
-    const [messages, setMessages] = useState([
-        { text: "어떤 헤어스타일로 문의를 주셨을까요 고객님?!", sender: "designer", time: "2024-12-25 18:12" },
-        { text: "파마를 한번 해보려고 하는데 잘 어울릴까요?!", sender: "user", time: "2024-12-25 18:16" },
-        { text: "저희 샵에 방문해서 한번 보고 제가 추천드려도 될까요?", sender: "designer", time: "2024-12-26 10:30" },
-    ]);
+const ChatWindow = ({ selectedChat }) => {
+    const [messages, setMessages] = useState(selectedChat.messages); // 선택된 채팅의 메시지 저장
     const [input, setInput] = useState("");
-    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
-    const [searchOpen, setSearchOpen] = useState(false); // 검색창 보이기/숨기기 상태
-    const [menuOpen, setMenuOpen] = useState(false); // 메뉴 상태 추가
+    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
+    const [searchOpen, setSearchOpen] = useState(false); // 검색창 토글 상태
+    const [menuOpen, setMenuOpen] = useState(false); // 메뉴 토글 상태
+    const messagesEndRef = useRef(null); // 채팅창 스크롤 관리
 
-    const messagesEndRef = useRef(null);  // 메시지 끝 부분을 참조하는 useRef
+    useEffect(() => {
+        setMessages(selectedChat.messages); // 선택된 채팅이 변경되면 messages 업데이트
+    }, [selectedChat]);
 
     const sendMessage = () => {
         if (!input.trim()) return;
-        const currentTime = format(new Date(), "yyyy-MM-dd HH:mm");
-        setMessages([...messages, { text: input, sender: "user", time: currentTime }]);
+        const newMessage = { text: input, sender: "user", time: format(new Date(), "yyyy-MM-dd HH:mm") };
+        setMessages((prev) => [...prev, newMessage]); // 새 메시지 추가
         setInput("");
     };
-
-    // 검색 기능: 검색어가 포함된 메시지만 필터링
-    const filteredMessages = messages.filter((msg) =>
-        msg.text.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     const deleteChat = () => {
         if (window.confirm("정말로 대화를 삭제하시겠습니까?")) {
@@ -34,27 +28,24 @@ const ChatWindow = () => {
         }
     };
 
-    // 메시지가 추가될 때마다 자동 스크롤
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages]);  // messages가 변경될 때마다 실행
+    }, [messages]);
 
     return (
-        <div className="flex flex-col w-full h-full bg-white">
+        <div className="flex flex-col w-3/4 h-full bg-white">
             {/* 채팅 헤더 */}
             <div className="mt-[18px] p-4 bg-white shadow-md flex justify-between items-center">
-                <span className="text-lg font-bold">디자이너 B</span>
+                <span className="text-lg font-bold">{selectedChat.name}</span>
 
                 {/* 검색 버튼 + 메뉴 버튼 */}
                 <div className="flex items-center space-x-3">
-                    {/* 돋보기 아이콘 (클릭 시 검색창 토글) */}
                     <button onClick={() => setSearchOpen(!searchOpen)}>
                         <Search className="w-6 h-6 text-gray-700" />
                     </button>
 
-                    {/* 검색창 (searchOpen이 true일 때만 표시) */}
                     {searchOpen && (
                         <input
                             type="text"
@@ -70,10 +61,8 @@ const ChatWindow = () => {
                         <button onClick={() => setMenuOpen(!menuOpen)}>
                             <MoreVertical className="w-6 h-6 text-gray-700" />
                         </button>
-
-                        {/* 메뉴 드롭다운 */}
                         {menuOpen && (
-                            <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md p-2 text-sm">
+                            <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md p-2 text-sm z-10">
                                 <button onClick={deleteChat} className="block w-full text-left px-2 py-1 hover:bg-gray-100">대화 삭제</button>
                                 <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">디자이너 프로필 보기</button>
                             </div>
@@ -84,32 +73,33 @@ const ChatWindow = () => {
 
             {/* 채팅 메시지 */}
             <div className="chat-window flex-1 p-4 space-y-4 bg-blue-100 max-h-[70vh] overflow-y-auto">
-                {filteredMessages.map((msg, index) => {
-                    const currentMessageDate = parse(msg.time, "yyyy-MM-dd HH:mm", new Date());
-                    const previousMessageDate = index > 0
-                        ? parse(filteredMessages[index - 1].time, "yyyy-MM-dd HH:mm", new Date())
-                        : null;
+                {messages
+                    .filter((msg) => msg.text.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map((msg, index) => {
+                        const currentMessageDate = parse(msg.time, "yyyy-MM-dd HH:mm", new Date());
+                        const previousMessageDate = index > 0
+                            ? parse(messages[index - 1].time, "yyyy-MM-dd HH:mm", new Date())
+                            : null;
 
-                    const showDate = !previousMessageDate || !isSameDay(currentMessageDate, previousMessageDate);
+                        const showDate = !previousMessageDate || !isSameDay(currentMessageDate, previousMessageDate);
 
-                    return (
-                        <div key={index}>
-                            {showDate && (
-                                <div className="text-center my-2 text-gray-500 text-sm">
-                                    {format(currentMessageDate, "yyyy년 MM월 dd일")}
+                        return (
+                            <div key={index}>
+                                {showDate && (
+                                    <div className="text-center my-2 text-gray-500 text-sm">
+                                        {format(currentMessageDate, "yyyy년 MM월 dd일")}
+                                    </div>
+                                )}
+                                <div className={`relative max-w-[50%] w-fit p-2 rounded-md 
+                                    ${msg.sender === "user" ? "bg-green-400 text-white ml-auto self-end" : "bg-white self-start"}`}>
+                                    <p className="whitespace-pre-wrap">{msg.text}</p>
+                                    <span className="block text-right text-xs text-gray-400 w-full">
+                                        {format(currentMessageDate, "HH:mm")}
+                                    </span>
                                 </div>
-                            )}
-                            <div className={`relative max-w-[75%] w-fit p-2 rounded-md 
-                                ${msg.sender === "user" ? "bg-green-400 text-white ml-auto self-end" : "bg-white self-start"}`}>
-                                <p className="whitespace-pre-wrap">{msg.text}</p>
-                                <span className="block text-right text-xs text-gray-400 w-full">
-                                    {format(currentMessageDate, "HH:mm")}
-                                </span>
                             </div>
-                        </div>
-                    );
-                })}
-                {/* 자동 스크롤을 위한 ref 추가 */}
+                        );
+                    })}
                 <div ref={messagesEndRef} />
             </div>
 
