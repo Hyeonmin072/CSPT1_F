@@ -18,7 +18,7 @@ import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
-  const userRole = 'customer';
+  const userRole = 'designer';
 
   return (
     <Router>

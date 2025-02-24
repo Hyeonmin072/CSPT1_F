@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ChartQuick.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ProfileQuick.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ScheduleQuick.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,9 +47,9 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend-reviewspage&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-designermainpage&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/reservationcheck&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -64,6 +64,8 @@
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hair" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\reservationcheck" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hairshop" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\layout" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common" />
@@ -123,6 +125,13 @@
       <workItem from="1739765101278" duration="19713000" />
       <workItem from="1739851594332" duration="15912000" />
       <workItem from="1739939587974" duration="5063000" />
+      <workItem from="1739945729381" duration="2601000" />
+      <workItem from="1739950147130" duration="3666000" />
+      <workItem from="1740027874586" duration="4147000" />
+      <workItem from="1740034134391" duration="1335000" />
+      <workItem from="1740035500861" duration="7876000" />
+      <workItem from="1740113854690" duration="4932000" />
+      <workItem from="1740370102889" duration="3596000" />
     </task>
     <servers />
   </component>
