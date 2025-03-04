@@ -92,7 +92,7 @@ const ChatWindow = ({ selectedChat }) => {
                                 )}
                                 <div className={`relative max-w-[50%] w-fit p-2 rounded-md 
                                     ${msg.sender === "user" ? "bg-green-400 text-white ml-auto self-end" : "bg-white self-start"}`}>
-                                    <p className="whitespace-pre-wrap">{msg.text}</p>
+                                    <p className="whitespace-pre-wrap break-words">{msg.text}</p>
                                     <span className="block text-right text-xs text-gray-400 w-full">
                                         {format(currentMessageDate, "HH:mm")}
                                     </span>
