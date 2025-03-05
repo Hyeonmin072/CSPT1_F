@@ -12,7 +12,7 @@ const DesignerSideBar = ({ isOpen, onClose }) => {
         { id: 2, title: "고객 확인"},
         { id: 3, title: "실적 확인"},
         { id: 4, title: "구인구직" },
-        { id: 5, title: "이력서"}
+        { id: 5, title: "이력서", path: "/cv"}
     ];
 
     // 클릭 핸들러

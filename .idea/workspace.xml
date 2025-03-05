@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ChartQuick.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ProfileQuick.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ScheduleQuick.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CVProfile.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Career.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Certification.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/DesiredWorkDays.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/cv/CurriculumVitaePage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/DesignerSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/DesignerSideBar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +49,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend-designermainpage&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-curriculum__vitaepage&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/reservationcheck&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -132,6 +134,9 @@
       <workItem from="1740035500861" duration="7876000" />
       <workItem from="1740113854690" duration="4932000" />
       <workItem from="1740370102889" duration="3596000" />
+      <workItem from="1741054053274" duration="1271000" />
+      <workItem from="1741057162607" duration="22170000" />
+      <workItem from="1741139280830" duration="5991000" />
     </task>
     <servers />
   </component>

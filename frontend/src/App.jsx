@@ -14,7 +14,9 @@ import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx"
 import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
+
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
+import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
@@ -54,6 +56,7 @@ function App() {
             {userRole === 'designer' && (
                 <>
                   <Route path="/" element={<DesignerMainPage />} />
+                  <Route path="/cv" element={<CurriculumVitaePage />} />
                 </>
             )}
           </Routes>
