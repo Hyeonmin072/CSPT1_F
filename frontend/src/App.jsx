@@ -17,6 +17,7 @@ import ReservationCheckPage from "./pages/reservation/reservationcheck/Reservati
 
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
+import SalesPage from "./pages/salesstatus/SalesPage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
@@ -57,6 +58,7 @@ function App() {
                 <>
                   <Route path="/" element={<DesignerMainPage />} />
                   <Route path="/cv" element={<CurriculumVitaePage />} />
+                  <Route path="/sales" element={<SalesPage />} />
                 </>
             )}
           </Routes>

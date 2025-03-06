@@ -39,7 +39,7 @@ export default function DesignerHeader() {
                             <Link to="" className="text-gray-700">
                                 구인구직
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/sales" className="text-gray-700">
                                 실적확인
                             </Link>
                         </nav>
