@@ -2,13 +2,27 @@ import { useState, useRef, useEffect } from "react";
 import { format, isSameDay, parse } from "date-fns";
 import { Search, MoreVertical } from "lucide-react";
 
-const ChatWindow = ({ selectedChat }) => {
+const ChatWindow = ({ selectedChat, socket }) => {
     const [messages, setMessages] = useState(selectedChat.messages); // 선택된 채팅의 메시지 저장
     const [input, setInput] = useState("");
     const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
     const [searchOpen, setSearchOpen] = useState(false); // 검색창 토글 상태
     const [menuOpen, setMenuOpen] = useState(false); // 메뉴 토글 상태
     const messagesEndRef = useRef(null); // 채팅창 스크롤 관리
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.onmessage = (event) => {
+            const newMessage = JSON.parse(event.data);
+            if(newMessage.chatId === selectedChat.id) {
+                setMessages((prev) => [...prev, newMessage]);
+            }
+        };
+        return () => {
+            socket.onmessage = null; // 이벤트 핸들러 제거
+        };
+    }, [socket, selectedChat]);
 
     useEffect(() => {
         setMessages(selectedChat.messages); // 선택된 채팅이 변경되면 messages 업데이트
