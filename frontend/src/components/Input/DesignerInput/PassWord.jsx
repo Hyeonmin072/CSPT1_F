@@ -1,6 +1,6 @@
 import { LockKeyhole } from "lucide-react";
 import { useContext } from "react";
-import { UserContext } from "../context/GusetContext";
+import { DesignerContext } from "../../context/DesignerContext";
 
 export default function PassWord() {
   return (

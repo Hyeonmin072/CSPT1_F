@@ -1,6 +1,6 @@
 import { Calendar } from "lucide-react";
 import { useContext } from "react";
-import { UserContext } from "../../context/GusetContext";
+import { GuestContext } from "../../context/GuestContext";
 
 export default function Birth() {
   const { userInfo, setUserInfo } = useContext(UserContext);

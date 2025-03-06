@@ -8,7 +8,7 @@ import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
 import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
-import { UserProvider } from "./components/context/GusetContext.jsx";
+import { UserProvider } from "./components/context/UserContext";
 
 function App() {
   return (

@@ -4,7 +4,7 @@ import PassWord from "./PassWord.jsx";
 import PassWordCheck from "./PassWordCheck.jsx";
 import Email from "./Email.jsx";
 import Birth from "./Birth.jsx";
-import BusinessNumber from "./BusinessNumber.jsx";
+// import BusinessNumber from "./BusinessNumber.jsx";
 
 export default function InputGroup({ role }) {
   return (

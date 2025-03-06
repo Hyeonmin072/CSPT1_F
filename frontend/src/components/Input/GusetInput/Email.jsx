@@ -1,6 +1,6 @@
 import { Mail } from "lucide-react";
 import { useContext } from "react";
-import { UserContext } from "../../context/GusetContext";
+import { GuestContext } from "../../context/GuestContext";
 
 export default function Email() {
   const { userInfo, setUserInfo } = useContext(UserContext);

@@ -1,10 +1,10 @@
 // UserContext.jsx 생성
 import { createContext, useState } from "react";
 
-export const UserContext = createContext();
+export const GuestContext = createContext();
 
-export const UserProvider = ({ children }) => {
-  const [userInfo, setUserInfo] = useState({
+export const GuestProvider = ({ children }) => {
+  const [guestInfo, setGuestInfo] = useState({
     birthDate: "",
     email: "",
     password: "",
@@ -14,8 +14,8 @@ export const UserProvider = ({ children }) => {
   });
 
   return (
-    <UserContext.Provider value={{ userInfo, setUserInfo }}>
+    <GuestContext.Provider value={{ userInfo, setUserInfo }}>
       {children}
-    </UserContext.Provider>
+    </GuestContext.Provider>
   );
 };

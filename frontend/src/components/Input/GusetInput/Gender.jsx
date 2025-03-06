@@ -1,6 +1,6 @@
 import { UserCircle } from "lucide-react";
 import { useContext } from "react";
-import { GusetContext } from "../../context/GusetContext";
+import { GusetContext } from "../../context/GuestContext";
 
 export default function Gender() {
   const { userInfo, setUserInfo } = useContext(GusetContext);

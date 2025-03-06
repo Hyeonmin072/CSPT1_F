@@ -1,6 +1,6 @@
 import { Smartphone } from "lucide-react";
 import { useContext } from "react";
-import { UserContext } from "../../context/GusetContext";
+import { GuestContext } from "../../context/GuestContext";
 
 export default function PhoneNumber() {
   const { userInfo, setUserInfo } = useContext(UserContext);
