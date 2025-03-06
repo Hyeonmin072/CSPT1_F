@@ -64,8 +64,9 @@ const yearlyData = [
     { name: '12월', sales: 3900 },
 ];
 
-
-
+// 그래프 차트 
+// npm install recharts
+// npm install react-slick slick-carousel
 export default function Sales({ Designerprofile }) {
     const [data, setData] = useState(weeklyData);
     const [currentDate, setCurrentDate] = useState('');
