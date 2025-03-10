@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Overlay } from "../../overlay/OverLay";
+import HairismLogo from "../../../assets/logo/hairlogo.png";
 
 const SignIntegration = ({ isOpen, onClose }) => {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -13,7 +14,13 @@ const SignIntegration = ({ isOpen, onClose }) => {
     phone: "",
   });
   const [errors, setErrors] = useState({});
+  const [userType, setUserType] = useState("customer"); // 기본값: 고객
   const navigate = useNavigate();
+
+  // 현재 상태 로그 출력
+  useEffect(() => {
+    console.log("현재 상태:", isLoginForm ? "로그인" : "회원가입");
+  }, [isLoginForm]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -76,6 +83,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
         console.log("로그인 시도:", {
           email: formData.email,
           password: formData.password,
+          userType: userType,
         });
 
         // 로그인 성공 시 Sweet Alert로 알림
@@ -87,7 +95,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
           confirmButtonText: "확인",
         });
       } else {
-        console.log("회원가입 시도:", formData);
+        console.log("회원가입 시도:", {
+          ...formData,
+          userType: userType,
+        });
 
         // 회원가입 성공 시 Sweet Alert로 알림
         await Swal.fire({
@@ -115,6 +126,20 @@ const SignIntegration = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleSocialLogin = (provider) => {
+    console.log(`${provider} 로그인 시도`);
+    // 소셜 로그인 로직 구현
+  };
+
+  // 모드 전환 시 로그 추가
+  const toggleLoginMode = (isLogin) => {
+    setIsLoginForm(isLogin);
+    console.log(
+      "모드 전환:",
+      isLogin ? "로그인으로 전환" : "회원가입으로 전환"
+    );
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -136,10 +161,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
       {/* 모달 컨텐츠 - 중앙 정렬 및 크기 최적화 */}
       <div className="fixed inset-0 flex items-center justify-center z-40">
-        <div className="bg-white rounded-lg w-[95%] max-w-4xl mx-auto overflow-hidden relative">
+        <div className="bg-white rounded-lg w-[95%] max-w-4xl max-h-[90vh] mx-auto overflow-hidden relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 z-10"
+            className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 z-30"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -157,22 +182,63 @@ const SignIntegration = ({ isOpen, onClose }) => {
             </svg>
           </button>
 
-          <div className="flex w-full">
+          <div className="flex w-full relative">
             {/* 왼쪽 로그인 섹션 */}
-            <div className="w-1/2 p-6 flex flex-col justify-center border-r border-gray-200">
+            <div
+              className={`w-1/2 p-3 flex flex-col justify-center border-r border-gray-300 transition-opacity duration-500 ease-in-out z-10 ${
+                isLoginForm ? "opacity-100" : "opacity-30"
+              }`}
+            >
               <div className="w-full">
-                <h2 className="text-2xl font-bold mb-4 text-center">로그인</h2>
+                <h2 className="text-base font-bold mb-2 text-center">로그인</h2>
+
+                {/* 사용자 유형 선택 버튼 */}
+                <div className="flex justify-center space-x-2 mb-3">
+                  <button
+                    type="button"
+                    onClick={() => setUserType("owner")}
+                    className={`px-2 py-1 text-xs rounded-full border ${
+                      userType === "owner"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    사장이에요
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType("customer")}
+                    className={`px-2 py-1 text-xs rounded-full border ${
+                      userType === "customer"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    고객이에요
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType("designer")}
+                    className={`px-2 py-1 text-xs rounded-full border ${
+                      userType === "designer"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    디자이너에요
+                  </button>
+                </div>
 
                 <form
                   onSubmit={
                     isLoginForm ? handleSubmit : (e) => e.preventDefault()
                   }
-                  className="space-y-3"
+                  className="space-y-2"
                 >
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       아이디
                     </label>
@@ -182,11 +248,11 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                       placeholder="이메일 주소를 입력하세요"
                     />
                     {isLoginForm && errors.email && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-xs mt-0.5">
                         {errors.email}
                       </p>
                     )}
@@ -195,7 +261,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <div>
                     <label
                       htmlFor="password"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       비밀번호
                     </label>
@@ -205,11 +271,11 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                       placeholder="비밀번호를 입력하세요"
                     />
                     {isLoginForm && errors.password && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-xs mt-0.5">
                         {errors.password}
                       </p>
                     )}
@@ -217,16 +283,53 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
                   <button
                     type="submit"
-                    className="w-full mx-auto block py-2 px-4 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200 mt-4"
+                    className="w-full mx-auto block py-1.5 px-4 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200 mt-2 text-sm"
                   >
                     로그인
                   </button>
                 </form>
 
-                <div className="mt-4">
+                {/* 소셜 로그인 버튼 */}
+                <div className="mt-2 space-y-2">
                   <button
-                    onClick={() => setIsLoginForm(false)}
-                    className="w-full mx-auto block py-2 px-4 rounded-md text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
+                    onClick={() => handleSocialLogin("google")}
+                    className="w-full mx-auto flex items-center justify-center py-1.5 px-4 rounded-md text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200 text-sm"
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
+                        fill="#4285F4"
+                      />
+                    </svg>
+                    Google 로그인
+                  </button>
+
+                  <button
+                    onClick={() => handleSocialLogin("kakao")}
+                    className="w-full mx-auto flex items-center justify-center py-1.5 px-4 rounded-md text-gray-800 font-medium bg-yellow-300 hover:bg-yellow-400 transition-colors duration-200 text-sm"
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 3C5.9 3 1 6.9 1 11.3c0 2.5 1.4 4.7 3.5 6.3-.4 1.6-1.4 5.2-1.5 5.6 0 .1 0 .2.1.3.1.1.3.2.5.1l6.6-3.7c.6.1 1.2.1 1.8.1 6.1 0 11-3.9 11-8.7S18.1 3 12 3"
+                        fill="#000000"
+                      />
+                    </svg>
+                    Kakao 로그인
+                  </button>
+                </div>
+
+                <div className="mt-2">
+                  <button
+                    onClick={() => toggleLoginMode(false)}
+                    className="w-full mx-auto block py-1.5 px-4 rounded-md text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200 text-sm"
                   >
                     회원가입
                   </button>
@@ -235,33 +338,63 @@ const SignIntegration = ({ isOpen, onClose }) => {
             </div>
 
             {/* 오른쪽 회원가입 섹션 */}
-            <div className="w-1/2 relative">
-              {/* 로고 레이어 - absolute로 회원가입 폼 위에 배치 */}
-              <div
-                className={`absolute inset-0 flex flex-col items-center justify-center bg-white transition-transform duration-500 ease-in-out ${
-                  isLoginForm ? "" : "translate-x-[-100%]"
-                }`}
-              >
-                <div className="w-40 h-28 border border-gray-300 mb-4"></div>
-                <h1 className="text-3xl font-bold">Hairlism</h1>
-              </div>
-
-              {/* 회원가입 폼 - 로고 아래에 있다가 로고가 이동하면 보임 */}
-              <div className="w-full h-full p-6 flex flex-col justify-center">
-                <h2 className="text-2xl font-bold mb-4 text-center">
+            <div
+              className={`w-1/2 p-3 flex flex-col justify-center transition-opacity duration-500 ease-in-out z-10 ${
+                isLoginForm ? "opacity-30" : "opacity-100"
+              }`}
+            >
+              <div className="w-full">
+                <h2 className="text-base font-bold mb-2 text-center">
                   회원가입
                 </h2>
+
+                {/* 사용자 유형 선택 버튼 */}
+                <div className="flex justify-center space-x-2 mb-3">
+                  <button
+                    type="button"
+                    onClick={() => setUserType("owner")}
+                    className={`px-2 py-1 text-xs rounded-full border ${
+                      userType === "owner"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    사장이에요
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType("customer")}
+                    className={`px-2 py-1 text-xs rounded-full border ${
+                      userType === "customer"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    고객이에요
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType("designer")}
+                    className={`px-2 py-1 text-xs rounded-full border ${
+                      userType === "designer"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    디자이너에요
+                  </button>
+                </div>
 
                 <form
                   onSubmit={
                     !isLoginForm ? handleSubmit : (e) => e.preventDefault()
                   }
-                  className="space-y-2"
+                  className="space-y-1.5"
                 >
                   <div>
                     <label
                       htmlFor="signup-email"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       이메일
                     </label>
@@ -271,10 +404,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                     />
                     {!isLoginForm && errors.email && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-xs mt-0.5">
                         {errors.email}
                       </p>
                     )}
@@ -283,7 +416,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <div>
                     <label
                       htmlFor="signup-password"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       비밀번호
                     </label>
@@ -293,10 +426,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                     />
                     {!isLoginForm && errors.password && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-xs mt-0.5">
                         {errors.password}
                       </p>
                     )}
@@ -305,7 +438,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <div>
                     <label
                       htmlFor="confirmPassword"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       비밀번호 확인
                     </label>
@@ -315,10 +448,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                     />
                     {!isLoginForm && errors.confirmPassword && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-xs mt-0.5">
                         {errors.confirmPassword}
                       </p>
                     )}
@@ -327,7 +460,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       이름
                     </label>
@@ -337,17 +470,19 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                     />
                     {!isLoginForm && errors.name && (
-                      <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                      <p className="text-red-500 text-xs mt-0.5">
+                        {errors.name}
+                      </p>
                     )}
                   </div>
 
                   <div>
                     <label
                       htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-xs font-medium text-gray-700"
                     >
                       전화번호
                     </label>
@@ -357,10 +492,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                     />
                     {!isLoginForm && errors.phone && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-xs mt-0.5">
                         {errors.phone}
                       </p>
                     )}
@@ -368,21 +503,41 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
                   <button
                     type="submit"
-                    className="w-full mx-auto block py-2 px-4 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200 mt-4"
+                    className="w-full mx-auto block py-1.5 px-4 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200 mt-3 text-sm"
                   >
                     회원가입
                   </button>
                 </form>
 
-                <div className="mt-4 text-center">
+                <div className="mt-3 text-center">
                   <button
-                    onClick={() => setIsLoginForm(true)}
-                    className="text-blue-600 hover:text-blue-800 font-medium"
+                    onClick={() => toggleLoginMode(true)}
+                    className="text-blue-600 hover:text-blue-800 font-medium text-sm"
                   >
                     로그인으로 돌아가기
                   </button>
                 </div>
               </div>
+            </div>
+
+            {/* 로고 레이어 - 이제 가장 위에 위치하며 부드러운 이동 애니메이션 적용 */}
+            <div
+              className={`absolute top-0 bottom-0 w-1/2 bg-white flex flex-col items-center justify-center transition-all duration-700 ease-in-out z-20 ${
+                isLoginForm
+                  ? "transform translate-x-full opacity-100"
+                  : "transform translate-x-0 opacity-90"
+              }`}
+              style={{
+                boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <img
+                src={HairismLogo}
+                alt="Hairism 로고"
+                className={`w-32 h-auto mb-2 transition-all duration-700 ease-in-out ${
+                  isLoginForm ? "opacity-100 scale-100" : "opacity-90 scale-95"
+                }`}
+              />
             </div>
           </div>
         </div>
