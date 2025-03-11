@@ -38,6 +38,192 @@ const SignIntegration = ({ isOpen, onClose }) => {
   const [emailVerified, setEmailVerified] = useState(false); // 이메일 인증 상태
   const navigate = useNavigate();
 
+  // 5단계 (유저 타입별 추가 정보) 렌더링 함수
+  const renderUserTypeSpecificForm = () => {
+    return (
+      <div className="flex flex-col h-full justify-between">
+        <div>
+          <h3 className="text-center text-sm font-medium mb-4">
+            {userType === "customer"
+              ? "고객 추가 정보"
+              : userType === "owner"
+              ? "사장님 추가 정보"
+              : "디자이너 추가 정보"}
+          </h3>
+
+          <div className="space-y-4">
+            {/* 사장님에게만 필요한 필드 */}
+            {userType === "owner" && (
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  사업자 등록번호
+                </label>
+                <input
+                  type="text"
+                  name="bizId"
+                  value={formData.bizId}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  placeholder="사업자 등록번호를 입력하세요"
+                />
+                {errors.bizId && (
+                  <p className="text-red-500 text-xs mt-1">{errors.bizId}</p>
+                )}
+              </div>
+            )}
+
+            {/* 디자이너에게만 필요한 필드 */}
+            {userType === "designer" && (
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  닉네임
+                </label>
+                <input
+                  type="text"
+                  name="nickname"
+                  value={formData.nickname}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  placeholder="활동할 닉네임을 입력하세요"
+                />
+                {errors.nickname && (
+                  <p className="text-red-500 text-xs mt-1">{errors.nickname}</p>
+                )}
+              </div>
+            )}
+
+            {/* 고객과 사장님에게 필요한 주소 필드 */}
+            {(userType === "customer" || userType === "owner") && (
+              <>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    우편번호
+                  </label>
+                  <div className="flex">
+                    <input
+                      type="text"
+                      name="post"
+                      value={formData.post}
+                      onChange={handleChange}
+                      className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      placeholder="우편번호"
+                      readOnly
+                    />
+                    <button
+                      type="button"
+                      className="ml-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300"
+                      onClick={() => {
+                        /* 우편번호 검색 기능 */
+                      }}
+                    >
+                      우편번호 검색
+                    </button>
+                  </div>
+                  {errors.post && (
+                    <p className="text-red-500 text-xs mt-1">{errors.post}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    주소
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="주소를 입력하세요"
+                  />
+                  {errors.address && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.address}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* 고객과 디자이너에게 필요한 생년월일, 성별 필드 */}
+            {(userType === "customer" || userType === "designer") && (
+              <>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    생년월일
+                  </label>
+                  <input
+                    type="date"
+                    name="birth"
+                    value={formData.birth}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  />
+                  {errors.birth && (
+                    <p className="text-red-500 text-xs mt-1">{errors.birth}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    성별
+                  </label>
+                  <div className="flex space-x-4">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === "male"}
+                        onChange={handleChange}
+                        className="form-radio h-4 w-4 text-blue-600"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">남성</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === "female"}
+                        onChange={handleChange}
+                        className="form-radio h-4 w-4 text-blue-600"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">여성</span>
+                    </label>
+                  </div>
+                  {errors.gender && (
+                    <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* 하단 버튼 영역 */}
+        <div className="mt-[55px]">
+          {/* 이전/완료 버튼 */}
+          <div className="flex justify-center gap-10">
+            <button
+              type="button"
+              onClick={prevStep}
+              className="px-6 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
+            >
+              &larr; 이전
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors text-sm"
+            >
+              가입 완료
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // 현재 상태 로그 출력
   useEffect(() => {
     console.log("🪪 현재 상태:", isLoginForm ? "로그인" : "회원가입");
@@ -268,9 +454,9 @@ const SignIntegration = ({ isOpen, onClose }) => {
           const commonData = {
             email: formData.email,
             password: formData.password,
+            confirmPassword: formData.confirmPassword,
             name: formData.name,
             tel: formData.tel,
-            userType: userType,
           };
 
           // 사용자 타입에 따라 필요한 추가 데이터 구성
@@ -424,7 +610,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
-                사장님
+                사장
               </button>
               <button
                 type="button"
@@ -435,7 +621,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
-                고객님
+                고객
               </button>
               <button
                 type="button"
@@ -446,7 +632,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
-                디자이너님
+                디자이너
               </button>
             </div>
             <div className="flex justify-center mt-auto mt-6">
@@ -647,17 +833,17 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
+                  id="tel"
+                  name="tel"
+                  value={formData.tel}
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
                     errors.phone ? "border-red-500" : "border-gray-300"
                   } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
                   placeholder="연락 가능한 전화번호를 입력해주세요"
                 />
-                {errors.phone && (
-                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                {errors.tel && (
+                  <p className="text-red-500 text-xs mt-1">{errors.tel}</p>
                 )}
               </div>
 
@@ -670,15 +856,18 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   &larr; 이전
                 </button>
                 <button
-                  type="submit"
-                  className="px-6 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors text-sm"
+                  type="button"
+                  onClick={nextStep}
+                  className="px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
                 >
-                  회원가입 완료
+                  &larr; 다음
                 </button>
               </div>
             </div>
           </>
         );
+      case 5:
+        return renderUserTypeSpecificForm(); // 유저 타입별 추가 정보 단계
       default:
         return null;
     }
@@ -890,12 +1079,13 @@ const SignIntegration = ({ isOpen, onClose }) => {
                       <span className="text-xs text-gray-500">유형 선택</span>
                       <span className="text-xs text-gray-500">이메일 인증</span>
                       <span className="text-xs text-gray-500">비밀번호</span>
-                      <span className="text-xs text-gray-500">개인정보</span>
+                      <span className="text-xs text-gray-500">유저 정보</span>
+                      <span className="text-xs text-gray-500">추가 정보</span>
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-blue-500 transition-all duration-300 ease-out"
-                        style={{ width: `${(currentStep / 4) * 100}%` }}
+                        style={{ width: `${(currentStep / 5) * 100}%` }}
                       ></div>
                     </div>
                   </div>
