@@ -1,6 +1,7 @@
-import WebSocket from "ws";
+import { WebSocketServer } from "ws";
 
-const server = new WebSocket.Server({ port: 5000 });
+const server = new WebSocketServer({ port: 5001 });
+
 
 let clients = [];
 
@@ -28,4 +29,4 @@ server.on("connection", (socket) => {
     });
 });
 
-console.log("WebSocket 서버 실행 중 (포트 5000)");
+console.log("WebSocket 서버 실행 중 (포트 5001)");
