@@ -904,40 +904,11 @@ const SignIntegration = ({ isOpen, onClose }) => {
     <>
       {/* Overlay 컴포넌트 사용 */}
       <Overlay isOpen={isOpen} onClose={onClose}>
-        <div className="bg-white rounded-lg w-[98%] max-w-4xl mx-auto overflow-hidden relative">
-          {/* 닫기 버튼 */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 z-10"
-          >
-            {/* 닫기 버튼 */}
-          </button>
-        </div>
-      </Overlay>
-
-      {/* 모달 컨텐츠 - 중앙 정렬 및 크기 최적화 */}
-      <div className="fixed inset-0 flex items-center justify-center z-40">
-        <div className="bg-white rounded-lg w-[95%] max-w-4xl max-h-[90vh] mx-auto overflow-hidden relative">
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 z-30"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-
+        {/* 모달 컨텐츠 - 중앙 정렬 및 크기 최적화 */}
+        <div
+          className="bg-white rounded-lg w-[95%] max-w-4xl mx-auto overflow-y-auto max-h-[90vh]"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="flex w-full relative">
             {/* 왼쪽 로그인 섹션 */}
             <div
@@ -1165,7 +1136,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
             </div>
           </div>
         </div>
-      </div>
+      </Overlay>
     </>
   );
 };
