@@ -64,8 +64,6 @@ export default function CurriculumVitae() {
     };
 
 
-
-
     return (
         <div className="container mx-auto p-10">
             {/* 간단 프로필 */}

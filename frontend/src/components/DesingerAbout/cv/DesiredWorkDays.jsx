@@ -41,7 +41,7 @@ export default function DesiredWorkDays({ isEditable, selectedDays, setSelectedD
                 <div className="flex items-center space-x-4 p-3">
                     <label className="w-32 text-gray-700 font-bold">희망 요일</label>
                     <div className="flex space-x-3 border rounded px-3 py-1">
-                        {["월", "화", "수", "목", "금", "토", "일", "요일 무관"].map((day) => (
+                        {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
                             <button
                                 key={day}
                                 onClick={() => toggleDay(day)}
