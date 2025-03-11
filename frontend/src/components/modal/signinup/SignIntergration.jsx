@@ -19,13 +19,16 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
     //사장 필드
     bizId: "",
+
     //디자이너 필드
     nickname: "",
 
     //사장, 디자이너 공통 필드(none)
+
     //유저, 사장 공통 필드
     adrees: "",
     post: "",
+
     //디자이너, 유저 공통 필드
     birth: "",
     gender: "",
@@ -259,14 +262,62 @@ const SignIntegration = ({ isOpen, onClose }) => {
       }
     } else {
       // 회원가입 완료 처리 (마지막 단계에서만)
-      if (currentStep === 4 && validateStep(currentStep)) {
+      if (currentStep === 5 && validateStep(currentStep)) {
         try {
-          console.log("회원가입 시도:", {
-            ...formData,
+          // 모든 사용자 타입에 공통으로 필요한 기본 데이터
+          const commonData = {
+            email: formData.email,
+            password: formData.password,
+            name: formData.name,
+            tel: formData.tel,
             userType: userType,
-          });
+          };
 
-          // 회원가입 성공 시 Sweet Alert로 알림
+          // 사용자 타입에 따라 필요한 추가 데이터 구성
+          let typeSpecificData = {};
+
+          switch (userType) {
+            case "customer": // 일반 유저 추가데이터
+              typeSpecificData = {
+                address: formData.address,
+                post: formData.post,
+                birth: formData.birth,
+                gender: formData.gender,
+              };
+              break;
+
+            case "owner": // 사장 추가 데이터
+              typeSpecificData = {
+                bizId: formData.bizId,
+                address: formData.address,
+                post: formData.post,
+              };
+              break;
+
+            case "designer": // 디자이너 추가 데이터
+              typeSpecificData = {
+                nickname: formData.nickname,
+                birth: formData.birth,
+                gender: formData.gender,
+              };
+              break;
+
+            default:
+              break;
+          }
+
+          // 최종 제출 데이터 (공통 + 타입별 데이터 병합)
+          const submitData = {
+            ...commonData,
+            ...typeSpecificData,
+          };
+
+          console.log("회원가입 데이터 전송:", submitData);
+
+          // API 호출 코드 (예시)
+          // const response = await registerUser(submitData);
+
+          // 성공 시 처리
           await Swal.fire({
             icon: "success",
             title: "회원가입 완료!",
@@ -279,7 +330,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
           setIsLoginForm(true);
           resetForm();
         } catch (error) {
-          console.error("Error:", error);
+          console.error("회원가입 오류:", error);
           Swal.fire({
             icon: "error",
             title: "오류 발생",
