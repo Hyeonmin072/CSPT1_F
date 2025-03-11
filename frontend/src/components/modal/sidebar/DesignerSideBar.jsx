@@ -11,7 +11,7 @@ const DesignerSideBar = ({ isOpen, onClose }) => {
         { id: 1, title: "홈", path: "/"},
         { id: 2, title: "고객 확인", path: "/client"},
         { id: 3, title: "실적 확인", path: "/sales"},
-        { id: 4, title: "구인구직" },
+        { id: 4, title: "구인구직", path: "/job" },
         { id: 5, title: "이력서", path: "/cv"},
         { id: 6, title: "프로필"},
     ];

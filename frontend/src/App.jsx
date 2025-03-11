@@ -19,6 +19,7 @@ import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
 import ClientCheckPage from "./pages/clientcheck/ClientCheckPage.jsx";
+import GetJobPage from "./pages/getjob/GetJobPage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
@@ -61,6 +62,7 @@ function App() {
                   <Route path="/cv" element={<CurriculumVitaePage />} />
                   <Route path="/sales" element={<SalesPage />} />
                   <Route path="/client" element={<ClientCheckPage />} />
+                  <Route path="/job" element={<GetJobPage />} />
                 </>
             )}
           </Routes>

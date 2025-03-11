@@ -34,7 +34,7 @@ export default function DesiredWorkDays({ isEditable, selectedDays, setSelectedD
 
     return (
         <div className="flex flex-col w-full max-w-4xl p-4 border-b-2 pb-8">
-            <h2 className="text-2xl font-semibold mb-4">희망 근무조건</h2>
+            <h2 className="text-2xl font-semibold mb-4">희망 근무요일</h2>
             <div className="border p-8 rounded-lg w-full max-w-4xl">
 
                 {/* 희망 요일 */}
@@ -55,26 +55,6 @@ export default function DesiredWorkDays({ isEditable, selectedDays, setSelectedD
                         ))}
                     </div>
                 </div>
-
-                {/* 희망 근무 기간 */}
-                <div className="flex items-center space-x-4 p-2">
-                    <label className="w-32 text-gray-700 font-bold">희망 근무조건</label>
-                    <div className="flex space-x-3 border rounded px-3 py-1">
-                        {["3개월 이하", "3개월 - 6개월", "6개월 - 1년", "1년 이상", "기간 무관"].map((duration) => (
-                            <button
-                                key={duration}
-                                onClick={() => selectDuration(duration)}
-                                className={`px-4 py-2 rounded ${
-                                    selectedDuration === duration ? "bg-[#00B3A6] text-white" : ""
-                                }`}
-                                disabled={!isEditable}
-                            >
-                                {duration}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
             </div>
         </div>
     );

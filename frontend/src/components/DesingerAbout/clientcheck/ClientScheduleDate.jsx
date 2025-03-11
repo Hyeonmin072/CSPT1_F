@@ -5,12 +5,14 @@ export default function ClientScheduleDate({ selectedDate, setSelectedDate }){
         const prevDate = new Date(selectedDate);
         prevDate.setDate(selectedDate.getDate() - 1);
         setSelectedDate(prevDate);
+        console.log("handlePrevDay Clicked");
     };
 
     const handleNextDay = () => {
         const nextDate = new Date(selectedDate);
         nextDate.setDate(selectedDate.getDate() + 1);
         setSelectedDate(nextDate);
+        console.log("handleNextDay Clicked");
     };
 
     return (
@@ -28,7 +30,11 @@ export default function ClientScheduleDate({ selectedDate, setSelectedDate }){
                 type="date"
                 className="bg-white"
                 value={selectedDate ? format(selectedDate, "yyyy-MM-dd") : ""}
-                onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                onChange={(e) => {
+                    const newDate = new Date(e.target.value);
+                    console.log("선택한 날짜:", format(newDate, "yyyy-MM-dd"));
+                    setSelectedDate(newDate);
+                }}
             />
 
             {/* 다음 날짜 버튼 */}

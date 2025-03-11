@@ -36,7 +36,7 @@ export default function DesignerHeader() {
                             <Link to="/client" className="text-gray-700">
                                 고객확인
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/job" className="text-gray-700">
                                 구인구직
                             </Link>
                             <Link to="/sales" className="text-gray-700">
