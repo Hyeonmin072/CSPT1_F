@@ -26,7 +26,7 @@ export default function DesignerMain() {
     ];
 
     const handleProfile = () => navigate("/profile");
-    const handleChart = () => navigate("/revenue");
+    const handleChart = () => navigate("/sales");
 
     const [currentTime, setCurrentTime] = useState(new Date());
 

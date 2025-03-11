@@ -24,7 +24,7 @@ export default function SaleStaus({ Designerprofile }){
                         {Designerprofile && Designerprofile.length > 0 && Designerprofile[0].imageURL ? (
                             <img
                                 src={Designerprofile[0].imageURL}
-                                className="w-15 h-15 rounded-full"
+                                className="w-[70px] h-[70px] rounded-full flex items-center justify-center mb-4"
                             />
                         ) : (
                             <div

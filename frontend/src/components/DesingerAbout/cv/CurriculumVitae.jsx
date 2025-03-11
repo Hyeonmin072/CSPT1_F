@@ -7,7 +7,7 @@ import Certification from "./Certification.jsx";
 
 // 기본 프로필 설정 함수
 const defaultProfile = () => [
-    { id: 1, name: "홍길동", email: "test1@gmail.com", phone: "010-1234-5678" },
+    { id: 1, name: "홍길동", email: "test1@gmail.com", phone: "010-1234-5678", gender:"남성", age:21 },
 ];
 
 export default function CurriculumVitae() {

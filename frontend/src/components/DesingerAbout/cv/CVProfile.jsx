@@ -42,7 +42,7 @@ export default function CVProfile({ defaultProfile, profile, isEditable, image, 
         <div className="flex w-full max-w-4xl border-b-2">
             <div className="p-8 flex justify-center">
                 <div
-                    className="w-[240px] h-[300px] border-dashed border-4 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer"
+                    className="w-[240px] h-[280px] border-dashed border-4 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer"
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onClick={() => isEditable && document.getElementById('fileInput').click()}
@@ -83,44 +83,16 @@ export default function CVProfile({ defaultProfile, profile, isEditable, image, 
                     <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.phone}</span>
                 </div>
 
-                {/* 주소 */}
-                <div className="flex items-center mb-4">
-                    <label className="w-32 text-gray-700 font-bold">주소</label>
-                    <div className="flex space-x-2">
-                        <input
-                            type="text"
-                            className="w-[300px] border rounded p-2"
-                            placeholder="주소를 입력해주세요."
-                            disabled={!isEditable}
-                        />
-                        <button className="border px-2 py-2 rounded hover:bg-[#00B3A6] hover:text-white">주소 검색</button>
-                    </div>
-                </div>
-
-                {/* 성별 */}
+                {/* 성별 (수정 불가능) */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">성별</label>
-                    <select
-                        className="w-[400px] border rounded p-2"
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                        disabled={!isEditable}
-                    >
-                        <option value="" disabled>선택해주세요</option>
-                        <option value="남성">남성</option>
-                        <option value="여성">여성</option>
-                    </select>
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.gender}</span>
                 </div>
 
-                {/* 나이 */}
+                {/* 나이 (수정 불가능) */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">나이</label>
-                    <input
-                        type="number"
-                        className="w-[400px] border rounded p-2"
-                        placeholder="나이를 입력해주세요."
-                        disabled={!isEditable}
-                    />
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.age}</span>
                 </div>
             </div>
         </div>

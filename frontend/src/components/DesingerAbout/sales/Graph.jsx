@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, AreaChart , Line, Area,  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Slider from 'react-slick';
 
 export default function Graph({ handlePeriodChange, chartRef, data }){
@@ -22,14 +22,29 @@ export default function Graph({ handlePeriodChange, chartRef, data }){
 
             <div className="relative h-64" ref={chartRef}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={data}>
-                        <CartesianGrid strokeDasharray="2 3"/>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <Tooltip/>
-                        <Legend/>
-                        <Line type="monotone" dataKey="sales" stroke="#4CCECB" activeDot={{r: 8}}/>
-                    </LineChart>
+                    {/*<LineChart data={data}>*/}
+                    {/*    <CartesianGrid strokeDasharray="2 3"/>*/}
+                    {/*    <XAxis dataKey="name"/>*/}
+                    {/*    <YAxis/>*/}
+                    {/*    <Tooltip/>*/}
+                    {/*    <Legend/>*/}
+                    {/*    <Line type="monotone" dataKey="sales" stroke="#4CCECB" activeDot={{r: 8}}/>*/}
+                    {/*</LineChart>*/}
+
+                    <AreaChart data={data}>
+                        {/* 그라데이션 정의 */}
+                        <defs>
+                            <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#4CCECB" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#4CCECB" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
+
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area type="monotone" dataKey="sales" stroke="#4CCECB" fill="url(#salesGradient)" />
+                    </AreaChart>
                 </ResponsiveContainer>
             </div>
         </>
