@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CVProfile.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Career.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Certification.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/DesiredWorkDays.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/cv/CurriculumVitaePage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientCheck.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/clientcheck/ClientCheckPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CVProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CVProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/SaleStaus.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/SaleStaus.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Sales.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Sales.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/DesignerHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/DesignerHeader.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/DesignerSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/DesignerSideBar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +38,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -49,7 +54,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend-curriculum__vitaepage&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-clientcheck&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/reservationcheck&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -137,6 +142,13 @@
       <workItem from="1741054053274" duration="1271000" />
       <workItem from="1741057162607" duration="22170000" />
       <workItem from="1741139280830" duration="5991000" />
+      <workItem from="1741157814872" duration="9509000" />
+      <workItem from="1741236025814" duration="7300000" />
+      <workItem from="1741243471054" duration="382000" />
+      <workItem from="1741244004912" duration="8539000" />
+      <workItem from="1741316605354" duration="1370000" />
+      <workItem from="1741657778961" duration="4961000" />
+      <workItem from="1741664692148" duration="7067000" />
     </task>
     <servers />
   </component>
