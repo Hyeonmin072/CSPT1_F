@@ -241,12 +241,37 @@ const SignIntegration = ({ isOpen, onClose }) => {
     }
   }, [currentStep, isLoginForm]);
 
+  //전화번호 포맷팅
+  const formatPhoneNumber = (value) => {
+    // 숫자만 추출
+    const numbers = value.replace(/[^\d]/g, "");
+    // 길이에 따라 포맷팅
+    if (numbers.length <= 3) {
+      return numbers;
+    } else if (numbers.length <= 7) {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    } else {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(
+        7,
+        11
+      )}`;
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "tel") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: formatPhoneNumber(value),
+      }));
+    } else {
+      // 다른 필드는 기존 로직 유지
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   // 단계별 유효성 검사
@@ -281,8 +306,8 @@ const SignIntegration = ({ isOpen, onClose }) => {
         if (!formData.name) {
           newErrors.name = "이름을 입력해주세요";
         }
-        if (!formData.phone) {
-          newErrors.phone = "전화번호를 입력해주세요";
+        if (!formData.tel) {
+          newErrors.tel = "전화번호를 입력해주세요";
         }
         break;
       default:
@@ -584,7 +609,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
       password: "",
       confirmPassword: "",
       name: "",
-      phone: "",
+      tel: "",
     });
     setErrors({});
     setCurrentStep(1);
@@ -838,7 +863,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   value={formData.tel}
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
-                    errors.phone ? "border-red-500" : "border-gray-300"
+                    errors.tel ? "border-red-500" : "border-gray-300"
                   } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
                   placeholder="연락 가능한 전화번호를 입력해주세요"
                 />
@@ -860,7 +885,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   onClick={nextStep}
                   className="px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
                 >
-                  &larr; 다음
+                  다음 &rarr;
                 </button>
               </div>
             </div>
@@ -928,9 +953,9 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <button
                     type="button"
                     onClick={() => setUserType("owner")}
-                    className={`px-2 py-1 text-xs rounded-full border ${
+                    className={`px-2 py-1 text-xs rounded-lg border ${
                       userType === "owner"
-                        ? "bg-blue-500 text-white border-blue-500"
+                        ? "bg-green-500 text-white border-green-500"
                         : "bg-white text-gray-700 border-gray-300"
                     }`}
                   >
@@ -939,9 +964,9 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <button
                     type="button"
                     onClick={() => setUserType("customer")}
-                    className={`px-2 py-1 text-xs rounded-full border ${
+                    className={`px-2 py-1 text-xs rounded-lg border ${
                       userType === "customer"
-                        ? "bg-blue-500 text-white border-blue-500"
+                        ? "bg-green-500 text-white border-green-500"
                         : "bg-white text-gray-700 border-gray-300"
                     }`}
                   >
@@ -950,9 +975,9 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <button
                     type="button"
                     onClick={() => setUserType("designer")}
-                    className={`px-2 py-1 text-xs rounded-full border ${
+                    className={`px-2 py-1 text-xs rounded-lg border ${
                       userType === "designer"
-                        ? "bg-blue-500 text-white border-blue-500"
+                        ? "bg-green-500 text-white border-green-500"
                         : "bg-white text-gray-700 border-gray-300"
                     }`}
                   >
@@ -1009,7 +1034,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
                   <button
                     type="submit"
-                    className="w-full mx-auto block py-2 px-4 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200 mt-4 text-sm"
+                    className="w-full mx-auto block py-2 px-4 rounded-md text-white font-medium bg-gray-400 hover:bg-green-500 transition-colors duration-200 mt-4 text-sm"
                   >
                     로그인
                   </button>
@@ -1055,9 +1080,13 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <div className="mt-4 text-center">
                   <button
                     onClick={() => toggleLoginMode(false)}
-                    className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                    className="text-gray-600 hover:text-gray-800 font-medium text-sm"
                   >
-                    아직 계정이 없으신가요? 회원가입
+                    아직 계정이 없으신가요?
+                    <span className="font-bold hover:text-green-500 transition-colors transition duration-500">
+                      {" "}
+                      회원가입
+                    </span>
                   </button>
                 </div>
               </div>
@@ -1070,7 +1099,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
               }`}
             >
               <div className="w-full">
-                <h2 className="text-xl font-bold mb-4 text-center">회원가입</h2>
+                {/* <h2 className="text-xl font-bold mb-4 text-center">회원가입</h2> */}
 
                 {/* 단계 표시 바 */}
                 {!isLoginForm && (
