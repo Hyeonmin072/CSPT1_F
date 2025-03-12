@@ -20,6 +20,8 @@ import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
 import ClientCheckPage from "./pages/clientcheck/ClientCheckPage.jsx";
 import GetJobPage from "./pages/getjob/GetJobPage.jsx";
+import GetJobDetailPage from "./pages/getjob/GetJobDetailPage.jsx";
+import CVCheck from "./pages/cv/CVCheckPage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
@@ -63,6 +65,8 @@ function App() {
                   <Route path="/sales" element={<SalesPage />} />
                   <Route path="/client" element={<ClientCheckPage />} />
                   <Route path="/job" element={<GetJobPage />} />
+                  <Route path="/detail" element={<GetJobDetailPage />} />
+                  <Route path="/cv-check" element={<CVCheck />} />
                 </>
             )}
           </Routes>

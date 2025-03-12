@@ -66,14 +66,6 @@ export default function LeftSideBar({ selectedLocal, setSelectedLocal, selectedP
                 />
                 <div className="flex flex-row text-sm mt-4 justify-between">
                     <span className="flex flex-col justify-center">월 100-1000만원</span>
-                    <div className="flex justify-end">
-                        <button
-                            className="px-5 py-2 bg-blue-500 text-white rounded-lg"
-                            onClick={handleFilter}
-                        >
-                            적용
-                        </button>
-                    </div>
                 </div>
             </div>
         </>

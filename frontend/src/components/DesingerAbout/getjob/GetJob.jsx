@@ -54,101 +54,73 @@ const jobs = [
 export default function GetJob() {
     const navigate = useNavigate();
     const [selectedLocal, setSelectedLocal] = useState("전체");
-    const [salary, setSalary] = useState(100); // 초기 슬라이더 값
-    const [filteredJobs, setFilteredJobs] = useState(jobs); // 필터링된 구인 목록
-    const [sortOrder, setSortOrder] = useState("최신순"); // 정렬 옵션 상태
+    const [salary, setSalary] = useState(100);
+    const [filteredJobs, setFilteredJobs] = useState(jobs);
+    const [sortOrder, setSortOrder] = useState("최신순");
     const [selectedPostedTime, setSelectedPostedTime] = useState("전체");
 
-    // 급여 기준으로 필터링 함수
-    const handleFilter = () => {
-        const filtered = jobs.filter((job) => job.salary >= salary);
-        setFilteredJobs(filtered);
-    };
+    // 필터링 및 정렬 로직 통합
+    const applyFiltersAndSorting = () => {
+        let filtered = jobs;
 
-    // 구인 목록 정렬 함수
-    const handleSortAndFilter = () => {
-        // 확인용 console
-        console.log(`정렬 기준: ${sortOrder}`);
+        // 1. 지역 필터링
+        if (selectedLocal !== "전체") {
+            filtered = filtered.filter((job) => job.location === selectedLocal);
+        }
 
-        // 정렬 로직
-        const sortedJobs = [...jobs].sort((a, b) => {
-            if (sortOrder === "최신순") return a.postedTime - b.postedTime; // 최신순: postedTime 오름차순
-            if (sortOrder === "이름순") return a.title.localeCompare(b.title, "ko"); // 이름순: 가나다순
+        // 2. 급여 필터링
+        filtered = filtered.filter((job) => job.salary >= salary);
+
+        // 3. 게시글 등록 시간 필터링
+        if (selectedPostedTime !== "전체") {
+            const timeThreshold = {
+                "1시간 전": 60,
+                "24시간 전": 1440,
+                "일주일 전": 10080,
+                "한달 전": 10080
+            };
+            filtered = filtered.filter(
+                (job) => job.postedTime <= timeThreshold[selectedPostedTime]
+            );
+        }
+
+        // 4. 정렬 로직
+        filtered.sort((a, b) => {
+            if (sortOrder === "최신순") return a.postedTime - b.postedTime;
+            if (sortOrder === "이름순") return a.title.localeCompare(b.title, "ko");
             return 0;
         });
 
-        // 확인용 console
-        console.log("정렬된 목록:", sortedJobs);
-
-        // 상태 업데이트
-        setFilteredJobs(sortedJobs);
+        setFilteredJobs(filtered);
     };
 
-    // 게시글 등록 시간 필터링 함수
-    const handlePostedTimeFilter = () => {
-        let filtered;
-        if (selectedPostedTime === "전체") {
-            filtered = jobs; // 전체
-        } else if (selectedPostedTime === "1시간 전") {
-            filtered = jobs.filter((job) => job.postedTime <= 60); 
-        } else if (selectedPostedTime === "24시간 전") {
-            filtered = jobs.filter((job) => job.postedTime <= 1440);
-        } else if (selectedPostedTime === "일주일 전") {
-            filtered = jobs.filter((job) => job.postedTime <= 10080);
-        } else if (selectedPostedTime === "한달 전") {
-            filtered = jobs.filter((job) => job.postedTime < 10080);
-        }
+    // 필터와 정렬 상태가 변경될 때마다 실행
+    useEffect(() => {
+        applyFiltersAndSorting();
+    }, [selectedLocal, salary, selectedPostedTime, sortOrder]);
 
-        setFilteredJobs(filtered); // 필터링된 결과 업데이트
-    };
-
-    // 날짜 단위 계산 함수
+    // 날짜 단위 포맷 함수
     const formatPostedTime = (time) => {
-        if (time >= 60) {
-            const days = Math.floor(time / 60 / 24); // 일 계산
-            if (days >= 1) {
-                return `${days}일 전`;
-            } else {
-                return `${Math.floor(time / 60)}시간 전`; // 시간 계산
-            }
+        if (time >= 1440) {
+            const days = Math.floor(time / 60 / 24);
+            return `${days}일 전`;
+        } else if (time >= 60) {
+            return `${Math.floor(time / 60)}시간 전`;
         }
         return `${time}분 전`;
     };
 
-    useEffect(() => {
-        // 현재 시간 (로컬 컴퓨터의 시간)
-        const currentTime = new Date().getTime();
-
-        // 지역 필터링
-        const filtered = jobs.filter(
-            (job) => selectedLocal === "전체" || job.location === selectedLocal
-        );
-        console.log("필터링된 데이터:", filtered);
-        setFilteredJobs(filtered);
-
-        // 게시글 등록 시간 필터링
-        handlePostedTimeFilter();
-        formatPostedTime();
-
-        // 구인 목록 정렬(맨 밑에 있어야 로딩후, 최신순 정렬이 제대로 작동)
-        handleSortAndFilter();
-    }, [selectedLocal, selectedPostedTime, sortOrder]);
-
     return (
         <div className="p-10">
-
             {/* 정렬 옵션 */}
             <div className="flex justify-end max-w-7xl px-10">
-                <SortOrder
-                    sortOrder={sortOrder}
-                    setSortOrder={setSortOrder}
-                />
+                <SortOrder sortOrder={sortOrder} setSortOrder={setSortOrder} />
             </div>
 
             {/* 메인 컨테이너 (왼쪽 사이드바 + 구인 목록) */}
             <div className="flex max-w-7xl mx-auto bg-white rounded-lg mt-6">
                 {/* 왼쪽 사이드바 */}
-                <div className="w-1/5 p-6 border bg-gray-50 rounded-2xl max-h-[680px]">
+                <div className="w-1/5 p-6 border bg-gray-50 rounded-2xl max-h-[640px]">
                     <LeftSideBar
                         selectedLocal={selectedLocal}
                         setSelectedLocal={setSelectedLocal}
@@ -158,7 +130,6 @@ export default function GetJob() {
                         setSalary={setSalary}
                         handleFilter={() => console.log("필터 적용")}
                     />
-
                 </div>
 
                 {/* 구인 목록 */}
