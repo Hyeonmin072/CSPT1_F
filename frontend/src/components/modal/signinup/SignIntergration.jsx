@@ -84,7 +84,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   value={formData.nickname}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  placeholder="활동할 닉네임을 입력하세요"
+                  placeholder="닉네임을 입력하세요"
                 />
                 {errors.nickname && (
                   <p className="text-red-500 text-xs mt-1">{errors.nickname}</p>
@@ -214,7 +214,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors text-sm"
+              className="px-6 py-2 rounded-md text-white font-medium bg-green-600 hover:bg-green-700 transition-colors text-sm"
             >
               가입 완료
             </button>
@@ -260,11 +260,62 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "tel") {
+      const formattedValue = formatPhoneNumber(value);
       setFormData((prev) => ({
         ...prev,
-        [name]: formatPhoneNumber(value),
+        [name]: formattedValue,
       }));
+
+      // 전화번호 형식 유효성 검사
+      // 빈 값은 아직 오류로 처리하지 않음
+      if (formattedValue && !isValidPhoneNumber(formattedValue)) {
+        setErrors((prev) => ({
+          ...prev,
+          tel: "올바른 전화번호 형식이 아닙니다 (예: 010-0000-0000)",
+        }));
+      } else {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors.tel;
+          return newErrors;
+        });
+      }
+    } else if (name === "password" || name === "confirmPassword") {
+      // 기존 비밀번호 검증 로직
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+
+        // 비밀번호 길이 검사
+        if (name === "password") {
+          if (value.length < 6 && value.length > 0) {
+            newErrors.password = "비밀번호는 최소 6자 이상이어야 합니다";
+          } else {
+            delete newErrors.password;
+          }
+        }
+
+        // 비밀번호 일치 여부 검사
+        const currentPassword = name === "password" ? value : formData.password;
+        const currentConfirmPassword =
+          name === "confirmPassword" ? value : formData.confirmPassword;
+
+        if (currentPassword && currentConfirmPassword) {
+          if (currentPassword !== currentConfirmPassword) {
+            newErrors.confirmPassword = "비밀번호가 일치하지 않습니다";
+          } else {
+            delete newErrors.confirmPassword;
+          }
+        }
+
+        return newErrors;
+      });
     } else {
       // 다른 필드는 기존 로직 유지
       setFormData((prev) => ({
@@ -272,6 +323,13 @@ const SignIntegration = ({ isOpen, onClose }) => {
         [name]: value,
       }));
     }
+  };
+
+  // 전화번호 형식 검증 함수
+  const isValidPhoneNumber = (phoneNumber) => {
+    // 010-0000-0000 형식 검사
+    const phoneRegex = /^010-\d{4}-\d{4}$/;
+    return phoneRegex.test(phoneNumber);
   };
 
   // 단계별 유효성 검사
@@ -318,7 +376,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
     // 오류가 있는 경우 Sweetalert2로 알림
     if (Object.keys(newErrors).length > 0) {
-      const errorMessages = Object.values(newErrors).join("\n");
+      const newErrors = Object.values(newErrors).join("\n");
       Swal.fire({
         icon: "warning",
         title: "입력 오류",
@@ -622,7 +680,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
       case 1:
         return (
           <>
-            <h3 className="text-center text-sm font-medium mb-4">
+            <h3 className="text-center text-sm font-medium mb-4 mt-24">
               어떤 유형의 사용자인가요?
             </h3>
             <div className="flex justify-center space-x-3 mb-5">
@@ -631,7 +689,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 onClick={() => setUserType("owner")}
                 className={`px-4 py-2 text-sm rounded-lg border transition-all ${
                   userType === "owner"
-                    ? "bg-blue-500 text-white border-blue-500 shadow-md transform scale-105"
+                    ? "bg-green-500 text-white border-green-500 shadow-md transform scale-105"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
@@ -642,7 +700,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 onClick={() => setUserType("customer")}
                 className={`px-4 py-2 text-sm rounded-lg border transition-all ${
                   userType === "customer"
-                    ? "bg-blue-500 text-white border-blue-500 shadow-md transform scale-105"
+                    ? "bg-green-500 text-white border-green-500 shadow-md transform scale-105"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
@@ -653,7 +711,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 onClick={() => setUserType("designer")}
                 className={`px-4 py-2 text-sm rounded-lg border transition-all ${
                   userType === "designer"
-                    ? "bg-blue-500 text-white border-blue-500 shadow-md transform scale-105"
+                    ? "bg-green-500 text-white border-green-500 shadow-md transform scale-105"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                 }`}
               >
@@ -664,7 +722,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
               <button
                 type="button"
                 onClick={nextStep}
-                className="px-6 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors text-sm"
+                className="px-6 py-2 rounded-md text-white font-medium bg-green-600 hover:bg-green-700 transition-colors text-sm"
               >
                 다음 &rarr;
               </button>
@@ -674,7 +732,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
       case 2:
         return (
           <>
-            <h3 className="text-center text-sm font-medium mb-4">
+            <h3 className="text-center text-sm font-medium mb-4 mt-24">
               이메일을 입력해주세요
             </h3>
             <div className="space-y-4">
@@ -698,7 +756,8 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={checkEmailDuplicate}
-                  className="ml-2 px-3 py-2 rounded-md text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors whitespace-nowrap"
+                  className="ml-2 px-3 py-2 rounded-md text-sm bg-green-300 hover:bg-green-400 text-gray-700 transition-colors whitespace-nowrap
+                  "
                 >
                   중복 확인
                 </button>
@@ -708,10 +767,10 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={sendVerificationEmail}
-                  className={`px-3 py-2 rounded-md text-sm ${
+                  className={`px-3 py-2 rounded-md text-sm flex ml-[150px] ${
                     emailVerified
-                      ? "bg-green-500 text-white"
-                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                      ? "bg-gray-500 text-white"
+                      : "bg-green-600 hover:bg-green-700 text-white"
                   } transition-colors`}
                   disabled={emailVerified}
                 >
@@ -724,7 +783,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 )}
               </div>
 
-              <div className="flex justify-center mt-6 gap-10">
+              <div className="flex justify-center gap-10 mt-10">
                 <button
                   type="button"
                   onClick={prevStep}
@@ -735,7 +794,18 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="px-6 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors text-sm"
+                  disabled={
+                    Object.keys(errors).length > 0 ||
+                    !formData.email ||
+                    !emailVerified
+                  }
+                  className={`px-6 py-2 rounded-md text-white font-medium ${
+                    Object.keys(errors).length > 0 ||
+                    !formData.email ||
+                    !emailVerified
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-green-700"
+                  } transition-colors text-sm`}
                 >
                   다음 &rarr;
                 </button>
@@ -765,11 +835,18 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
                     errors.password ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm`}
                   placeholder="6자 이상 입력해주세요"
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                  <p
+                    className="text-red-500 text-xs mt-1"
+                    style={{
+                      animation: "fadeIn 1s ease-in-out",
+                    }}
+                  >
+                    {errors.password}
+                  </p>
                 )}
               </div>
 
@@ -790,7 +867,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                     errors.confirmPassword
                       ? "border-red-500"
                       : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm`}
                   placeholder="비밀번호를 다시 입력해주세요"
                 />
                 {errors.confirmPassword && (
@@ -804,14 +881,25 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
+                  className="px-6 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
                 >
                   &larr; 이전
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="px-6 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors text-sm"
+                  disabled={
+                    Object.keys(errors).length > 0 ||
+                    !formData.password ||
+                    !formData.confirmPassword
+                  }
+                  className={`px-6 py-2 rounded-md text-white font-medium ${
+                    Object.keys(errors).length > 0 ||
+                    !formData.password ||
+                    !formData.confirmPassword
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-green-700"
+                  } transition-colors text-sm`}
                 >
                   다음 &rarr;
                 </button>
@@ -841,7 +929,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
                     errors.name ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm`}
                   placeholder="이름을 입력해주세요"
                 />
                 {errors.name && (
@@ -864,7 +952,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
                     errors.tel ? "border-red-500" : "border-gray-300"
-                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm`}
                   placeholder="연락 가능한 전화번호를 입력해주세요"
                 />
                 {errors.tel && (
@@ -876,14 +964,25 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
+                  className="px-6 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
                 >
                   &larr; 이전
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="px-4 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
+                  disabled={
+                    Object.keys(errors).length > 0 ||
+                    !formData.name ||
+                    !formData.tel
+                  }
+                  className={`px-6 py-2 rounded-md text-white font-medium ${
+                    Object.keys(errors).length > 0 ||
+                    !formData.name ||
+                    !formData.tel
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-green-700"
+                  } transition-colors text-sm`}
                 >
                   다음 &rarr;
                 </button>
@@ -912,12 +1011,12 @@ const SignIntegration = ({ isOpen, onClose }) => {
           <div className="flex w-full relative">
             {/* 왼쪽 로그인 섹션 */}
             <div
-              className={`w-1/2 p-6 flex flex-col justify-center border-r border-gray-300 transition-opacity duration-500 ease-in-out z-10 ${
-                isLoginForm ? "opacity-100" : "opacity-30"
+              className={`w-1/2 p-6 flex flex-col justify-center border-r border-gray-00 transition-opacity duration-500 ease-in-out z-10 ${
+                isLoginForm ? "opacity-100" : "opacity-0"
               }`}
             >
               <div className="w-full">
-                <h2 className="text-xl font-bold mb-4 text-center">로그인</h2>
+                <h1 className="text-xl font-bold mb-4 text-center"> HAIRISM</h1>
 
                 {/* 사용자 유형 선택 버튼 */}
                 <div className="flex justify-center space-x-2 mb-4">
@@ -1015,7 +1114,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 <div className="mt-6 space-y-3">
                   <button
                     onClick={() => handleSocialLogin("google")}
-                    className="w-full mx-auto flex items-center justify-center py-2 px-4 rounded-md text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200 text-sm"
+                    className="w-[180px] mx-auto flex items-center justify-center py-2 px-4 rounded-md text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-200 text-sm"
                   >
                     <svg
                       className="w-4 h-4 mr-2"
@@ -1032,7 +1131,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
                   <button
                     onClick={() => handleSocialLogin("kakao")}
-                    className="w-full mx-auto flex items-center justify-center py-2 px-4 rounded-md text-gray-800 font-medium bg-yellow-300 hover:bg-yellow-400 transition-colors duration-200 text-sm"
+                    className="w-[180px] mx-auto flex items-center justify-center py-2 px-4 rounded-md text-gray-800 font-medium bg-yellow-300 hover:bg-yellow-400 transition-colors duration-200 text-sm"
                   >
                     <svg
                       className="w-4 h-4 mr-2"
@@ -1062,7 +1161,6 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 </div>
               </div>
             </div>
-
             {/* 오른쪽 회원가입 섹션 - 단계별 양식 */}
             <div
               className={`w-1/2 p-6 flex flex-col justify-center transition-opacity duration-500 ease-in-out z-10 ${
@@ -1084,7 +1182,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-500 transition-all duration-300 ease-out"
+                        className="h-full bg-green-500 transition-all duration-500 ease-out"
                         style={{ width: `${(currentStep / 5) * 100}%` }}
                       ></div>
                     </div>
@@ -1106,15 +1204,17 @@ const SignIntegration = ({ isOpen, onClose }) => {
                   <div className="mt-4 text-center">
                     <button
                       onClick={() => toggleLoginMode(true)}
-                      className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                      className="text-gray-600 hover:text-gray-800 font-medium text-sm"
                     >
-                      이미 계정이 있으신가요? 로그인
+                      이미 계정이 있으신가요?{" "}
+                      <span className="font-bold hover:text-green-500 transition-colors transition duration-500">
+                        로그인
+                      </span>
                     </button>
                   </div>
                 )}
               </div>
             </div>
-
             {/* 로고 레이어 - 이제 가장 위에 위치하며 부드러운 이동 애니메이션 적용 */}
             <div
               className={`absolute top-0 bottom-0 w-1/2 bg-white flex flex-col items-center justify-center transition-all duration-700 ease-in-out z-20 ${
