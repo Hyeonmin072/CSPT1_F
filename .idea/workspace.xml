@@ -5,19 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/CVCheck.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/SeekCVProfile.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/SeekCareer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/SeekCertification.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/SeekWorkDays.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/detail/GetJobDetail.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/cv/CVCheckPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/getjob/GetJobDetailPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/GetJob.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/GetJob.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/JobList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/JobList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/LeftSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/LeftSideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/BusinessMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/BusinessMain.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/CheckInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/CheckInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/DesignerSetting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/DesignerSetting.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/ProfileInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/ProfileInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/BusinessHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/BusinessHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/main/BusinessMainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/main/BusinessMainPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,22 +49,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "fontend-getjobdetail",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/DesingerAbout/cvcheck",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Run",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-businessmainpage&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/DesingerAbout/cvcheck&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\DesingerAbout\cvcheck" />
@@ -153,7 +150,9 @@
       <workItem from="1741657778961" duration="4961000" />
       <workItem from="1741664692148" duration="14706000" />
       <workItem from="1741685393491" duration="179000" />
-      <workItem from="1741744233854" duration="15800000" />
+      <workItem from="1741744233854" duration="16106000" />
+      <workItem from="1741841097810" duration="4693000" />
+      <workItem from="1741851659659" duration="1114000" />
     </task>
     <servers />
   </component>

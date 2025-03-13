@@ -15,6 +15,7 @@ import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 
+// 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
@@ -23,9 +24,12 @@ import GetJobPage from "./pages/getjob/GetJobPage.jsx";
 import GetJobDetailPage from "./pages/getjob/GetJobDetailPage.jsx";
 import CVCheck from "./pages/cv/CVCheckPage.jsx";
 
+// 사업자
+import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
+
 function App() {
   // 임시 역할 설정(customer, designer, business)
-  const userRole = 'designer';
+  const userRole = 'business';
 
   return (
     <Router>
@@ -67,6 +71,13 @@ function App() {
                   <Route path="/job" element={<GetJobPage />} />
                   <Route path="/detail" element={<GetJobDetailPage />} />
                   <Route path="/cv-check" element={<CVCheck />} />
+                </>
+            )}
+
+            {/* 사업자 전용 */}
+            {userRole === 'business' && (
+                <>
+                  <Route path="/" element={<BusinessMainPage />} />
                 </>
             )}
           </Routes>
