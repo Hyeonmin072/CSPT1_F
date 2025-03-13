@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import ChatSidebar from "../../components/chat/ChatSidebar.jsx";
 import ChatWindow from "../../components/chat/ChatWindow.jsx";
 
@@ -6,6 +7,19 @@ const ChattingPage = () => {
     const [selectedChat, setSelectedChat] = useState(null); // 선택된 채팅 상태 추가
     const [messages, setMessages] = useState([]); // 채팅 메시지 상태 추가
     const [socket, setSocket] = useState(null); // WebSocket 상태 관리
+
+    //채팅을 선택하면 그 채팅 불러오기
+    useEffect(() => {
+        if (selectedChat) {
+            axios.get('http://localhost:5000')
+                .then(response => {
+                    setMessages(response.data);
+                })
+                .catch(error => {
+                    console.error("채팅 메시지를 불러오는중 오류 발생 :", error);
+                });
+        }
+    }, [selectedChat]); //선택된 채팅이 번경될떄 실행.
 
     useEffect(() => {
         const newSocket = new WebSocket("ws://localhost:5001");

@@ -1,44 +1,85 @@
 import { useState, useRef, useEffect } from "react";
+import axios from "axios"; // ✅ axios 추가
 import { format, isSameDay, parse } from "date-fns";
 import { Search, MoreVertical } from "lucide-react";
 
 const ChatWindow = ({ selectedChat, socket }) => {
-    const [messages, setMessages] = useState(selectedChat.messages); // 선택된 채팅의 메시지 저장
+    const [messages, setMessages] = useState([]); // ✅ 초기값을 빈 배열로 변경
     const [input, setInput] = useState("");
-    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
-    const [searchOpen, setSearchOpen] = useState(false); // 검색창 토글 상태
-    const [menuOpen, setMenuOpen] = useState(false); // 메뉴 토글 상태
-    const messagesEndRef = useRef(null); // 채팅창 스크롤 관리
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const messagesEndRef = useRef(null);
 
+    // ✅ 채팅 메시지를 서버에서 가져오기
+    useEffect(() => {
+        if (!selectedChat) return;
+
+        axios.get(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
+            .then(response => {
+                setMessages(response.data); // 서버에서 받은 메시지 상태 업데이트
+            })
+            .catch(error => {
+                console.error("채팅 메시지를 불러오는 중 오류 발생:", error);
+            });
+
+    }, [selectedChat]); // ✅ 선택한 채팅이 변경될 때마다 실행
+
+    // ✅ WebSocket을 통한 실시간 메시지 수신
     useEffect(() => {
         if (!socket) return;
 
         socket.onmessage = (event) => {
             const newMessage = JSON.parse(event.data);
-            if(newMessage.chatId === selectedChat.id) {
+            if (newMessage.chatId === selectedChat.id) {
                 setMessages((prev) => [...prev, newMessage]);
             }
         };
+
         return () => {
-            socket.onmessage = null; // 이벤트 핸들러 제거
+            socket.onmessage = null;
         };
     }, [socket, selectedChat]);
 
-    useEffect(() => {
-        setMessages(selectedChat.messages); // 선택된 채팅이 변경되면 messages 업데이트
-    }, [selectedChat]);
-
+    // ✅ 메시지 전송 함수 (서버에도 전송)
     const sendMessage = () => {
         if (!input.trim()) return;
-        const newMessage = { text: input, sender: "user", time: format(new Date(), "yyyy-MM-dd HH:mm") };
-        setMessages((prev) => [...prev, newMessage]); // 새 메시지 추가
+
+        const newMessage = {
+            text: input,
+            sender: "user",
+            time: format(new Date(), "yyyy-MM-dd HH:mm"),
+            chatId: selectedChat.id, // ✅ chatId 추가
+        };
+
+        console.log("새 메시지 추가:", newMessage); //내가 전송한 메시지 확인 콘솔
+
+        // ✅ WebSocket을 통해 서버에 메시지 전송
+        // socket.send(JSON.stringify(newMessage));
+
+        // ✅ 서버에 메시지 저장 요청 (axios POST 요청)
+        // axios.post(`http://localhost:5000/api/chats/${selectedChat.id}/messages`, newMessage)
+        //     .then(() => {
+        //         setMessages((prev) => [...prev, newMessage]); // 상태 업데이트
+        //     })
+        //     .catch(error => {
+        //         console.error("메시지 전송 실패:", error);
+        //     });
+
         setInput("");
     };
 
+    // ✅ 대화 삭제 기능 (서버에서도 삭제 요청)
     const deleteChat = () => {
         if (window.confirm("정말로 대화를 삭제하시겠습니까?")) {
-            setMessages([]); // 모든 메시지 삭제
-            setMenuOpen(false); // 메뉴 닫기
+            axios.delete(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
+                .then(() => {
+                    setMessages([]); // 상태에서 메시지 삭제
+                    setMenuOpen(false);
+                })
+                .catch(error => {
+                    console.error("대화 삭제 실패:", error);
+                });
         }
     };
 
@@ -54,12 +95,10 @@ const ChatWindow = ({ selectedChat, socket }) => {
             <div className="mt-[18px] p-4 bg-white shadow-md flex justify-between items-center">
                 <span className="text-lg font-bold">{selectedChat.name}</span>
 
-                {/* 검색 버튼 + 메뉴 버튼 */}
                 <div className="flex items-center space-x-3">
                     <button onClick={() => setSearchOpen(!searchOpen)}>
                         <Search className="w-6 h-6 text-gray-700" />
                     </button>
-
                     {searchOpen && (
                         <input
                             type="text"
@@ -70,15 +109,18 @@ const ChatWindow = ({ selectedChat, socket }) => {
                         />
                     )}
 
-                    {/* 메뉴 버튼 */}
                     <div className="relative">
                         <button onClick={() => setMenuOpen(!menuOpen)}>
                             <MoreVertical className="w-6 h-6 text-gray-700" />
                         </button>
                         {menuOpen && (
                             <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md p-2 text-sm z-10">
-                                <button onClick={deleteChat} className="block w-full text-left px-2 py-1 hover:bg-gray-100">대화 삭제</button>
-                                <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">디자이너 프로필 보기</button>
+                                <button onClick={deleteChat} className="block w-full text-left px-2 py-1 hover:bg-gray-100">
+                                    대화 삭제
+                                </button>
+                                <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">
+                                    디자이너 프로필 보기
+                                </button>
                             </div>
                         )}
                     </div>
