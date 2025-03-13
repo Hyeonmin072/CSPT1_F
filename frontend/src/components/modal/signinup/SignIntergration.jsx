@@ -36,7 +36,6 @@ const SignIntegration = ({ isOpen, onClose }) => {
   const [errors, setErrors] = useState({});
   const [userType, setUserType] = useState("customer"); // 기본값: 고객
   const [emailVerified, setEmailVerified] = useState(false); // 이메일 인증 상태
-  const navigate = useNavigate();
 
   // 5단계 (유저 타입별 추가 정보) 렌더링 함수
   const renderUserTypeSpecificForm = () => {
@@ -202,7 +201,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
         </div>
 
         {/* 하단 버튼 영역 */}
-        <div className="mt-[55px]">
+        <div className="mt-9">
           {/* 이전/완료 버튼 */}
           <div className="flex justify-center gap-10">
             <button
@@ -217,6 +216,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
               className="px-6 py-2 rounded-md text-white font-medium bg-green-600 hover:bg-green-700 transition-colors text-sm"
             >
               가입 완료
+              {/* /user/signup */}
             </button>
           </div>
         </div>
@@ -405,7 +405,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
   const checkEmailDuplicate = async () => {
     try {
       // 여기에 이메일 중복 검사 API 호출 코드를 추가
-      console.log("이메일 중복 검사 시도:", formData.email);
+      console.log("☑️ 이메일 중복 검사 시도:", formData.email);
 
       // 임시로 성공했다고 가정
       await Swal.fire({
@@ -444,7 +444,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
     try {
       // 여기에 이메일 인증 코드 발송 API 호출 코드를 추가
-      console.log("인증 이메일 발송 시도:", formData.email);
+      console.log("☑️ 인증 이메일 발송 시도:", formData.email);
 
       // 임시로 인증 코드 입력 다이얼로그 표시
       const { value: verificationCode } = await Swal.fire({
@@ -581,7 +581,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
             ...typeSpecificData,
           };
 
-          console.log("회원가입 데이터 전송:", submitData);
+          console.log("🎁 회원가입 데이터 전송:", submitData);
 
           // API 호출 코드 (예시)
           // const response = await registerUser(submitData);
@@ -718,7 +718,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 디자이너
               </button>
             </div>
-            <div className="flex justify-center mt-auto mt-6">
+            <div className="flex justify-center mt-11">
               <button
                 type="button"
                 onClick={nextStep}
@@ -816,7 +816,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
       case 3:
         return (
           <>
-            <h3 className="text-center text-sm font-medium mb-4">
+            <h3 className="text-center text-sm font-medium mb-4 mt-12">
               비밀번호를 설정해주세요
             </h3>
             <div className="space-y-4">
@@ -877,7 +877,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 )}
               </div>
 
-              <div className="flex justify-between mt-6">
+              <div className="flex justify-center mt-6 gap-10">
                 <button
                   type="button"
                   onClick={prevStep}
@@ -910,7 +910,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
       case 4:
         return (
           <>
-            <h3 className="text-center text-sm font-medium mb-4">
+            <h3 className="text-center text-sm font-medium mb-4 mt-12">
               개인정보를 입력해주세요
             </h3>
             <div className="space-y-4">
@@ -960,7 +960,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
                 )}
               </div>
 
-              <div className="flex justify-between mt-6">
+              <div className="flex justify-center mt-6 gap-10">
                 <button
                   type="button"
                   onClick={prevStep}

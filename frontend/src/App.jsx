@@ -18,6 +18,7 @@ import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
 import SignIntegration from "./components/modal/signinup/SignIntergration.jsx";
+import SignIntegrational from "./components/sign/SignIntergration.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
@@ -30,6 +31,7 @@ function App() {
           <Routes>
             {/* 공통 */}
             <Route path="/signintergration" element={<SignIntegration />} />
+            <Route path="/signintergrational" element={<SignIntegrational />} />
 
             {/* 고객 전용 */}
             {userRole === "customer" && (
@@ -59,6 +61,7 @@ function App() {
                   path="/subscriptdesigner"
                   element={<SubscriptDesignerPage />}
                 />
+                <Route path="/login" element={<LoginAndRegisterPage />} />
               </>
             )}
 
