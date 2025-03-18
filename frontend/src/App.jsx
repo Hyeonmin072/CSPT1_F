@@ -23,13 +23,15 @@ import ClientCheckPage from "./pages/clientcheck/ClientCheckPage.jsx";
 import GetJobPage from "./pages/getjob/GetJobPage.jsx";
 import GetJobDetailPage from "./pages/getjob/GetJobDetailPage.jsx";
 import CVCheck from "./pages/cv/CVCheckPage.jsx";
+import DesignerProfilePage from "./pages/profile/DesignerProfilePage.jsx";
+import DesignerProfileEditPage from "./pages/profile/DesignerProfileEditPage.jsx";
 
 // 사업자
 import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
-  const userRole = 'business';
+  const userRole = 'designer';
 
   return (
     <Router>
@@ -71,6 +73,8 @@ function App() {
                   <Route path="/job" element={<GetJobPage />} />
                   <Route path="/detail" element={<GetJobDetailPage />} />
                   <Route path="/cv-check" element={<CVCheck />} />
+                  <Route path="/profile" element={<DesignerProfilePage />} />
+                  <Route path="/profileedit" element={<DesignerProfileEditPage />} />
                 </>
             )}
 

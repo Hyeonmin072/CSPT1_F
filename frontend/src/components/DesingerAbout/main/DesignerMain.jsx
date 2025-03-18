@@ -39,7 +39,7 @@ export default function DesignerMain() {
 
 
     return (
-        <div className="flex flex-row">
+        <div className="mx-auto max-w-7xl flex flex-row">
             <div className="flex items-center justify-center w-[1000px] pt-10 mt-5">
                 <Notice/>
             </div>

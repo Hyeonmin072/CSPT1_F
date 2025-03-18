@@ -13,7 +13,7 @@ export default function ProfileInfo(){
                         <h1 className="text-2xl font-bold mb-2">김봉팔 헤어</h1>
                     </div>
                     <div className="flex flex-row items-center gap-2">
-                        <Star className="w-4 h-4 text-yellow-400"/>
+                        <Star className="w-4 h-4 text-yellow-400 fill-current"/>
                         <p className="text-gray-500"> 4.5 (194 리뷰)</p>
                     </div>
                 </div>

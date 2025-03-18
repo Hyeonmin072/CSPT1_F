@@ -43,7 +43,7 @@ export default function CVCheck() {
     const [introduction] = useState(defaultIntroduction);
 
     return (
-        <div className="container mx-auto p-10">
+        <div className="container mx-auto max-w-5xl p-10">
             {/* 간단 프로필 */}
             <section className="flex flex-col items-center justify-center w-full">
                 <SeekCVProfile profile={defaultProfile} />

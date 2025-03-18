@@ -94,7 +94,7 @@ export default function Sales({ Designerprofile }) {
 
 
     return (
-        <div className="container mx-auto p-10">
+        <div className="container mx-auto max-w-7xl p-10">
             {/* 윗줄 */}
             <div className="flex flex-row gap-4">
                 <SaleStaus />

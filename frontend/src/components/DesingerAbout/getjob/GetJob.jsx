@@ -111,7 +111,7 @@ export default function GetJob() {
     };
 
     return (
-        <div className="p-10">
+        <div className="p-10 mx-auto max-w-7xl">
             {/* 정렬 옵션 */}
             <div className="flex justify-end max-w-7xl px-10">
                 <SortOrder sortOrder={sortOrder} setSortOrder={setSortOrder} />

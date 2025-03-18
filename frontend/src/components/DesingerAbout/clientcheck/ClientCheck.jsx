@@ -156,7 +156,7 @@ export default function Clientcheck({ Designerprofile, onClose }) {
 
 
     return (
-        <div className="p-10 m-7">
+        <div className="p-10 mx-auto max-w-7xl">
             {/* 날짜, 스케줄 보기, 일주일(오늘), 디자이너 간단 이름 */}
             <div className="flex mb-10">
                 <div className="relative max-w-md px-5">

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { LineChart, AreaChart , Line, Area,  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import Slider from 'react-slick';
 
 export default function Graph({ handlePeriodChange, chartRef, data }){
     return(
