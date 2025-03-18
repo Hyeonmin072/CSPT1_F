@@ -1,49 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
+import axios from "axios";  // axios를 사용하여 API 호출
 
 const ChatSidebar = ({ setSelectedChat, selectedChat }) => {
-    const chats = [
-        {
-            id: 1,
-            name: "디자이너A",
-            lastMessage: "너무 잘 어울려요!!",
-            time: "18:00",
-            messages: [
-                { text: "안녕하세요 고객님!", sender: "designer", time: "2024-12-25 10:00" },
-                { text: "머리를 어떻게 하실 예정인가요?", sender: "designer", time: "2024-12-25 10:05" },
-            ],
-        },
-        {
-            id: 2,
-            name: "디자이너B",
-            lastMessage: "저희 샵에 방문해서 한번 보고 제가 추천드려도 될까요?",
-            time: "18:18",
-            messages: [
-                { text: "어떤 스타일을 원하시나요?", sender: "designer", time: "2024-12-26 12:00" },
-                { text: "파마를 해볼까 고민 중이에요!", sender: "user", time: "2024-12-26 12:05" },
-            ],
-        },
-        {
-            id: 3,
-            name: "디자이너C",
-            lastMessage: "파마가 잘 어울리실거 같아요!!",
-            time: "18:03",
-            messages: [
-                { text: "어떤 스타일이 요즘 유행인가요?", sender: "user", time: "2024-12-26 14:00" },
-                { text: "요즘 자연스러운 컬이 인기예요!", sender: "designer", time: "2024-12-26 14:05" },
-            ],
-        },
-        {
-            id: 4,
-            name: "디자이너D",
-            lastMessage: "계란형 얼굴에는 어떤 헤어가 어울려요!!",
-            time: "18:03",
-            messages: [
-                { text: "제 얼굴형에 어울리는 스타일은?", sender: "user", time: "2024-12-26 15:00" },
-                { text: "얼굴형에 맞는 헤어 추천해드릴게요!", sender: "designer", time: "2024-12-26 15:05" },
-            ],
-        },
-    ];
+    const [chats, setChats] = useState([]);  // 상태로 채팅 목록 관리
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
+    // 컴포넌트가 처음 렌더링될 때 API 호출
+    useEffect(() => {
+        // 백엔드에서 채팅 데이터를 가져오는 예시
+        const fetchChats = async () => {
+            try {
+                const response = await axios.get("https://your-backend-api.com/chats"); // 실제 API URL로 교체
+                setChats(response.data); // 받아온 데이터를 상태에 저장
+                setLoading(false); // 로딩 종료
+            } catch (error) {
+                console.error("Error fetching chats:", error);
+                setLoading(false); // 에러가 나더라도 로딩 종료
+            }
+        };
+
+        fetchChats();  // API 호출
+    }, []);
+
+    // 로딩 중일 때 처리
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="w-1/4 h-full bg-white border-r">
@@ -69,15 +52,15 @@ const ChatSidebar = ({ setSelectedChat, selectedChat }) => {
                         onClick={() => setSelectedChat(chat)}
                     >
                         <img
-                            src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQvimZpavcvaEDMI_W17ihfpy5F_qqxeVTZwsvn1szPyK-coABp6AbdJQrrzrha_8clfAJywtVuD0AFua8gULl3unIzxi-KxVg4LKywiPc"
-                            alt={chat.name}
+                            src={chat.avatarUrl}  // 백엔드에서 제공하는 아바타 URL
+                            alt={chat.designerName}  // 디자이너 이름
                             className="w-10 h-10 rounded-full object-cover"
                         />
                         <div className="flex-1 ml-2">
-                            <p className="font-semibold">{chat.name}</p>
+                            <p className="font-semibold">{chat.designerName}</p>
                             <p className="text-sm text-gray-500 truncate w-40">{chat.lastMessage}</p>
                         </div>
-                        <span className="text-xs text-gray-400">{chat.time}</span>
+                        <span className="text-xs text-gray-400">{chat.lastMessageTime}</span>
                     </div>
                 ))}
             </div>
