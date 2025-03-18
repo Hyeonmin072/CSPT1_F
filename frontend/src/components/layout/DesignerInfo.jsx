@@ -21,7 +21,7 @@ export default function DesignerInfo() {
     };
 
     return (
-        <div className="mt-4 w-3/6">
+        <div className="mt-4 w-full">
             <Slider {...settings}>
                 {designerList.map((designer) => (
                     <div key={designer.id} className="w-[200px]">
