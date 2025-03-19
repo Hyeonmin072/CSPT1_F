@@ -60,7 +60,7 @@ const ChattingPage = () => {
                     <ChatWindow selectedChat={selectedChat} messages={messages} />
                 ) : (
                     <div className="flex-1 flex justify-center items-center text-gray-500">
-                        채팅을 선택하세요
+                        채팅을 시작하세요
                     </div>
                 )}
             </div>
