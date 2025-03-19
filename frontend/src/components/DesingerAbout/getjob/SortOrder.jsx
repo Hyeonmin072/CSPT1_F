@@ -1,4 +1,16 @@
-export default function SortOrder({ sortOrder, setSortOrder }){
+import {useState, useEffect} from "react";
+
+export default function SortOrder(){
+
+    useEffect(() => {
+        filtered.sort((a, b) => {
+            if (sortOrder === "최신순") return a.postedTime - b.postedTime;
+            if (sortOrder === "이름순") return a.title.localeCompare(b.title, "ko");
+            return 0;
+        });
+
+    }, []);
+
     return(
         <>
             <select

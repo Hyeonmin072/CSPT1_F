@@ -1,7 +1,27 @@
 import { motion } from "framer-motion";
 import { CalendarDays, List } from 'lucide-react';
+import { dummyProfile } from "../sales/SaleStaus.jsx";
+import { useState, useEffect } from "react";
 
-export default function ReservationCheck({ Designerprofile, selectedView, setSelectedView }){
+export default function ReservationCheck({ selectedView, setSelectedView }){
+    const [Designerprofile, setDesignerProfile] = useState(null); // 초기값 null
+
+    // useEffect로 더미 데이터를 불러오는 코드
+    useEffect(() => {
+        // 더미 데이터 불러오기
+        const fetchDummyData = async () => {
+            try {
+                // 더미 데이터를 비동기로 불러오는 시뮬레이션
+                const data = dummyProfile;
+                setDesignerProfile(data); // 데이터 업데이트
+            } catch (error) {
+                console.error("Failed to fetch data:", error);
+            }
+        };
+
+        fetchDummyData();
+    }, []);
+
     return (
         <div className="flex space-x-3">
             {/* 내 예약 보기 / 모든 예약 보기 */}
@@ -29,9 +49,9 @@ export default function ReservationCheck({ Designerprofile, selectedView, setSel
 
             <div className="flex flex-row w-[170px] ml-auto">
                 <div className="rounded-full bg-gray-300 w-12 h-12">
-                    {Designerprofile && Designerprofile.length > 0 && Designerprofile[0].imageURL ? (
+                    {Designerprofile && Designerprofile.imageURL ? (
                         <img
-                            src={Designerprofile[0].imageURL}
+                            src={Designerprofile.imageURL}
                             className="w-12 h-12 rounded-full mb-4"
                         />
                     ) : (
@@ -42,8 +62,8 @@ export default function ReservationCheck({ Designerprofile, selectedView, setSel
                     )}
                 </div>
 
-                <div className="flex items-center justify-center p-2">
-                    디자이너 이름
+                <div className="flex items-center justify-center px-4">
+                    <p className="text-gray-700 font-semibold">{Designerprofile?.name || "디자이너 이름"}</p>
                 </div>
             </div>
 

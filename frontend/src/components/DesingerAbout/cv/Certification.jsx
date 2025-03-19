@@ -1,20 +1,52 @@
-export default function Certification({ isEditable, certification,setCertification,certifications, setCertifications }){
+import { useState, useEffect } from "react";
+
+export default function Certification({ isEditable }) {
+    // 자격증 관련 상태 관리
+    const [certification, setCertification] = useState("");
+    const [certifications, setCertifications] = useState([]);
+    const [loading, setLoading] = useState(true); // 로딩 상태
+
+    // 더미 데이터
+    const dummyCertifications = [];
+
+    // 백엔드 데이터 가져오기
+    useEffect(() => {
+        const fetchCertifications = async () => {
+            try {
+                // 실제 API 호출 시 아래 코드를 활성화
+                // const response = await fetch("/api/certifications");
+                // const data = await response.json();
+
+                // 지금은 더미 데이터를 사용
+                const data = dummyCertifications;
+                setCertifications(data);
+            } catch (error) {
+                console.error("Error fetching certifications:", error);
+            } finally {
+                setLoading(false); // 로딩 상태 종료
+            }
+        };
+
+        fetchCertifications();
+    }, []);
+
     const handleAddCertification = () => {
         // 입력된 자격증 값이 공백이 아니면 진행
         if (certification.trim()) {
-            // 새로운 자격증 배열 생성
             const newCertifications = [...certifications, certification.trim()];
-            // 자격증 배열 업데이트
-            setCertifications(newCertifications);
-            // 입력 필드 초기화
-            setCertification("");
+            setCertifications(newCertifications); // 자격증 배열 업데이트
+            setCertification(""); // 입력 필드 초기화
         }
     };
 
     const handleDeleteCertification = (index) => {
         const updatedCertifications = certifications.filter((_, i) => i !== index);
-        setCertifications(updatedCertifications);
+        setCertifications(updatedCertifications); // 자격증 삭제 후 업데이트
     };
+
+    if (loading) {
+        return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
+    }
 
     return (
         <div className="flex flex-col w-full max-w-4xl p-4 border-b-2 pb-8">
@@ -57,5 +89,4 @@ export default function Certification({ isEditable, certification,setCertificati
             </div>
         </div>
     );
-
 }

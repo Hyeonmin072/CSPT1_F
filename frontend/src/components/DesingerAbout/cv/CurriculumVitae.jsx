@@ -1,52 +1,61 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CVProfile from "./CVProfile.jsx";
 import Career from "./Career.jsx";
 import DesiredWorkDays from "./DesiredWorkDays.jsx";
 import Certification from "./Certification.jsx";
 
-// 기본 프로필 설정 함수
-const defaultProfile = () => [
-    { id: 1, name: "홍길동", email: "test1@gmail.com", phone: "010-1234-5678", gender:"남성", age:21 },
-];
 
 export default function CurriculumVitae() {
     const [isEditable, setIsEditable] = useState(false);  // 수정 가능 여부 상태
+    const [showMessage, setShowMessage] = useState(false); // 저장 메시지 상태
+    const [fadeOut, setFadeOut] = useState(false); // 저장 메시지 fade-out 상태
+    const [introduction, setIntroduction] = useState(""); // 소개글 상태
+    const [loading, setLoading] = useState(true); // 로딩 상태
 
-    // 프로필 관련 상태
-    const [profile, setProfile] = useState(defaultProfile()[0]);
-    const [image, setImage] = useState(null);
-    const [gender, setGender] = useState('');
+    // 더미 데이터
+    const dummyIntroduction = "안녕하세요! 저는 5년 경력의 헤어 디자이너입니다. 고객의 스타일을 찾아드리는 것을 좋아합니다!";
 
-    // 경력 관련 상태
-    const [employmentType, setEmploymentType] = useState('신입');
-    const [employmentPeriod, setEmploymentPeriod] = useState('1개월 미만');
-    const [employmentStartDate, setEmploymentStartDate] = useState(null);
-    const [employmentEndDate, setEmploymentEndDate] = useState(null);
-    const [companyName, setCompanyName] = useState("");
-    const [employmentHistory, setEmploymentHistory] = useState([]);
+    // 백엔드 데이터 가져오기
+    useEffect(() => {
+        const fetchCurriculumVitae = async () => {
+            try {
+                // 실제 API 호출 시 아래 코드 활성화
+                // const response = await fetch("/api/curriculum-vitae");
+                // const data = await response.json();
 
-    // 희망 근무요일 상태
-    const [selectedDays, setSelectedDays] = useState([]);
-    const [selectedDuration, setSelectedDuration] = useState(null);
+                // 지금은 더미 데이터를 사용
+                const data = { introduction: dummyIntroduction };
+                setIntroduction(data.introduction);
+            } catch (error) {
+                console.error("Error fetching curriculum vitae:", error);
+            } finally {
+                setLoading(false); // 로딩 상태 종료
+            }
+        };
 
-    // (수정 상태) 저장 버튼 관련 상태
-    const [showMessage, setShowMessage] = useState(false);
-    const [fadeOut, setFadeOut] = useState(false);
+        fetchCurriculumVitae();
+    }, []);
 
-    // 자격증 관련 상태 관리
-    const [certification, setCertification] = useState("");
-    const [certifications, setCertifications] = useState([]);
-
-
-    // 소개글 상태 관리
-    const [introduction, setIntroduction] = useState("");
-
-
-    const handleSave = () => {
+    const handleSave = async () => {
         setShowMessage(true);
         setIsEditable(false); // 저장 후 수정 모드 종료
         setFadeOut(false);
+
+        try {
+            // 실제 API 호출 시 아래 코드 활성화
+            // await fetch("/api/curriculum-vitae", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({ introduction }),
+            // });
+
+            console.log("Saved introduction:", introduction); // 지금은 로컬 로그로 처리
+        } catch (error) {
+            console.error("Error saving curriculum vitae:", error);
+        }
 
         // 1초 후 메시지 서서히 사라짐
         setTimeout(() => {
@@ -63,61 +72,30 @@ export default function CurriculumVitae() {
         setIsEditable(false);
     };
 
+    if (loading) {
+        return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
+    }
 
     return (
         <div className="container mx-auto p-10">
             {/* 간단 프로필 */}
             <section className="flex flex-col items-center justify-center w-full">
-                <CVProfile
-                    profile={profile}
-                    setProfile={setProfile}
-                    image={image}
-                    setImage={setImage}
-                    gender={gender}
-                    setGender={setGender}
-                    isEditable={isEditable}
-                />
+                <CVProfile isEditable={isEditable} />
             </section>
 
             {/* 경력 */}
             <section className="flex flex-col items-center justify-center p-8 w-full">
-                <Career
-                    isEditable={isEditable}
-                    employmentType={employmentType}
-                    employmentPeriod={employmentPeriod}
-                    setEmploymentType={setEmploymentType}
-                    setEmploymentPeriod={setEmploymentPeriod}
-                    employmentStartDate={employmentStartDate}
-                    setEmploymentStartDate={setEmploymentStartDate}
-                    employmentEndDate={employmentEndDate}
-                    setEmploymentEndDate={setEmploymentEndDate}
-                    companyName={companyName}
-                    setCompanyName={setCompanyName}
-                    employmentHistory={employmentHistory}
-                    setEmploymentHistory={setEmploymentHistory}
-                />
+                <Career isEditable={isEditable} />
             </section>
 
             {/* 희망 근무조건 */}
             <section className="flex flex-col items-center justify-center w-full">
-                <DesiredWorkDays
-                    isEditable={isEditable}
-                    selectedDays={selectedDays}
-                    setSelectedDays={setSelectedDays}
-                    selectedDuration={selectedDuration}
-                    setSelectedDuration={setSelectedDuration}
-                />
+                <DesiredWorkDays isEditable={isEditable} />
             </section>
 
             {/* 자격증 파트 */}
             <section className="flex flex-col items-center justify-center w-full p-8">
-                <Certification
-                    isEditable={isEditable}
-                    certification={certification}
-                    setCertification={setCertification}
-                    certifications={certifications}
-                    setCertifications={setCertifications}
-                />
+                <Certification isEditable={isEditable} />
             </section>
 
             {/* 소개글 파트 */}

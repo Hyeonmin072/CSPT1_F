@@ -6,15 +6,31 @@
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/BusinessMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/BusinessMain.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/CheckInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/CheckInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/DesignerSetting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/DesignerSetting.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/ProfileInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/ProfileInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/BusinessHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/BusinessHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/main/BusinessMainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/main/BusinessMainPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientCheck.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientCheck.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientClock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientClock.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/DesignerSchedule.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/DesignerSchedule.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ReservationCheck.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ReservationCheck.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CVProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CVProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Career.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Career.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Certification.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Certification.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/DesiredWorkDays.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/DesiredWorkDays.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/GetJob.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/GetJob.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/SortOrder.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/SortOrder.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/detail/GetJobDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/detail/GetJobDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ChartQuick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ChartQuick.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/DesignerMain.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ProfileQuick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ProfileQuick.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ScheduleQuick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ScheduleQuick.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/DesignerProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/DesignerProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/LeftSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/LeftSection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/MiddleSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/MiddleSection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/ProfileHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/ProfileHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/RightSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/RightSection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Graph.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Graph.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/SaleStaus.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/SaleStaus.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Sales.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Sales.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +69,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend-businessmainpage&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-designerprofile&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/DesingerAbout/cvcheck&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -153,6 +169,14 @@
       <workItem from="1741744233854" duration="16106000" />
       <workItem from="1741841097810" duration="4693000" />
       <workItem from="1741851659659" duration="1114000" />
+      <workItem from="1741853474346" duration="2839000" />
+      <workItem from="1741857402810" duration="1915000" />
+      <workItem from="1741910167469" duration="365000" />
+      <workItem from="1741938513070" duration="2910000" />
+      <workItem from="1742267165220" duration="11152000" />
+      <workItem from="1742281612947" duration="7345000" />
+      <workItem from="1742349271539" duration="9546000" />
+      <workItem from="1742374348826" duration="1137000" />
     </task>
     <servers />
   </component>
