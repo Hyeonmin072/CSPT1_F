@@ -1,16 +1,54 @@
 import { NotebookText, ChevronRight, Check, Star } from 'lucide-react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Notice(){
-    //const hairSalon = null;
-    const hairSalon = "1";
+    const [hairSalon, setHairSalon] = useState(null); // 소속된 헤어샵 정보 상태
+    const [notices, setNotices] = useState({ weekNotice: null, importantNotice: null }); // 공지사항 상태
+    const [selectedNotice, setSelectedNotice] = useState(null); // 선택된 공지사항
+    const [loading, setLoading] = useState(true); // 로딩 상태
 
-    const [selectedNotice, setSelectedNotice] = useState(null);
+    // 더미 데이터
+    const dummyHairSalon = "1"; // 소속된 헤어샵 ID
+    const dummyNotices = {
+        weekNotice: {
+            title: "이번 주 영업시간 변경 안내",
+            content: "이번 주말은 10시부터 6시까지 영업합니다."
+        },
+        importantNotice: {
+            title: "추석 연휴 공지",
+            content: "추석 연휴 동안 가게 운영 시간은 별도로 공지될 예정입니다."
+        },
+    };
+
+    // 데이터 가져오기
+    useEffect(() => {
+        const fetchNoticeData = async () => {
+            try {
+                // 실제 API 호출 시 아래 코드 활성화
+                // const response = await fetch("/api/notice");
+                // const data = await response.json();
+
+                // 지금은 더미 데이터 사용
+                setHairSalon(dummyHairSalon);
+                setNotices(dummyNotices);
+            } catch (error) {
+                console.error("Error fetching notice data:", error);
+            } finally {
+                setLoading(false); // 로딩 상태 종료
+            }
+        };
+
+        fetchNoticeData();
+    }, []);
 
     const handleClick = (noticeType) => {
         setSelectedNotice(noticeType);
     };
+
+    if (loading) {
+        return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
+    }
 
     return (
         <div className="border mx-20 w-full flex h-full rounded-lg bg-white">
@@ -59,7 +97,7 @@ export default function Notice(){
                                     </div>
                                     <Link to="/week-notice"
                                           className="flex rounded-lg items-center justify-between border w-[470px] h-[60px] mb-4">
-                                        <p className="ml-10 font-bold text-xl">공지사항</p>
+                                        <p className="ml-10 font-bold text-xl">{notices.weekNotice.title}</p>
                                         <ChevronRight className="mr-4"/>
                                     </Link>
                                 </>
@@ -69,7 +107,7 @@ export default function Notice(){
                                 <>
                                     <div
                                         className="flex bg-[#FFB3B3] rounded-lg items-center justify-center border border-[#FF6666] w-[470px] h-[40px] mb-4">
-                                        <p className="font-bold text-xl">중요 공지사항</p>
+                                        <p className="font-bold text-xl">{notices.importantNotice.title}</p>
                                     </div>
                                     <Link to="/important-notice"
                                           className="flex rounded-lg items-center justify-between border w-[470px] h-[60px] mb-4">

@@ -1,8 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Upload } from 'lucide-react';
 
-export default function CVProfile({ defaultProfile, profile, isEditable, image, setImage, gender, setGender }) {
+export default function CVProfile({ isEditable }) {
+    // 더미 데이터
+    const dummyProfile = {
+        id: 1,
+        name: "홍길동",
+        email: "test1@gmail.com",
+        phone: "010-1234-5678",
+        gender: "남성",
+        age: 21,
+    };
 
+    const [profile, setProfile] = useState(null); // 프로필 데이터 상태
+    const [image, setImage] = useState(null); // 업로드된 이미지 상태
+    const [loading, setLoading] = useState(true); // 로딩 상태
+
+    // 프로필 데이터 가져오기
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            try {
+                // const response = await fetch("/");
+                // const data = await response.json();
+
+                // 지금은 더미 데이터를 사용
+                const data = dummyProfile;
+                setProfile(data);
+            } catch (error) {
+                console.error("Error fetching profile data:", error);
+            } finally {
+                setLoading(false); // 로딩 상태 종료
+            }
+        };
+
+        fetchProfileData();
+    }, []);
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -31,12 +63,13 @@ export default function CVProfile({ defaultProfile, profile, isEditable, image, 
         }
     };
 
-    const handleNumberInput = (e) => {
-        const charCode = e.which ? e.which : e.keyCode;
-        if (charCode < 48 || charCode > 57) {
-            e.preventDefault();
-        }
-    };
+    if (loading) {
+        return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
+    }
+
+    if (!profile) {
+        return <div className="text-center mt-4">프로필 정보를 불러올 수 없습니다.</div>; // 에러 처리
+    }
 
     return (
         <div className="flex w-full max-w-4xl border-b-2">
@@ -65,31 +98,31 @@ export default function CVProfile({ defaultProfile, profile, isEditable, image, 
                 </div>
             </div>
             <div className="p-8">
-                {/* 이름 (수정 불가능) */}
+                {/* 이름 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">이름</label>
                     <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.name}</span>
                 </div>
 
-                {/* 이메일 (수정 불가능) */}
+                {/* 이메일 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">이메일</label>
                     <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.email}</span>
                 </div>
 
-                {/* 전화번호 (수정 불가능) */}
+                {/* 전화번호 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">전화번호</label>
                     <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.phone}</span>
                 </div>
 
-                {/* 성별 (수정 불가능) */}
+                {/* 성별 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">성별</label>
                     <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.gender}</span>
                 </div>
 
-                {/* 나이 (수정 불가능) */}
+                {/* 나이 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">나이</label>
                     <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.age}</span>
