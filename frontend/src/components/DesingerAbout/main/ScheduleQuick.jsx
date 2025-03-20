@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bell } from "lucide-react";
-import { dummyDesigners } from "../clientcheck/DesignerSchedule.jsx";
+import { dummyDesigners } from "../clientcheck/DesignerSchedule1.jsx";
 
 export default function ScheduleQuick() {
     const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태
