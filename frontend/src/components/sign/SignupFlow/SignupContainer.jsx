@@ -36,7 +36,12 @@ const SignupContainer = ({
     birth: "",
     gender: "",
   });
+
+  //렌더링 추적용
   const [errors, setErrors] = useState({});
+  useEffect(() => {
+    console.log("SignupContainer rendered at:", new Date().toISOString());
+  }, []);
 
   // 현재 회원가입 단계 로그 출력
   useEffect(() => {
@@ -229,12 +234,10 @@ const SignupContainer = ({
             text: "이메일 인증이 완료되었습니다.",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "확인",
-          }).then(() => {
-            console.log("✅ 이메일 인증 성공: TRUE");
           });
           console.log("✅ 이메일 인증 성공: TRUE");
           setEmailVerified(true);
-          console.log("✅ 이메일 인증 상태 업데이트: ", true);
+          console.log("✅ 이메일 인증 상태 업데이트: TRUE");
         } else {
           Swal.fire({
             icon: "error",
@@ -396,6 +399,7 @@ const SignupContainer = ({
         const commonData = {
           email: formData.email,
           password: formData.password,
+          confirmPassword: formData.confirmPassword,
           name: formData.name,
           tel: formData.tel,
         };
@@ -430,7 +434,7 @@ const SignupContainer = ({
               birth: formData.birth,
               gender: formData.gender,
             };
-            signupFunction = signupApi.designerSignup;
+            //signupFunction = signupApi.designerSignup;
             break;
 
           default:
@@ -515,6 +519,7 @@ const SignupContainer = ({
       case 2:
         return (
           <Step2Email
+            key={Date.now()}
             formData={formData}
             handleChange={handleChange}
             errors={errors}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SignIntegration from "../modal/signinup/SignIntergration";
+import SignIntegration from "../sign/SignIntergration";
 export default function LoginButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

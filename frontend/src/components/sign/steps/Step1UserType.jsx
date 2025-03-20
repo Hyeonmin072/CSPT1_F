@@ -1,5 +1,4 @@
-import React from "react";
-
+//eslint-disable-next-line
 const Step1UserType = ({ userType, setUserType, nextStep }) => {
   return (
     <>

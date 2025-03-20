@@ -6,7 +6,6 @@ import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage";
 import UserProfile from "./pages/profile/UserProfile";
 import UserProfileEdit from "./pages/profile/UserProfileEdit";
-import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import CalendarSelectPage from "./pages/reservation/CalendarSelectPage.jsx";
@@ -17,7 +16,6 @@ import ReservationCheckPage from "./pages/reservation/reservationcheck/Reservati
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
-import SignIntegration from "./components/modal/signinup/SignIntergration.jsx";
 import SignIntegrational from "./components/sign/SignIntergration.jsx";
 
 function App() {
@@ -30,7 +28,6 @@ function App() {
         <main className="flex-1">
           <Routes>
             {/* 공통 */}
-            <Route path="/signintergration" element={<SignIntegration />} />
             <Route path="/signintergrational" element={<SignIntegrational />} />
 
             {/* 고객 전용 */}
@@ -61,7 +58,6 @@ function App() {
                   path="/subscriptdesigner"
                   element={<SubscriptDesignerPage />}
                 />
-                <Route path="/login" element={<LoginAndRegisterPage />} />
               </>
             )}
 
