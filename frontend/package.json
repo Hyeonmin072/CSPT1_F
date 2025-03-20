@@ -12,7 +12,7 @@
   "dependencies": {
     "@emotion/styled": "^11.14.0",
     "@tanstack/react-query": "^5.62.7",
-    "axios": "^1.7.9",
+    "axios": "^1.8.3",
     "hairtalk": "file:",
     "lucide-react": "^0.468.0",
     "primeicons": "^7.0.0",

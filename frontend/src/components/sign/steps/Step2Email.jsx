@@ -39,7 +39,7 @@ const Step2Email = ({
             onClick={checkEmailDuplicate}
             className="ml-2 px-3 py-2 rounded-md text-sm bg-green-300 hover:bg-green-400 text-gray-700 transition-colors whitespace-nowrap"
           >
-            중복 확인
+            중복 확인z
           </button>
         </div>
 

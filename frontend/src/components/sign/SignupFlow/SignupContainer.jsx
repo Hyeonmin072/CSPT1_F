@@ -6,6 +6,7 @@ import Step2Email from "../steps/Step2Email";
 import Step3Password from "../steps/Step3Password";
 import Step4PersonalInfo from "../steps/Step4PersonalInfo";
 import Step5TypeSpecific from "../steps/Step5TypeSpecific";
+import { signupApi } from "../axios/authApi";
 
 const SignupContainer = ({
   isLoginForm,
@@ -71,6 +72,7 @@ const SignupContainer = ({
   // 입력 필드 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(`입력 감지: ${name} = ${value}`);
 
     if (name === "tel") {
       const formattedValue = formatPhoneNumber(value);
@@ -211,14 +213,15 @@ const SignupContainer = ({
         cancelButtonText: "취소",
         inputValidator: (value) => {
           if (!value) {
+            console.log("❓ 이메일 인증 실패: NULL");
             return "인증 코드를 입력해주세요";
           }
         },
       });
 
       if (verificationCode) {
-        // 인증 코드 검증 (예시 코드)
         if (verificationCode === "123456" || verificationCode) {
+          console.log(formData.email);
           // 임시로 모든 코드 허용
           Swal.fire({
             icon: "success",
@@ -226,8 +229,12 @@ const SignupContainer = ({
             text: "이메일 인증이 완료되었습니다.",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "확인",
+          }).then(() => {
+            console.log("✅ 이메일 인증 성공: TRUE");
           });
+          console.log("✅ 이메일 인증 성공: TRUE");
           setEmailVerified(true);
+          console.log("✅ 이메일 인증 상태 업데이트: ", true);
         } else {
           Swal.fire({
             icon: "error",
@@ -236,6 +243,7 @@ const SignupContainer = ({
             confirmButtonColor: "#d33",
             confirmButtonText: "확인",
           });
+          console.log("❓ 이메일 인증 실패: FALSE");
         }
       }
     } catch (error) {
@@ -247,6 +255,7 @@ const SignupContainer = ({
         confirmButtonColor: "#d33",
         confirmButtonText: "확인",
       });
+      console.log("❗ 이메일 인증 에러: ERROR");
     }
   };
 
@@ -389,11 +398,11 @@ const SignupContainer = ({
           password: formData.password,
           name: formData.name,
           tel: formData.tel,
-          userType: userType,
         };
 
         // 사용자 타입에 따라 필요한 추가 데이터 구성
         let typeSpecificData = {};
+        let signupFunction;
 
         switch (userType) {
           case "customer": // 일반 유저 추가데이터
@@ -403,6 +412,7 @@ const SignupContainer = ({
               birth: formData.birth,
               gender: formData.gender,
             };
+            signupFunction = signupApi.customerSignup;
             break;
 
           case "owner": // 사장 추가 데이터
@@ -411,6 +421,7 @@ const SignupContainer = ({
               address: formData.address,
               post: formData.post,
             };
+            signupFunction = signupApi.ownerSignup;
             break;
 
           case "designer": // 디자이너 추가 데이터
@@ -419,10 +430,11 @@ const SignupContainer = ({
               birth: formData.birth,
               gender: formData.gender,
             };
+            signupFunction = signupApi.designerSignup;
             break;
 
           default:
-            break;
+            throw new Error("유효하지 않은 사용자 유형입니다.");
         }
 
         // 최종 제출 데이터 (공통 + 타입별 데이터 병합)
@@ -431,12 +443,24 @@ const SignupContainer = ({
           ...typeSpecificData,
         };
 
-        console.log("🎁 회원가입 데이터 전송:", submitData);
+        console.log("🎁 회원가입 데이터:", submitData);
+        console.log(" └유저 타입:", userType);
 
-        // API 호출 코드 (예시)
-        // const response = await registerUser(submitData);
+        let response;
+        // API 호출 코드
+        if (userType === "customer") {
+          response = await signupApi.customerSignup(submitData);
+        } else if (userType === "owner") {
+          response = await signupApi.ownerSignup(submitData);
+        } else if (userType === "designer") {
+          response = await signupApi.designerSignup(submitData);
+        } else {
+          throw new Error("알 수 없는 유저 타입입니다");
+        }
 
-        // 성공 시 처리
+        console.log("회원가입 응답:", response);
+
+        // 성공 메시지 표시
         await Swal.fire({
           icon: "success",
           title: "회원가입 완료!",
@@ -450,10 +474,26 @@ const SignupContainer = ({
         resetForm();
       } catch (error) {
         console.error("회원가입 오류:", error);
+
+        // 에러 메시지 추출
+        let errorMessage = "회원가입에 실패했습니다. 다시 시도해주세요.";
+        if (error.response) {
+          // 서버가 응답을 반환한 경우
+          console.error("응답 데이터:", error.response.data);
+          console.error("응답 상태:", error.response.status);
+          console.error("응답 헤더:", error.response.headers);
+        } else if (error.request) {
+          // 요청이 만들어졌으나 응답을 받지 못한 경우
+          console.error("요청 정보:", error.request);
+        } else {
+          // 요청 설정 중 오류가 발생한 경우
+          console.error("오류 메시지:", error.message);
+        }
+
         Swal.fire({
           icon: "error",
-          title: "오류 발생",
-          text: "회원가입에 실패했습니다. 다시 시도해주세요.",
+          title: "가입 실패",
+          text: errorMessage,
           confirmButtonColor: "#d33",
           confirmButtonText: "확인",
         });

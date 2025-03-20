@@ -71,12 +71,11 @@ const Step5TypeSpecific = ({
                 <div className="flex">
                   <input
                     type="text"
-                    name="post"
-                    value={formData.post}
+                    name=""
+                    value={formData.post || "00000"}
                     onChange={handleChange}
                     className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     placeholder="우편번호"
-                    readOnly
                   />
                   <button
                     type="button"
