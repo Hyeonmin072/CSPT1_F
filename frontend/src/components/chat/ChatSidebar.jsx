@@ -1,68 +1,79 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import axios from "axios";  // axios를 사용하여 API 호출
+import axios from "axios";
 
-const ChatSidebar = ({ setSelectedChat, selectedChat }) => {
-    const [chats, setChats] = useState([]);  // 상태로 채팅 목록 관리
-    const [loading, setLoading] = useState(true); // 로딩 상태 추가
+const ChatSidebar = ({ setSelectedChat, selectedChat, chats }) => {
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState(""); // 🔍 검색어 상태 추가
 
-    // 컴포넌트가 처음 렌더링될 때 API 호출
     useEffect(() => {
-        // 백엔드에서 채팅 데이터를 가져오는 예시
         const fetchChats = async () => {
             try {
-                const response = await axios.get("https://your-backend-api.com/chats"); // 실제 API URL로 교체
-                setChats(response.data); // 받아온 데이터를 상태에 저장
-                setLoading(false); // 로딩 종료
+                const response = await axios.get("https://your-backend-api.com/chats");
+                setChats(response.data);
             } catch (error) {
                 console.error("Error fetching chats:", error);
-                setLoading(false); // 에러가 나더라도 로딩 종료
+            } finally {
+                setLoading(false);
             }
         };
-
-        fetchChats();  // API 호출
+        fetchChats();
     }, []);
 
-    // 로딩 중일 때 처리
+    // 🔍 검색어와 일치하는 채팅 목록 필터링
+    const filteredChats = chats.filter((chat) =>
+        chat.designerName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // 로딩 중일 때
     if (loading) {
         return <div>Loading...</div>;
     }
 
+    // 검색 결과가 없을 때와 채팅 목록이 없을 때 처리
+    const noChatsMessage = searchTerm
+        ? "검색 결과가 없습니다"
+        : "채팅 목록이 없습니다";
+
     return (
         <div className="w-1/4 h-full bg-white border-r">
-            {/* 검색창 */}
             <div className="p-4 border-b">
                 <div className="flex items-center border rounded-xl">
                     <Search size={20} className="text-gray-500 ml-2" />
                     <input
                         type="text"
                         placeholder="검색"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)} // 검색어 업데이트
                         className="w-full p-2 focus:outline-none border-none rounded-xl"
                     />
                 </div>
             </div>
 
-            {/* 채팅 목록 */}
             <div className="overflow-y-auto">
-                {chats.map((chat) => (
-                    <div
-                        key={chat.id}
-                        className={`p-4 flex items-center justify-between hover:bg-gray-100 cursor-pointer 
-                            ${selectedChat?.id === chat.id ? "bg-gray-200" : ""}`}
-                        onClick={() => setSelectedChat(chat)}
-                    >
-                        <img
-                            src={chat.avatarUrl}  // 백엔드에서 제공하는 아바타 URL
-                            alt={chat.designerName}  // 디자이너 이름
-                            className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div className="flex-1 ml-2">
-                            <p className="font-semibold">{chat.designerName}</p>
-                            <p className="text-sm text-gray-500 truncate w-40">{chat.lastMessage}</p>
+                {filteredChats.length > 0 ? (
+                    filteredChats.map((chat) => (
+                        <div
+                            key={chat.id}
+                            className={`p-4 flex items-center justify-between hover:bg-gray-100 cursor-pointer 
+                                ${selectedChat?.id === chat.id ? "bg-gray-200" : ""}`}
+                            onClick={() => setSelectedChat(chat)}
+                        >
+                            <img
+                                src={chat.avatarUrl}
+                                alt={chat.designerName}
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <div className="flex-1 ml-2">
+                                <p className="font-semibold">{chat.designerName}</p>
+                                <p className="text-sm text-gray-500 truncate w-40">{chat.lastMessage}</p>
+                            </div>
+                            <span className="text-xs text-gray-400">{chat.lastMessageTime}</span>
                         </div>
-                        <span className="text-xs text-gray-400">{chat.lastMessageTime}</span>
-                    </div>
-                ))}
+                    ))
+                ) : (
+                    <div className="p-4 text-gray-500 text-center">{noChatsMessage}</div>
+                )}
             </div>
         </div>
     );

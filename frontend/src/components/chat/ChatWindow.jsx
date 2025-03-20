@@ -1,100 +1,73 @@
-import { useState, useRef, useEffect } from "react";
-import axios from "axios"; // ✅ axios 추가
-import { format, isSameDay, parse } from "date-fns";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { format, isSameDay, parseISO } from "date-fns";
 import { Search, MoreVertical } from "lucide-react";
 
 const ChatWindow = ({ selectedChat, socket }) => {
-    const [messages, setMessages] = useState([]); // ✅ 초기값을 빈 배열로 변경
     const [input, setInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [searchOpen, setSearchOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const messagesEndRef = useRef(null);
+    const menuRef = useRef(null);
 
-    // ✅ 채팅 메시지를 서버에서 가져오기
     useEffect(() => {
-        if (!selectedChat) return;
+        if (selectedChat?.id) {
+            // WebSocket으로 받은 메시지 업데이트
+            const handleMessage = (event) => {
+                const newMessage = JSON.parse(event.data);
+                if (newMessage.chatId === selectedChat.id) {
+                    selectedChat.messages.push(newMessage); // 메시지 배열에 추가
+                }
+            };
 
-        axios.get(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
-            .then(response => {
-                setMessages(response.data); // 서버에서 받은 메시지 상태 업데이트
-            })
-            .catch(error => {
-                console.error("채팅 메시지를 불러오는 중 오류 발생:", error);
-            });
+            socket?.addEventListener("message", handleMessage);
 
-    }, [selectedChat]); // ✅ 선택한 채팅이 변경될 때마다 실행
+            return () => socket?.removeEventListener("message", handleMessage);
+        }
+    }, [selectedChat, socket]);
 
-    // ✅ WebSocket을 통한 실시간 메시지 수신
-    useEffect(() => {
-        if (!socket) return;
-
-        socket.onmessage = (event) => {
-            const newMessage = JSON.parse(event.data);
-            if (newMessage.chatId === selectedChat.id) {
-                setMessages((prev) => [...prev, newMessage]);
-            }
-        };
-
-        return () => {
-            socket.onmessage = null;
-        };
-    }, [socket, selectedChat]);
-
-    // ✅ 메시지 전송 함수 (서버에도 전송)
     const sendMessage = () => {
-        if (!input.trim()) return;
+        if (!input.trim() || !selectedChat?.id) return;
 
         const newMessage = {
             text: input,
             sender: "user",
             time: format(new Date(), "yyyy-MM-dd HH:mm"),
-            chatId: selectedChat.id, // ✅ chatId 추가
+            chatId: selectedChat.id,
         };
 
-        console.log("새 메시지 추가:", newMessage); //내가 전송한 메시지 확인 콘솔
+        socket?.send(JSON.stringify(newMessage));
 
-        // ✅ WebSocket을 통해 서버에 메시지 전송
-        // socket.send(JSON.stringify(newMessage));
-
-        // ✅ 서버에 메시지 저장 요청 (axios POST 요청)
-        // axios.post(`http://localhost:5000/api/chats/${selectedChat.id}/messages`, newMessage)
-        //     .then(() => {
-        //         setMessages((prev) => [...prev, newMessage]); // 상태 업데이트
-        //     })
-        //     .catch(error => {
-        //         console.error("메시지 전송 실패:", error);
-        //     });
+        axios.post(`http://localhost:5000/api/chats/${selectedChat.id}/messages`, newMessage)
+            .then(() => {
+                selectedChat.messages.push(newMessage); // 메시지 배열에 추가
+            })
+            .catch(error => console.error("메시지 전송 실패:", error));
 
         setInput("");
     };
 
-    // ✅ 대화 삭제 기능 (서버에서도 삭제 요청)
     const deleteChat = () => {
-        if (window.confirm("정말로 대화를 삭제하시겠습니까?")) {
-            axios.delete(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
-                .then(() => {
-                    setMessages([]); // 상태에서 메시지 삭제
-                    setMenuOpen(false);
-                })
-                .catch(error => {
-                    console.error("대화 삭제 실패:", error);
-                });
-        }
+        if (!window.confirm("정말로 대화를 삭제하시겠습니까?")) return;
+
+        axios.delete(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
+            .then(() => {
+                selectedChat.messages = []; // 대화 삭제
+            })
+            .catch(error => console.error("대화 삭제 실패:", error));
     };
 
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages]);
+    }, [selectedChat?.messages]);
 
     return (
         <div className="flex flex-col w-3/4 h-full bg-white">
-            {/* 채팅 헤더 */}
             <div className="mt-[18px] p-4 bg-white shadow-md flex justify-between items-center">
-                <span className="text-lg font-bold">{selectedChat.name}</span>
-
+                <span className="text-lg font-bold">{selectedChat?.name}</span>
                 <div className="flex items-center space-x-3">
                     <button onClick={() => setSearchOpen(!searchOpen)}>
                         <Search className="w-6 h-6 text-gray-700" />
@@ -108,8 +81,7 @@ const ChatWindow = ({ selectedChat, socket }) => {
                             className="border border-gray-300 px-2 py-1 rounded-md text-sm transition-all duration-300"
                         />
                     )}
-
-                    <div className="relative">
+                    <div className="relative" ref={menuRef}>
                         <button onClick={() => setMenuOpen(!menuOpen)}>
                             <MoreVertical className="w-6 h-6 text-gray-700" />
                         </button>
@@ -118,48 +90,38 @@ const ChatWindow = ({ selectedChat, socket }) => {
                                 <button onClick={deleteChat} className="block w-full text-left px-2 py-1 hover:bg-gray-100">
                                     대화 삭제
                                 </button>
-                                <button className="block w-full text-left px-2 py-1 hover:bg-gray-100">
-                                    디자이너 프로필 보기
-                                </button>
                             </div>
                         )}
                     </div>
                 </div>
             </div>
 
-            {/* 채팅 메시지 */}
             <div className="chat-window flex-1 p-4 space-y-4 bg-blue-100 max-h-[70vh] overflow-y-auto">
-                {messages
-                    .filter((msg) => msg.text.toLowerCase().includes(searchTerm.toLowerCase()))
-                    .map((msg, index) => {
-                        const currentMessageDate = parse(msg.time, "yyyy-MM-dd HH:mm", new Date());
-                        const previousMessageDate = index > 0
-                            ? parse(messages[index - 1].time, "yyyy-MM-dd HH:mm", new Date())
-                            : null;
+                {selectedChat?.messages?.filter((msg) => msg.text.toLowerCase().includes(searchTerm.toLowerCase())).map((msg, index) => {
+                    const currentMessageDate = msg.time ? parseISO(msg.time) : new Date();
+                    const previousMessageDate = index > 0 ? parseISO(selectedChat.messages[index - 1].time) : null;
+                    const showDate = !previousMessageDate || !isSameDay(currentMessageDate, previousMessageDate);
 
-                        const showDate = !previousMessageDate || !isSameDay(currentMessageDate, previousMessageDate);
-
-                        return (
-                            <div key={index}>
-                                {showDate && (
-                                    <div className="text-center my-2 text-gray-500 text-sm">
-                                        {format(currentMessageDate, "yyyy년 MM월 dd일")}
-                                    </div>
-                                )}
-                                <div className={`relative max-w-[50%] w-fit p-2 rounded-md 
-                                    ${msg.sender === "user" ? "bg-green-400 text-white ml-auto self-end" : "bg-white self-start"}`}>
-                                    <p className="whitespace-pre-wrap break-words">{msg.text}</p>
-                                    <span className="block text-right text-xs text-gray-400 w-full">
-                                        {format(currentMessageDate, "HH:mm")}
-                                    </span>
+                    return (
+                        <div key={index}>
+                            {showDate && (
+                                <div className="text-center my-2 text-gray-500 text-sm">
+                                    {format(currentMessageDate, "yyyy년 MM월 dd일")}
                                 </div>
+                            )}
+                            <div className={`relative max-w-[50%] w-fit p-2 rounded-md 
+                                ${msg.sender === "user" ? "bg-green-400 text-white ml-auto" : "bg-white"}`}>
+                                <p className="whitespace-pre-wrap break-words">{msg.text}</p>
+                                <span className="block text-right text-xs text-gray-400 w-full">
+                                    {format(currentMessageDate, "HH:mm")}
+                                </span>
                             </div>
-                        );
-                    })}
+                        </div>
+                    );
+                })}
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* 메시지 입력창 */}
             <div className="p-4 bg-white flex items-center">
                 <input
                     type="text"
@@ -167,7 +129,7 @@ const ChatWindow = ({ selectedChat, socket }) => {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                     placeholder="Message"
-                    className="flex-1 border border-gray-300 p-2 rounded-md resize-none overflow-hidden"
+                    className="flex-1 border border-gray-300 p-2 rounded-md"
                 />
                 <button onClick={sendMessage} className="ml-2 p-2 bg-blue-500 text-white rounded-md">
                     전송
