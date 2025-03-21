@@ -25,6 +25,7 @@ import GetJobDetailPage from "./pages/getjob/GetJobDetailPage.jsx";
 import CVCheck from "./pages/cv/CVCheckPage.jsx";
 import DesignerProfilePage from "./pages/profile/DesignerProfilePage.jsx";
 import DesignerProfileEditPage from "./pages/profile/DesignerProfileEditPage.jsx";
+import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
 
 // 사업자
 import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
@@ -75,6 +76,7 @@ function App() {
                   <Route path="/cv-check" element={<CVCheck />} />
                   <Route path="/profile" element={<DesignerProfilePage />} />
                   <Route path="/profileedit" element={<DesignerProfileEditPage />} />
+                  <Route path="/notice" element={<WeekNotice />} />
                 </>
             )}
 
