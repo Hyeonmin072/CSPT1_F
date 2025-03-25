@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zap, LogOut, Bell } from "lucide-react";
-import { Overlay } from "../../overlay/OverLay";
 
 // 사이드바 컴포넌트 자체
 
 const BusinessSideBar = ({ isOpen, onClose }) => {
     // 각각 페이지가 완성되면 path 추가
     const menuItems = [
-        { id: 1, title: "홈", path: "/"},
+        { id: 1, title: "홈", path: "/business"},
         { id: 2, title: "예약관리"},
         { id: 3, title: "디자이너 관리"},
         { id: 4, title: "메뉴설정"},
@@ -28,7 +27,6 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
 
     return (
         <>
-            <Overlay isOpen={isOpen} onClose={onClose} />
             <div
                 className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
             >

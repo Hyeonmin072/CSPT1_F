@@ -30,7 +30,7 @@ export default function BusinessHeader() {
               </span>
                         </div>
                         <nav className="flex space-x-2 gap-[60px] font-bold">
-                            <Link to="/" className="text-gray-700">
+                            <Link to="/business" className="text-gray-700">
                                 홈
                             </Link>
                             <Link to="" className="text-gray-700">
