@@ -1,12 +1,12 @@
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/common/Header";
-import MainPage from "./pages/main/MainPage";
-import HairShopPage from "./pages/hairshop/HairShopPage";
+import MainPage from "./pages/main/MainPage.jsx";
+import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
+import DesignerPage from "./pages/designer/DesignerPage.jsx";
+import SignIntegration from "./components/sign/SignIntergration.jsx";
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
-import DesignerPage from "./pages/designer/DesignerPage";
-import UserProfile from "./pages/profile/UserProfile";
-import UserProfileEdit from "./pages/profile/UserProfileEdit";
-import LoginAndRegisterPage from "./pages/loginandregister/LoginAndRegisterPage.jsx";
+import UserProfile from "./pages/profile/UserProfile.jsx";
+import UserProfileEdit from "./pages/profile/UserProfileEdit.jsx";
 import SubscriptDesignerPage from "./pages/designer/SubscriptDesignerPage.jsx";
 import DesignerSelectPage from "./pages/reservation/DesignerSelectPage.jsx";
 import CalendarSelectPage from "./pages/reservation/CalendarSelectPage.jsx";
@@ -17,112 +17,138 @@ import ReservationCheckPage from "./pages/reservation/reservationcheck/Reservati
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
-import SignIntegrational from "./pages/loginandregister/LoginAndRegisterPage.jsx";
-import { useEffect, useState } from "react";
 
 function App() {
-  // localStorage에서 userType을 가져와서 userRole로 변환
-  const [userRole, setUserRole] = useState(() => {
-    const userType = localStorage.getItem("userType");
-    // userType을 userRole로 변환 (SHOP -> business, USER -> customer, DESIGNER -> designer)
-    switch (userType) {
-      case "SHOP":
-        return "SHOP";
-      case "USER":
-        return "USER";
-      case "DESIGNER":
-        return "designer";
-      default:
-        return "USER"; // 기본값
-    }
-  });
+  const [userRole, setUserRole] = useState("customer");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  // userType이 변경될 때마다 userRole 업데이트
   useEffect(() => {
-    const handleStorageChange = () => {
-      const userType = localStorage.getItem("userType");
+    const userType = localStorage.getItem("userType");
+    if (userType) {
+      // userType을 userRole로 변환
       switch (userType) {
         case "SHOP":
-          setUserRole("SHOP");
+          setUserRole("business");
           break;
         case "USER":
-          setUserRole("USER");
+          setUserRole("customer");
           break;
         case "DESIGNER":
-          setUserRole("DESIGNER");
+          setUserRole("designer");
           break;
         default:
-          setUserRole("USER");
+          setUserRole("customer");
       }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    }
   }, []);
+
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
 
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
-        <main className="flex-1">
-          <Routes>
-            {/* 공통 */}
-            <Route
-              path="/loginandregister"
-              element={<LoginAndRegisterPage />}
-            />
-            <Route path="/signintergrational" element={<SignIntegrational />} />
+      <div className="min-h-screen">
+        <Routes>
+          {/* 기본 라우트 */}
+          <Route
+            path="/"
+            element={<MainPage onLoginClick={openLoginModal} />}
+          />
 
-            {/* 고객 전용 */}
-            {userRole === "USER" && (
-              <>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/hairshop" element={<HairShopPage />} />
-                <Route path="/detail" element={<HairShopDetailPage />} />
-                <Route path="/designerpage" element={<DesignerPage />} />
-                <Route path="/userprofile" element={<UserProfile />} />
-                <Route path="/userprofileedit" element={<UserProfileEdit />} />
-                <Route
-                  path="/designerselect"
-                  element={<DesignerSelectPage />}
-                />
-                <Route
-                  path="/calendarselect"
-                  element={<CalendarSelectPage />}
-                />
-                <Route path="/menuselect" element={<MenuSelectPage />} />
-                <Route path="/reviews" element={<ReviewsPage />} />
-                <Route path="/reviews/photo" element={<PhotoReview />} />
-                <Route
-                  path="/reservationcheck"
-                  element={<ReservationCheckPage />}
-                />
-                <Route
-                  path="/subscriptdesigner"
-                  element={<SubscriptDesignerPage />}
-                />
-              </>
-            )}
+          {/* 공통 라우트 */}
+          <Route
+            path="/hairshop"
+            element={<HairShopPage onLoginClick={openLoginModal} />}
+          />
+          <Route
+            path="/detail"
+            element={<HairShopDetailPage onLoginClick={openLoginModal} />}
+          />
+          <Route
+            path="/reviews"
+            element={<ReviewsPage onLoginClick={openLoginModal} />}
+          />
+          <Route
+            path="/reviews/photo"
+            element={<PhotoReview onLoginClick={openLoginModal} />}
+          />
 
-            {/* 사장님 전용 */}
-            {userRole === "SHOP" && (
-              <>
-                <Route path="/" element={<HairShopPage />} />
-                <Route path="/hairshop" element={<HairShopPage />} />
-                <Route path="/detail" element={<HairShopDetailPage />} />
-                <Route path="/sales" element={<SalesPage />} />
-              </>
-            )}
+          {/* 고객 전용 라우트 */}
+          {userRole === "customer" && (
+            <>
+              <Route
+                path="/userprofile"
+                element={<UserProfile onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/userprofileedit"
+                element={<UserProfileEdit onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/designerselect"
+                element={<DesignerSelectPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/calendarselect"
+                element={<CalendarSelectPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/menuselect"
+                element={<MenuSelectPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/reservationcheck"
+                element={<ReservationCheckPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/subscriptdesigner"
+                element={
+                  <SubscriptDesignerPage onLoginClick={openLoginModal} />
+                }
+              />
+            </>
+          )}
 
-            {/* 디자이너 전용 */}
-            {userRole === "designer" && (
-              <>
-                <Route path="/" element={<DesignerMainPage />} />
-                <Route path="/cv" element={<CurriculumVitaePage />} />
-                <Route path="/sales" element={<SalesPage />} />
-              </>
-            )}
-          </Routes>
-        </main>
+          {/* 사장님 전용 라우트 */}
+          {userRole === "business" && (
+            <>
+              <Route
+                path="/sales"
+                element={<SalesPage onLoginClick={openLoginModal} />}
+              />
+            </>
+          )}
+
+          {/* 디자이너 전용 라우트 */}
+          {userRole === "designer" && (
+            <>
+              <Route
+                path="/designerpage"
+                element={<DesignerPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/designer"
+                element={<DesignerMainPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/cv"
+                element={<CurriculumVitaePage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/sales"
+                element={<SalesPage onLoginClick={openLoginModal} />}
+              />
+            </>
+          )}
+        </Routes>
+
+        {/* 로그인 모달 */}
+        <SignIntegration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
       </div>
     </Router>
   );
