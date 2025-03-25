@@ -1,9 +1,9 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
-import RegisterButton from "../button/RegisterButton";
 import UserHamburgerButton from "../button/UserHamburgerButton";
 import Sidebar from "../modal/sidebar/SideBar";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,7 +43,6 @@ export default function Header() {
               </Link>
             </nav>
             <div className="flex space-x-4">
-              <RegisterButton />
               <LoginButton />
               <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
             </div>

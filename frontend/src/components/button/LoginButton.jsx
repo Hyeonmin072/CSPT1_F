@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import SignIntegration from "../sign/SignIntergration";
-export default function LoginButton() {
+import SignUpContainer from "../sign/SignIntergration";
+
+const LoginButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -14,14 +15,14 @@ export default function LoginButton() {
   return (
     <>
       <button
-        className="px-4 py-2 bg-[#70EFDE] text-black rounded transition-colors duration-200 font-bold"
         onClick={openModal}
+        className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
       >
         로그인
       </button>
-
-      {/* 모달 컴포넌트 */}
-      <SignIntegration isOpen={isModalOpen} onClose={closeModal} />
+      <SignUpContainer isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
-}
+};
+
+export default LoginButton;
