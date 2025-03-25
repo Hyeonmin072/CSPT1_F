@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="165cb744-cdc5-445b-a76a-57f92ab99ce9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/Detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/DetailReviewimg.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/hairshop/hairshopdetail/ScrollDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/hairshop/HairShopDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/DesignerInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/reservation/designerselect/DesignerSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/reservation/designerselect/DesignerSelect.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +32,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -47,9 +48,9 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend-reviewspage&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontend-designerprofile&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/common/hairshop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1/frontend/src/components/DesingerAbout/cvcheck&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -58,12 +59,15 @@
     &quot;npm.dev.executor&quot;: &quot;Run&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\DesingerAbout\cvcheck" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hair" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\reservationcheck" />
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common\hairshop" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\layout" />
       <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\common" />
@@ -123,6 +127,35 @@
       <workItem from="1739765101278" duration="19713000" />
       <workItem from="1739851594332" duration="15912000" />
       <workItem from="1739939587974" duration="5063000" />
+      <workItem from="1739945729381" duration="2601000" />
+      <workItem from="1739950147130" duration="3666000" />
+      <workItem from="1740027874586" duration="4147000" />
+      <workItem from="1740034134391" duration="1335000" />
+      <workItem from="1740035500861" duration="7876000" />
+      <workItem from="1740113854690" duration="4932000" />
+      <workItem from="1740370102889" duration="3596000" />
+      <workItem from="1741054053274" duration="1271000" />
+      <workItem from="1741057162607" duration="22170000" />
+      <workItem from="1741139280830" duration="5991000" />
+      <workItem from="1741157814872" duration="9509000" />
+      <workItem from="1741236025814" duration="7300000" />
+      <workItem from="1741243471054" duration="382000" />
+      <workItem from="1741244004912" duration="8539000" />
+      <workItem from="1741316605354" duration="1370000" />
+      <workItem from="1741657778961" duration="4961000" />
+      <workItem from="1741664692148" duration="14706000" />
+      <workItem from="1741685393491" duration="179000" />
+      <workItem from="1741744233854" duration="16106000" />
+      <workItem from="1741841097810" duration="4693000" />
+      <workItem from="1741851659659" duration="1114000" />
+      <workItem from="1741853474346" duration="2839000" />
+      <workItem from="1741857402810" duration="1915000" />
+      <workItem from="1741910167469" duration="365000" />
+      <workItem from="1741938513070" duration="2910000" />
+      <workItem from="1742267165220" duration="11152000" />
+      <workItem from="1742281612947" duration="7345000" />
+      <workItem from="1742349271539" duration="9546000" />
+      <workItem from="1742374348826" duration="1137000" />
     </task>
     <servers />
   </component>

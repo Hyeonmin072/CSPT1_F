@@ -36,9 +36,10 @@ export default function ShopDetail({ handleModalOpen }) {
     }, []);
 
     return (
-        <div className="flex flex-col md:flex-row px-20 gap-6" onWheel={handleWheel}>
+        <div className="max-w-6xl mx-auto flex flex-row justify-center items-start px-20 gap-6"
+             onWheel={handleWheel}>
             {/* 왼쪽: 가게 상세 정보 */}
-            <div className="flex flex-col px-10 w-3/4 mb-0 bg-white">
+            <div className="flex flex-col w-4/5 mb-0 bg-white">
                 <DetailHeader />
                 <div className="relative">
                     <img
@@ -53,7 +54,7 @@ export default function ShopDetail({ handleModalOpen }) {
             </div>
 
             {/* 오른쪽: 디자이너 정보 */}
-            <div className="flex flex-col w-2/5 min-h-screen top-4">
+            <div className="flex flex-row w-1/5">
                 <DesignerInfo />
             </div>
         </div>
