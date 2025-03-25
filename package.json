@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "framer-motion": "^12.4.10",
+    "react-slick": "^0.30.3",
+    "recharts": "^2.15.1"
+  }
+}
