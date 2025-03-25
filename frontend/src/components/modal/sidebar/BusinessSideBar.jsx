@@ -14,7 +14,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
         { id: 4, title: "메뉴설정"},
         { id: 5, title: "이벤트 및 쿠폰 관리"},
         { id: 6, title: "리뷰 관리"},
-        { id: 7, title: "매출 관리"},
+        { id: 7, title: "매출 관리", path: "/sales"},
         { id: 8, title: "근태 관리"},
         { id: 9, title: "구인구직"},
         { id: 10, title: "정보 수정"},

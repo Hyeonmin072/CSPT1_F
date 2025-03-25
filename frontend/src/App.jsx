@@ -29,10 +29,12 @@ import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
 
 // 사업자
 import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
+import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
+import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
-  const userRole = 'designer';
+  const userRole = 'business';
 
   return (
     <Router>
@@ -84,6 +86,8 @@ function App() {
             {userRole === 'business' && (
                 <>
                   <Route path="/" element={<BusinessMainPage />} />
+                  <Route path="/sales" element={<BusinessSalesPage />} />
+                  <Route path="/sales/calendar" element={<SalesCalendar />} />
                 </>
             )}
           </Routes>
