@@ -38,3 +38,16 @@ export const signupApi = {
     return axiosInstance.post("/auth/verify-code", { email, code });
   },
 };
+
+// 로그인 API 함수
+export const loginApi = {
+  signin: (loginData, userType) => {
+    const data = {
+      who: userType,
+      email: loginData.email,
+      password: loginData.password,
+    };
+    console.log("로그인 시도:", data);
+    return axiosInstance.post("/signin", data);
+  },
+};

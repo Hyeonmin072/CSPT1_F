@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import SocialLogin from "../sign/shared/SocialLogin";
 import FormInput from "../sign/shared/FormInput";
+import { loginApi } from "./axios/authApi";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -78,7 +81,26 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         email: formData.email,
         password: formData.password,
         userType: userType,
+        selectedButton:
+          userType === "SHOP"
+            ? "사장이에요"
+            : userType === "USER"
+            ? "고객이에요"
+            : userType === "DESIGNER"
+            ? "디자이너에요"
+            : "알 수 없음",
       });
+
+      // 통합 로그인 API 호출
+      const response = await loginApi.signin(formData, userType);
+
+      console.log("로그인 응답:", response);
+
+      // 로그인 성공 시 토큰 저장
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userType", userType);
+      }
 
       // 로그인 성공 시 Sweet Alert로 알림
       await Swal.fire({
@@ -88,13 +110,31 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
+
       onClose();
+
+      // 유저 타입에 따른 리다이렉트
+      switch (userType) {
+        case "SHOP":
+          navigate("/hairshop"); // 헤어샵 페이지로 이동
+          break;
+        case "USER":
+          navigate("/"); // 메인 페이지
+          break;
+        case "DESIGNER":
+          navigate("/designerpage"); // 디자이너 페이지로 이동
+          break;
+        default:
+          navigate("/");
+      }
     } catch (error) {
       console.error("Error:", error);
       Swal.fire({
         icon: "error",
-        title: "오류 발생",
-        text: "로그인에 실패했습니다. 다시 시도해주세요.",
+        title: "로그인 실패",
+        text:
+          error.response?.data?.message ||
+          "로그인에 실패했습니다. 다시 시도해주세요.",
         confirmButtonColor: "#d33",
         confirmButtonText: "확인",
       });
@@ -109,9 +149,9 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
       <div className="flex justify-center space-x-2 mb-4">
         <button
           type="button"
-          onClick={() => setUserType("owner")}
+          onClick={() => setUserType("SHOP")}
           className={`px-2 py-1 text-xs rounded-lg border ${
-            userType === "owner"
+            userType === "SHOP"
               ? "bg-green-500 text-white border-green-500"
               : "bg-white text-gray-700 border-gray-300"
           }`}
@@ -120,9 +160,9 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         </button>
         <button
           type="button"
-          onClick={() => setUserType("customer")}
+          onClick={() => setUserType("USER")}
           className={`px-2 py-1 text-xs rounded-lg border ${
-            userType === "customer"
+            userType === "USER"
               ? "bg-green-500 text-white border-green-500"
               : "bg-white text-gray-700 border-gray-300"
           }`}
@@ -131,9 +171,9 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         </button>
         <button
           type="button"
-          onClick={() => setUserType("designer")}
+          onClick={() => setUserType("DESIGNER")}
           className={`px-2 py-1 text-xs rounded-lg border ${
-            userType === "designer"
+            userType === "DESIGNER"
               ? "bg-green-500 text-white border-green-500"
               : "bg-white text-gray-700 border-gray-300"
           }`}

@@ -5,7 +5,7 @@ import SignupContainer from "./SignupFlow/SignupContainer";
 
 const SignIntegration = ({ isOpen, onClose }) => {
   const [isLoginForm, setIsLoginForm] = useState(true);
-  const [userType, setUserType] = useState("customer"); // 기본값: 고객
+  const [userType, setUserType] = useState("USER"); // 기본값: USER로 변경
 
   // 모드 전환 시 로그 추가
   const toggleLoginMode = (isLogin) => {
