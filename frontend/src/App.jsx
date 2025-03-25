@@ -17,6 +17,18 @@ import ReservationCheckPage from "./pages/reservation/reservationcheck/Reservati
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
+import ClientCheckPage from "./pages/clientcheck/ClientCheckPage.jsx";
+import GetJobPage from "./pages/getjob/GetJobPage.jsx";
+import GetJobDetailPage from "./pages/getjob/GetJobDetailPage.jsx";
+import CVCheck from "./pages/cv/CVCheckPage.jsx";
+import DesignerProfilePage from "./pages/profile/DesignerProfilePage.jsx";
+import DesignerProfileEditPage from "./pages/profile/DesignerProfileEditPage.jsx";
+import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
+
+// 사업자
+import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
+import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
+import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("customer");
@@ -114,15 +126,6 @@ function App() {
             </>
           )}
 
-          {/* 사장님 전용 라우트 */}
-          {userRole === "business" && (
-            <>
-              <Route
-                path="/sales"
-                element={<SalesPage onLoginClick={openLoginModal} />}
-              />
-            </>
-          )}
 
           {/* 디자이너 전용 라우트 */}
           {userRole === "designer" && (
@@ -146,7 +149,16 @@ function App() {
             </>
           )}
         </Routes>
-
+            {/* 사업자 전용 */}
+            {userRole === 'business' && (
+                <>
+                  <Route path="/" element={<BusinessMainPage />} />
+                  <Route path="/sales" element={<BusinessSalesPage />} />
+                  <Route path="/sales/calendar" element={<SalesCalendar />} />
+                </>
+            )}
+          </Routes>
+        </main>
         {/* 로그인 모달 */}
         <SignIntegration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
       </div>
