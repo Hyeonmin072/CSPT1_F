@@ -35,7 +35,7 @@ export default function HairShopDetailReview() {
                             {/* 평점 */}
                             <div className="flex items-center my-2">
                                 {Array.from({ length: Math.floor(rT.rating) }).map((_, index) => (
-                                    <Star key={index} className="text-yellow-400 w-4 h-4" />
+                                    <Star key={index} className="text-yellow-400 w-4 h-4 fill-current" />
                                 ))}
                                 {rT.rating % 1 !== 0 && <Star className="text-yellow-400 w-4 h-4 opacity-50" />}
                                 <span className="ml-2 text-sm font-medium text-gray-700">{rT.rating.toFixed(1)}</span>

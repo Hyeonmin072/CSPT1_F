@@ -37,7 +37,7 @@ export default function DesignerSelect({handleDesignerSelect}) {
     }
 
     return (
-        <>
+        <div className="max-w-8xl">
             <div className="flex items-center justify-between px-4 py-2">
                 <DesignerHeader/>
             </div>
@@ -56,7 +56,7 @@ export default function DesignerSelect({handleDesignerSelect}) {
                                     <p className="text-sm text-gray-600">{designer.description}</p>
                                     <div className="flex flex-row items-center gap-1 mt-2">
                                         {Array.from({length: Math.floor(designer.rating)}).map((_, idx) => (
-                                            <Star key={idx} className="text-yellow-400 w-5 h-5"/>
+                                            <Star key={idx} className="text-yellow-400 w-5 h-5 fill-current"/>
                                         ))}
                                         <span className="text-black px-2 text-lg">{designer.rating}</span>
                                     </div>
@@ -82,6 +82,6 @@ export default function DesignerSelect({handleDesignerSelect}) {
 
                 </div>
             </div>
-        </>
+        </div>
     );
 }

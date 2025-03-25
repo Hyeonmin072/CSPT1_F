@@ -13,10 +13,21 @@ import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx";
 import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
+
+// 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
-import SignIntegrational from "./components/sign/SignIntergration.jsx";
+import ClientCheckPage from "./pages/clientcheck/ClientCheckPage.jsx";
+import GetJobPage from "./pages/getjob/GetJobPage.jsx";
+import GetJobDetailPage from "./pages/getjob/GetJobDetailPage.jsx";
+import CVCheck from "./pages/cv/CVCheckPage.jsx";
+import DesignerProfilePage from "./pages/profile/DesignerProfilePage.jsx";
+import DesignerProfileEditPage from "./pages/profile/DesignerProfileEditPage.jsx";
+import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
+
+// 사업자
+import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
 
 function App() {
   // 임시 역할 설정(customer, designer, business)
@@ -62,12 +73,26 @@ function App() {
             )}
 
             {/* 디자이너 전용 */}
-            {userRole === "designer" && (
-              <>
-                <Route path="/" element={<DesignerMainPage />} />
-                <Route path="/cv" element={<CurriculumVitaePage />} />
-                <Route path="/sales" element={<SalesPage />} />
-              </>
+            {userRole === 'designer' && (
+                <>
+                  <Route path="/" element={<DesignerMainPage />} />
+                  <Route path="/cv" element={<CurriculumVitaePage />} />
+                  <Route path="/sales" element={<SalesPage />} />
+                  <Route path="/client" element={<ClientCheckPage />} />
+                  <Route path="/job" element={<GetJobPage />} />
+                  <Route path="/detail" element={<GetJobDetailPage />} />
+                  <Route path="/cv-check" element={<CVCheck />} />
+                  <Route path="/profile" element={<DesignerProfilePage />} />
+                  <Route path="/profileedit" element={<DesignerProfileEditPage />} />
+                  <Route path="/notice" element={<WeekNotice />} />
+                </>
+            )}
+
+            {/* 사업자 전용 */}
+            {userRole === 'business' && (
+                <>
+                  <Route path="/" element={<BusinessMainPage />} />
+                </>
             )}
           </Routes>
         </main>
