@@ -38,7 +38,7 @@ export default function JobList({ filteredJobs, formatPostedTime, navigate }) {
                         <div className="flex justify-end mt-4 m-3">
                             <button
                                 className="px-6 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600"
-                                onClick={() => navigate("/detail")} // 상세 보기 페이지로 이동
+                                onClick={() => navigate("/job/detail")} // 상세 보기 페이지로 이동
                             >
                                 상세 보기
                             </button>

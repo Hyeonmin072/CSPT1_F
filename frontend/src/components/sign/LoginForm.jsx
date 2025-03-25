@@ -117,7 +117,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
       // 유저 타입에 따른 리다이렉트
       switch (userType) {
         case "SHOP":
-          navigate("/hairshop"); // 헤어샵 페이지로 이동
+          navigate("/shop"); // 헤어샵 페이지로 이동
           break;
         case "USER":
           navigate("/"); // 메인 페이지
