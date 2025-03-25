@@ -153,6 +153,12 @@ function App() {
               <Route
                   path="/job" element={<GetJobPage onLoginClick={openLoginModal} />}
               />
+              <Route
+                  path="/job/detail" element={<GetJobDetailPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                  path="/job/detail/cv" element={<CVCheck onLoginClick={openLoginModal} />}
+              />
               {/* 이력서 페이지 */}
               <Route
                 path="/cv" element={<CurriculumVitaePage onLoginClick={openLoginModal} />}

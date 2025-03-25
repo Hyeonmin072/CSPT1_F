@@ -131,7 +131,7 @@ export default function GetJobDetail() {
                         </div>
                         <div className="p-3 flex flex-col">
                             <button className="p-1 bg-[#73CEC7] rounded-full"
-                                    onClick={() => navigate("/cv-check")}>
+                                    onClick={() => navigate("/job/detail/cv")}>
                             즉시지원
                             </button>
                         </div>
