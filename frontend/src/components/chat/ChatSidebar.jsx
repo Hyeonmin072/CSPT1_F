@@ -4,7 +4,7 @@ import axios from "axios";
 
 const ChatSidebar = ({ setSelectedChat, selectedChat, chats }) => {
     const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState(""); // 🔍 검색어 상태 추가
+    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -20,7 +20,7 @@ const ChatSidebar = ({ setSelectedChat, selectedChat, chats }) => {
         fetchChats();
     }, []);
 
-    // 🔍 검색어와 일치하는 채팅 목록 필터링
+    // 검색어와 일치하는 채팅 목록 필터링
     const filteredChats = chats.filter((chat) =>
         chat.designerName.toLowerCase().includes(searchTerm.toLowerCase())
     );

@@ -3,7 +3,7 @@ import axios from "axios";
 import { format, isSameDay, parseISO } from "date-fns";
 import { Search, MoreVertical } from "lucide-react";
 
-const ChatWindow = ({ selectedChat, socket }) => {
+const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
     const [input, setInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [searchOpen, setSearchOpen] = useState(false);
@@ -17,7 +17,10 @@ const ChatWindow = ({ selectedChat, socket }) => {
             const handleMessage = (event) => {
                 const newMessage = JSON.parse(event.data);
                 if (newMessage.chatId === selectedChat.id) {
-                    selectedChat.messages.push(newMessage); // 메시지 배열에 추가
+                    setSelectedChat((prevChat) => ({
+                        ...prevChat,
+                        messages: [...(prevChat.messages || []), newMessage],
+                    }));
                 }
             };
 
@@ -25,7 +28,7 @@ const ChatWindow = ({ selectedChat, socket }) => {
 
             return () => socket?.removeEventListener("message", handleMessage);
         }
-    }, [selectedChat, socket]);
+    }, [selectedChat, socket, setSelectedChat]);
 
     const sendMessage = () => {
         if (!input.trim() || !selectedChat?.id) return;
@@ -41,7 +44,10 @@ const ChatWindow = ({ selectedChat, socket }) => {
 
         axios.post(`http://localhost:5000/api/chats/${selectedChat.id}/messages`, newMessage)
             .then(() => {
-                selectedChat.messages.push(newMessage); // 메시지 배열에 추가
+                setSelectedChat((prevChat) => ({
+                    ...prevChat,
+                    messages: [...(prevChat.messages || []), newMessage],
+                }));
             })
             .catch(error => console.error("메시지 전송 실패:", error));
 
@@ -53,7 +59,10 @@ const ChatWindow = ({ selectedChat, socket }) => {
 
         axios.delete(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
             .then(() => {
-                selectedChat.messages = []; // 대화 삭제
+                setSelectedChat((prevChat) => ({
+                    ...prevChat,
+                    messages: [],
+                }));
             })
             .catch(error => console.error("대화 삭제 실패:", error));
     };
