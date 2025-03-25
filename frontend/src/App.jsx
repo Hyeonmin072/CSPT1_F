@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/main/MainPage.jsx";
 import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage.jsx";
-import SignIntegration from "./components/sign/SignIntergration.jsx";
+import SignIntergration from "./components/sign/SignIntergration.jsx";
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import UserProfile from "./pages/profile/UserProfile.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit.jsx";
@@ -17,6 +17,8 @@ import ReservationCheckPage from "./pages/reservation/reservationcheck/Reservati
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
 import CurriculumVitaePage from "./pages/cv/CurriculumVitaePage.jsx";
 import SalesPage from "./pages/salesstatus/SalesPage.jsx";
+import DesignerProfile from "./pages/profile/DesignerProfilePage.jsx";
+import DesignerReservation from "./pages/reservation/DesignerSelectPage.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("customer");
@@ -128,12 +130,20 @@ function App() {
           {userRole === "designer" && (
             <>
               <Route
-                path="/designerpage"
-                element={<DesignerPage onLoginClick={openLoginModal} />}
-              />
-              <Route
                 path="/designer"
                 element={<DesignerMainPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/designer/profile"
+                element={<DesignerProfile onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/designer/reservation"
+                element={<DesignerReservation onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/designer/portfolio"
+                element={<DesignerPortfolio onLoginClick={openLoginModal} />}
               />
               <Route
                 path="/cv"
@@ -148,7 +158,7 @@ function App() {
         </Routes>
 
         {/* 로그인 모달 */}
-        <SignIntegration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+        <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
       </div>
     </Router>
   );
