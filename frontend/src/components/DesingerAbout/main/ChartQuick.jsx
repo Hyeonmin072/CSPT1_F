@@ -43,7 +43,7 @@ export default function ChartQuick() {
 
     return (
         <div className="flex items-center w-[260px]" onClick={handleChart}>
-            <div className="w-12 h-12 rounded-full mb-4 bg-[#00E7D5] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full mb-4 bg-green-500 flex items-center justify-center">
                 <ChartSpline className="w-[30px] h-[30px] text-white" />
             </div>
             <div className="ml-4 py-1">

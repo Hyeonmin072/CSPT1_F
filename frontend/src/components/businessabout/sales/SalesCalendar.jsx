@@ -39,10 +39,22 @@ export default function SalesCalendar() {
     };
 
     // 날짜 클릭 시 모달 열기
+    const [clickTimeout, setClickTimeout] = useState(null);
+
     const handleDateClick = (date) => {
-        setClickedDate(date);
-        setShowModal(true);
+        if (clickTimeout) {
+            clearTimeout(clickTimeout); // 단일 클릭 타이머 취소
+            setClickTimeout(null);
+            setClickedDate(date); // 클릭한 날짜 저장
+            setShowModal(true); // 모달 열기
+        } else {
+            const timeout = setTimeout(() => {
+                setClickTimeout(null); // 더블 클릭 아닌 경우 초기화
+            }, 300); // 더블 클릭 감지 시간 (300ms)
+            setClickTimeout(timeout);
+        }
     };
+
 
     // 모달 닫기
     const closeModal = () => {
@@ -63,17 +75,16 @@ export default function SalesCalendar() {
                         <Calendar
                             onChange={setSelectedDate}
                             value={selectedDate}
-                            onClickDay={(date) => {
-                                console.log(`Clicked date: ${date.toLocaleDateString()}`); // 날짜 출력
-                                handleDateClick(date); // 기존 클릭 이벤트 호출
-                            }}
-                            tileContent={({date}) => (
+                            onClickDay={handleDateClick} // 날짜 클릭 이벤트
+                            tileContent={({ date }) => (
                                 <div className="text-xs text-center mt-1">
                                     {formatSales(date)}
                                 </div>
                             )}
                             className="calendar-custom rounded"
                         />
+
+
                     </div>
 
                     <Link to="/sales" className="mt-10 text-[#01A299] block">
@@ -114,7 +125,7 @@ export default function SalesCalendar() {
 
                         <button
                             onClick={closeModal}
-                            className="mt-4 px-4 py-2 bg-[#019592] text-white rounded flex ml-auto"
+                            className="mt-4 px-4 py-2 bg-green-600 text-white rounded flex ml-auto"
                         >
                             닫기
                         </button>
@@ -130,12 +141,12 @@ export default function SalesCalendar() {
                 }
 
                 .react-calendar__tile--now {
-                    background-color: #03DAC5 !important; /* 현재 날짜 색상 */
+                    background-color: #00D500 !important; /* 현재 날짜 색상 */
                     color: #ffffff !important;
                 }
 
                 .react-calendar__tile--active {
-                    background-color: #01A299 !important; /* 선택된 날짜 */
+                    background-color: green !important; /* 선택된 날짜 */
                     color: #ffffff !important;
                 }
             `}</style>

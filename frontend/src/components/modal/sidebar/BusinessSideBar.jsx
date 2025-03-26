@@ -7,7 +7,7 @@ import { Zap, LogOut, Bell } from "lucide-react";
 const BusinessSideBar = ({ isOpen, onClose }) => {
     // 각각 페이지가 완성되면 path 추가
     const menuItems = [
-        { id: 1, title: "홈", path: "/business"},
+        { id: 1, title: "홈", path: "/shop"},
         { id: 2, title: "예약관리"},
         { id: 3, title: "디자이너 관리"},
         { id: 4, title: "메뉴설정"},
@@ -17,6 +17,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
         { id: 8, title: "근태 관리"},
         { id: 9, title: "구인구직"},
         { id: 10, title: "정보 수정"},
+        { id: 10, title: "블랙리스트 관리", path: "/blacklist"},
     ];
 
     // 클릭 핸들러

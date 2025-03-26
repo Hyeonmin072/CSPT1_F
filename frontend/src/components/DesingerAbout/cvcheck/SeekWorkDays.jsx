@@ -8,7 +8,7 @@ export default function SeekWorkDays({ selectedDays }){
                         {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
                             <span
                                 key={day}
-                                className={`px-4 py-2 rounded ${selectedDays.includes(day) ? "bg-[#00B3A6] text-white" : "bg-gray-200 text-gray-600"}`}
+                                className={`px-4 py-2 rounded ${selectedDays.includes(day) ? "bg-green-600 text-white" : "bg-gray-200 text-gray-600"}`}
                             >
                                 {day}
                             </span>

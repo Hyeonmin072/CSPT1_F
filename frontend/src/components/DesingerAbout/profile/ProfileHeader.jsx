@@ -106,7 +106,7 @@ export default function ProfileHeader() {
                     {/* 프로필 변경 버튼 */}
                     <div className="absolute top-[270px] right-4">
                         <button
-                            className="bg-[#00B3A6] px-4 py-2 rounded-lg text-white text-sm font-semibold"
+                            className="bg-green-600 px-4 py-2 rounded-lg text-white text-sm font-semibold"
                             onClick={() => navigate("/profileedit")}
                         >
                             프로필 변경

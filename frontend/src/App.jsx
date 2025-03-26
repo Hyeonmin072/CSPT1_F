@@ -31,9 +31,10 @@ import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
 import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
 import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
+import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("designer");
+  const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -42,16 +43,16 @@ function App() {
       // userType을 userRole로 변환
       switch (userType) {
         case "SHOP":
-          setUserRole("business");
+          setUserRole("shop");
           break;
         case "USER":
-          setUserRole("customer");
+          setUserRole("user");
           break;
         case "DESIGNER":
           setUserRole("designer");
           break;
         default:
-          setUserRole("customer");
+          setUserRole("user");
       }
     }
   }, []);
@@ -93,7 +94,7 @@ function App() {
           />
 
           {/* 고객 전용 라우트 */}
-          {userRole === "customer" && (
+          {userRole === "user" && (
             <>
               <Route
                   path="/designerpage"
@@ -180,13 +181,17 @@ function App() {
           )}
 
           {/* 사업자 전용 */}
-          {userRole === 'business' && (
+          {userRole === 'shop' && (
               <>
-                <Route path="/business" element={<BusinessMainPage onLoginClick={openLoginModal} />} />
+                <Route path="/shop" element={<BusinessMainPage onLoginClick={openLoginModal} />} />
                 <Route path="/sales" element={<BusinessSalesPage onLoginClick={openLoginModal} />} />
                 <Route
                     path="/sales/calendar"
                     element={<SalesCalendar onLoginClick={openLoginModal} />}
+                />
+                <Route
+                    path="/blacklist"
+                    element={<BlackListPage onLoginClick={openLoginModal} />}
                 />
               </>
           )}

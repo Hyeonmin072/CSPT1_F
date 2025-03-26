@@ -68,14 +68,14 @@ export default function Career({ isEditable }) {
                 <h2 className="text-2xl w-32 font-semibold">경력</h2>
                 <div className="flex border rounded-lg overflow-hidden w-64">
                     <button
-                        className={`w-1/2 p-2 text-center ${employmentType === "신입" ? "bg-[#00B3A6] text-white" : "bg-gray-100 text-gray-700"}`}
+                        className={`w-1/2 p-2 text-center ${employmentType === "신입" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700"}`}
                         disabled={!isEditable}
                         onClick={() => setEmploymentType("신입")}
                     >
                         신입
                     </button>
                     <button
-                        className={`w-1/2 p-2 text-center ${employmentType === "경력" ? "bg-[#00B3A6] text-white" : "bg-gray-100 text-gray-700"}`}
+                        className={`w-1/2 p-2 text-center ${employmentType === "경력" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700"}`}
                         disabled={!isEditable}
                         onClick={() => setEmploymentType("경력")}
                     >
@@ -153,7 +153,7 @@ export default function Career({ isEditable }) {
 
                     <div className="flex justify-end">
                         <button
-                            className="bg-[#00B3A6] text-white px-8 py-2 rounded"
+                            className="bg-green-600 text-white px-8 py-2 rounded"
                             onClick={handleSaveDates}
                             disabled={!isEditable}
                         >
