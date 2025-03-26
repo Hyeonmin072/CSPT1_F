@@ -56,7 +56,7 @@ export default function DesiredWorkDays({ isEditable }) {
                                 key={day}
                                 onClick={() => toggleDay(day)}
                                 className={`px-4 py-2 rounded ${
-                                    selectedDays.includes(day) ? "bg-[#00B3A6] text-white" : ""
+                                    selectedDays.includes(day) ? "bg-green-600 text-white" : ""
                                 }`}
                                 disabled={!isEditable}
                             >

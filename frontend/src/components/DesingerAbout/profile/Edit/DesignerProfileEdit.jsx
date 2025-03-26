@@ -55,7 +55,7 @@ export default function DesignerProfileEdit() {
                                 className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                                 placeholder="디자이너 닉네임을 입력하세요"
                             />
-                            <button className="w-[200px] bg-[#00B3A6] rounded-lg text-white">중복확인</button>
+                            <button className="w-[200px] bg-green-600 rounded-lg text-white">중복확인</button>
                         </div>
                     </div>
 
@@ -86,7 +86,7 @@ export default function DesignerProfileEdit() {
                                 <option value="daum.net">daum.net</option>
                                 <option value="custom.com">직접 입력</option>
                             </select>
-                            <button className="px-2 py-2 rounded-lg w-[120px] text-white bg-[#00B3A6]">이메일 확인</button>
+                            <button className="px-2 py-2 rounded-lg w-[120px] text-white bg-green-600">이메일 확인</button>
                         </div>
                     </div>
 
@@ -164,14 +164,14 @@ export default function DesignerProfileEdit() {
                 <div className="flex flex-row justify-center space-x-4">
                     <button
                         type="button"
-                        className="w-40 bg-[#CFFFF9] text-[#00B3A6] py-2 px-4 rounded-md hover:bg-[#B2F5EE] focus:outline-none"
+                        className="w-40 bg-[#C6FFC8] text-green-600 py-2 px-4 rounded-md hover:bg-[#A5FFA8] focus:outline-none"
                         onClick={() => navigate("/profile")}
                     >
                         취소하기
                     </button>
                     <button
                         type="submit"
-                        className="w-40 bg-[#00B3A6] text-white py-2 px-4 rounded-md hover:bg-[#009688] focus:outline-none"
+                        className="w-40 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none"
                     >
                         변경하기
                     </button>

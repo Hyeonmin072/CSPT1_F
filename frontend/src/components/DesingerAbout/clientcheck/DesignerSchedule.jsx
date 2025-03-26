@@ -10,7 +10,7 @@ export const dummySchedules = [
     { time: "16:00", client: "한세진 고객님", menu: "샴푸 + 드라이", status: "완료", day: "금", date: "2025-03-21", cash: "22,000원" },
     { time: "08:00", client: "Cameron 고객님", menu: "샴푸 + 드라이", status: "완료", day: "월", date: "2025-03-22", cash: "17,000원" },
     { time: "11:00", client: "한세진 고객님", menu: "[시그니처]CS컬 드라이 펌", status: "완료", day: "화", date: "2025-03-23", cash: "17,000원" },
-    { time: "11:00", client: "한세진 고객님", menu: "[시그니처]CS컬 드라이 펌", status: "완료", day: "화", date: "2025-03-23", cash: "21,000원" },
+    { time: "11:00", client: "한세진 고객님", menu: "[시그니처]CS컬 드라이 펌", status: "완료", day: "화", date: "2025-03-26", cash: "21,000원" },
 ];
 
 export default function DesignerSchedule({ setModalData, setIsModalOpen }) {
@@ -59,9 +59,9 @@ export default function DesignerSchedule({ setModalData, setIsModalOpen }) {
 
                             const leftBorderColor =
                                 appointment?.status === "완료"
-                                    ? "border-l-4 border-l-[#4BFFD2]"
+                                    ? "border-l-4 border-l-green-600"
                                     : appointment?.status === "미완료"
-                                        ? "border-l-4 border-l-[#8239BC]"
+                                        ? "border-l-4 border-l-red-600"
                                         : "";
 
                             return (

@@ -74,7 +74,7 @@ export default function Sales() {
                 <div className="border rounded-xl overflow-hidden inline-flex relative w-full">
                     {/* Motion Div: 버튼들에 맞게 크기 조정 */}
                     <motion.div
-                        className="absolute top-0 bottom-0 bg-[#00B3A6]"
+                        className="absolute top-0 bottom-0 bg-green-600"
                         style={{width: "50%"}} // 버튼 크기와 맞게 조정
                         animate={{x: view === "store" ? "0%" : "100%"}}
                         transition={{type: "spring", stiffness: 100, damping: 20}}
@@ -150,8 +150,8 @@ export default function Sales() {
                                     {/* 그라데이션 정의 */}
                                     <defs>
                                         <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#4CCECB" stopOpacity={0.8}/>
-                                            <stop offset="95%" stopColor="#4CCECB" stopOpacity={0}/>
+                                            <stop offset="5%" stopColor="#00FF00" stopOpacity={0.8}/>
+                                            <stop offset="95%" stopColor="green" stopOpacity={0}/>
                                         </linearGradient>
                                     </defs>
 
@@ -161,7 +161,7 @@ export default function Sales() {
                                     <Area
                                         type="monotone"
                                         dataKey="sales"
-                                        stroke="#4CCECB"
+                                        stroke="green"
                                         fill="url(#salesGradient)"
                                     />
                                 </AreaChart>

@@ -105,8 +105,8 @@ export default function Graph(){
                         {/* 그라데이션 정의 */}
                         <defs>
                             <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#4CCECB" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#4CCECB" stopOpacity={0} />
+                                <stop offset="5%" stopColor="#00FF00" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="green" stopOpacity={0} />
                             </linearGradient>
                         </defs>
 
@@ -116,7 +116,7 @@ export default function Graph(){
                         <Area
                             type="monotone"
                             dataKey="sales"
-                            stroke="#4CCECB"
+                            stroke="green"
                             fill="url(#salesGradient)"
                         />
                     </AreaChart>

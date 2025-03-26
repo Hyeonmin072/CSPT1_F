@@ -130,7 +130,7 @@ export default function GetJobDetail() {
                             ))}
                         </div>
                         <div className="p-3 flex flex-col">
-                            <button className="p-1 bg-[#73CEC7] rounded-full"
+                            <button className="p-1 bg-green-600 text-white rounded-full"
                                     onClick={() => navigate("/job/detail/cv")}>
                             즉시지원
                             </button>
@@ -277,7 +277,7 @@ export default function GetJobDetail() {
                 <div className="flex flex-row shadow rounded-lg border h-[200px]">
                     <div className="w-1/3 bg-[#E7E7E7] rounded">
                         <div className="flex flex-col items-center justify-center h-full">
-                            <CalendarCheck className="w-24 h-24 text-[#73CEC7]" strokeWidth={1}/>
+                            <CalendarCheck className="w-24 h-24 text-green-600" strokeWidth={1}/>
                             <div className="p-2 font-semibold">모집 방법</div>
                         </div>
                     </div>

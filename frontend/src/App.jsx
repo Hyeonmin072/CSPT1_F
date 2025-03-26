@@ -31,9 +31,10 @@ import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
 import BusinessMainPage from "./pages/main/BusinessMainPage.jsx";
 import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
+import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("designer");
+  const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -122,7 +123,7 @@ function App() {
           />
 
           {/* 고객 전용 라우트 */}
-          {userRole === "customer" && (
+          {userRole === "user" && (
             <>
               <Route
                 path="/designerpage"
@@ -232,7 +233,12 @@ function App() {
               <Route
                 path="/sales/calendar"
                 element={<SalesCalendar onLoginClick={openLoginModal} />}
-              />
+              /> 
+              <Route
+                  path="/blacklist"
+                  element={<BlackListPage onLoginClick={openLoginModal} />}
+                />
+
             </>
           )}
         </Routes>

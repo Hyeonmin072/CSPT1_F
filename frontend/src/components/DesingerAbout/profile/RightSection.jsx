@@ -46,19 +46,19 @@ export default function RightSection() {
             <h2 className="text-lg font-bold pb-4 border-b-2 ">관련 정보</h2>
             <ul className="mt-4 space-y-8 text-s">
                 <li className="flex flex-col items-start md:flex-row md:items-center md:space-x-2">
-                    <User className="text-[#00B3A6] w-6 h-6" />
+                    <User className="text-green-600 w-6 h-6" />
                     <p className="flex-1 mt-1 md:mt-0">{designerInfo.gender}</p>
                 </li>
                 <li className="flex flex-col items-start md:flex-row md:items-center md:space-x-2">
-                    <BriefcaseBusiness className="text-[#00B3A6] w-6 h-6" />
+                    <BriefcaseBusiness className="text-green-600 w-6 h-6" />
                     <p className="flex-1 mt-1 md:mt-0">{designerInfo.age}</p>
                 </li>
                 <li className="flex flex-col items-start md:flex-row md:items-center md:space-x-2">
-                    <Mail className="text-[#00B3A6] w-6 h-6" />
+                    <Mail className="text-green-600 w-6 h-6" />
                     <p className="flex-1 mt-1 md:mt-0">{designerInfo.email}</p>
                 </li>
                 <li className="flex flex-col items-start md:flex-row md:items-center md:space-x-2">
-                    <Phone className="text-[#00B3A6] w-6 h-6" />
+                    <Phone className="text-green-600 w-6 h-6" />
                     <p className="flex-1 mt-1 md:mt-0">{designerInfo.phone}</p>
                 </li>
             </ul>
