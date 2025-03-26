@@ -20,14 +20,14 @@ export default function MiddleSection() {
             name: "문지훈",
             rating: 5,
             comment: "정말 최고의 디자이너예요!",
-            date: new Date(2025, 2, 10), // 리뷰 작성 날짜
+            date: new Date(2025, 2, 21), // 리뷰 작성 날짜
         },
         {
             id: 2,
             name: "김민수",
             rating: 4,
             comment: "서비스도 훌륭하고 만족했습니다.",
-            date: new Date(2025, 2, 12), // 리뷰 작성 날짜
+            date: new Date(2025, 3, 22), // 리뷰 작성 날짜
         },
     ];
 

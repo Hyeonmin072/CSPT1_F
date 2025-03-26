@@ -67,8 +67,8 @@ export default function Notice() {
 
                         <div className="flex justify-start mt-4">
                             <div
-                                className={`flex bg-[#70EFDE] rounded-lg items-center justify-between border border-[#70EFDE] w-[180px] h-[50px] cursor-pointer transition-all duration-300 
-                                    ${selectedNotice?.type === "weekNotice" ? "shadow-inner shadow-[#00B0A3] inset-1" : "shadow-lg"}`}
+                                className={`flex bg-green-500 rounded-lg items-center justify-between border border-green-500 w-[180px] h-[50px] cursor-pointer transition-all duration-300 
+                                    ${selectedNotice?.type === "weekNotice" ? "shadow-inner shadow-green-800 inset-1" : "shadow-lg"}`}
                                 onClick={() => setSelectedNotice({ type: "weekNotice" })}
                             >
                                 <Check className="ml-2" />
@@ -79,8 +79,8 @@ export default function Notice() {
 
                         <div className="flex justify-start mt-4">
                             <div
-                                className={`flex bg-[#00D7C6] rounded-lg items-center justify-between border border-[#70EFDE] w-[180px] h-[50px] cursor-pointer
-                                    ${selectedNotice?.type === "importantNotice" ? "shadow-inner shadow-[#00B0A3]" : "shadow-lg"}`}
+                                className={`flex bg-[#007A31] rounded-lg items-center justify-between border border-[#007A31] w-[180px] h-[50px] cursor-pointer
+                                    ${selectedNotice?.type === "importantNotice" ? "shadow-inner shadow-[#002910]" : "shadow-lg"}`}
                                 onClick={() => setSelectedNotice({ type: "importantNotice" })}
                             >
                                 <Star className="ml-2" />
@@ -96,7 +96,7 @@ export default function Notice() {
                             {/* 헤더: 선택된 타입이 weekNotice일 때만 표시 */}
                             {selectedNotice?.type === "weekNotice" && (
                                 <div
-                                    className="flex bg-[#B9FFF6] rounded-lg items-center justify-center border border-[#70EFDE] w-[470px] h-[40px] mb-4"
+                                    className="flex bg-green-500 rounded-lg items-center justify-center border border-[#70EFDE] w-[470px] h-[40px] mb-4"
                                 >
                                     <p className="font-bold text-xl">이번주 공지사항</p>
                                 </div>

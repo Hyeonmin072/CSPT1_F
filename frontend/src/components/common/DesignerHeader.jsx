@@ -30,7 +30,7 @@ export default function DesignerHeader() {
               </span>
                         </div>
                         <nav className="flex space-x-8 gap-[60px] font-bold">
-                            <Link to="/" className="text-gray-700">
+                            <Link to="/designer" className="text-gray-700">
                                 홈
                             </Link>
                             <Link to="/client" className="text-gray-700">

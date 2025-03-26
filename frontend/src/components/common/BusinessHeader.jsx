@@ -30,7 +30,7 @@ export default function BusinessHeader() {
               </span>
                         </div>
                         <nav className="flex space-x-2 gap-[60px] font-bold">
-                            <Link to="/" className="text-gray-700">
+                            <Link to="/shop" className="text-gray-700">
                                 홈
                             </Link>
                             <Link to="" className="text-gray-700">
@@ -42,7 +42,7 @@ export default function BusinessHeader() {
                             <Link to="" className="text-gray-700">
                                 메뉴설정
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/sales" className="text-gray-700">
                                 매출관리
                             </Link>
                         </nav>

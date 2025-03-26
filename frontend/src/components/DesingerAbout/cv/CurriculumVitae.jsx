@@ -118,7 +118,7 @@ export default function CurriculumVitae() {
                     {isEditable && (
                         <div className="flex space-x-4">
                             <button
-                                className="bg-[#00B3A6] text-white px-8 py-2 rounded"
+                                className="bg-green-600 text-white px-8 py-2 rounded"
                                 onClick={handleSave}
                             >
                                 저장
@@ -133,7 +133,7 @@ export default function CurriculumVitae() {
                     )}
                     {showMessage && (
                         <div
-                            className={`mt-4 text-[#00B3A6] transition-opacity ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
+                            className={`mt-4 text-green-600 transition-opacity ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
                         >
                             저장이 완료되었습니다!
                         </div>
@@ -141,7 +141,7 @@ export default function CurriculumVitae() {
                 </div>
                 {!isEditable && (
                     <button
-                        className="bg-[#00B3A6] text-white px-8 py-2 rounded"
+                        className="bg-green-600 text-white px-8 py-2 rounded"
                         onClick={() => setIsEditable(true)}
                     >
                         수정

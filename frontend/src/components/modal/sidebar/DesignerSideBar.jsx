@@ -7,7 +7,7 @@ import { Zap, LogOut, Bell } from "lucide-react";
 const DesignerSideBar = ({ isOpen, onClose }) => {
     // 각각 페이지가 완성되면 path 추가
     const menuItems = [
-        { id: 1, title: "홈", path: "/"},
+        { id: 1, title: "홈", path: "/designer"},
         { id: 2, title: "고객 확인", path: "/client"},
         { id: 3, title: "실적 확인", path: "/sales"},
         { id: 4, title: "구인구직", path: "/job" },

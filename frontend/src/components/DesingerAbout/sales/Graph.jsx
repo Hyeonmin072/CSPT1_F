@@ -3,15 +3,15 @@ import { LineChart, AreaChart , Line, Area,  XAxis, YAxis,
     CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // 임시 더미들
-const dummyData = {
+export const dummyData = {
     weekly: [
-        { name: '월요일', sales: 0 },
+        { name: '월요일', sales: 44 },
         { name: '화요일', sales: 60 },
         { name: '수요일', sales: 70 },
         { name: '목요일', sales: 80 },
         { name: '금요일', sales: 90 },
         { name: '토요일', sales: 100 },
-        { name: '일요일', sales: 110 },
+        { name: '일요일', sales: null },
     ],
     monthly: [
         { name: '1일', sales: 100 },
@@ -24,7 +24,6 @@ const dummyData = {
         { name: '8일', sales: 500 },
         { name: '9일', sales: 400 },
         { name: '10일', sales: 300 },
-        // 데이터 생략...
     ],
     yearly: [
         { name: '1월', sales: 1500 },
@@ -34,7 +33,6 @@ const dummyData = {
         { name: '5월', sales: 2500 },
         { name: '6월', sales: 2700 },
         { name: '7월', sales: 2900 },
-        // 데이터 생략...
     ],
 };
 
@@ -107,8 +105,8 @@ export default function Graph(){
                         {/* 그라데이션 정의 */}
                         <defs>
                             <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#4CCECB" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#4CCECB" stopOpacity={0} />
+                                <stop offset="5%" stopColor="#00FF00" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="green" stopOpacity={0} />
                             </linearGradient>
                         </defs>
 
@@ -118,7 +116,7 @@ export default function Graph(){
                         <Area
                             type="monotone"
                             dataKey="sales"
-                            stroke="#4CCECB"
+                            stroke="green"
                             fill="url(#salesGradient)"
                         />
                     </AreaChart>

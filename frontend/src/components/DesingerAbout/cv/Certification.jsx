@@ -62,7 +62,7 @@ export default function Certification({ isEditable }) {
                 />
                 {isEditable && (
                     <button
-                        className="bg-[#00B3A6] text-white px-8 py-2 rounded"
+                        className="bg-green-600 text-white px-8 py-2 rounded"
                         onClick={handleAddCertification}
                     >
                         저장
