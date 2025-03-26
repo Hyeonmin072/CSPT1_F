@@ -37,7 +37,7 @@ import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("designer");
+  const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -245,7 +245,6 @@ function App() {
                   path="/schedulecheck"
                   element={<ShopReservationCheckPage onLoginClick={openLoginModal} />}
               />
-
             </>
           )}
         </Routes>
