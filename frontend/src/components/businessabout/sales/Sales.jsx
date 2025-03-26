@@ -3,8 +3,8 @@ import { AreaChart, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveC
 import { motion } from "framer-motion";
 
 import DesignerSales from "./DesignerSales.jsx";
-import { dummySalesData } from "../../DesingerAbout/sales/SaleStaus.jsx";
-import { dummyData } from "../../DesingerAbout/sales/Graph.jsx";
+import { dummySalesData } from "../../dummydata/DummySalesData.jsx";
+import { dummyData } from "../../dummydata/DummyGraph.jsx";
 
 const storeSalesData = [
     { date: '1일', sales: 120000 },

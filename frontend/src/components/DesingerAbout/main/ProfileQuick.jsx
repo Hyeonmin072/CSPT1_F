@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import d1 from "../../../assets/designer/d1.png";
-import {dummyProfile} from "../sales/SaleStaus.jsx";
+import {dummyProfile} from "../../dummydata/DummyProfile.jsx";
 
 export default function ProfileQuick() {
     const [designerProfile, setDesignerProfile] = useState(null); // 디자이너 데이터 상태

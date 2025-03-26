@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChartSpline } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { dummySalesData } from "../sales/SaleStaus.jsx";
+import { dummySalesData } from "../../dummydata/DummySalesData.jsx";
 
 export default function ChartQuick() {
     const [sales, setSales] = useState(null); // 매출 데이터 상태

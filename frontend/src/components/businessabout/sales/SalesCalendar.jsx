@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { designers } from "./DesignerSales.jsx";
-import { dummySchedules } from "../../DesingerAbout/clientcheck/DesignerSchedule.jsx";
+import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
 
 export default function SalesCalendar() {
     const { id } = useParams(); // URL에서 id 가져오기

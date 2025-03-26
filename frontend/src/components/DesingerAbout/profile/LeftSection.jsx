@@ -1,27 +1,10 @@
 import { useState, useEffect } from "react";
 import { MessageSquareText } from "lucide-react";
+import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
 
 export default function LeftSection() {
     const [designer, setDesigner] = useState(null); // 디자이너 정보 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
-
-    // 더미 데이터
-    const dummyProfiles = [
-        {
-            id: 1,
-            name: "홍길동",
-            place: "김봉팔 헤어샵",
-            like: 372,
-            introduce: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        },
-        {
-            id: 2,
-            name: "김민수",
-            place: "서울 명동 헤어샵",
-            like: 215,
-            introduce: "정성스럽고 디테일한 헤어 스타일링을 약속드립니다!",
-        },
-    ];
 
     const currentProfileId = 1; // 보여주고 싶은 디자이너의 id
 
@@ -34,7 +17,7 @@ export default function LeftSection() {
                 // const data = await response.json();
 
                 // 더미 데이터 사용
-                const data = dummyProfiles.find((profile) => profile.id === currentProfileId);
+                const data = dummyProfile;
                 setDesigner(data); // 디자이너 데이터 상태 업데이트
             } catch (error) {
                 console.error("Error fetching designer profile:", error);

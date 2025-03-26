@@ -2,7 +2,7 @@ import h1 from "../../../assets/hairshop/h1.jpg";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, UserRound } from "lucide-react";
-import {dummyProfile} from "../sales/SaleStaus.jsx";
+import {dummyProfile} from "../../dummydata/DummyProfile.jsx";
 
 export default function ProfileHeader() {
     const [designer, setDesigner] = useState(null); // 디자이너 정보 상태

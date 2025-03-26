@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bell } from "lucide-react";
-import { dummySchedules } from "../clientcheck/DesignerSchedule.jsx";
+import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
 import { startOfWeek, endOfWeek, parseISO, isWithinInterval, format } from "date-fns";
 
 export default function ScheduleQuick() {

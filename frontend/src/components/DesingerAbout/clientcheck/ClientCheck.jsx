@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { format, addDays, subDays } from "date-fns"; // 날짜를 다루는 JS 라이브러리
 import { ko } from "date-fns/locale"; // 날짜를 주어진 포맷 문자열에 맞춰 형식화하는 함수
 
-import { dummyProfile } from "../sales/SaleStaus.jsx";
+import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
 
 import ClientScheduleDate from "./ClientScheduleDate.jsx";
 import ReservationCheck from "./ReservationCheck.jsx";
