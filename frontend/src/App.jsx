@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/main/MainPage.jsx";
 import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage.jsx";
-import SignIntegration from "./components/sign/SignIntergration.jsx";
+import SignIntergration from "./components/sign/SignIntergration.jsx";
 import HairShopDetailPage from "./pages/hairshop/HairShopDetailPage.jsx";
 import UserProfile from "./pages/profile/UserProfile.jsx";
 import UserProfileEdit from "./pages/profile/UserProfileEdit.jsx";
@@ -28,7 +28,7 @@ import DesignerProfileEditPage from "./pages/profile/DesignerProfileEditPage.jsx
 import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
 
 // 사업자
-import BusinessMainPage from"./pages/main/BusinessMainPage.jsx";
+import BusinessMainPage from "./pages/main/BusinessMainPage.jsx";
 import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
@@ -38,7 +38,7 @@ function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
-    const userType = localStorage.getItem("customer");
+    const userType = localStorage.getItem("userType");
     if (userType) {
       // userType을 userRole로 변환
       switch (userType) {
@@ -55,6 +55,35 @@ function App() {
           setUserRole("user");
       }
     }
+
+    // 로그인 상태 변경 이벤트 리스너 추가
+    const handleLoginStatusChange = () => {
+      const updatedUserType = localStorage.getItem("userType");
+      if (updatedUserType) {
+        switch (updatedUserType) {
+          case "SHOP":
+            setUserRole("shop");
+            break;
+          case "USER":
+            setUserRole("user");
+            break;
+          case "DESIGNER":
+            setUserRole("designer");
+            break;
+          default:
+            setUserRole("user");
+        }
+      } else {
+        setUserRole("user");
+      }
+    };
+
+    window.addEventListener("loginStatusChanged", handleLoginStatusChange);
+
+    // 클린업 함수
+    return () => {
+      window.removeEventListener("loginStatusChanged", handleLoginStatusChange);
+    };
   }, []);
 
   const openLoginModal = () => {
@@ -97,8 +126,8 @@ function App() {
           {userRole === "user" && (
             <>
               <Route
-                  path="/designerpage"
-                  element={<DesignerPage onLoginClick={openLoginModal} />}
+                path="/designerpage"
+                element={<DesignerPage onLoginClick={openLoginModal} />}
               />
               <Route
                 path="/userprofile"
@@ -133,71 +162,88 @@ function App() {
             </>
           )}
 
-
           {/* 디자이너 전용 라우트 */}
           {userRole === "designer" && (
             <>
               {/* 메인 페이지 */}
               <Route
-                path="/designer" element={<DesignerMainPage onLoginClick={openLoginModal} />}
+                path="/designer"
+                element={<DesignerMainPage onLoginClick={openLoginModal} />}
               />
               <Route
-                  path="/notice" element={<WeekNotice onLoginClick={openLoginModal} />}
+                path="/notice"
+                element={<WeekNotice onLoginClick={openLoginModal} />}
               />
 
               {/* 고객 확인 페이지 */}
               <Route
-                  path="/client" element={<ClientCheckPage onLoginClick={openLoginModal} />}
+                path="/client"
+                element={<ClientCheckPage onLoginClick={openLoginModal} />}
               />
 
               {/* 구인구직 페이지 */}
               <Route
-                  path="/job" element={<GetJobPage onLoginClick={openLoginModal} />}
+                path="/job"
+                element={<GetJobPage onLoginClick={openLoginModal} />}
               />
               <Route
-                  path="/job/detail" element={<GetJobDetailPage onLoginClick={openLoginModal} />}
+                path="/job/detail"
+                element={<GetJobDetailPage onLoginClick={openLoginModal} />}
               />
               <Route
-                  path="/job/detail/cv" element={<CVCheck onLoginClick={openLoginModal} />}
+                path="/job/detail/cv"
+                element={<CVCheck onLoginClick={openLoginModal} />}
               />
               {/* 이력서 페이지 */}
               <Route
-                path="/cv" element={<CurriculumVitaePage onLoginClick={openLoginModal} />}
+                path="/cv"
+                element={<CurriculumVitaePage onLoginClick={openLoginModal} />}
               />
               {/* 매출확인 페이지 */}
               <Route
-                path="/sales" element={<SalesPage onLoginClick={openLoginModal} />}
+                path="/sales"
+                element={<SalesPage onLoginClick={openLoginModal} />}
               />
 
               {/* 프로필 페이지 */}
               <Route
-                  path="/profile" element={<DesignerProfilePage onLoginClick={openLoginModal} />}
+                path="/profile"
+                element={<DesignerProfilePage onLoginClick={openLoginModal} />}
               />
               <Route
-                  path="/profileedit" element={<DesignerProfileEditPage onLoginClick={openLoginModal} />}
+                path="/profileedit"
+                element={
+                  <DesignerProfileEditPage onLoginClick={openLoginModal} />
+                }
               />
-
             </>
           )}
 
           {/* 사업자 전용 */}
-          {userRole === 'shop' && (
-              <>
-                <Route path="/shop" element={<BusinessMainPage onLoginClick={openLoginModal} />} />
-                <Route path="/sales" element={<BusinessSalesPage onLoginClick={openLoginModal} />} />
-                <Route
-                    path="/sales/calendar"
-                    element={<SalesCalendar onLoginClick={openLoginModal} />}
+          {userRole === "shop" && (
+            <>
+              <Route
+                path="/shop"
+                element={<BusinessMainPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/sales"
+                element={<BusinessSalesPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/sales/calendar"
+                element={<SalesCalendar onLoginClick={openLoginModal} />}
+              /> 
+              <Route
+                  path="/blacklist"
+                  element={<BlackListPage onLoginClick={openLoginModal} />}
                 />
-                <Route
-                    path="/blacklist"
-                    element={<BlackListPage onLoginClick={openLoginModal} />}
-                />
-              </>
+
+            </>
           )}
         </Routes>
         {/* 로그인 모달 */}
-        <SignIntegration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+        <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
       </div>
     </Router>
   );
