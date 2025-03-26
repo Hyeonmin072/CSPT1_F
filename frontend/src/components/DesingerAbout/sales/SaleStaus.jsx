@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import d1 from "../../../assets/designer/d1.png";
 
 // 더미 데이터
 export const dummyProfile = {
     id: 1,
-    imageURL: null,
+    imageURL: d1,
     name: "김예원",
     roll: "헤어디자이너",
     phone: "010-1234-5678",
+    place: "김봉팔",
+    like: 123,
 };
 
 // 더미 데이터

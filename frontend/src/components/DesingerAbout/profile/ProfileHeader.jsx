@@ -2,6 +2,7 @@ import h1 from "../../../assets/hairshop/h1.jpg";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, UserRound } from "lucide-react";
+import {dummyProfile} from "../sales/SaleStaus.jsx";
 
 export default function ProfileHeader() {
     const [designer, setDesigner] = useState(null); // 디자이너 정보 상태
@@ -9,23 +10,6 @@ export default function ProfileHeader() {
 
     const navigate = useNavigate();
 
-    // 더미 데이터
-    const dummyProfiles = [
-        {
-            id: 1,
-            name: "홍길동",
-            place: "김봉팔 헤어샵",
-            like: 372,
-            introduce: "20년 경력의 남성 헤어 디자이너입니다. 최고의 스타일을 만들어 드립니다!",
-        },
-        {
-            id: 2,
-            name: "김민수",
-            place: "서울 명동 헤어샵",
-            like: 215,
-            introduce: "정성스럽고 디테일한 헤어 스타일링을 약속드립니다!",
-        },
-    ];
 
     const currentProfileId = 1; // 보여줄 디자이너 ID
 
@@ -38,7 +22,7 @@ export default function ProfileHeader() {
                 // const data = await response.json();
 
                 // 지금은 더미 데이터 사용
-                const data = dummyProfiles.find((profile) => profile.id === currentProfileId);
+                const data = dummyProfile;
                 setDesigner(data); // 디자이너 정보 설정
             } catch (error) {
                 console.error("Error fetching designer data:", error);
@@ -48,7 +32,7 @@ export default function ProfileHeader() {
         };
 
         fetchDesigner();
-    }, [currentProfileId]);
+    }, []);
 
     if (loading) {
         return <div className="text-center mt-20">로딩 중...</div>; // 로딩 상태 표시
@@ -75,11 +59,11 @@ export default function ProfileHeader() {
                     {/* 프로필 이미지 */}
                     <div
                         className="absolute top-[200px] left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                        {designer.image ? (
+                        {designer.imageURL ? (
                             <img
-                                src={designer.image}
+                                src={designer.imageURL}
                                 alt="Designer Profile"
-                                className="w-28 h-28 rounded-full object-cover border-white"
+                                className="w-28 h-28 rounded-full object-cover border-white bg-white"
                             />
                         ) : (
                             <div
@@ -90,9 +74,9 @@ export default function ProfileHeader() {
                     </div>
 
                     {/* 프로필 이름 및 직업 */}
-                    <div className="absolute top-[320px] left-[calc(50%-50px)] text-center">
+                    <div className="absolute top-[320px] left-[calc(50%-44px)] text-center">
                         <h1 className="text-xl font-bold">{designer.name}</h1>
-                        <p className="text-gray-600">{designer.place}</p>
+                        <p className="text-gray-600">{designer.place} 소속 </p>
                     </div>
 
                     {/* 좋아요 */}

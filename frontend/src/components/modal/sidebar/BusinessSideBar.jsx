@@ -9,7 +9,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
     // 각각 페이지가 완성되면 path 추가
     const menuItems = [
         { id: 1, title: "홈", path: "/shop"},
-        { id: 2, title: "예약관리"},
+        { id: 2, title: "예약관리", path: "/schedulecheck"},
         { id: 3, title: "디자이너 관리"},
         { id: 4, title: "메뉴설정"},
         { id: 5, title: "이벤트 및 쿠폰 관리"},

@@ -5,7 +5,7 @@ export default function MainIcons(){
     return(
         <>
             {[
-                {icon: <Calendar/>, label: '예약관리'},
+                {icon: <Calendar/>, label: '예약관리', path: "/schedulecheck"},
                 {icon: <Scissors/>, label: '디자이너 관리'},
                 {icon: <Gift/>, label: '이벤트 및 쿠폰 관리'},
                 {icon: <DollarSign/>, label: '매출 관리', path: "/sales"},

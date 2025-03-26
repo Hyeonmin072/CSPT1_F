@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// 고객
 import MainPage from "./pages/main/MainPage.jsx";
 import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
 import DesignerPage from "./pages/designer/DesignerPage.jsx";
@@ -32,6 +34,7 @@ import BusinessMainPage from "./pages/main/BusinessMainPage.jsx";
 import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
+import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("shop");
@@ -238,6 +241,10 @@ function App() {
                   path="/blacklist"
                   element={<BlackListPage onLoginClick={openLoginModal} />}
                 />
+              <Route
+                  path="/schedulecheck"
+                  element={<ShopReservationCheckPage onLoginClick={openLoginModal} />}
+              />
 
             </>
           )}

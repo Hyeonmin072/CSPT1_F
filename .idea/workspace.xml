@@ -5,32 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91a0d9ef-cc73-41b3-996e-16f7748f6dbb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/blacklist/BlackListCreateModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/reservation/ShopReservation.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/reservation/ShopReservationCheckPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/DesignerSchedule.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/DesignerSchedule.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Career.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Career.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Certification.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/Certification.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/CurriculumVitae.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/DesiredWorkDays.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cv/DesiredWorkDays.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/CVCheck.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/CVCheck.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/SeekWorkDays.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/cvcheck/SeekWorkDays.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/JobList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/JobList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/detail/GetJobDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/getjob/detail/GetJobDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ChartQuick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ChartQuick.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/Edit/DesignerProfileEdit.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/Edit/DesignerProfileEdit.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/LeftSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/LeftSection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ProfileQuick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ProfileQuick.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/ProfileHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/ProfileHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/RightSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/profile/RightSection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Graph.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/Graph.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/blacklist/BlackList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/blacklist/BlackList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/SaleStaus.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/sales/SaleStaus.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/sales/Sales.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/sales/Sales.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/sales/SalesCalendar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/sales/SalesCalendar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/common/BusinessHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/BusinessHeader.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/blacklist/BlackListPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/blacklist/BlackListPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,11 +30,6 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="develop" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -61,22 +41,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.ChartQuick.jsx.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;fontend-blacklist&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.ChartQuick.jsx.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "frontend-shopreservation",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/frontend/package.json" />
@@ -90,7 +70,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.dev" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -114,9 +93,7 @@
       <workItem from="1742542874861" duration="739000" />
       <workItem from="1742543627156" duration="2595000" />
       <workItem from="1742879229061" duration="8787000" />
-      <workItem from="1742888114633" duration="1766000" />
-      <workItem from="1742892163590" duration="4734000" />
-      <workItem from="1742954500329" duration="4513000" />
+      <workItem from="1742888114633" duration="3482000" />
     </task>
     <servers />
   </component>

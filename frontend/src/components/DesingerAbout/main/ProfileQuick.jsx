@@ -1,20 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import d1 from "../../../assets/designer/d1.png";
+import {dummyProfile} from "../sales/SaleStaus.jsx";
 
 export default function ProfileQuick() {
     const [designerProfile, setDesignerProfile] = useState(null); // 디자이너 데이터 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const navigate = useNavigate();
-
-    // 더미 데이터
-    const dummyProfile = {
-        id: 1,
-        imageURL: null,
-        name: "김예원",
-        roll: "헤어디자이너",
-        phone: "010-1234-5678",
-    };
 
     // 데이터 가져오기
     useEffect(() => {
