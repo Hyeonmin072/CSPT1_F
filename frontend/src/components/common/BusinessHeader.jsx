@@ -33,7 +33,7 @@ export default function BusinessHeader() {
                             <Link to="/shop" className="text-gray-700">
                                 홈
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/schedulecheck" className="text-gray-700">
                                 예약관리
                             </Link>
                             <Link to="" className="text-gray-700">
