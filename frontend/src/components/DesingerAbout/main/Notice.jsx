@@ -86,7 +86,7 @@ export default function Notice() {
                             {/* 헤더: 선택된 타입이 weekNotice일 때만 표시 */}
                             {selectedNotice?.type === "weekNotice" && (
                                 <div
-                                    className="flex bg-green-500 rounded-lg items-center justify-center border border-[#70EFDE] w-[470px] h-[40px] mb-4"
+                                    className="flex bg-green-500 rounded-lg items-center justify-center border border-green-500 w-[470px] h-[40px] mb-4"
                                 >
                                     <p className="font-bold text-xl">이번주 공지사항</p>
                                 </div>

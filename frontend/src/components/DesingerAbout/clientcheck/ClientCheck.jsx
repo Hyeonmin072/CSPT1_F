@@ -4,7 +4,7 @@ import { ko } from "date-fns/locale"; // 날짜를 주어진 포맷 문자열에
 
 import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
 
-import ClientScheduleDate from "./ClientScheduleDate.jsx";
+import ScheduleDate from "./ScheduleDate.jsx";
 import ReservationCheck from "./ReservationCheck.jsx";
 import ClientClock from "./ClientClock.jsx";
 import DesignerSchedule from "./DesignerSchedule.jsx";
@@ -98,7 +98,11 @@ export default function Clientcheck({ onClose }) {
         <div className="p-10 mx-auto max-w-7xl">
             {/* 날짜, 스케줄 보기, 일주일(오늘), 디자이너 간단 이름 */}
             <div className="flex mb-5">
-                <div className="flex flex-row w-[170px] ml-auto border rounded-lg px-2 py-2">
+                <ScheduleDate
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                />
+                <div className="flex flex-row w-[200px] ml-auto border rounded-lg px-2 py-2">
                     <div className="rounded-full bg-gray-300 w-12 h-12">
                         {Designerprofile && Designerprofile.imageURL ? (
                             <img
@@ -135,7 +139,6 @@ export default function Clientcheck({ onClose }) {
                         <DesignerSchedule
                             setModalData={setModalData}
                             setIsModalOpen={setIsModalOpen}
-                            selectedView={selectedView}
                             selectedDate={selectedDate}
                         />
                     </>
