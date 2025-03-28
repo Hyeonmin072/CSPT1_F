@@ -35,6 +35,7 @@ import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
+import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("shop");
@@ -244,6 +245,10 @@ function App() {
               <Route
                   path="/schedulecheck"
                   element={<ShopReservationCheckPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                  path="/eventmenu"
+                  element={<EventCouponMenuPage onLoginClick={openLoginModal} />}
               />
             </>
           )}
