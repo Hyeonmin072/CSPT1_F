@@ -108,11 +108,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 py-4 w-full">
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center">
-              <img
-                src={hairLogo}
-                alt="Hairism Logo"
-                className="h-12 mr-3 mt-2"
-              />
+              <img src={hairLogo} alt="Hairism Logo" className="h-12 mr-3" />
               <div className="leading-[0.85]">
                 <h1 className="text-[26px] font-[900] font-sans">HAIRISM</h1>
                 <span className="text-[13px] text-black font-[700] flex justify-center">
