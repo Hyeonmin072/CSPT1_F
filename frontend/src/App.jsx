@@ -122,7 +122,7 @@ function App() {
           />
 
           {/* 고객 전용 라우트 */}
-          {userRole === "customer" && (
+          {userRole === "user" && (
             <>
               <Route
                 path="/designerpage"

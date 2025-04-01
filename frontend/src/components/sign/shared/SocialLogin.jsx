@@ -2,8 +2,14 @@ import React from "react";
 
 const SocialLogin = () => {
   const handleSocialLogin = (provider) => {
-    console.log(`${provider} 로그인 시도`);
-    // 소셜 로그인 로직 구현
+    if (provider === "kakao") {
+      window.location.href = "http://localhost:1271/social-signin/kakao";
+      console.log(`${provider} 로그인 시도`);
+    }
+    if (provider === "google") {
+      window.location.href = "http://localhost:1271/social-signin/google";
+      console.log(`${provider} 로그인 시도`);
+    }
   };
 
   return (

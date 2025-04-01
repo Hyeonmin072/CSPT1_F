@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
 import UserHamburgerButton from "../button/UserHamburgerButton";
 import Sidebar from "../modal/sidebar/SideBar";
+import axiosInstance from "../sign/axios/AxiosInstance";
 import Swal from "sweetalert2";
 
 export default function Header() {
@@ -10,13 +11,32 @@ export default function Header() {
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // 유저 홈페이지 데이터 가져오기
+  const fetchUserHomeData = async () => {
+    try {
+      const userType = localStorage.getItem("userType");
+      if (userType === "USER") {
+        const response = await axiosInstance.get("/user/loadheader", {
+          withCredentials: true,
+        });
+        console.log("유저 홈페이지 데이터:", response.data);
+      }
+    } catch (error) {
+      console.error("유저 홈페이지 데이터 로드 실패:", error);
+    }
+  };
+
   // 로그인 상태 체크 함수
-  const checkLoginStatus = () => {
+  const checkLoginStatus = async () => {
+    const token = localStorage.getItem("token");
     const userType = localStorage.getItem("userType");
     const name = localStorage.getItem("userName");
-    if (userType && name) {
+
+    if (userType && name && token) {
       setIsLoggedIn(true);
       setUserName(name);
+      // 로그인 상태이고 일반 유저인 경우 홈페이지 데이터 가져오기
+      await fetchUserHomeData();
     } else {
       setIsLoggedIn(false);
       setUserName("");

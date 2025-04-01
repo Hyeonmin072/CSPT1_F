@@ -57,17 +57,10 @@ const Step4PersonalInfo = ({
           )}
         </div>
 
-        <div className="flex justify-center mt-6 gap-10">
+        <div className="flex mt-6 ml-[305px]">
           <button
             type="button"
-            onClick={prevStep}
-            className="px-6 py-2 rounded-md text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors text-sm"
-          >
-            &larr; 이전
-          </button>
-          <button
-            type="button"
-            onClick={nextStep}
+            onClick={() => nextStep(1)}
             disabled={
               Object.keys(errors).length > 0 || !formData.name || !formData.tel
             }

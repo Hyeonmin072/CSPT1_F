@@ -3,10 +3,12 @@ import Swal from "sweetalert2";
 import StepProgress from "./StepProgress";
 import Step1UserType from "../steps/Step1UserType";
 import Step2Email from "../steps/Step2Email";
-import Step3Password from "../steps/Step3Password";
+import Step2EmailVerification from "../steps/Step2EmailVerification";
+import Step4Password from "../steps/Step4Password";
 import Step4PersonalInfo from "../steps/Step4PersonalInfo";
 import Step5TypeSpecific from "../steps/Step5TypeSpecific";
 import { signupApi } from "../axios/authApi";
+import axios from "axios";
 
 const SignupContainer = ({
   isLoginForm,
@@ -40,7 +42,7 @@ const SignupContainer = ({
   //렌더링 추적용
   const [errors, setErrors] = useState({});
   useEffect(() => {
-    console.log("SignupContainer rendered at:", new Date().toISOString());
+    console.log("⌛ 로그인 폼 렌더링 시작:", new Date().toISOString());
   }, []);
 
   // 현재 회원가입 단계 로그 출력
@@ -163,71 +165,48 @@ const SignupContainer = ({
   };
 
   // 이메일 중복 검사
-  const checkEmailDuplicate = async () => {
+  const checkEmailDuplicate = async (email) => {
     try {
-      // 여기에 이메일 중복 검사 API 호출 코드를 추가
-      console.log("☑️ 이메일 중복 검사 시도:", formData.email);
+      console.log("이메일 중복 검사 시도:", email);
+      const response = await axios.get(
+        `http://localhost:1271/user/checkemail/${encodeURIComponent(email)}`
+      );
+      console.log("인코딩 이메일: ", encodeURIComponent(email));
+      console.log("백엔드 응답:", response.data);
+      console.log("응답 타입:", typeof response.data);
 
-      // 임시로 성공했다고 가정
-      await Swal.fire({
-        icon: "success",
-        title: "사용 가능한 이메일",
-        text: "해당 이메일은 사용 가능합니다.",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
-      return true;
+      // response.data가 true면 중복된 이메일, false면 사용 가능한 이메일
+      if (response.data === true) {
+        console.log("중복된 이메일 처리");
+        return { data: { isDuplicate: true } };
+      } else if (response.data === false) {
+        console.log("사용 가능한 이메일 처리");
+        return { data: { isDuplicate: false } };
+      } else {
+        console.error("예상치 못한 응답:", response.data);
+        return { data: { isDuplicate: true } };
+      }
     } catch (error) {
-      console.error("이메일 중복 검사 오류:", error);
-      Swal.fire({
-        icon: "error",
-        title: "중복된 이메일",
-        text: "이미 사용 중인 이메일입니다.",
-        confirmButtonColor: "#d33",
-        confirmButtonText: "확인",
-      });
-      return false;
+      console.error("이메일 중복 확인 오류:", error);
+      // 에러 발생 시 중복된 이메일로 처리
+      return { data: { isDuplicate: true } };
     }
   };
 
   // 이메일 인증
-  const sendVerificationEmail = async () => {
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      Swal.fire({
-        icon: "warning",
-        title: "유효하지 않은 이메일",
-        text: "올바른 이메일 주소를 입력해주세요.",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
-      return;
-    }
-
+  const verifyEmail = async (verificationCode) => {
     try {
-      // 여기에 이메일 인증 코드 발송 API 호출 코드를 추가
-      console.log("☑️ 인증 이메일 발송 시도:", formData.email);
-
-      // 임시로 인증 코드 입력 다이얼로그 표시
-      const { value: verificationCode } = await Swal.fire({
-        title: "인증 코드 입력",
-        input: "text",
-        inputLabel: `${formData.email}로 전송된 인증 코드를 입력하세요`,
-        inputPlaceholder: "인증 코드",
-        showCancelButton: true,
-        confirmButtonText: "확인",
-        cancelButtonText: "취소",
-        inputValidator: (value) => {
-          if (!value) {
-            console.log("❓ 이메일 인증 실패: NULL");
-            return "인증 코드를 입력해주세요";
-          }
-        },
-      });
-
       if (verificationCode) {
-        if (verificationCode === "123456" || verificationCode) {
-          console.log(formData.email);
-          // 임시로 모든 코드 허용
+        console.log("입력된 인증 코드:", verificationCode);
+        const response = await signupApi.verifyEmailCode(
+          formData.email,
+          verificationCode
+        );
+
+        if (response.data.success) {
+          console.log("✅ 이메일 인증 성공: TRUE");
+          setEmailVerified(true);
+          console.log("✅ 이메일 인증 상태 업데이트: TRUE");
           Swal.fire({
             icon: "success",
             title: "인증 성공",
@@ -235,10 +214,8 @@ const SignupContainer = ({
             confirmButtonColor: "#3085d6",
             confirmButtonText: "확인",
           });
-          console.log("✅ 이메일 인증 성공: TRUE");
-          setEmailVerified(true);
-          console.log("✅ 이메일 인증 상태 업데이트: TRUE");
         } else {
+          console.log("❌ 이메일 인증 실패: 잘못된 코드");
           Swal.fire({
             icon: "error",
             title: "인증 실패",
@@ -246,7 +223,6 @@ const SignupContainer = ({
             confirmButtonColor: "#d33",
             confirmButtonText: "확인",
           });
-          console.log("❓ 이메일 인증 실패: FALSE");
         }
       }
     } catch (error) {
@@ -262,8 +238,38 @@ const SignupContainer = ({
     }
   };
 
+  // 닉네임 중복 검사
+  const checkNicknameDuplicate = async (nickname) => {
+    try {
+      console.log("닉네임 중복 검사 시도:", nickname);
+      const response = await axios.get(
+        `http://localhost:1271/designer/nickname/${nickname}/exists`
+      );
+      console.log("백엔드 응답:", response.data);
+      console.log("응답 타입:", typeof response.data);
+
+      // response.data가 true면 중복된 닉네임, false면 사용 가능한 닉네임
+      if (response.data === true) {
+        console.log("중복된 닉네임 처리");
+        return { data: { isDuplicate: true } };
+      } else if (response.data === false) {
+        console.log("사용 가능한 닉네임 처리");
+        return { data: { isDuplicate: false } };
+      } else {
+        console.error("예상치 못한 응답:", response.data);
+        return { data: { isDuplicate: true } };
+      }
+    } catch (error) {
+      console.error("닉네임 중복 확인 오류:", error);
+      console.error("에러 상세:", error.response?.data);
+      console.error("에러 상태:", error.response?.status);
+      return { data: { isDuplicate: true } };
+    }
+  };
+
   // 단계별 유효성 검사
   const validateStep = (step) => {
+    console.log("validateStep 호출됨, 현재 단계:", step);
     const newErrors = {};
 
     switch (step) {
@@ -275,11 +281,14 @@ const SignupContainer = ({
           newErrors.email = "이메일을 입력해주세요";
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
           newErrors.email = "올바른 이메일 형식이 아닙니다";
-        } else if (!emailVerified) {
+        }
+        break;
+      case 3: // 이메일 인증 단계
+        if (!emailVerified) {
           newErrors.email = "이메일 인증이 필요합니다";
         }
         break;
-      case 3: // 비밀번호 입력 단계
+      case 4: // 비밀번호 입력 단계
         if (!formData.password) {
           newErrors.password = "비밀번호를 입력해주세요";
         } else if (formData.password.length < 6) {
@@ -292,7 +301,8 @@ const SignupContainer = ({
           newErrors.confirmPassword = "비밀번호가 일치하지 않습니다";
         }
         break;
-      case 4: // 개인정보 입력 단계
+      case 5: // 개인정보 입력 단계
+        console.log("5단계 검증 - 현재 formData:", formData);
         if (!formData.name) {
           newErrors.name = "이름을 입력해주세요";
         }
@@ -301,8 +311,9 @@ const SignupContainer = ({
         } else if (!isValidPhoneNumber(formData.tel)) {
           newErrors.tel = "올바른 전화번호 형식이 아닙니다";
         }
+        console.log("5단계 검증 결과 - 에러:", newErrors);
         break;
-      case 5: // 유저 타입별 추가 정보
+      case 6: // 유저 타입별 추가 정보
         // 사장님인 경우 사업자 등록번호 검증
         if (userType === "owner" && !formData.bizId) {
           newErrors.bizId = "사업자 등록번호를 입력해주세요";
@@ -313,7 +324,7 @@ const SignupContainer = ({
           newErrors.nickname = "닉네임을 입력해주세요";
         }
 
-        // 고객과 사장님인 경우 주소 검증
+        // 고객과 사장님에게 필요한 주소 검증
         if (
           (userType === "customer" || userType === "owner") &&
           !formData.post
@@ -321,7 +332,7 @@ const SignupContainer = ({
           newErrors.post = "우편번호를 입력해주세요";
         }
 
-        // 고객과 디자이너인 경우 생년월일, 성별 검증
+        // 고객과 디자이너에게 필요한 생년월일, 성별 검증
         if (
           (userType === "customer" || userType === "designer") &&
           !formData.birth
@@ -341,31 +352,42 @@ const SignupContainer = ({
     }
 
     setErrors(newErrors);
-
-    // 오류가 있는 경우 Sweetalert2로 알림
-    if (Object.keys(newErrors).length > 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "입력 오류",
-        text: Object.values(newErrors)[0], // 첫 번째 오류 메시지만 표시
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
-      return false;
-    }
-    return true;
+    const isValid = Object.keys(newErrors).length === 0;
+    console.log("검증 결과:", isValid ? "통과" : "실패", newErrors);
+    return isValid;
   };
 
   // 다음 단계로 진행
   const nextStep = () => {
-    if (validateStep(currentStep)) {
-      setCurrentStep(currentStep + 1);
+    console.log("현재 단계:", currentStep);
+
+    // 유효성 검사
+    if (Object.keys(errors).length > 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "입력 오류",
+        text: Object.values(errors)[0],
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
+      return;
     }
+
+    // 다음 단계로 이동
+    const nextStepValue = currentStep + 1;
+    console.log("다음 단계로 이동:", nextStepValue);
+    setCurrentStep(nextStepValue);
   };
 
   // 이전 단계로 돌아가기
   const prevStep = () => {
-    setCurrentStep(currentStep - 1);
+    if (currentStep > 1) {
+      const prevStepValue = currentStep - 1;
+      console.log("이전 단계로 이동:", prevStepValue);
+
+      // 상태 업데이트
+      setCurrentStep(prevStepValue);
+    }
   };
 
   // 폼 초기화
@@ -393,7 +415,7 @@ const SignupContainer = ({
     e.preventDefault();
 
     // 회원가입 완료 처리 (마지막 단계에서만)
-    if (currentStep === 5 && validateStep(currentStep)) {
+    if (currentStep === 6 && validateStep(currentStep)) {
       try {
         // 모든 사용자 타입에 공통으로 필요한 기본 데이터
         const commonData = {
@@ -519,30 +541,33 @@ const SignupContainer = ({
       case 2:
         return (
           <Step2Email
-            key={Date.now()}
             formData={formData}
             handleChange={handleChange}
             errors={errors}
             checkEmailDuplicate={checkEmailDuplicate}
-            sendVerificationEmail={sendVerificationEmail}
-            emailVerified={emailVerified}
             nextStep={nextStep}
             prevStep={prevStep}
+            userType={userType}
+            emailVerified={emailVerified}
+            setEmailVerified={setEmailVerified}
           />
         );
       case 3:
         return (
-          <Step3Password
-            formData={formData}
-            handleChange={handleChange}
-            errors={errors}
-            nextStep={nextStep}
+          <Step2EmailVerification
+            email={formData.email}
+            userType={userType}
+            onVerificationComplete={(success) => {
+              if (success) {
+                nextStep();
+              }
+            }}
             prevStep={prevStep}
           />
         );
       case 4:
         return (
-          <Step4PersonalInfo
+          <Step4Password
             formData={formData}
             handleChange={handleChange}
             errors={errors}
@@ -552,6 +577,16 @@ const SignupContainer = ({
         );
       case 5:
         return (
+          <Step4PersonalInfo
+            formData={formData}
+            handleChange={handleChange}
+            errors={errors}
+            nextStep={nextStep}
+            prevStep={prevStep}
+          />
+        );
+      case 6:
+        return (
           <Step5TypeSpecific
             userType={userType}
             formData={formData}
@@ -559,6 +594,7 @@ const SignupContainer = ({
             errors={errors}
             prevStep={prevStep}
             handleSubmit={handleSubmit}
+            checkNicknameDuplicate={checkNicknameDuplicate}
           />
         );
       default:
@@ -569,7 +605,7 @@ const SignupContainer = ({
   return (
     <div className="w-full">
       {!isLoginForm && (
-        <StepProgress currentStep={currentStep} totalSteps={5} />
+        <StepProgress currentStep={currentStep} totalSteps={6} />
       )}
 
       {!isLoginForm && (

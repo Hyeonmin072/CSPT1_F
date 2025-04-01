@@ -11,8 +11,9 @@ const SignIntegration = ({ isOpen, onClose }) => {
   const toggleLoginMode = (isLogin) => {
     setIsLoginForm(isLogin);
     console.log(
-      "모드 전환:",
-      isLogin ? "로그인으로 전환" : "회원가입으로 전환"
+      isLogin
+        ? "⬅️ 모드 전환:로그인으로 전환"
+        : "➡️ 모드 전환:회원가입으로 전환"
     );
   };
 
