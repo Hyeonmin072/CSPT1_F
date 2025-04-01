@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 export default function CouponCreateModal({
                                               newCoupon,
@@ -7,6 +7,21 @@ export default function CouponCreateModal({
                                               setIsCouponModalOpen,
                                               handleCouponSubmit,
                                           }) {
+
+    const [receiptDate, setReceiptDate] = useState("");
+
+    // Function to calculate remaining validity period
+    const calculateValidityPeriod = () => {
+        if (receiptDate && newCoupon.end) {
+            const endDate = new Date(newCoupon.end);
+            const receiptDateObj = new Date(receiptDate);
+            const timeDiff = endDate - receiptDateObj;
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert ms to days
+            return daysRemaining > 0 ? daysRemaining : 0; // Ensure no negative values
+        }
+        return "";
+    };
+
     return (
         <div>
             {isCouponModalOpen && (
@@ -26,7 +41,7 @@ export default function CouponCreateModal({
                         />
 
                         {/* 쿠폰 기간 */}
-                        <p className="mt-2">쿠폰 날짜</p>
+                        <p className="mt-2">쿠폰 사용 가능 날짜</p>
                         <div className="flex flex-row w-full space-x-5">
                             <input
                                 type="date"
@@ -47,6 +62,24 @@ export default function CouponCreateModal({
                             />
                         </div>
 
+                        <div className="flex flex-row justify-between space-x-4">
+                            <div className="w-full">
+                                {/* 쿠폰 수령 가능 종료일 */}
+                                <p className="mt-4">쿠폰 수령 종료일</p>
+                                <input
+                                    type="date"
+                                    className="w-full p-2 mb-2 border rounded"
+                                    value={newCoupon.receiptDate || ""} // Access receiptDate from newCoupon
+                                    onChange={(e) =>
+                                        setNewCoupon({
+                                            ...newCoupon,
+                                            receiptDate: e.target.value, // Update receiptDate in newCoupon
+                                        })
+                                    }
+                                />
+                            </div>
+                        </div>
+
                         {/* 할인 유형 선택 */}
                         <p className="mt-4">할인 유형</p>
                         <div className="flex items-center space-x-4 mb-4">
@@ -57,7 +90,11 @@ export default function CouponCreateModal({
                                     className="mr-2"
                                     checked={newCoupon.discountType === "percent"}
                                     onChange={() =>
-                                        setNewCoupon({ ...newCoupon, discountType: "percent", discountValue: "" })
+                                        setNewCoupon({
+                                            ...newCoupon,
+                                            discountType: "percent",
+                                            discountValue: "",
+                                        })
                                     }
                                 />
                                 퍼센트 할인 (%)
@@ -69,7 +106,11 @@ export default function CouponCreateModal({
                                     className="mr-2"
                                     checked={newCoupon.discountType === "amount"}
                                     onChange={() =>
-                                        setNewCoupon({ ...newCoupon, discountType: "amount", discountValue: "" })
+                                        setNewCoupon({
+                                            ...newCoupon,
+                                            discountType: "amount",
+                                            discountValue: "",
+                                        })
                                     }
                                 />
                                 정액 할인 (원)
@@ -110,6 +151,8 @@ export default function CouponCreateModal({
                                 })
                             }
                         />
+
+
 
                         {/* 등록 및 닫기 버튼 */}
                         <div className="flex justify-end mt-5">

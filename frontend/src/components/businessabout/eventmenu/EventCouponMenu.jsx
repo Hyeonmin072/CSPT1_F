@@ -20,7 +20,9 @@ export default function EventCouponMenu() {
         title: "",
         start: "",
         end: "",
-        detail: ""
+        detail: "",
+        discountType: "",
+        discountValue: ""
     });
 
     const handleEventSubmit = () => {
@@ -30,7 +32,7 @@ export default function EventCouponMenu() {
                 { id: prevEvents.length + 1, ...newEvent },
             ]);
             setIsEventModalOpen(false);
-            setNewEvent({ title: "", start: "", end: "",  detail: "" });
+            setNewEvent({ title: "", start: "", end: "",  detail: "" ,  discountType: "", discountValue: "",});
         }
     };
 
@@ -40,6 +42,7 @@ export default function EventCouponMenu() {
         title: "",
         start: "",
         end: "",
+        receiptDate: "",
         discountType: "",
         discountValue: "",
         minimumPurchase: "",
@@ -52,7 +55,7 @@ export default function EventCouponMenu() {
                 { id: prevCoupons.length + 1, ...newCoupon },
             ]); // 상태를 업데이트하는 방식으로 추가
             setIsCouponModalOpen(false);
-            setNewCoupon({ title: "", start: "", end: "",  discountType: "", discountValue: "", minimumPurchase: "" });
+            setNewCoupon({ title: "", start: "", end: "", receiptDate:"", discountType: "", discountValue: "", minimumPurchase: "" });
         }
     };
 

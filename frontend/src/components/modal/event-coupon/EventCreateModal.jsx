@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function EventCreateModal({ setNewEvent, newEvent, isEventModalOpen, setIsEventModalOpen, handleEventsSubmit }){
+export default function EventCreateModal({ setNewEvent, newEvent, isEventModalOpen, setIsEventModalOpen, handleEventSubmit }){
 
     return(
         <div>
@@ -38,13 +38,64 @@ export default function EventCreateModal({ setNewEvent, newEvent, isEventModalOp
                                 <textarea
                                     id="eventdetail"
                                     className="w-full min-h-[200px] border rounded p-2 resize-none"
+                                    onChange={(e) => setNewEvent({...newEvent, detail: e.target.value})}
+                                    value={newEvent.detail || ""}
                                 />
                             </div>
+
+                            {/* 할인 유형 선택 */}
+                            <p className="mt-4">할인 유형</p>
+                            <div className="flex items-center space-x-4 mb-4">
+                                <label className="flex items-center">
+                                    <input
+                                        type="radio"
+                                        name="discountType"
+                                        className="mr-2"
+                                        checked={newEvent.discountType === "percent"}
+                                        onChange={() =>
+                                            setNewEvent({ ...newEvent, discountType: "percent", discountValue: "" })
+                                        }
+                                    />
+                                    퍼센트 할인 (%)
+                                </label>
+                                <label className="flex items-center">
+                                    <input
+                                        type="radio"
+                                        name="discountType"
+                                        className="mr-2"
+                                        checked={newEvent.discountType === "amount"}
+                                        onChange={() =>
+                                            setNewEvent({ ...newEvent, discountType: "amount", discountValue: "" })
+                                        }
+                                    />
+                                    정액 할인 (원)
+                                </label>
+                            </div>
+
+                            {/* 할인 값 입력 */}
+                            {newEvent.discountType && (
+                                <input
+                                    type="number"
+                                    placeholder={
+                                        newEvent.discountType === "percent"
+                                            ? "할인율을 입력하세요 (%)"
+                                            : "할인 금액을 입력하세요 (원)"
+                                    }
+                                    className="w-full p-2 mb-2 border rounded"
+                                    value={newEvent.discountValue || ""}
+                                    onChange={(e) =>
+                                        setNewEvent({
+                                            ...newEvent,
+                                            discountValue: e.target.value,
+                                        })
+                                    }
+                                />
+                            )}
                         </div>
 
                         <div className="flex justify-end">
                             <button
-                                onClick={handleEventsSubmit}
+                                onClick={handleEventSubmit}
                                 className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                             >
                                 등록

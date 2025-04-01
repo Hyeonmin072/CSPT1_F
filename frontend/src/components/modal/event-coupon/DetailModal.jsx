@@ -12,6 +12,17 @@ export default function DetailModal({ isEModalOpen, selectedItem, closeEventModa
                             <p>/</p>
                             <p className="mb-4">{selectedItem.end}</p>
                         </div>
+                        <div>
+                            <p className="mb-4">
+                                할인 금액 :
+                                {selectedItem.discountType === "percent"
+                                    ? ` ${selectedItem.discountValue}%`
+                                    : selectedItem.discountType === "amount"
+                                        ? ` ${selectedItem.discountValue}원`
+                                        : "없음"}
+                            </p>
+                        </div>
+
                         <textarea
                             id="eventdetail"
                             className="w-full min-h-[200px] border rounded p-2 resize-none"
