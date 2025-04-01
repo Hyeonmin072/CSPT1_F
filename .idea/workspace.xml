@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91a0d9ef-cc73-41b3-996e-16f7748f6dbb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/eventmenu/EventCouponMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/eventmenu/EventCouponMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/CouponCreateModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/CouponCreateModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/CouponDetailModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/CouponDetailModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/DetailModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/DetailModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/EventCreateModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/EventCreateModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/CheckInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/CheckInfo.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +103,7 @@
       <workItem from="1742969245423" duration="6059000" />
       <workItem from="1743167062031" duration="133000" />
       <workItem from="1743474159116" duration="39000" />
-      <workItem from="1743485339745" duration="1393000" />
+      <workItem from="1743485339745" duration="1717000" />
     </task>
     <servers />
   </component>
