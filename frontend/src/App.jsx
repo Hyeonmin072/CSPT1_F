@@ -16,6 +16,7 @@ import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx";
 import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
+import MapPage from "./pages/location-setting/MapPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -107,6 +108,10 @@ function App() {
             path="/"
             element={<MainPage onLoginClick={openLoginModal} />}
           />
+          <Route 
+                path="/map" 
+                element={<MapPage />}
+          />
 
           {/* 공통 라우트 */}
           <Route
@@ -129,6 +134,7 @@ function App() {
           {/* 고객 전용 라우트 */}
           {userRole === "user" && (
             <>
+              
               <Route
                 path="/designerpage"
                 element={<DesignerPage onLoginClick={openLoginModal} />}

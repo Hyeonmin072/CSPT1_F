@@ -3,13 +3,22 @@ import {
     LocateFixed,
     MapPin,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-export default function HairSearch(){
+export default function HairSearch({ userLocation }){
+
+    const navigate = useNavigate();
+
+    const handleMapClick = () => {
+        navigate("/map",{
+            state: {address: userLocation}
+        });
+    };
     return (
         <div className="flex items-center bg-white rounded-lg shadow-sm py-2 px-4 w-[700px] ">
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer" onClick={handleMapClick}>
                 <MapPin className="w-5 h-5"/>
-                <span className="text-sm mx-2">서울 역삼동</span>
+                <span className="text-sm mx-2">{userLocation ? userLocation : "위치를 등록해주세요"}</span>
                 <LocateFixed className="w-5 h-5 bg-[#70EFDE] rounded-full p-1"/>
             </div>
 

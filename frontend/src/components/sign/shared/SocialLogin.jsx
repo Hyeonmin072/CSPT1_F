@@ -2,7 +2,12 @@ import React from "react";
 
 const SocialLogin = () => {
   const handleSocialLogin = (provider) => {
+    const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
     console.log(`${provider} 로그인 시도`);
+    if (provider === "kakao") {
+      window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id={REST_API_KEY}&redirect_uri={REDIRECT_URI}&response_type=code`;
+    }
     // 소셜 로그인 로직 구현
   };
 

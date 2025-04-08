@@ -25,7 +25,8 @@
     "recoil": "^0.7.7",
     "sweetalert2": "^11.17.2",
     "swiper": "^11.2.0",
-    "tailwind-scrollbar-hide": "^2.0.0"
+    "tailwind-scrollbar-hide": "^2.0.0",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
