@@ -1,12 +1,25 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "../../components/common/Header";
 import Map from "../../components/location/Map";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function MapPage() {
-    const [center, setCenter] = useState({ lat: 37.5665, lng: 126.9780 }); // 초깃값 명확히 설정
+export default function MapPage() 
+{
+    const location = useLocation(); //  전달받은 좌표를 읽는다
+    const navigate = useNavigate();
+    const [center, setCenter] = useState({
+        lat: location.state?.lat || 37.5665,  // 좌표가 있으면 좌표값
+        lng: location.state?.lng || 126.9780, 
+    });
     const [searchInput, setSearchInput] = useState("");
     const mapRef = useRef();
 
+    useEffect(() => {
+        if (!location.state?.lat || !location.state?.lng) {
+            alert("위치 정보가 없습니다. 잘못된 접근입니다.");
+            navigate("/");
+        }
+    }, [location.state, navigate]);
     const handleSearch = () => {
         if (!window.kakao || !window.kakao.maps) {
             alert("카카오 맵이 아직 로드되지 않았습니다.");

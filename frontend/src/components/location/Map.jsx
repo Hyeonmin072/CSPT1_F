@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import "./Map.css";
+import { updateUserLocation } from "./MapAxios";
+import { useNavigate } from "react-router-dom";
 
 export default function Map({ mapRef, center, setCenter }) {
     const [bounceKey, setBounceKey] = useState(0);
+    const navigate = useNavigate();
     useEffect(() => {
         if (!window.kakao || !window.kakao.maps) return;
 
@@ -44,6 +47,44 @@ export default function Map({ mapRef, center, setCenter }) {
         // 마커 애니메이션
         setBounceKey(prev => prev + 1);
     }, [center]);
+
+    // 사용자 위치 업데이트 
+    const handleLocationSubmit = async () => {
+        try{
+            const address = await fetchAddressFromCoords(center.lat, center.lng);
+            console.log("주소 정보:", address);
+            const response = await updateUserLocation(center.lat, center.lng, address);
+            console.log("업데이트 성공", response);
+            
+            navigate("/hairshop");
+        } catch(error){
+            console.error("업데이트 중 오류발생:", error);
+        }
+    };
+
+    // 좌표 -> 주소 변환환
+    const fetchAddressFromCoords = async (lat, lng) => {
+        return new Promise((resolve, reject) => {
+            if(!window.kakao || !window.kakao.maps){
+                reject("카카오 지도 API가 로드되지 않았습니다.");
+                return;
+            }
+            const geocoder = new window.kakao.maps.services.Geocoder();
+            const coord = new window.kakao.maps.LatLng(lat, lng);
+
+            geocoder.coord2Address(coord.getLng(), coord.getLat(),(result) => {
+                if(result && result.length > 0){
+                    const address = result[0].address.address_name;
+                    resolve(address);
+                }else{
+                    reject("주소 변환 실패");
+                }
+            });
+
+        });
+    }
+
+    
 
     return (
         <div
@@ -107,6 +148,7 @@ export default function Map({ mapRef, center, setCenter }) {
                 }}
                 onClick={() => {
                     console.log("선택된 좌표:", center);
+                    handleLocationSubmit();
                 }}
                 onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "rgba(22, 163, 74, 0.95)")}
                 onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "rgba(34, 197, 94, 0.95)")}
