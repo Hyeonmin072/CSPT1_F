@@ -8,6 +8,7 @@ export default function MapPage()
     const location = useLocation(); //  전달받은 좌표를 읽는다
     const navigate = useNavigate();
     const [center, setCenter] = useState({
+        
         lat: location.state?.lat || 37.5665,  // 좌표가 있으면 좌표값
         lng: location.state?.lng || 126.9780, 
     });
