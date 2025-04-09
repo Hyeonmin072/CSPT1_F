@@ -36,7 +36,7 @@ export default function BusinessHeader() {
                             <Link to="/schedulecheck" className="text-gray-700">
                                 예약관리
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/designermanage" className="text-gray-700">
                                 디자이너 관리
                             </Link>
                             <Link to="" className="text-gray-700">

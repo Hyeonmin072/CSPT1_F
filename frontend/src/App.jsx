@@ -36,9 +36,10 @@ import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
+import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("shop");
+  const [userRole, setUserRole] = useState("designer");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -226,29 +227,41 @@ function App() {
           {/* 사업자 전용 */}
           {userRole === "shop" && (
             <>
+              {/* 메인 페이지 */}
               <Route
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
               />
+              {/* 사업자 매출 페이지 */}
               <Route
                 path="/sales"
                 element={<BusinessSalesPage onLoginClick={openLoginModal} />}
               />
+
+              {/* 사업자 매출 상세 페이지 */}
               <Route
                 path="/sales/calendar"
                 element={<SalesCalendar onLoginClick={openLoginModal} />}
-              /> 
+              />
+              {/* 사업자 블랙리스트 페이지 */}
               <Route
                   path="/blacklist"
                   element={<BlackListPage onLoginClick={openLoginModal} />}
                 />
+              {/* 사업자 디자이너 스케줄확인 페이지 */}
               <Route
                   path="/schedulecheck"
                   element={<ShopReservationCheckPage onLoginClick={openLoginModal} />}
               />
+              {/* 사업자 이벤트-쿠폰 등록 페이지 */}
               <Route
                   path="/eventmenu"
                   element={<EventCouponMenuPage onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 디자이너 관리 페이지 */}
+              <Route
+                  path="/designermanage"
+                  element={<DesignerManagePage onLoginClick={openLoginModal} />}
               />
             </>
           )}

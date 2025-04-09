@@ -69,8 +69,8 @@ export default function Notice() {
 
                         <div className="flex justify-start mt-4">
                             <div
-                                className={`flex bg-[#007A31] rounded-lg items-center justify-between border border-[#007A31] w-[180px] h-[50px] cursor-pointer
-                                    ${selectedNotice?.type === "importantNotice" ? "shadow-inner shadow-[#002910]" : "shadow-lg"}`}
+                                className={`flex bg-red-500 rounded-lg items-center justify-between border border-red-400 w-[180px] h-[50px] cursor-pointer
+                                    ${selectedNotice?.type === "importantNotice" ? "shadow-inner shadow-red-800" : "shadow-lg"}`}
                                 onClick={() => setSelectedNotice({ type: "importantNotice" })}
                             >
                                 <Star className="ml-2" />
