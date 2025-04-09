@@ -17,6 +17,7 @@ export default function HairSearch({ userLocation }){
     const handleMapClick = async () => {
         try{
             const location = await getUserLocation();
+            console.log("좌표 응답 데이터:",location);
             if( location && location.lat && location.lng){
                 navigate("/map",{
                     state: {
