@@ -42,7 +42,7 @@ const SignupContainer = ({
   //렌더링 추적용
   const [errors, setErrors] = useState({});
   useEffect(() => {
-    console.log("⌛ 로그인 폼 렌더링 시작:", new Date().toISOString());
+    console.log("SignupContainer rendered at:", new Date().toISOString());
   }, []);
 
   // 현재 회원가입 단계 로그 출력
@@ -168,9 +168,31 @@ const SignupContainer = ({
   const checkEmailDuplicate = async (email) => {
     try {
       console.log("이메일 중복 검사 시도:", email);
-      const response = await axios.get(
-        `http://localhost:1271/user/checkemail/${encodeURIComponent(email)}`
-      );
+      let endpoint;
+
+      // 사용자 타입에 따라 다른 엔드포인트 사용
+      switch (userType) {
+        case "customer":
+          endpoint = `http://localhost:1271/user/checkemail/${encodeURIComponent(
+            email
+          )}`;
+          break;
+        case "owner":
+          endpoint = `http://localhost:1271/shop/checkemail/${encodeURIComponent(
+            email
+          )}`;
+          break;
+        case "designer":
+          endpoint = `http://localhost:1271/designer/checkemail/${encodeURIComponent(
+            email
+          )}`;
+          break;
+        default:
+          throw new Error("유효하지 않은 사용자 유형입니다.");
+      }
+
+      console.log("사용할 엔드포인트:", endpoint);
+      const response = await axios.get(endpoint);
       console.log("인코딩 이메일: ", encodeURIComponent(email));
       console.log("백엔드 응답:", response.data);
       console.log("응답 타입:", typeof response.data);
@@ -243,7 +265,7 @@ const SignupContainer = ({
     try {
       console.log("닉네임 중복 검사 시도:", nickname);
       const response = await axios.get(
-        `http://localhost:1271/designer/nickname/${nickname}/exists`
+        `http://localhost:1271/nickname/${encodeURIComponent(nickname)}/exists`
       );
       console.log("백엔드 응답:", response.data);
       console.log("응답 타입:", typeof response.data);
@@ -261,8 +283,6 @@ const SignupContainer = ({
       }
     } catch (error) {
       console.error("닉네임 중복 확인 오류:", error);
-      console.error("에러 상세:", error.response?.data);
-      console.error("에러 상태:", error.response?.status);
       return { data: { isDuplicate: true } };
     }
   };

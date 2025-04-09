@@ -57,20 +57,20 @@ const Step4PersonalInfo = ({
           )}
         </div>
 
-        <div className="flex mt-6 ml-[305px]">
+        <div className="flex justify-end mt-6">
           <button
             type="button"
             onClick={() => nextStep(1)}
             disabled={
               Object.keys(errors).length > 0 || !formData.name || !formData.tel
             }
-            className={`px-6 py-2 rounded-md text-white font-medium ${
+            className={`px-6 py-2 rounded-md text-white font-medium whitespace-nowrap ${
               Object.keys(errors).length > 0 || !formData.name || !formData.tel
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-green-600 hover:bg-green-700"
             } transition-colors text-sm`}
           >
-            다음 &rarr;
+            다음&nbsp;&rarr;
           </button>
         </div>
       </div>

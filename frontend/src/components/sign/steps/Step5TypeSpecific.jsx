@@ -1,5 +1,5 @@
 //eslint-disable
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 const Step5TypeSpecific = ({
@@ -12,6 +12,18 @@ const Step5TypeSpecific = ({
   checkNicknameDuplicate,
 }) => {
   const [nicknameVerified, setNicknameVerified] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   const handleNicknameDuplicateCheck = async () => {
     try {
@@ -72,37 +84,41 @@ const Step5TypeSpecific = ({
     }
   };
 
-  const renderDesignerFields = () => (
-    <div className="space-y-4">
-      <div className="flex items-start">
-        <div className="flex-grow">
-          <input
-            type="text"
-            name="nickname"
-            value={formData.nickname}
-            onChange={(e) => {
-              handleChange(e);
-              setNicknameVerified(false);
-            }}
-            placeholder="닉네임을 입력해주세요"
-            className={`w-full px-3 py-2 border ${
-              errors.nickname ? "border-red-500" : "border-gray-300"
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
-          />
-          {errors.nickname && (
-            <p className="text-red-500 text-xs mt-1">{errors.nickname}</p>
-          )}
-        </div>
-        <button
-          type="button"
-          onClick={handleNicknameDuplicateCheck}
-          disabled={!formData.nickname}
-          className="ml-2 px-3 py-2 rounded-md text-sm bg-green-300 hover:bg-green-400 text-gray-700 transition-colors whitespace-nowrap disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
-        >
-          중복 확인
-        </button>
-      </div>
-      {/* 기존 생년월일, 성별 필드 */}
+  const handleAddressSearch = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+        const addressData = {
+          target: {
+            name: "post",
+            value: data.zonecode,
+          },
+        };
+        handleChange(addressData);
+
+        const fullAddress = data.address;
+        let extraAddress = "";
+
+        if (data.buildingName !== "") {
+          extraAddress = data.buildingName;
+        }
+
+        const addressEvent = {
+          target: {
+            name: "address",
+            value: extraAddress
+              ? `${fullAddress} (${extraAddress})`
+              : fullAddress,
+          },
+        };
+        handleChange(addressEvent);
+      },
+      autoClose: true,
+    }).open();
+  };
+
+  const renderCommonFields = () => (
+    <>
       <div>
         <label className="block text-xs font-medium text-gray-700 mb-1">
           생년월일
@@ -151,6 +167,40 @@ const Step5TypeSpecific = ({
           <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
         )}
       </div>
+    </>
+  );
+
+  const renderDesignerFields = () => (
+    <div className="space-y-4">
+      <div className="flex items-start">
+        <div className="flex-grow">
+          <input
+            type="text"
+            name="nickname"
+            value={formData.nickname}
+            onChange={(e) => {
+              handleChange(e);
+              setNicknameVerified(false);
+            }}
+            placeholder="닉네임을 입력해주세요"
+            className={`w-full px-3 py-2 border ${
+              errors.nickname ? "border-red-500" : "border-gray-300"
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+          />
+          {errors.nickname && (
+            <p className="text-red-500 text-xs mt-1">{errors.nickname}</p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={handleNicknameDuplicateCheck}
+          disabled={!formData.nickname}
+          className="ml-2 px-3 py-2 rounded-md text-sm bg-green-300 hover:bg-green-400 text-gray-700 transition-colors whitespace-nowrap disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+        >
+          중복 확인
+        </button>
+      </div>
+      {renderCommonFields()}
     </div>
   );
 
@@ -189,28 +239,34 @@ const Step5TypeSpecific = ({
           {/* 디자이너에게만 필요한 필드 */}
           {userType === "designer" && renderDesignerFields()}
 
-          {/* 고객과 사장님에게 필요한 주소 필드 */}
+          {/* 고객과 사장님에게 필요한 필드 */}
           {(userType === "customer" || userType === "owner") && (
-            <>
+            <div className="space-y-4">
+              {renderCommonFields()}
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="post"
+                  className="block text-xs font-medium text-gray-700 mb-1"
+                >
                   우편번호
                 </label>
-                <div className="flex">
+                <div className="flex gap-2">
                   <input
                     type="text"
+                    id="post"
                     name="post"
                     value={formData.post}
                     onChange={handleChange}
-                    className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className={`flex-1 px-3 py-2 border ${
+                      errors.post ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm`}
                     placeholder="우편번호"
+                    readOnly
                   />
                   <button
                     type="button"
-                    className="ml-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300"
-                    onClick={() => {
-                      /* 우편번호 검색 기능 */
-                    }}
+                    onClick={handleAddressSearch}
+                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm whitespace-nowrap"
                   >
                     우편번호 검색
                   </button>
@@ -221,22 +277,29 @@ const Step5TypeSpecific = ({
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="address"
+                  className="block text-xs font-medium text-gray-700 mb-1"
+                >
                   주소
                 </label>
                 <input
                   type="text"
+                  id="address"
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  placeholder="주소를 입력하세요"
+                  className={`w-full px-3 py-2 border ${
+                    errors.address ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm`}
+                  placeholder="주소"
+                  readOnly
                 />
                 {errors.address && (
                   <p className="text-red-500 text-xs mt-1">{errors.address}</p>
                 )}
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

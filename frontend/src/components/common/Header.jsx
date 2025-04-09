@@ -29,16 +29,28 @@ export default function Header() {
 
   // 로그인 상태 체크 함수
   const checkLoginStatus = async () => {
-    const token = localStorage.getItem("token");
-    const userType = localStorage.getItem("userType");
-    const name = localStorage.getItem("userName");
+    try {
+      //유저 정보를 가져오는 엔드 포인트를 호출
+      const response = await axiosInstance.get("/user/header", {
+        withCredentials: true,
+      });
 
-    if (userType && name && token) {
-      setIsLoggedIn(true);
-      setUserName(name);
-      // 로그인 상태이고 일반 유저인 경우 홈페이지 데이터 가져오기
-      await fetchUserHomeData();
-    } else {
+      if (response.data) {
+        setIsLoggedIn(true);
+        // response.data가 객체인 경우 userName 속성을 사용
+        if (typeof response.data === "object" && "userName" in response.data) {
+          setUserName(response.data.userName);
+        } else if (typeof response.data === "string") {
+          setUserName(response.data);
+        }
+        // 로그인 상태이고 일반 유저인 경우 홈페이지 데이터 가져오기
+        await fetchUserHomeData();
+      } else {
+        setIsLoggedIn(false);
+        setUserName("");
+      }
+    } catch (error) {
+      console.error("사용자 정보 조회 실패 : 로그인하지 않음");
       setIsLoggedIn(false);
       setUserName("");
     }
@@ -70,11 +82,6 @@ export default function Header() {
       cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {
-        // localStorage에서 사용자 정보 삭제
-        localStorage.removeItem("token");
-        localStorage.removeItem("userType");
-        localStorage.removeItem("userName");
-
         // 로그인 상태 변경 이벤트 발생
         window.dispatchEvent(new Event("loginStatusChanged"));
 
@@ -132,20 +139,22 @@ export default function Header() {
             </nav>
             <div className="flex space-x-4">
               {isLoggedIn ? (
-                <span className="text-gray-700 font-bold mt-2">
-                  {userName}님
-                </span>
+                <>
+                  <span className="text-gray-700 font-bold mt-2">
+                    {userName}님
+                  </span>
+                  <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+                </>
               ) : (
                 <LoginButton />
               )}
-              <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
             </div>
           </div>
         </div>
       </header>
 
-      {/* 사이드바 컴포넌트 추가 */}
-      <Sidebar isOpen={isOpen} onClose={closeMenu} />
+      {/* 사이드바 컴포넌트 추가 - 로그인 상태일 때만 표시 */}
+      {isLoggedIn && <Sidebar isOpen={isOpen} onClose={closeMenu} />}
     </>
   );
 }

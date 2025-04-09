@@ -143,7 +143,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full transition-all duration-300 ease-in-out overflow-y-hidden">
       <h1 className="text-xl font-bold mb-4 text-center">HAIRISM</h1>
 
       {/* 사용자 유형 선택 버튼 */}
@@ -151,7 +151,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         <button
           type="button"
           onClick={() => setUserType("SHOP")}
-          className={`px-2 py-1 text-xs rounded-lg border ${
+          className={`px-2 py-1 text-xs rounded-lg border transition-colors duration-200 ${
             userType === "SHOP"
               ? "bg-green-500 text-white border-green-500"
               : "bg-white text-gray-700 border-gray-300"
@@ -162,7 +162,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         <button
           type="button"
           onClick={() => setUserType("USER")}
-          className={`px-2 py-1 text-xs rounded-lg border ${
+          className={`px-2 py-1 text-xs rounded-lg border transition-colors duration-200 ${
             userType === "USER"
               ? "bg-green-500 text-white border-green-500"
               : "bg-white text-gray-700 border-gray-300"
@@ -173,7 +173,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         <button
           type="button"
           onClick={() => setUserType("DESIGNER")}
-          className={`px-2 py-1 text-xs rounded-lg border ${
+          className={`px-2 py-1 text-xs rounded-lg border transition-colors duration-200 ${
             userType === "DESIGNER"
               ? "bg-green-500 text-white border-green-500"
               : "bg-white text-gray-700 border-gray-300"
@@ -214,8 +214,16 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         </button>
       </form>
 
-      {/* 소셜 로그인 버튼 */}
-      <SocialLogin />
+      {/* 소셜 로그인 버튼 컨테이너에 애니메이션 추가 */}
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          userType === "USER"
+            ? "max-h-[200px] opacity-100"
+            : "max-h-0 opacity-0 overflow-hidden"
+        }`}
+      >
+        <SocialLogin />
+      </div>
 
       <div className="mt-4 text-center">
         <button
@@ -223,7 +231,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
           className="text-gray-600 hover:text-gray-800 font-medium text-sm"
         >
           아직 계정이 없으신가요?
-          <span className="font-bold hover:text-green-500 transition-colors transition duration-500">
+          <span className="font-bold hover:text-green-500 transition-colors duration-500">
             {" "}
             회원가입
           </span>
