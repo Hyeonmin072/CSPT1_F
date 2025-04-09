@@ -3,31 +3,30 @@ import Header from "../../components/common/Header";
 import Map from "../../components/location/Map";
 
 export default function MapPage() {
-    const [center, setCenter] = useState({ lat: null, lng: null });
+    const [center, setCenter] = useState({ lat: 37.5665, lng: 126.9780 }); // 초깃값 명확히 설정
     const [searchInput, setSearchInput] = useState("");
-    const mapRef = useRef(); // ✅ 여기서 만든 ref를 아래로 넘김
-
-    const handleCenterChange = (pos) => {
-        setCenter(pos);
-        console.log("중앙 위치 변경됨:", pos);
-    };
+    const mapRef = useRef();
 
     const handleSearch = () => {
         if (!window.kakao || !window.kakao.maps) {
             alert("카카오 맵이 아직 로드되지 않았습니다.");
             return;
         }
-
-        const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.addressSearch(searchInput, (result, status) => {
+    
+        const places = new window.kakao.maps.services.Places();
+    
+        places.keywordSearch(searchInput, (data, status) => {
             if (status === window.kakao.maps.services.Status.OK) {
+                const first = data[0];
                 const coords = {
-                    lat: parseFloat(result[0].y),
-                    lng: parseFloat(result[0].x),
+                    lat: parseFloat(first.y),
+                    lng: parseFloat(first.x),
                 };
-                setCenter(coords); // 이거 바뀌면 Map 컴포넌트에서 center 이동됨
+                setCenter(coords); // 중심 좌표 변경
+            } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+                alert("검색 결과가 없습니다.");
             } else {
-                alert("주소를 찾을 수 없습니다.");
+                alert("검색 중 오류가 발생했습니다.");
             }
         });
     };
@@ -36,29 +35,37 @@ export default function MapPage() {
         <div className="min-h-screen bg-gray-50">
             <Header />
             <div className="flex flex-col items-center mt-10">
-                {/* 검색바 */}
-                <div className="mb-4 flex gap-2">
+                <div className="mb-6 flex gap-3">
                     <input
                         type="text"
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
-                        className="border p-2 rounded w-80"
-                        placeholder="주소를 입력하세요"
+                        className="border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 rounded-md px-4 py-2 w-80 shadow-sm outline-none transition duration-200"
+                        placeholder="주소나 장소를 입력하세요"
                     />
                     <button
                         onClick={handleSearch}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        style={{
+                            backgroundColor: "rgba(22, 163, 74, 0.85)", // green-600 투명
+                            color: "white",
+                            padding: "10px 20px",
+                            border: "none",
+                            borderRadius: "8px",
+                            fontWeight: "600",
+                            fontSize: "16px",
+                            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                            cursor: "pointer",
+                            transition: "background-color 0.3s ease",
+                        }}
+                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "rgba(21, 128, 61, 0.9)")} // green-700
+                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "rgba(22, 163, 74, 0.85)")}
                     >
                         검색
                     </button>
                 </div>
 
                 {/* 지도 */}
-                <Map
-                    mapRef={mapRef}
-                    onCenterChanged={handleCenterChange}
-                    searchLocation={center}
-                />
+                <Map mapRef={mapRef} center={center} setCenter={setCenter} />
             </div>
         </div>
     );
