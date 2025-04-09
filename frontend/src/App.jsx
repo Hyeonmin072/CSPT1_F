@@ -20,6 +20,8 @@ import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 import MapPage from "./pages/location-setting/MapPage.jsx";
+import SocialSignup from "./components/sign/social/SocialSignup";
+
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -117,6 +119,7 @@ function App() {
           />
 
           {/* 공통 라우트 */}
+          <Route path="/social/signup" element={<SocialSignup />} />
           <Route
             path="/hairshop"
             element={<HairShopPage onLoginClick={openLoginModal} />}

@@ -1,14 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SocialLogin = () => {
-  const handleSocialLogin = (provider) => {
-    const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-    const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-    console.log(`${provider} 로그인 시도`);
-    if (provider === "kakao") {
-      window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id={REST_API_KEY}&redirect_uri={REDIRECT_URI}&response_type=code`;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // URL 파라미터 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const signinStatus = urlParams.get("signin-status");
+
+    console.log("로그인 상태:", signinStatus);
+
+    if (signinStatus === "success") {
+      console.log("로그인 성공 - 헤더 업데이트 이벤트 발생");
+      // 로그인 성공 시 헤더 업데이트를 위한 이벤트 발생
+      window.dispatchEvent(new Event("loginStatusChanged"));
+      navigate("/");
+    } else if (signinStatus === "fail") {
+      Swal.fire({
+        icon: "error",
+        title: "로그인 실패",
+        text: "소셜 로그인에 실패했습니다. 다시 시도해주세요.",
+        confirmButtonColor: "#3085d6",
+      }).then(() => {
+        navigate("/");
+      });
     }
-    // 소셜 로그인 로직 구현
+  }, [navigate]);
+
+  const handleSocialLogin = (provider) => {
+    console.group("🚀 소셜 로그인 시작");
+    console.log("제공자:", provider);
+
+    const loginUrl =
+      provider === "kakao"
+        ? "http://localhost:1271/social-signin/kakao"
+        : "http://localhost:1271/social-signin/google";
+
+    console.log("로그인 URL:", loginUrl);
+    window.location.href = loginUrl;
+    console.groupEnd();
   };
 
   return (

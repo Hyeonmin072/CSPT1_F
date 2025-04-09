@@ -11,8 +11,9 @@ const SignIntegration = ({ isOpen, onClose }) => {
   const toggleLoginMode = (isLogin) => {
     setIsLoginForm(isLogin);
     console.log(
-      "모드 전환:",
-      isLogin ? "로그인으로 전환" : "회원가입으로 전환"
+      isLogin
+        ? "⬅️ 모드 전환:로그인으로 전환"
+        : "➡️ 모드 전환:회원가입으로 전환"
     );
   };
 
@@ -35,14 +36,18 @@ const SignIntegration = ({ isOpen, onClose }) => {
       style={{ margin: 0 }}
     >
       <div
-        className="bg-white rounded-lg w-[95%] max-w-4xl mx-auto overflow-y-auto max-h-[90vh]"
+        className={`bg-white rounded-lg w-[95%] max-w-4xl mx-auto transition-all duration-500 ease-out ${
+          isLoginForm ? "h-[480px]" : "h-[560px]"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex w-full relative">
+        <div className="flex w-full h-full relative overflow-hidden">
           {/* 왼쪽 로그인 섹션 */}
           <div
-            className={`w-1/2 p-6 flex flex-col justify-center border-r border-gray-00 transition-opacity duration-500 ease-in-out z-10 ${
-              isLoginForm ? "opacity-100" : "opacity-0"
+            className={`w-1/2 p-6 flex flex-col justify-center border-r border-gray-200 transition-all duration-500 ease-out ${
+              isLoginForm
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 -translate-y-12"
             }`}
           >
             <LoginForm
@@ -55,9 +60,18 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
           {/* 오른쪽 회원가입 섹션 */}
           <div
-            className={`w-1/2 p-6 flex flex-col justify-center transition-opacity duration-500 ease-in-out z-10 ${
-              isLoginForm ? "opacity-30" : "opacity-100"
+            className={`w-1/2 p-6 flex flex-col justify-center overflow-y-auto scrollbar-hide transition-opacity transition-transform duration-500 ease-out ${
+              isLoginForm
+                ? "opacity-20 translate-y-12"
+                : "opacity-100 translate-y-0"
             }`}
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
           >
             <SignupContainer
               isLoginForm={isLoginForm}
@@ -69,21 +83,16 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
           {/* 로고 레이어 */}
           <div
-            className={`absolute top-0 bottom-0 w-1/2 bg-white flex flex-col items-center justify-center transition-all duration-700 ease-in-out z-20 ${
+            className={`absolute top-0 bottom-0 w-1/2 bg-white flex flex-col items-center justify-center transition-all duration-500 ease-out shadow-lg rounded-lg ${
               isLoginForm
                 ? "transform translate-x-full opacity-100"
                 : "transform translate-x-0 opacity-90"
             }`}
-            style={{
-              boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
-            }}
           >
             <img
               src={HairismLogo}
               alt="Hairism 로고"
-              className={`w-32 h-auto mb-2 transition-all duration-700 ease-in-out ${
-                isLoginForm ? "opacity-100 scale-100" : "opacity-90 scale-95"
-              }`}
+              className="w-32 h-auto mb-2"
             />
           </div>
         </div>
