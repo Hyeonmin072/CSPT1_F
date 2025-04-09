@@ -15,4 +15,7 @@ export default defineConfig({
     },
     
   },
+  define: {
+    'process.env': {}  // 여기서 process.env를 정의
+  }
 })

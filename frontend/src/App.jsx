@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+//npm install react-toastify 
 
 // 고객
 import MainPage from "./pages/main/MainPage.jsx";
@@ -16,7 +19,9 @@ import MenuSelectPage from "./pages/reservation/MenuSelectPage.jsx";
 import ReviewsPage from "./pages/reviews/ReviewsPage.jsx";
 import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
+import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
+
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -108,6 +113,10 @@ function App() {
             path="/"
             element={<MainPage onLoginClick={openLoginModal} />}
           />
+          <Route 
+                path="/map" 
+                element={<MapPage />}
+          />
 
           {/* 공통 라우트 */}
           <Route path="/social/signup" element={<SocialSignup />} />
@@ -131,6 +140,7 @@ function App() {
           {/* 고객 전용 라우트 */}
           {userRole === "user" && (
             <>
+              
               <Route
                 path="/designerpage"
                 element={<DesignerPage onLoginClick={openLoginModal} />}
@@ -257,6 +267,17 @@ function App() {
         </Routes>
         {/* 로그인 모달 */}
         <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+        {/* ✅ 토스트 컨테이너 (알림창) */}
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="light"
+        />
       </div>
     </Router>
   );
