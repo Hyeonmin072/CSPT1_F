@@ -1,26 +1,10 @@
 import { Star, QrCode , UserRoundPen, LogOut } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import {useState} from "react";
-
-import QRCodeModal from "../../modal/qrcode/QRCode.jsx";
 
 export default function ProfileInfo(){
     const navigate = useNavigate();
 
-    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-    const [qrValue, setQrValue] = useState(""); // QR 코드 값 상태 관리
-
-    // 모달 열기
-    const handleOpenModal = () => {
-        // localhost URL 기반 QR 생성
-        // const attendanceUrl = `http://localhost:5173/attendance?sessionId=${Math.random()
-        //     .toString(36)
-        //     .substr(2, 10)}`;
-        //setQrValue(attendanceUrl); // QR 코드 값 설정
-        setIsModalOpen(true);
-    };
-
-        return(
+    return(
         <>
             <header className="mb-4 flex justify-between items-center h-[140px]">
                 {/* 상점 이름과 리뷰 */}
@@ -44,25 +28,17 @@ export default function ProfileInfo(){
             <div className="flex border-t-2">
                 <button
                     className="w-1/2 border-r-2 py-2 px-4 hover:bg-gray-100 flex flex-row gap-2 justify-center"
-                    onClick={() => navigate("/profile")}>
+                onClick={() => navigate("/profile")}>
                     <UserRoundPen/>
                     <p>정보 수정</p>
                 </button>
-                <button
-                    className="w-1/2 py-2 px-4 hover:bg-gray-100 flex flex-row gap-2 justify-center"
-                    onClick={handleOpenModal}
+                <button className="w-1/2 py-2 px-4 hover:bg-gray-100 flex flex-row gap-2 justify-center"
+                //onClick={/* 모달 오픈 */}
                 >
                     <QrCode/>
                     <p>근태QR</p>
                 </button>
-
-                {/* QR 코드 모달 */}
-                <QRCodeModal
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                    qrValue={qrValue} // QR 코드 값 전달
-                />
             </div>
         </>
-        );
-    }
+    );
+}

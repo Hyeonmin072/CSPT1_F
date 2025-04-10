@@ -1,38 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 import CVProfile from "./CVProfile.jsx";
 import Career from "./Career.jsx";
 import DesiredWorkDays from "./DesiredWorkDays.jsx";
 import Certification from "./Certification.jsx";
-import { selectedDesigner } from "../../dummydata/DummydbDesigner.jsx";
 
 
 export default function CurriculumVitae() {
     const [isEditable, setIsEditable] = useState(false);  // 수정 가능 여부 상태
     const [showMessage, setShowMessage] = useState(false); // 저장 메시지 상태
     const [fadeOut, setFadeOut] = useState(false); // 저장 메시지 fade-out 상태
-    const [dDesc, setDDesc] = useState(selectedDesigner.d_desc); // 소개글 상태
+    const [introduction, setIntroduction] = useState(""); // 소개글 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
 
-    // 디자이너 ID를 통해 소개글 가져오기
+    // 더미 데이터
+    const dummyIntroduction = "안녕하세요! 저는 5년 경력의 헤어 디자이너입니다. 고객의 스타일을 찾아드리는 것을 좋아합니다!";
+
+    // 백엔드 데이터 가져오기
     useEffect(() => {
-        const fetchDesignerDescription = async () => {
+        const fetchCurriculumVitae = async () => {
             try {
                 // 실제 API 호출 시 아래 코드 활성화
-                // const response = await fetch(`/api/designer/description?d_id=${dId}`);
+                // const response = await fetch("/api/curriculum-vitae");
                 // const data = await response.json();
 
                 // 지금은 더미 데이터를 사용
-                const data = selectedDesigner;
+                const data = { introduction: dummyIntroduction };
+                setIntroduction(data.introduction);
             } catch (error) {
-                console.error("Error fetching designer description:", error);
+                console.error("Error fetching curriculum vitae:", error);
             } finally {
                 setLoading(false); // 로딩 상태 종료
             }
         };
 
-        fetchDesignerDescription();
-    }, [selectedDesigner]);
+        fetchCurriculumVitae();
+    }, []);
 
     const handleSave = async () => {
         setShowMessage(true);
@@ -41,17 +44,17 @@ export default function CurriculumVitae() {
 
         try {
             // 실제 API 호출 시 아래 코드 활성화
-            // await fetch("/api/designer/description", {
+            // await fetch("/api/curriculum-vitae", {
             //     method: "POST",
             //     headers: {
             //         "Content-Type": "application/json",
             //     },
-            //     body: JSON.stringify({ d_id: dId, d_desc: dDesc }),
+            //     body: JSON.stringify({ introduction }),
             // });
 
-            console.log("Saved description:", dDesc); // 지금은 로컬 로그로 처리
+            console.log("Saved introduction:", introduction); // 지금은 로컬 로그로 처리
         } catch (error) {
-            console.error("Error saving designer description:", error);
+            console.error("Error saving curriculum vitae:", error);
         }
 
         // 1초 후 메시지 서서히 사라짐
@@ -102,8 +105,8 @@ export default function CurriculumVitae() {
                     <textarea
                         className="w-full h-48 border rounded p-2 resize-none"
                         placeholder="자신을 소개하는 글을 작성해주세요."
-                        value={dDesc}
-                        onChange={(e) => setDDesc(e.target.value)}
+                        value={introduction}
+                        onChange={(e) => setIntroduction(e.target.value)}
                         disabled={!isEditable}
                     />
                 </div>
@@ -115,7 +118,7 @@ export default function CurriculumVitae() {
                     {isEditable && (
                         <div className="flex space-x-4">
                             <button
-                                className="bg-green-600 text-white px-8 py-2 rounded"
+                                className="bg-[#00B3A6] text-white px-8 py-2 rounded"
                                 onClick={handleSave}
                             >
                                 저장
@@ -130,7 +133,7 @@ export default function CurriculumVitae() {
                     )}
                     {showMessage && (
                         <div
-                            className={`mt-4 text-green-600 transition-opacity ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
+                            className={`mt-4 text-[#00B3A6] transition-opacity ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
                         >
                             저장이 완료되었습니다!
                         </div>
@@ -138,7 +141,7 @@ export default function CurriculumVitae() {
                 </div>
                 {!isEditable && (
                     <button
-                        className="bg-green-600 text-white px-8 py-2 rounded"
+                        className="bg-[#00B3A6] text-white px-8 py-2 rounded"
                         onClick={() => setIsEditable(true)}
                     >
                         수정

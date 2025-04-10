@@ -74,7 +74,7 @@ export default function CVCheck() {
 
             {/* 제출 버튼 */}
             <div className="p-4 flex justify-end">
-                <button className="bg-green-600 text-white px-8 py-2 rounded"
+                <button className="bg-[#00B3A6] text-white px-8 py-2 rounded"
                 onClick={() => window.history.back()}>
                     제출
                 </button>

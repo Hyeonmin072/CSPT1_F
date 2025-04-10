@@ -1,105 +1,65 @@
 import { useState, useEffect } from "react";
 
 export default function Career({ isEditable }) {
-    const [employmentHistory, setEmploymentHistory] = useState([]); // 경력 데이터
-    const [newCareerEntry, setNewCareerEntry] = useState({
-        cr_name: "",
-        cr_join_date: "",
-        cr_out_date: "",
-    }); // 신규 경력 입력 필드
-    const [employmentType, setEmploymentType] = useState("신입"); // "신입" 또는 "경력" 구분
-    const [employmentPeriod, setEmploymentPeriod] = useState("1개월 이상"); // "근무 기간" 선택
-    const [crId, setCrId] = useState(null); // 고유 이력서 ID
-    const [reId, setReId] = useState("67890-xyz"); // 구직 지원서 ID
+    const [employmentType, setEmploymentType] = useState('신입');
+    const [employmentPeriod, setEmploymentPeriod] = useState('1개월 미만');
+    const [employmentStartDate, setEmploymentStartDate] = useState(null);
+    const [employmentEndDate, setEmploymentEndDate] = useState(null);
+    const [companyName, setCompanyName] = useState("");
+    const [employmentHistory, setEmploymentHistory] = useState([]);
     const [loading, setLoading] = useState(true); // 로딩 상태
 
-    // 더미 데이터 (경력 정보)
+    // 더미 데이터
     const dummyEmploymentHistory = [
-        {
-            cr_id: "12345-abcde",
-            re_id: "67890-xyz",
-            cr_name: "ABC 회사",
-            cr_join_date: "2020-01-01",
-            cr_out_date: "2022-12-31",
-        },
-        {
-            cr_id: "67890-fghij",
-            re_id: "67890-xyz",
-            cr_name: "XYZ 회사",
-            cr_join_date: "2018-05-15",
-            cr_out_date: "2019-12-20",
-        },
+        // {
+        //     companyName: "ABC 회사",
+        //     startDate: "2020-01-01",
+        //     endDate: "2022-12-31",
+        // },
     ];
 
-    // 고유 이력서 ID 초기화
-    useEffect(() => {
-        const fetchCrId = async () => {
-            try {
-                // 서버에서 고유 ID 가져오기
-                // const response = await fetch(`/api/crid?re_id=${reId}`);
-                // const data = await response.json();
-                // setCrId(data.cr_id);
-
-                setCrId("12345-abcde"); // 더미 데이터로 설정
-            } catch (error) {
-                console.error("Error fetching cr_id:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCrId();
-    }, [reId]);
-
-    // 경력 데이터 초기화
+    // 백엔드 데이터 가져오기
     useEffect(() => {
         const fetchEmploymentHistory = async () => {
             try {
-                const data = dummyEmploymentHistory.filter((entry) => entry.re_id === reId);
+                // 실제 API 호출 시 아래 코드 활성화
+                // const response = await fetch("/api/employment-history");
+                // const data = await response.json();
+
+                // 지금은 더미 데이터 사용
+                const data = dummyEmploymentHistory;
                 setEmploymentHistory(data);
             } catch (error) {
                 console.error("Error fetching employment history:", error);
+            } finally {
+                setLoading(false); // 로딩 상태 종료
             }
         };
 
         fetchEmploymentHistory();
-    }, [reId]);
+    }, []);
 
-    // 신규 경력 저장
-    const handleSaveCareer = () => {
-        const { cr_name, cr_join_date, cr_out_date } = newCareerEntry;
-
-        if (cr_name && cr_join_date && cr_out_date) {
+    const handleSaveDates = () => {
+        if (companyName && (employmentPeriod === "1개월 미만" || (employmentStartDate && employmentEndDate))) {
             const newEntry = {
-                cr_id: crId, // 고유 이력서 ID 유지
-                re_id: reId, // 구직 지원서 ID 참조
-                cr_name,
-                cr_join_date,
-                cr_out_date,
+                companyName,
+                startDate: employmentPeriod === "1개월 미만" ? "1개월 미만" : employmentStartDate,
+                endDate: employmentPeriod === "1개월 미만" ? "" : employmentEndDate,
             };
-            setEmploymentHistory([...employmentHistory, newEntry]);
-            setNewCareerEntry({ cr_name: "", cr_join_date: "", cr_out_date: "" });
-
-            console.log("저장된 경력:", newEntry);
+            setEmploymentHistory([...employmentHistory, newEntry]); // 새 경력 추가
+            setCompanyName(""); // 입력 필드 초기화
+            setEmploymentStartDate(null);
+            setEmploymentEndDate(null);
         }
     };
 
-    // 경력 삭제
-    const handleDeleteCareer = (cr_id) => {
-        const updatedHistory = employmentHistory.filter((entry) => entry.cr_id !== cr_id);
+    const handleDeleteDates = (index) => {
+        const updatedHistory = employmentHistory.filter((_, i) => i !== index);
         setEmploymentHistory(updatedHistory);
     };
 
-    // 입력 변경
-    const handleInputChange = (field, value) => {
-        setNewCareerEntry((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
-
     if (loading) {
-        return <div className="text-center mt-4">로딩 중...</div>;
+        return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
     }
 
     return (
@@ -108,14 +68,14 @@ export default function Career({ isEditable }) {
                 <h2 className="text-2xl w-32 font-semibold">경력</h2>
                 <div className="flex border rounded-lg overflow-hidden w-64">
                     <button
-                        className={`w-1/2 p-2 text-center ${employmentType === "신입" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                        className={`w-1/2 p-2 text-center ${employmentType === "신입" ? "bg-[#00B3A6] text-white" : "bg-gray-100 text-gray-700"}`}
                         disabled={!isEditable}
                         onClick={() => setEmploymentType("신입")}
                     >
                         신입
                     </button>
                     <button
-                        className={`w-1/2 p-2 text-center ${employmentType === "경력" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                        className={`w-1/2 p-2 text-center ${employmentType === "경력" ? "bg-[#00B3A6] text-white" : "bg-gray-100 text-gray-700"}`}
                         disabled={!isEditable}
                         onClick={() => setEmploymentType("경력")}
                     >
@@ -129,11 +89,12 @@ export default function Career({ isEditable }) {
                     <div className="flex items-center mb-4">
                         <label className="w-32 text-gray-700 font-bold">회사명</label>
                         <input
+                            id="companyName"
                             type="text"
                             className="flex-grow border rounded p-2"
                             placeholder="회사명을 입력해주세요."
-                            value={newCareerEntry.cr_name}
-                            onChange={(e) => handleInputChange("cr_name", e.target.value)}
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
                             disabled={!isEditable}
                         />
                     </div>
@@ -148,7 +109,6 @@ export default function Career({ isEditable }) {
                                 className="m-2"
                                 onChange={(e) => setEmploymentPeriod(e.target.value)}
                                 disabled={!isEditable}
-                                checked={employmentPeriod === "1개월 미만"}
                             />
                             <label htmlFor="lessThanMonth" className="cursor-pointer">1개월 미만</label>
                             <div className="pl-2" />
@@ -160,7 +120,6 @@ export default function Career({ isEditable }) {
                                 className="m-2"
                                 onChange={(e) => setEmploymentPeriod(e.target.value)}
                                 disabled={!isEditable}
-                                checked={employmentPeriod === "1개월 이상"}
                             />
                             <label htmlFor="moreThanMonth" className="cursor-pointer">1개월 이상</label>
                         </div>
@@ -171,19 +130,22 @@ export default function Career({ isEditable }) {
                             <div className="w-32"></div>
                             <label className="w-20 text-gray-700 font-bold">입사년도</label>
                             <input
+                                id="startDate"
                                 type="date"
                                 className="border rounded p-2 mr-4"
-                                value={newCareerEntry.cr_join_date}
-                                onChange={(e) => handleInputChange("cr_join_date", e.target.value)}
+                                placeholder="입사년도"
+                                value={employmentStartDate || ""}
+                                onChange={(e) => setEmploymentStartDate(e.target.value)}
                                 disabled={!isEditable}
                             />
-                            <div className="w-5"> /</div>
+                            <div className="w-5"> / </div>
                             <label className="w-20 text-gray-700 font-bold">퇴사년도</label>
                             <input
+                                id="endDate"
                                 type="date"
                                 className="border rounded p-2"
-                                value={newCareerEntry.cr_out_date}
-                                onChange={(e) => handleInputChange("cr_out_date", e.target.value)}
+                                value={employmentEndDate || ""}
+                                onChange={(e) => setEmploymentEndDate(e.target.value)}
                                 disabled={!isEditable}
                             />
                         </div>
@@ -191,8 +153,8 @@ export default function Career({ isEditable }) {
 
                     <div className="flex justify-end">
                         <button
-                            className="bg-green-600 text-white px-8 py-2 rounded"
-                            onClick={handleSaveCareer}
+                            className="bg-[#00B3A6] text-white px-8 py-2 rounded"
+                            onClick={handleSaveDates}
                             disabled={!isEditable}
                         >
                             저장
@@ -204,18 +166,20 @@ export default function Career({ isEditable }) {
             {employmentHistory.length > 0 && (
                 <div className="mt-8">
                     <h3 className="text-xl font-semibold mb-4">저장된 경력</h3>
-                    {employmentHistory.map((entry) => (
-                        <div key={entry.cr_id} className="border p-4 mb-4 rounded">
+                    {employmentHistory.map((entry, index) => (
+                        <div key={index} className="border p-4 mb-4 rounded">
                             <div className="flex items-center">
-                                <span className="font-bold w-32">{entry.cr_name}</span>
+                                <span className="font-bold w-32">{entry.companyName}</span>
                                 <span>
-                                    {entry.cr_join_date && `입사년도: ${entry.cr_join_date}`}
-                                    {entry.cr_out_date && ` / 퇴사년도: ${entry.cr_out_date}`}
+                                    {entry.startDate === "1개월 미만"
+                                        ? "1개월 미만"
+                                        : entry.startDate && `입사년도: ${entry.startDate}`}
+                                    {entry.endDate && ` / 퇴사년도: ${entry.endDate}`}
                                 </span>
                                 {isEditable && (
                                     <button
                                         className="ml-auto text-red-500"
-                                        onClick={() => handleDeleteCareer(entry.cr_id)}
+                                        onClick={() => handleDeleteDates(index)}
                                     >
                                         삭제
                                     </button>
