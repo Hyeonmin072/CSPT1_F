@@ -28,6 +28,7 @@ export default function DesignerSetting() {
     const [isSearchModalOpen, setIsSearchModalOpen] = useState(false); // 검색 모달 열림/닫힘 상태
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // 확인 모달 열림/닫힘 상태
     const [registeredDesigners, setRegisteredDesigners] = useState([]); // 등록된 디자이너 목록
+    const [editModalOpen, setEditModalOpen] = useState(false); // 수정 모달 열림/닫힘 상태
 
     const [newdesigner, setNewDesigner] = useState({
         d_id: "",
@@ -60,6 +61,7 @@ export default function DesignerSetting() {
 
 
 
+    // 디자이너 등록
     const handleRegisterDesigner = () => {
         const selectedDesigner = filteredDesigners[currentIndex];
 
@@ -82,8 +84,6 @@ export default function DesignerSetting() {
         setFilteredDesigners([]);
         setSearchQuery("");
     };
-
-
 
     const toggleSelection = (id) => {
         setSelectedIds((prevSelectedIds) =>
@@ -114,8 +114,9 @@ export default function DesignerSetting() {
     };
 
 
-    const clickCountRef = useRef({}); // 클릭 카운트를 저장할 ref
+    const clickCountRef = useRef({}); // 클릭 카운트를 저장
 
+    // 더블 클릭시, 상세보기 열리기 카운트
     const handleDivClick = (designer) => {
         // 클릭 횟수 계산
         const newCount = (clickCountRef.current[designer.d_id] || 0) + 1;
@@ -139,10 +140,9 @@ export default function DesignerSetting() {
             [designer.d_id]: newCount,
         }));
     };
-
-
-
-    const closeModal = () => {
+    
+    // 상세보기 모달창 닫기
+    const detailcloseModal = () => {
         console.log("모달창 닫힘"); // 모달 창 닫힘 확인용 로그
         setClickCount({}); // 클릭 횟수 초기화
         setSelectedDesigner(null); // 모달창 닫기
@@ -161,6 +161,32 @@ export default function DesignerSetting() {
             prevIndex === filteredDesigners.length - 1 ? 0 : prevIndex + 1
         );
     };
+
+    // 역할 변경
+    const handleUpdatePosition = (newPosition) => {
+        // 예: selectedDesigner 상태를 업데이트하는 코드
+        setSelectedDesigner((prevDesigner) => ({
+            ...prevDesigner,
+            position: newPosition,
+        }));
+    };
+
+    // 시간 변경(start)
+    const handleUpdateStartTime = (newStartTime) => {
+        setSelectedDesigner((prevDesigner) => ({
+            ...prevDesigner,
+            startTime: newStartTime,
+        }));
+    };
+
+    // 시간 변경(end)
+    const handleUpdateEndTime = (newEndTime) => {
+        setSelectedDesigner((prevDesigner) => ({
+            ...prevDesigner,
+            endTime: newEndTime,
+        }));
+    };
+
 
     return (
         <div className="p-8 mx-auto max-w-7xl">
@@ -233,6 +259,7 @@ export default function DesignerSetting() {
                             <X size={20} className="text-gray-500 hover:text-red-500"/>
                         </button>
 
+                        {/* 디자이너 ID 검색창 */}
                         <h2 className="font-bold text-xl mb-4">디자이너 추가</h2>
                         <input
                             type="text"
@@ -275,8 +302,7 @@ export default function DesignerSetting() {
                     </div>
                 </div>
             )}
-
-
+            
             {/* 확인 모달 */}
             {isConfirmModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
@@ -347,16 +373,101 @@ export default function DesignerSetting() {
                         <div className="flex justify-center space-x-4 absolute bottom-0 w-full p-4">
                             <button
                                 className="border px-5 py-2 rounded-lg bg-green-500 text-white hover:bg-green-700"
-                                onClick={() => alert("수정 기능 미구현")}
+                                onClick={() => {
+                                    setEditModalOpen(true); // 확인 모달 열기
+                                }}
                             >
                                 수정
                             </button>
                             <button
                                 className="border px-5 py-2 rounded-lg bg-red-500 text-white hover:bg-red-700"
-                                onClick={closeModal}
+                                onClick={detailcloseModal}
                             >
                                 닫기
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {editModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg w-[400px] h-[400px] flex flex-col relative">
+                        {/* 오른쪽 상단 X 버튼 */}
+                        <button
+                            className="absolute top-4 right-4"
+                            onClick={() => {
+                                setEditModalOpen(false);
+                            }}
+                        >
+                            <X size={20} className="text-gray-500 hover:text-red-500"/>
+                        </button>
+                        <div className="p-2">
+                            <h2 className="font-bold text-xl mb-4">디자이너 정보 수정</h2>
+                            <div className="flex flex-row justify-between mb-3">
+                                <p>이름: {selectedDesigner.d_name}</p>
+                            </div>
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex flex-col">
+                                    <label className="mb-3">직함</label>
+                                    <select
+                                        value={selectedDesigner.position}
+                                        onChange={(e) => {
+                                            // position을 업데이트하는 함수 호출
+                                            handleUpdatePosition(e.target.value);
+                                        }}
+                                        className="border p-2 rounded"
+                                    >
+                                        <option value="원장">원장</option>
+                                        <option value="실장">실장</option>
+                                        <option value="수석 디자이너">수석 디자이너</option>
+                                        <option value="일반 디자이너">일반 디자이너</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>정시 출퇴근 시간</label>
+                                    <div className="flex items-center mt-3 space-x-2 w-full">
+                                        <input
+                                            type="time"
+                                            value={selectedDesigner.startTime}
+                                            onChange={(e) => {
+                                                // startTime을 업데이트하는 함수 호출
+                                                handleUpdateStartTime(e.target.value);
+                                            }}
+                                            className="border p-2 rounded"
+                                        />
+                                        <span>-</span>
+                                        <input
+                                            type="time"
+                                            value={selectedDesigner.endTime}
+                                            onChange={(e) => {
+                                                // endTime을 업데이트하는 함수 호출
+                                                handleUpdateEndTime(e.target.value);
+                                            }}
+                                            className="border p-2 rounded"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end space-x-2 absolute bottom-0 w-[370px] p-4">
+                                <button
+                                    className="border px-5 py-2 rounded-lg bg-green-500 text-white hover:bg-green-700"
+                                    onClick={() => {
+                                        setEditModalOpen(false); // 수정 완료
+                                    }}
+                                >
+                                    수정
+                                </button>
+                                <button
+                                    className="border px-5 py-2 rounded-lg bg-red-500 text-white hover:bg-red-700"
+                                    onClick={() => {
+                                        setEditModalOpen(false);
+                                    }}
+                                >
+                                    취소
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
