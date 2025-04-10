@@ -6,21 +6,20 @@ import Swal from "sweetalert2";
 // 사이드바 컴포넌트 자체
 
 const BusinessSideBar = ({ isOpen, onClose }) => {
-    // 각각 페이지가 완성되면 path 추가
-    const menuItems = [
-        { id: 1, title: "홈", path: "/shop"},
-        { id: 2, title: "예약관리", path: "/schedulecheck"},
-        { id: 3, title: "디자이너 관리"},
-        { id: 4, title: "메뉴설정"},
-        { id: 5, title: "이벤트 및 쿠폰 관리", path: "/eventmenu"},
-        { id: 6, title: "리뷰 관리"},
-        { id: 7, title: "매출 관리", path: "/sales"},
-        { id: 8, title: "근태 관리"},
-        { id: 9, title: "구인구직"},
-        { id: 10, title: "정보 수정"},
-        { id: 10, title: "블랙리스트 관리", path: "/blacklist"},
-    ];
-
+  // 각각 페이지가 완성되면 path 추가
+  const menuItems = [
+    { id: 1, title: "홈", path: "/shop" },
+    { id: 2, title: "예약관리", path: "/schedulecheck" },
+    { id: 3, title: "디자이너 관리" },
+    { id: 4, title: "메뉴설정" },
+    { id: 5, title: "이벤트 및 쿠폰 관리", path: "/eventmenu" },
+    { id: 6, title: "리뷰 관리" },
+    { id: 7, title: "매출 관리", path: "/sales" },
+    { id: 8, title: "근태 관리" },
+    { id: 9, title: "구인구직" },
+    { id: 10, title: "정보 수정" },
+    { id: 10, title: "블랙리스트 관리", path: "/blacklist" },
+  ];
 
   // 클릭 핸들러
   const handleClick = () => {
@@ -96,7 +95,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
         </div>
 
         {/* 메뉴 아이템 */}
-        <nav className="py-4">
+        <nav className="py-4 h-[calc(100%-220px)] overflow-y-auto">
           <ul className="space-y-2 font-bold p-5 -mt-[40px]">
             {menuItems.map((item) => (
               <li key={item.id}>
