@@ -20,8 +20,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
         { id: 10, title: "정보 수정"},
         { id: 10, title: "블랙리스트 관리", path: "/blacklist"},
     ];
-
-
+  
   // 클릭 핸들러
   const handleClick = () => {
     onClose(); // 사이드바 닫기
@@ -96,7 +95,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
         </div>
 
         {/* 메뉴 아이템 */}
-        <nav className="py-4">
+        <nav className="py-4 h-[calc(100%-220px)] overflow-y-auto">
           <ul className="space-y-2 font-bold p-5 -mt-[40px]">
             {menuItems.map((item) => (
               <li key={item.id}>

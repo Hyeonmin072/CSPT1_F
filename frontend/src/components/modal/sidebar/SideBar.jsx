@@ -1,12 +1,54 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Zap, LogOut, Bell } from "lucide-react";
 import CouponModal from "../coupon/CouponModal.jsx";
 import NotificationModal from "../../notification/NotificationModal.jsx";
 import Swal from "sweetalert2";
+import axiosInstance from "../../../axios/AxiosInstance";
 
 //사이드바 컴포넌트 자체
 const Sidebar = ({ isOpen, onClose }) => {
+  const [userName, setUserName] = useState("게스트");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 사용자 정보 가져오기
+    axiosInstance
+      .get("/user/header")
+      .then((response) => {
+        console.log("전체 응답:", response);
+        console.log("응답 데이터:", response.data);
+        console.log("응답 데이터 타입:", typeof response.data);
+
+        // 응답이 객체인 경우
+        if (response.data && typeof response.data === "object") {
+          // userName이 직접 있는 경우
+          if ("userName" in response.data) {
+            setUserName(response.data.userName);
+          }
+          // data 객체 안에 userName이 있는 경우
+          else if (response.data.data && "userName" in response.data.data) {
+            setUserName(response.data.data.userName);
+          }
+          // name이 있는 경우
+          else if ("name" in response.data) {
+            setUserName(response.data.name);
+          }
+          // data 객체 안에 name이 있는 경우
+          else if (response.data.data && "name" in response.data.data) {
+            setUserName(response.data.data.name);
+          }
+        }
+        // 응답이 문자열인 경우
+        else if (typeof response.data === "string") {
+          setUserName(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("사용자 정보 가져오기 실패:", error);
+      });
+  }, []);
+
   // 각각 페이지가 완성되면 path 추가
   const menuItems = [
     { id: 1, title: "현재 예약", path: "/reservationcheck" },
@@ -41,24 +83,37 @@ const Sidebar = ({ isOpen, onClose }) => {
       cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {
-        // localStorage에서 사용자 정보 삭제
-        localStorage.removeItem("token");
-        localStorage.removeItem("userType");
-        localStorage.removeItem("userName");
+        // 로그아웃 API 호출
+        axiosInstance
+          .post("/user/signout", {}, { withCredentials: true })
+          .then(() => {
+            // 로그인 상태 변경 이벤트 발생
+            window.dispatchEvent(new Event("loginStatusChanged"));
 
-        // 로그인 상태 변경 이벤트 발생
-        window.dispatchEvent(new Event("loginStatusChanged"));
+            // 사이드바 닫기
+            onClose();
 
-        // 메인 페이지로 이동
-        window.location.href = "/";
+            // 메인 페이지로 이동 및 새로고침
+            window.location.href = "/";
 
-        Swal.fire({
-          icon: "success",
-          title: "로그아웃 완료",
-          text: "다음에 또 방문해주세요!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
+            Swal.fire({
+              icon: "success",
+              title: "로그아웃 완료",
+              text: "다음에 또 방문해주세요!",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            console.error("로그아웃 실패:", error);
+            Swal.fire({
+              icon: "error",
+              title: "로그아웃 실패",
+              text: "다시 시도해주세요.",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          });
       }
     });
   };
@@ -83,8 +138,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className="flex items-start justify-center p-3">
             <div className="flex items-center gap-2 text-lg font-bold">
               <Zap className="w-10 h-10 bg-black stroke-white" />
-              {/* 이름 부분은 나중에 정보를 받아오면 받아온 정보로 수정 */}
-              <span>김봉팔</span>
+              <span>{userName}</span>
             </div>
           </div>
           {/* 알림 버튼을 눌렀을 때 모달이 알림 모음을 볼 수 있는 창으로 전환되게 수정 */}

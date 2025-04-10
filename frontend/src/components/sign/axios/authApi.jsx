@@ -29,13 +29,13 @@ export const signupApi = {
   // 이메일 인증 코드 발송
   sendVerificationEmail: (email) => {
     console.log("이메일 인증 코드 발송: ", email);
-    return axiosInstance.post("/auth/send-verification", { email });
+    return axiosInstance.post("/email/send", { email });
   },
 
   // 이메일 인증 코드 확인
   verifyEmailCode: (email, code) => {
     console.log("이메일 인증 코드 확인: ", email, code);
-    return axiosInstance.post("/auth/verify-code", { email, code });
+    return axiosInstance.post("/email/verify", { email, code });
   },
 };
 
@@ -48,6 +48,6 @@ export const loginApi = {
       password: loginData.password,
     };
     console.log("로그인 시도:", data);
-    return axiosInstance.post("/signin", data);
+    return axiosInstance.post("/signin", data, { withCredentials: true });
   },
 };
