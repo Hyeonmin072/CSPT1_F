@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { CalendarDays, List } from 'lucide-react';
-import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
+import { dummyProfile } from "../sales/SaleStaus.jsx";
 import { useState, useEffect } from "react";
 
 export default function ReservationCheck({ selectedView, setSelectedView }){

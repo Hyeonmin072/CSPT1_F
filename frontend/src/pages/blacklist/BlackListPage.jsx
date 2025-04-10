@@ -1,5 +1,5 @@
 import BusinessHeader from "../../components/common/BusinessHeader.jsx";
-import BlackList from "../../components/businessabout/blacklist/BlackList.jsx";
+import BlackList from "../blacklist/BlackList.jsx";
 
 export default function BlackListPage(){
     return(

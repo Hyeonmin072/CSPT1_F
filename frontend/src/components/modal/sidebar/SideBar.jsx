@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { Zap, LogOut, Bell } from "lucide-react";
 import CouponModal from "../coupon/CouponModal.jsx";
 import NotificationModal from "../../notification/NotificationModal.jsx";
-import Swal from "sweetalert2";
 
 //사이드바 컴포넌트 자체
+
+//eslint-disable-next-line
 const Sidebar = ({ isOpen, onClose }) => {
   // 각각 페이지가 완성되면 path 추가
   const menuItems = [
@@ -27,52 +28,8 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-
-  // 로그아웃 핸들러
-  const handleLogout = () => {
-    Swal.fire({
-      title: "로그아웃",
-      text: "정말 로그아웃 하시겠습니까?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "로그아웃",
-      cancelButtonText: "취소",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // localStorage에서 사용자 정보 삭제
-        localStorage.removeItem("token");
-        localStorage.removeItem("userType");
-        localStorage.removeItem("userName");
-
-        // 로그인 상태 변경 이벤트 발생
-        window.dispatchEvent(new Event("loginStatusChanged"));
-
-        // 메인 페이지로 이동
-        window.location.href = "/";
-
-        Swal.fire({
-          icon: "success",
-          title: "로그아웃 완료",
-          text: "다음에 또 방문해주세요!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-      }
-    });
-  };
-
   return (
     <>
-      {/* 오버레이 */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
-          onClick={onClose}
-        />
-      )}
-
       <div
         className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -135,11 +92,9 @@ const Sidebar = ({ isOpen, onClose }) => {
         </nav>
 
         {/* 로그아웃 버튼 */}
+        {/* 여기도 나중에 온클릭 시 close랑 로그아웃하게 수정 */}
         <div className="absolute bottom-4 w-full px-4">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-md text-gray-600 hover:text-gray-900 p-5 font-bold"
-          >
+          <button className="flex items-center gap-2 text-md text-gray-600 hover:text-gray-900 p-5 font-bold">
             <LogOut className="w-4 h-4" />
             <span>로그아웃</span>
           </button>
