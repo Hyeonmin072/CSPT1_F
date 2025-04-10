@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Header from "../../components/common/Header";
 import Map from "../../components/location/Map";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function MapPage() 
 {
@@ -17,7 +18,7 @@ export default function MapPage()
 
     useEffect(() => {
         if (!location.state?.lat || !location.state?.lng) {
-            alert("위치 정보가 없습니다. 잘못된 접근입니다.");
+            toast.warning("위치 정보가 없습니다. 잘못된 접근입니다.");
             navigate("/");
         }
     }, [location.state, navigate]);

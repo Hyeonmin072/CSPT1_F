@@ -28,9 +28,7 @@ export default function HairSearch({ userLocation }){
             }
         } catch (error){
             if (error.response?.status === 401) {
-                toast.warning("로그인이 필요한 기능입니다 😊", {
-                    autoClose: 2000
-                });
+                toast.warning("로그인이 필요한 기능입니다 😊");
                 setTimeout(() => {
                     setIsLoginModalOpen(true);
                 }, 2000); // 알림 후 2초 뒤 모달 열기

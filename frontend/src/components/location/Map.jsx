@@ -3,6 +3,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import "./Map.css";
 import { updateUserLocation } from "./MapAxios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Map({ mapRef, center, setCenter }) {
     const [bounceKey, setBounceKey] = useState(0);
@@ -69,8 +70,10 @@ export default function Map({ mapRef, center, setCenter }) {
             console.log("주소 정보:", address);
             const response = await updateUserLocation(center.lat, center.lng, address);
             console.log("업데이트 성공", response);
+            toast.success("위치가 업데이트 됐어요😊");
             navigate("/hairshop");
         } catch (error) {
+            toast.warning("업데이트 중 오류발생");
             console.error("업데이트 중 오류발생:", error);
         }
     };
