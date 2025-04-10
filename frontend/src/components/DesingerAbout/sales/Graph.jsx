@@ -1,40 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { LineChart, AreaChart , Line, Area,  XAxis, YAxis,
     CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { dummyData } from "../../dummydata/DummyGraph.jsx";
 
 // 임시 더미들
-export const dummyData = {
-    weekly: [
-        { name: '월요일', sales: 44 },
-        { name: '화요일', sales: 60 },
-        { name: '수요일', sales: 70 },
-        { name: '목요일', sales: 80 },
-        { name: '금요일', sales: 90 },
-        { name: '토요일', sales: 100 },
-        { name: '일요일', sales: null },
-    ],
-    monthly: [
-        { name: '1일', sales: 100 },
-        { name: '2일', sales: 200 },
-        { name: '3일', sales: 150 },
-        { name: '4일', sales: 300 },
-        { name: '5일', sales: 250 },
-        { name: '6일', sales: 350 },
-        { name: '7일', sales: 450 },
-        { name: '8일', sales: 500 },
-        { name: '9일', sales: 400 },
-        { name: '10일', sales: 300 },
-    ],
-    yearly: [
-        { name: '1월', sales: 1500 },
-        { name: '2월', sales: 2000 },
-        { name: '3월', sales: 1800 },
-        { name: '4월', sales: 2200 },
-        { name: '5월', sales: 2500 },
-        { name: '6월', sales: 2700 },
-        { name: '7월', sales: 2900 },
-    ],
-};
+
 
 export default function Graph(){
     const [data, setData] = useState([]);
@@ -105,8 +75,8 @@ export default function Graph(){
                         {/* 그라데이션 정의 */}
                         <defs>
                             <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#4CCECB" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#4CCECB" stopOpacity={0} />
+                                <stop offset="5%" stopColor="#00FF00" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="green" stopOpacity={0} />
                             </linearGradient>
                         </defs>
 
@@ -116,7 +86,7 @@ export default function Graph(){
                         <Area
                             type="monotone"
                             dataKey="sales"
-                            stroke="#4CCECB"
+                            stroke="green"
                             fill="url(#salesGradient)"
                         />
                     </AreaChart>

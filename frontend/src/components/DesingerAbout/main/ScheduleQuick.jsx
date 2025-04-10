@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bell } from "lucide-react";
-import { dummySchedules } from "../clientcheck/DesignerSchedule.jsx";
+import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
 import { startOfWeek, endOfWeek, parseISO, isWithinInterval, format } from "date-fns";
 
 export default function ScheduleQuick() {
@@ -76,7 +76,7 @@ export default function ScheduleQuick() {
     return (
         <>
             <div className="flex items-center mb-4 w-full">
-                <div className="w-12 h-12 rounded-full bg-[#00E7D5] flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
                     <Bell className="w-[30px] h-[30px] text-white"/>
                 </div>
                 <div className="ml-4">

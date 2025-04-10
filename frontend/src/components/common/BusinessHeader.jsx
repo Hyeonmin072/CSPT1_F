@@ -30,13 +30,13 @@ export default function BusinessHeader() {
               </span>
                         </div>
                         <nav className="flex space-x-2 gap-[60px] font-bold">
-                            <Link to="/business" className="text-gray-700">
+                            <Link to="/shop" className="text-gray-700">
                                 홈
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/schedulecheck" className="text-gray-700">
                                 예약관리
                             </Link>
-                            <Link to="" className="text-gray-700">
+                            <Link to="/designermanage" className="text-gray-700">
                                 디자이너 관리
                             </Link>
                             <Link to="" className="text-gray-700">

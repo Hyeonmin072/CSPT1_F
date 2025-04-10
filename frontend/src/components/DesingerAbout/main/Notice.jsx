@@ -2,17 +2,7 @@ import { NotebookText, ChevronRight, Check, Star } from 'lucide-react';
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export const dummyNotices = {
-    weekNotice: [
-        { id: 1, title: "이번 주 영업시간 변경 안내", content: "이번 주말은 10시부터 6시까지 영업합니다.", date: "2025-03-18" },
-        { id: 2, title: "주말 워크숍 안내", content: "이번 주 워크숍이 3월 19일에 열립니다.", date: "2025-03-19" },
-    ],
-    importantNotice: [
-        { id: 1, title: "추석 연휴 공지", content: "추석 연휴 동안 가게 운영 시간은 별도로 공지될 예정입니다.", date: "2025-09-25" },
-        { id: 2, title: "시스템 점검 안내", content: "시스템 점검이 9월 30일에 진행될 예정입니다.", date: "2025-09-30" },
-    ],
-};
-
+import { dummyNotices } from "../../dummydata/DummyNotice.jsx";
 
 export default function Notice() {
     const [hairSalon, setHairSalon] = useState(null); // 소속된 헤어샵 정보 상태
@@ -67,8 +57,8 @@ export default function Notice() {
 
                         <div className="flex justify-start mt-4">
                             <div
-                                className={`flex bg-[#70EFDE] rounded-lg items-center justify-between border border-[#70EFDE] w-[180px] h-[50px] cursor-pointer transition-all duration-300 
-                                    ${selectedNotice?.type === "weekNotice" ? "shadow-inner shadow-[#00B0A3] inset-1" : "shadow-lg"}`}
+                                className={`flex bg-green-500 rounded-lg items-center justify-between border border-green-500 w-[180px] h-[50px] cursor-pointer transition-all duration-300 
+                                    ${selectedNotice?.type === "weekNotice" ? "shadow-inner shadow-green-800 inset-1" : "shadow-lg"}`}
                                 onClick={() => setSelectedNotice({ type: "weekNotice" })}
                             >
                                 <Check className="ml-2" />
@@ -79,8 +69,8 @@ export default function Notice() {
 
                         <div className="flex justify-start mt-4">
                             <div
-                                className={`flex bg-[#00D7C6] rounded-lg items-center justify-between border border-[#70EFDE] w-[180px] h-[50px] cursor-pointer
-                                    ${selectedNotice?.type === "importantNotice" ? "shadow-inner shadow-[#00B0A3]" : "shadow-lg"}`}
+                                className={`flex bg-red-500 rounded-lg items-center justify-between border border-red-400 w-[180px] h-[50px] cursor-pointer
+                                    ${selectedNotice?.type === "importantNotice" ? "shadow-inner shadow-red-800" : "shadow-lg"}`}
                                 onClick={() => setSelectedNotice({ type: "importantNotice" })}
                             >
                                 <Star className="ml-2" />
@@ -96,7 +86,7 @@ export default function Notice() {
                             {/* 헤더: 선택된 타입이 weekNotice일 때만 표시 */}
                             {selectedNotice?.type === "weekNotice" && (
                                 <div
-                                    className="flex bg-[#B9FFF6] rounded-lg items-center justify-center border border-[#70EFDE] w-[470px] h-[40px] mb-4"
+                                    className="flex bg-green-500 rounded-lg items-center justify-center border border-green-500 w-[470px] h-[40px] mb-4"
                                 >
                                     <p className="font-bold text-xl">이번주 공지사항</p>
                                 </div>

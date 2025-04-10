@@ -1,22 +1,7 @@
 import React, { useState, useEffect } from "react";
-
-// 더미 데이터
-export const dummyProfile = {
-    id: 1,
-    imageURL: null,
-    name: "김예원",
-    roll: "헤어디자이너",
-    phone: "010-1234-5678",
-};
-
-// 더미 데이터
-export const dummySalesData = {
-    monthlySales: 430000,
-    monthlyIncrease: 10.0,
-    dailySales: 129000,
-    dailyDecrease: 3.0,
-    dailyOrders: 5,
-};
+import d1 from "../../../assets/designer/d1.png";
+import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
+import { dummySalesData } from "../../dummydata/DummySalesData.jsx";
 
 export default function SaleStaus() {
     const [salesData, setSalesData] = useState(null); // 매출 데이터 상태

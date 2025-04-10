@@ -96,19 +96,20 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
 
       console.log("로그인 응답:", response);
 
-      // 로그인 성공 시 토큰 저장
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userType", userType);
-      }
+      // 로그인 성공 시 처리
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userType", userType);
+      localStorage.setItem("userName", response.data.name); // 사용자 이름 저장
 
-      // 로그인 성공 시 Sweet Alert로 알림
-      await Swal.fire({
+      // 로그인 상태 변경 이벤트 발생
+      window.dispatchEvent(new Event("loginStatusChanged"));
+
+      Swal.fire({
         icon: "success",
         title: "로그인 성공!",
         text: "환영합니다!",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
+        timer: 1500,
+        showConfirmButton: false,
       });
 
       onClose();
@@ -116,13 +117,13 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
       // 유저 타입에 따른 리다이렉트
       switch (userType) {
         case "SHOP":
-          navigate("/hairshop"); // 헤어샵 페이지로 이동
+          navigate("/shop"); // 헤어샵 페이지로 이동
           break;
         case "USER":
           navigate("/"); // 메인 페이지
           break;
         case "DESIGNER":
-          navigate("/designerpage"); // 디자이너 페이지로 이동
+          navigate("/designer"); // 디자이너 메인 페이지로 이동
           break;
         default:
           navigate("/");

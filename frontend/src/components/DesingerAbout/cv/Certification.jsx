@@ -2,24 +2,42 @@ import { useState, useEffect } from "react";
 
 export default function Certification({ isEditable }) {
     // 자격증 관련 상태 관리
-    const [certification, setCertification] = useState("");
-    const [certifications, setCertifications] = useState([]);
+    const [certifications, setCertifications] = useState([]); // 자격증 목록
+    const [certification, setCertification] = useState(""); // 신규 입력 값
+    const [reId, setReId] = useState("67890-xyz"); // 구직 지원서 ID (더미 데이터)
+    const [crId, setCrId] = useState(null); // 이력서 ID (고유 ID)
     const [loading, setLoading] = useState(true); // 로딩 상태
 
     // 더미 데이터
-    const dummyCertifications = [];
+    const dummyCertifications = [
+        {
+            re_id: "67890-xyz",
+            cr_id: "12345-abcde",
+            cr_name: "정보처리기사",
+        },
+        {
+            re_id: "67890-xyz",
+            cr_id: "12345-abcde",
+            cr_name: "MOS Master",
+        },
+    ];
 
-    // 백엔드 데이터 가져오기
+    // 이력서 ID 및 자격증 초기화
     useEffect(() => {
-        const fetchCertifications = async () => {
+        const fetchCrIdAndCertifications = async () => {
             try {
-                // 실제 API 호출 시 아래 코드를 활성화
-                // const response = await fetch("/api/certifications");
+                // 실제 API 호출 (re_id 기반 cr_id와 관련 자격증 로딩)
+                // const response = await fetch(`/api/resume/certifications?re_id=${reId}`);
                 // const data = await response.json();
 
-                // 지금은 더미 데이터를 사용
-                const data = dummyCertifications;
-                setCertifications(data);
+                // 더미 데이터를 사용
+                const filteredData = dummyCertifications.filter(
+                    (entry) => entry.re_id === reId
+                );
+                if (filteredData.length > 0) {
+                    setCrId(filteredData[0].cr_id); // cr_id 가져오기
+                    setCertifications(filteredData.map((entry) => entry.cr_name)); // 자격증 이름 로딩
+                }
             } catch (error) {
                 console.error("Error fetching certifications:", error);
             } finally {
@@ -27,8 +45,8 @@ export default function Certification({ isEditable }) {
             }
         };
 
-        fetchCertifications();
-    }, []);
+        fetchCrIdAndCertifications();
+    }, [reId]);
 
     const handleAddCertification = () => {
         // 입력된 자격증 값이 공백이 아니면 진행
@@ -36,6 +54,8 @@ export default function Certification({ isEditable }) {
             const newCertifications = [...certifications, certification.trim()];
             setCertifications(newCertifications); // 자격증 배열 업데이트
             setCertification(""); // 입력 필드 초기화
+
+            console.log("추가된 자격증:", certification.trim());
         }
     };
 
@@ -62,7 +82,7 @@ export default function Certification({ isEditable }) {
                 />
                 {isEditable && (
                     <button
-                        className="bg-[#00B3A6] text-white px-8 py-2 rounded"
+                        className="bg-green-600 text-white px-8 py-2 rounded"
                         onClick={handleAddCertification}
                     >
                         저장

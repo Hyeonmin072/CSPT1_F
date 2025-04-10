@@ -1,18 +1,26 @@
 import { useState, useEffect } from "react";
 import { Upload } from 'lucide-react';
+import { selectedDesigner } from "../../dummydata/DummydbDesigner.jsx";
 
 export default function CVProfile({ isEditable }) {
     // 더미 데이터
     const dummyProfile = {
-        id: 1,
-        name: "홍길동",
-        email: "test1@gmail.com",
-        phone: "010-1234-5678",
-        gender: "남성",
-        age: 21,
+        d_id: "550e8400-e29b-41d4-a716-446655440000", // UUID (화면에 표시되지 않음)
+        d_name: "홍길동",
+        d_email: "hong@example.com",
+        d_tel: "010-1234-5678", // 전화번호 형식
+        d_gender: "남성",
+        d_birth_date: "1990-01-01", // LocalDate 형식
     };
 
-    const [profile, setProfile] = useState(null); // 프로필 데이터 상태
+    const [profile, setProfile] = useState({
+        d_id: "",
+        d_name: "",
+        d_email: "",
+        d_tel: "",
+        d_gender: "",
+        d_birth_date: "",
+    }); // 프로필 데이터 상태
     const [image, setImage] = useState(null); // 업로드된 이미지 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
 
@@ -20,12 +28,14 @@ export default function CVProfile({ isEditable }) {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                // const response = await fetch("/");
-                // const data = await response.json();
-
                 // 지금은 더미 데이터를 사용
-                const data = dummyProfile;
+                const data = selectedDesigner;
                 setProfile(data);
+
+                // d_image가 null이 아니면 초기 이미지로 설정
+                if (data.d_image) {
+                    setImage(data.d_image);
+                }
             } catch (error) {
                 console.error("Error fetching profile data:", error);
             } finally {
@@ -81,10 +91,10 @@ export default function CVProfile({ isEditable }) {
                     onClick={() => isEditable && document.getElementById('fileInput').click()}
                 >
                     {image ? (
-                        <img src={image} alt="Uploaded" className="w-full h-full object-cover rounded-lg" />
+                        <img src={image} alt="Uploaded" className="w-full h-full object-cover rounded-lg"/>
                     ) : (
                         <>
-                            <Upload className="w-12 h-12 text-gray-600" />
+                            <Upload className="w-12 h-12 text-gray-600"/>
                             <span className="text-gray-600 mt-2">사진을 올려주세요!</span>
                         </>
                     )}
@@ -101,31 +111,31 @@ export default function CVProfile({ isEditable }) {
                 {/* 이름 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">이름</label>
-                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.name}</span>
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.d_name}</span>
                 </div>
 
                 {/* 이메일 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">이메일</label>
-                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.email}</span>
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.d_email}</span>
                 </div>
 
                 {/* 전화번호 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">전화번호</label>
-                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.phone}</span>
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.d_tel}</span>
                 </div>
 
                 {/* 성별 */}
                 <div className="flex items-center mb-4">
                     <label className="w-32 text-gray-700 font-bold">성별</label>
-                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.gender}</span>
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.d_gender}</span>
                 </div>
 
-                {/* 나이 */}
+                {/* 생년월일 */}
                 <div className="flex items-center mb-4">
-                    <label className="w-32 text-gray-700 font-bold">나이</label>
-                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.age}</span>
+                    <label className="w-32 text-gray-700 font-bold">생년월일</label>
+                    <span className="w-[400px] border rounded p-2 bg-gray-100">{profile.d_birth_date}</span>
                 </div>
             </div>
         </div>

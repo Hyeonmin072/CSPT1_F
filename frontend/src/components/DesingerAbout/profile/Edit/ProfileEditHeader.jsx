@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { UserRound } from "lucide-react";
+import { selectedDesigner } from "../../../dummydata/DummydbDesigner.jsx";
 
-export default function ProfileEditHeader({ setBannerImage, profileImage,setProfileImage, bannerImage }){
+export default function ProfileEditHeader() {
+    // 배너 이미지와 프로필 이미지 상태를 초기화
+    const [bannerImage, setBannerImage] = useState(selectedDesigner.d_back_image);
+    const [profileImage, setProfileImage] = useState(selectedDesigner.d_image);
+
+    // 이미지 변경 로직
     const handleImageChange = (event, setImage) => {
         const file = event.target.files[0];
         if (file) {
@@ -31,7 +37,7 @@ export default function ProfileEditHeader({ setBannerImage, profileImage,setProf
         }
     };
 
-    return(
+    return (
         <>
             {/* 배경 이미지 */}
             <div
@@ -60,7 +66,6 @@ export default function ProfileEditHeader({ setBannerImage, profileImage,setProf
                 onDragOver={handleDragOver}
                 onDrop={(event) => handleDrop(event, setProfileImage)}
             >
-                {/* 숨겨진 input */}
                 <input
                     type="file"
                     accept="image/*"
@@ -68,7 +73,6 @@ export default function ProfileEditHeader({ setBannerImage, profileImage,setProf
                     id="profileImageInput"
                     onChange={(event) => handleImageChange(event, setProfileImage)}
                 />
-                {/* 클릭 가능한 레이블 */}
                 <label htmlFor="profileImageInput" className="cursor-pointer">
                     {profileImage ? (
                         <img
@@ -80,7 +84,7 @@ export default function ProfileEditHeader({ setBannerImage, profileImage,setProf
                         <div
                             className="w-28 h-28 bg-gray-300 rounded-full border-white flex flex-col items-center justify-end pb-2"
                         >
-                            <UserRound className="w-20 h-20 text-gray-600"/>
+                            <UserRound className="w-20 h-20 text-gray-600" />
                         </div>
                     )}
                 </label>
