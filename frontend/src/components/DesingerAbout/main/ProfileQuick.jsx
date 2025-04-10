@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import d1 from "../../../assets/designer/d1.png";
-import {dummyProfile} from "../../dummydata/DummyProfile.jsx";
+import { selectedDesigner } from "../../dummydata/DummydbDesigner.jsx";
 
 export default function ProfileQuick() {
     const [designerProfile, setDesignerProfile] = useState(null); // 디자이너 데이터 상태
@@ -12,12 +12,7 @@ export default function ProfileQuick() {
     useEffect(() => {
         const fetchDesignerProfile = async () => {
             try {
-                // 실제 API 호출 시 아래 코드를 활성화
-                // const response = await fetch("/api/designer/quick");
-                // const data = await response.json();
-
-                // 지금은 더미 데이터를 사용
-                const data = dummyProfile;
+                const data = selectedDesigner;
                 setDesignerProfile(data);
             } catch (error) {
                 console.error("Error fetching designer profile:", error);
@@ -35,28 +30,27 @@ export default function ProfileQuick() {
         return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
     }
 
-    if (!designerProfile) {
+    if (!selectedDesigner) {
         return <div className="text-center mt-4">디자이너 정보를 불러올 수 없습니다.</div>; // 에러 메시지
     }
 
     return (
         <div className="flex items-center w-[260px]" onClick={handleProfile}>
             {/* 이미지가 없으면 회색 배경의 둥근 div 출력 */}
-            {designerProfile.imageURL ? (
+            {selectedDesigner.d_image ? (
                 <img
-                    src={designerProfile.imageURL}
-                    alt={`${designerProfile.name}의 프로필`}
-                    className="w-12 h-12 rounded-full mb-4"
+                    src={selectedDesigner.d_image}
+                    alt={`${selectedDesigner.d_name}의 프로필`}
+                    className="w-12 h-12 rounded-full"
                 />
             ) : (
-                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mb-4">
-                    <span className="text-white">{designerProfile.name}</span>
+                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+
                 </div>
             )}
             <div className="ml-4 py-1">
-                <p className="font-bold text-gray-400 text-sm">이름: {designerProfile.name}</p>
-                <p className="text-xl text-gray-700 font-bold">{designerProfile.roll}</p>
-                <p className="text-sm text-gray-500">전화번호: {designerProfile.phone}</p>
+                <p className="font-bold text-black font-bold text-l">이름: {selectedDesigner.d_name}</p>
+                <p className="text-sm text-gray-500">전화번호: {selectedDesigner.d_tel}</p>
             </div>
         </div>
     );

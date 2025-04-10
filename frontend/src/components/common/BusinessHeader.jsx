@@ -28,32 +28,32 @@ export default function BusinessHeader() {
               <span className="text-[13px] text-black font-[700] flex justify-center">
                 My Hair Partner
               </span>
+                  </div>
+                <nav className="flex space-x-2 gap-[60px] font-bold">
+                    <Link to="/shop" className="text-gray-700">
+                        홈
+                    </Link>
+                    <Link to="/schedulecheck" className="text-gray-700">
+                        예약관리
+                    </Link>
+                    <Link to="/designermanage" className="text-gray-700">
+                        디자이너 관리
+                    </Link>
+                    <Link to="" className="text-gray-700">
+                        메뉴설정
+                    </Link>
+                    <Link to="/sales" className="text-gray-700">
+                        매출관리
+                    </Link>
+                </nav>
+                <div className="flex space-x-4">
+                    <RegisterButton />
+                    <LoginButton />
+                    <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+                </div>
             </div>
-            <nav className="flex space-x-2 gap-[60px] font-bold">
-              <Link to="/shop" className="text-gray-700">
-                홈
-              </Link>
-              <Link to="/schedulecheck" className="text-gray-700">
-                예약관리
-              </Link>
-              <Link to="" className="text-gray-700">
-                디자이너 관리
-              </Link>
-              <Link to="" className="text-gray-700">
-                메뉴설정
-              </Link>
-              <Link to="/sales" className="text-gray-700">
-                매출관리
-              </Link>
-            </nav>
-            <div className="flex space-x-4">
-              <RegisterButton />
-              <LoginButton />
-              <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
-            </div>
-          </div>
         </div>
-      </header>
+    </header>
 
       {/* 사이드바 컴포넌트 추가 */}
       <BusinessSideBar isOpen={isOpen} onClose={closeMenu} />

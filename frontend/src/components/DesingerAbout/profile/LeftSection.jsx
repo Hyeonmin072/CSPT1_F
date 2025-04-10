@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { MessageSquareText } from "lucide-react";
-import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
+import { selectedDesigner } from "../../dummydata/DummydbDesigner.jsx";
 
 export default function LeftSection() {
     const [designer, setDesigner] = useState(null); // 디자이너 정보 상태
@@ -17,7 +17,7 @@ export default function LeftSection() {
                 // const data = await response.json();
 
                 // 더미 데이터 사용
-                const data = dummyProfile;
+                const data = selectedDesigner;
                 setDesigner(data); // 디자이너 데이터 상태 업데이트
             } catch (error) {
                 console.error("Error fetching designer profile:", error);
@@ -27,7 +27,7 @@ export default function LeftSection() {
         };
 
         fetchDesignerProfile();
-    }, [currentProfileId]);
+    }, [selectedDesigner]);
 
     if (loading) {
         return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
@@ -43,11 +43,11 @@ export default function LeftSection() {
                 <div>
                     {/* 소개 */}
                     <div className="bg-gray-100 p-5 rounded">
-                        <p className="mt-2">{designer.introduce}</p>
+                        <p className="mt-2">{designer.d_desc}</p>
                     </div>
                     {/* 버튼 */}
                     <div className="mt-4 px-5 flex flex-row space-x-5">
-                        <button className="w-[120px] border border-green-600 text-green-600 py-2 rounded">
+                        <button className="w-[120px] border border-green-600 text-green-600 py-2 rounded hover:bg-green-600 hover:text-white">
                             예약하기
                         </button>
                         <button className=" bg-green-600 rounded-full flex items-center justify-center">

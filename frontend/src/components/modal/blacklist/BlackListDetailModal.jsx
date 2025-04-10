@@ -14,10 +14,10 @@ export default function BlackListDetailModal({ setShowModal, selectedItem, setSe
                         <div className="flex flex-col">
                             <div className="flex flex-row space-x-3">
                                 <p className="font-bold">이름:</p>
-                                <p>{selectedItem.name}</p></div>
+                                <p>{selectedItem.u_name}</p></div>
                             <div className="flex flex-row space-x-7">
                                 <p className="font-bold">ID:</p>
-                                <p>{selectedItem.userId}</p></div>
+                                <p>{selectedItem.u_id}</p></div>
                         </div>
                         <div className="mt-4">
                             <label className="block text-sm font-bold mb-2" htmlFor="reason">
@@ -26,7 +26,7 @@ export default function BlackListDetailModal({ setShowModal, selectedItem, setSe
                             <textarea
                                 id="reason"
                                 className="w-full min-h-[200px] border rounded p-2 resize-none"
-                                value={selectedItem.reason}
+                                value={selectedItem.b_reason}
                                 readOnly
                             />
                         </div>
