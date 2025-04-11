@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
+import RegisterButton from "../button/RegisterButton";
 import HamburgerButton from "../button/UserHamburgerButton.jsx";
 import BusinessSideBar from "../modal/sidebar/BusinessSideBar";
 import axiosInstance from "../sign/axios/AxiosInstance";
@@ -104,9 +105,19 @@ export default function BusinessHeader() {
               </Link>
             </nav>
             <div className="flex space-x-4">
-              <RegisterButton />
-              <LoginButton />
-              <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+              {isLoggedIn ? (
+                <>
+                  <span className="text-gray-700 font-bold mt-2">
+                    {userName}님
+                  </span>
+                  <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+                </>
+              ) : (
+                <>
+                  <RegisterButton />
+                  <LoginButton />
+                </>
+              )}
             </div>
           </div>
         </div>
