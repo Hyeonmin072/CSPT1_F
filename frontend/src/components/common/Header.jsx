@@ -130,7 +130,7 @@ export default function Header() {
               <Link to="/hairshop" className="text-gray-700">
                 헤어샵
               </Link>
-              <Link to="/designer" className="text-gray-700">
+              <Link to="/designerpage" className="text-gray-700">
                 디자이너
               </Link>
               <Link to="/chat" className="text-gray-700">

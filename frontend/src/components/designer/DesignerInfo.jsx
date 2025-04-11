@@ -5,7 +5,7 @@ import InquiryButton from "../button/InquiryButton";
 /* eslint-disable */ //수정 시 eslint 해제
 
 //props 3개를 받아 디자이너 정보를 구성하는 순수 함수형 컴포넌트
-const DesignerInfo = ({ name, description, profileImage }) => {
+const DesignerInfo = ({ name, description, profileImage = d1 }) => {
   //예약 및 문의 처리 로직 핸들러
   const handleReservation = () => {
     console.log("예약 처리 로직");
@@ -21,11 +21,19 @@ const DesignerInfo = ({ name, description, profileImage }) => {
     <div className="p-4 bg-white border-t border-gray-100">
       <div className="flex items-start gap-4">
         <div className="w-[150px] h-[150px] rounded-full overflow-hidden flex-shrink-0">
-          <img src={d1} alt={name} className="w-full h-full object-cover" />
+          <img
+            src={profileImage}
+            alt={`${name} profile`}
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="flex-1">
-          <h2 className="text-lg font-bold mb-2">{name}</h2>
-          <p className="text-gray-600 text-sm mb-4">{description}</p>
+          <div className="flex items-center mb-2">
+            <h2 className="text-lg font-bold mr-2">{name}</h2>
+          </div>
+          <p className="text-gray-600 h-20 overflow-y-auto scrollbar-hide">
+            {description}
+          </p>
           <div className="flex gap-2">
             <ReservationButton onClick={handleReservation} />
             <InquiryButton onClick={handleInquiry} />
