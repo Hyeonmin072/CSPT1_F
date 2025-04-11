@@ -24,7 +24,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
 
   // 현재 사용자 타입 로그 출력
   useEffect(() => {
-    console.log(`🤔 현재 유저 타입 : ${userType}`);
+    console.log(`🤔 현재 로그인 모달 유저 타입 : ${userType}`);
   }, [userType]);
 
   if (!isOpen) return null;

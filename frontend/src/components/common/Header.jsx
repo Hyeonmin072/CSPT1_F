@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
 import UserHamburgerButton from "../button/UserHamburgerButton";
 import Sidebar from "../modal/sidebar/SideBar";
@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import hairLogo from "../../assets/logo/hairlogo.png";
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +22,16 @@ export default function Header() {
           withCredentials: true,
         });
         console.log("유저 홈페이지 데이터:", response.data);
+      } else if (userType === "SHOP") {
+        Swal.fire({
+          toast: true,
+          position: "top",
+          icon: "error",
+          title: "잘못된 접근입니다",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/shop");
       }
     } catch (error) {
       console.error("유저 홈페이지 데이터 로드 실패:", error);
@@ -30,24 +41,41 @@ export default function Header() {
   // 로그인 상태 체크 함수
   const checkLoginStatus = async () => {
     try {
-      //유저 정보를 가져오는 엔드 포인트를 호출
-      const response = await axiosInstance.get("/user/header", {
-        withCredentials: true,
-      });
+      const userType = localStorage.getItem("userType");
+      let response;
 
-      if (response.data) {
-        setIsLoggedIn(true);
-        // response.data가 객체인 경우 userName 속성을 사용
-        if (typeof response.data === "object" && "userName" in response.data) {
-          setUserName(response.data.userName);
-        } else if (typeof response.data === "string") {
-          setUserName(response.data);
+      if (userType === "SHOP") {
+        response = await axiosInstance.get("/shop/loadheader", {
+          withCredentials: true,
+        });
+        if (response.data) {
+          setIsLoggedIn(true);
+          if (
+            typeof response.data === "object" &&
+            "shopName" in response.data
+          ) {
+            setUserName(response.data.shopName);
+          } else if (typeof response.data === "string") {
+            setUserName(response.data);
+          }
+          navigate("/shop");
         }
-        // 로그인 상태이고 일반 유저인 경우 홈페이지 데이터 가져오기
-        await fetchUserHomeData();
       } else {
-        setIsLoggedIn(false);
-        setUserName("");
+        response = await axiosInstance.get("/user/header", {
+          withCredentials: true,
+        });
+        if (response.data) {
+          setIsLoggedIn(true);
+          if (
+            typeof response.data === "object" &&
+            "userName" in response.data
+          ) {
+            setUserName(response.data.userName);
+          } else if (typeof response.data === "string") {
+            setUserName(response.data);
+          }
+          await fetchUserHomeData();
+        }
       }
     } catch (error) {
       console.error("사용자 정보 조회 실패 : 로그인하지 않음");

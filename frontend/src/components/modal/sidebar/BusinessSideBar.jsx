@@ -18,7 +18,7 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
     { id: 8, title: "근태 관리" },
     { id: 9, title: "구인구직" },
     { id: 10, title: "정보 수정" },
-    { id: 10, title: "블랙리스트 관리", path: "/blacklist" },
+    { id: 11, title: "블랙리스트 관리", path: "/blacklist" },
   ];
 
   // 클릭 핸들러
