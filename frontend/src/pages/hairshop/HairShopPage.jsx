@@ -78,12 +78,12 @@ export default function HairShopPage() {
               </div>
               <div className="w-full md:w-48">
                 <select
-                  className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
                 >
                   {locationOptions.map((option) => (
-                    <option key={option} value={option}>
+                    <option key={option} value={option} className="text-black">
                       {option}
                     </option>
                   ))}
