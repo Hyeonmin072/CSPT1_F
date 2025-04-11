@@ -67,7 +67,7 @@ const DesignerSideBar = ({ isOpen, onClose }) => {
       try {
         console.log("로그아웃 요청 시작");
         const response = await axiosInstance.post(
-          "/designer/logout",
+          "/designer/signout",
           {},
           { withCredentials: true }
         );
