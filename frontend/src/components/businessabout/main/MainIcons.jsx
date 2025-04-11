@@ -1,16 +1,16 @@
-import { Calendar, Star, Scissors, Gift, QrCode , UserRoundPen, DollarSign, UserX, Settings, LogOut } from 'lucide-react';
+import { Newspaper , Star, Scissors, Gift, QrCode , UserRoundPen, Building2 , UserX, NotebookPen , LogOut } from 'lucide-react';
 import { Link } from "react-router-dom"
 
 export default function MainIcons(){
     return(
         <>
             {[
-                {icon: <Calendar/>, label: '예약관리', path: "/schedulecheck"},
-                {icon: <Scissors/>, label: '디자이너 관리'},
+                {icon: <Newspaper />, label: '공지사항 등록'},
+                {icon: <Scissors/>, label: '근태 관리'},
                 {icon: <Gift/>, label: '이벤트 및 쿠폰 관리', path: "/eventmenu"},
-                {icon: <DollarSign/>, label: '매출 관리', path: "/sales"},
+                {icon: <Building2/>, label: '구인 구직'},
                 {icon: <UserX/>, label: '블랙리스트 관리', path: "/blacklist"},
-                {icon: <Settings/>, label: '메뉴 설정'},
+                {icon: <NotebookPen />, label: '메뉴 설정'},
             ].map((item, index) => (
                 <div
                     key={index}

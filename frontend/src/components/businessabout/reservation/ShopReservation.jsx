@@ -102,7 +102,7 @@ export default function ShopReservation() {
                         {designers.map((designer, index) => (
                             <div key={index} className="min-w-[220px]">
                                 {/* 디자이너 이미지와 이름 */}
-                                <div className="flex flex-row items-center justify-center space-x-4">
+                                <div className="flex flex-row items-center justify-center space-x-4 border-b-2">
                                     <img
                                         src={designer.imageURL}
                                         className="w-12 h-12 rounded-full mb-2"
@@ -129,9 +129,9 @@ export default function ShopReservation() {
                                                     : "";
 
                                         return (
-                                            <div
+                                            <button
                                                 key={slotIndex}
-                                                className={`h-24 flex items-center justify-center border ${leftBorderColor}`}
+                                                className={`h-24 flex items-center justify-center border-l-2 ${leftBorderColor} w-full text-center`}
                                                 onClick={() => {
                                                     if (appointment) {
                                                         setModalData({
@@ -149,15 +149,17 @@ export default function ShopReservation() {
                                                 }}
                                             >
                                                 {appointment ? (
-                                                    <div className="text-center">
+                                                    <div className="flex flex-col items-center justify-center w-full h-full">
+                                                        {/* w-full과 h-full로 영역을 차지하며 제대로 가운데 정렬 */}
                                                         <span className="block text-gray-700 text-lg">{appointment.client}</span>
                                                         <span className="block text-sm text-gray-500">{appointment.menu}</span>
                                                     </div>
                                                 ) : (
                                                     <span>&nbsp;</span>
                                                 )}
-                                            </div>
+                                            </button>
                                         );
+
                                     })}
                                 </div>
                             </div>

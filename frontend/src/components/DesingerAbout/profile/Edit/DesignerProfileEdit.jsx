@@ -1,18 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import h1 from "../../../../assets/hairshop/h1.jpg";
-
 import ProfileEditHeader from "./ProfileEditHeader.jsx";
+import { selectedDesigner } from "../../../dummydata/DummydbDesigner.jsx";
 
 export default function DesignerProfileEdit() {
     const navigate = useNavigate();
 
-    const [profileImage, setProfileImage] = useState(null);
-    const [bannerImage, setBannerImage] = useState(h1);
-    const [introduction, setIntroduction] = useState("");
+    // 상태 초기화: 더미 데이터에서 가져오기
+    const [profileImage, setProfileImage] = useState(selectedDesigner.d_image);
+    const [bannerImage, setBannerImage] = useState(selectedDesigner.d_back_image);
+    const [introduction, setIntroduction] = useState(selectedDesigner.d_desc || ""); // 소개글 초기화
+    const [name, setName] = useState(selectedDesigner.d_name);
+    const [nickname, setNickname] = useState(selectedDesigner.d_nickname);
+    const [email, setEmail] = useState(selectedDesigner.d_email.split("@")[0]); // @ 앞부분 초기화
+    const [domain, setDomain] = useState(selectedDesigner.d_email.split("@")[1]); // @ 뒤부분 초기화
+    const [isCustomDomain, setIsCustomDomain] = useState(false); // 사용자 정의 도메인 상태
+    const [telephone, setTelephone] = useState(selectedDesigner.d_tel);
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
+    // 기본 제공 도메인 목록
+    const basicDomains = ["gmail.com", "naver.com", "daum.net"];
 
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value); // 이메일 @ 앞부분 변경
+    };
+
+    const handleDomainChange = (e) => {
+        const selectedDomain = e.target.value;
+        if (selectedDomain === "custom.com") {
+            setIsCustomDomain(true); // "직접 입력" 활성화
+            setDomain(""); // 빈 값으로 초기화
+        } else {
+            setIsCustomDomain(false); // 기본 도메인 선택
+            setDomain(selectedDomain); // 선택된 도메인 반영
+        }
+    };
+
+    const handleCustomDomainChange = (e) => {
+        setDomain(e.target.value); // 사용자 정의 도메인 변경
+    };
     return (
         <div className="max-w-6xl mx-auto p-10">
             {/* Header */}
@@ -37,8 +66,11 @@ export default function DesignerProfileEdit() {
                             type="text"
                             id="name"
                             name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                             placeholder="디자이너 이름을 입력하세요"
+                            readOnly
                         />
                     </div>
 
@@ -52,6 +84,8 @@ export default function DesignerProfileEdit() {
                                 type="text"
                                 id="nickname"
                                 name="nickname"
+                                value={nickname}
+                                onChange={(e) => setNickname(e.target.value)}
                                 className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                                 placeholder="디자이너 닉네임을 입력하세요"
                             />
@@ -64,32 +98,55 @@ export default function DesignerProfileEdit() {
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                             이메일
                         </label>
-                        <div
-                            className="mt-1 flex items-center space-x-4">
-                            {/* 이메일 아이디 입력 */}
+                        <div className="mt-1 flex items-center space-x-4">
+                            {/* 이메일 입력 */}
                             <input
                                 type="text"
                                 id="email"
                                 name="email"
+                                value={email}
+                                onChange={handleEmailChange} // 이메일 값 변경
                                 className="flex-1 bg-[#F9F9F9] px-3 py-2 rounded-lg"
                                 placeholder="이메일 입력"
                             />
                             <span className="mx-2 text-gray-700 text-xl">@</span>
-                            {/* 도메인 선택 드롭다운 */}
-                            <select
-                                id="domain"
-                                name="domain"
-                                className="bg-[#F9F9F9] px-3 py-2 rounded-lg w-[240px]"
-                            >
-                                <option value="gmail.com">gmail.com</option>
-                                <option value="naver.com">naver.com</option>
-                                <option value="daum.net">daum.net</option>
-                                <option value="custom.com">직접 입력</option>
-                            </select>
-                            <button className="px-2 py-2 rounded-lg w-[120px] text-white bg-green-600">이메일 확인</button>
+                            {isCustomDomain ? (
+                                // 사용자 정의 도메인 입력 필드
+                                <input
+                                    type="text"
+                                    id="custom-domain"
+                                    name="custom-domain"
+                                    value={domain}
+                                    onChange={handleCustomDomainChange} // 사용자 정의 도메인 변경
+                                    className="bg-[#F9F9F9] px-3 py-2 rounded-lg w-[240px]"
+                                    placeholder="직접 입력"
+                                />
+                            ) : (
+                                // 기본 제공 도메인 선택 드롭다운
+                                <select
+                                    id="domain"
+                                    name="domain"
+                                    value={domain} // 현재 도메인을 기본값으로 유지
+                                    onChange={handleDomainChange} // 도메인 변경 처리
+                                    className="bg-[#F9F9F9] px-3 py-2 rounded-lg w-[240px]"
+                                >
+                                    {/* 기본 제공 도메인만 렌더링 */}
+                                    {!basicDomains.includes(domain) && (
+                                        <option value={domain}>{domain}</option>
+                                    )}
+                                    {basicDomains.map((option, index) => (
+                                        <option key={index} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                    <option value="custom.com">직접 입력</option>
+                                </select>
+                            )}
+                            <button className="px-2 py-2 rounded-lg w-[120px] text-white bg-green-600">
+                                이메일 확인
+                            </button>
                         </div>
                     </div>
-
 
                     {/* 연락처 입력 */}
                     <div className="mb-4">
@@ -100,6 +157,8 @@ export default function DesignerProfileEdit() {
                             type="tel"
                             id="telephone"
                             name="telephone"
+                            value={telephone}
+                            onChange={(e) => setTelephone(e.target.value)}
                             className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                             placeholder="연락처를 입력하세요"
                         />
@@ -115,7 +174,9 @@ export default function DesignerProfileEdit() {
                                 type="password"
                                 id="current-password"
                                 name="current-password"
-                                className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9] "
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                                 placeholder="기존 비밀번호 입력"
                             />
                         </div>
@@ -127,6 +188,8 @@ export default function DesignerProfileEdit() {
                                 type="password"
                                 id="new-password"
                                 name="new-password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
                                 className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                                 placeholder="새 비밀번호 입력"
                             />
@@ -139,6 +202,8 @@ export default function DesignerProfileEdit() {
                                 type="password"
                                 id="confirm-password"
                                 name="confirm-password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                                 placeholder="비밀번호 확인"
                             />
@@ -153,11 +218,12 @@ export default function DesignerProfileEdit() {
                         <textarea
                             id="introduce"
                             name="introduce"
+                            value={introduction}
+                            onChange={(e) => setIntroduction(e.target.value)}
                             className="mt-1 block w-full h-48 px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9] resize-none"
                             placeholder="자신을 소개하는 글을 작성해주세요."
                         />
                     </section>
-
                 </form>
 
                 {/* 버튼 섹션 */}
@@ -177,8 +243,6 @@ export default function DesignerProfileEdit() {
                     </button>
                 </div>
             </div>
-
-
         </div>
     );
 }

@@ -80,14 +80,14 @@ export default function DesignerSchedule({ selectedDate, setModalData, setIsModa
                                         }}
                                     >
                                         {appointment ? (
-                                            <div className="text-center">
+                                            <button className="text-center">
                                                 <span className="block text-gray-700 text-lg">
                                                     {appointment.client}
                                                 </span>
                                                 <span className="block text-xs text-gray-500">
                                                     {appointment.menu}
                                                 </span>
-                                            </div>
+                                            </button>
                                         ) : (
                                             <span>&nbsp;</span> // 빈 슬롯
                                         )}

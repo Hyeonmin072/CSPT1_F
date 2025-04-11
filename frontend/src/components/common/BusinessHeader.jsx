@@ -93,7 +93,7 @@ export default function BusinessHeader() {
               <Link to="/schedulecheck" className="text-gray-700">
                 예약관리
               </Link>
-              <Link to="" className="text-gray-700">
+              <Link to="/designermanage" className="text-gray-700">
                 디자이너 관리
               </Link>
               <Link to="" className="text-gray-700">
@@ -104,16 +104,9 @@ export default function BusinessHeader() {
               </Link>
             </nav>
             <div className="flex space-x-4">
-              {isLoggedIn ? (
-                <>
-                  <span className="text-gray-700 font-bold mt-2">
-                    {userName}님
-                  </span>
-                  <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
-                </>
-              ) : (
-                <LoginButton />
-              )}
+              <RegisterButton />
+              <LoginButton />
+              <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
             </div>
           </div>
         </div>

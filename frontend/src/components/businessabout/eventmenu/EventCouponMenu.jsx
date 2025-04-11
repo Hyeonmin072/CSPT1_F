@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search,Trash2 } from "lucide-react";
-import { events as initialEvents, coupons as initialCoupons } from "../../dummydata/DummyEvents.jsx";
+import ApiEvent from "./axios/ApiEvent.jsx";
 
 import EventCreateModal from "../../modal/event-coupon/EventCreateModal.jsx";
 import CouponCreateModal from "../../modal/event-coupon/CouponCreateModal.jsx";
@@ -12,158 +12,163 @@ export default function EventCouponMenu() {
     const [selectedItem, setSelectedItem] = useState(null); // 모달용 상태
     const [isEModalOpen, setIsEModalOpen] = useState(false);
     const [isCModalOpen, setIsCModalOpen] = useState(false);
-    const [sortOrder, setSortOrder] = useState("recently");
 
     // 이벤트 등록
     const [isEventModalOpen, setIsEventModalOpen] = useState(false);
     const [newEvent, setNewEvent] = useState({
-        title: "",
-        start: "",
-        end: "",
-        detail: ""
+        e_name: "",
+        e_start_date: "",
+        e_end_date: "",
+        e_detail: "",
+        e_type: "",
+        e_discount: "",
+        s_id: "",
     });
-
-    const handleEventSubmit = () => {
-        if (newEvent.title && newEvent.start && newEvent.end) {
-            setEvents((prevEvents) => [
-                ...prevEvents,
-                { id: prevEvents.length + 1, ...newEvent },
-            ]);
-            setIsEventModalOpen(false);
-            setNewEvent({ title: "", start: "", end: "",  detail: "" });
-        }
-    };
 
     // 쿠폰 등록
     const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
     const [newCoupon, setNewCoupon] = useState({
-        title: "",
-        start: "",
-        end: "",
-        discountType: "",
-        discountValue: "",
-        minimumPurchase: "",
+        c_name: "",
+        c_get_date: "",
+        c_use_date: "",
+        c_type: "",
+        c_price: "",
+        s_id: "",
     });
 
-    const handleCouponSubmit = () => {
-        if (newCoupon.title && newCoupon.start && newCoupon.end) {
-            setCoupons((prevCoupons) => [
-                ...prevCoupons,
-                { id: prevCoupons.length + 1, ...newCoupon },
-            ]); // 상태를 업데이트하는 방식으로 추가
-            setIsCouponModalOpen(false);
-            setNewCoupon({ title: "", start: "", end: "",  discountType: "", discountValue: "", minimumPurchase: "" });
+    // 데이터 초기 로드
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        try {
+            // 백엔드에서 데이터 가져오는 코드 (주석 처리)
+            // const eventsData = await ApiEvent.fetchEvents();
+            // const couponsData = await ApiEvent.fetchCoupons();
+            // const businessId = await ApiEvent.fetchBusinessId();
+
+            const businessId = { data: { s_id: "shop123" } };
+
+            // 더미 데이터
+            const eventsData = [
+                { e_name: "여름 세일", e_start_date: "2025-07-01", e_end_date: "2025-07-31", e_type: "PERCENT", e_discount: 10, s_id: "shop123" },
+                { e_name: "가을 프로모션", e_start_date: "2025-09-01", e_end_date: "2025-09-30", e_type: "FIXED", e_discount: 3000, s_id: "shop123" },
+            ];
+
+            const couponsData = [
+                { c_name: "신규 가입 할인", c_get_date: 7, c_use_date: 30, c_type: "FIXED", c_price: 5000, s_id: "shop123" },
+                { c_name: "VIP 고객 할인", c_get_date: 5, c_use_date: 15, c_type: "PERCENT", c_price: 15, s_id: "shop123" },
+            ];
+
+            // 현재 s_id와 일치하는 데이터만 필터링
+            const filteredEvents = eventsData.filter(event => event.s_id === businessId.data.s_id);
+            const filteredCoupons = couponsData.filter(coupon => coupon.s_id === businessId.data.s_id);
+
+            const today = new Date(); // 현재 날짜
+
+            // 🔥 종료된 이벤트 제거 (오늘 날짜보다 e_end_date가 이전인 경우)
+            const activeEvents = filteredEvents.filter(event => new Date(event.e_end_date) >= today);
+
+            // 🔥 만료된 쿠폰 제거 (c_use_date가 오늘 날짜에서 빼면 -1이 되면 제거)
+            const activeCoupons = filteredCoupons.filter(coupon => {
+                const remainingDays = coupon.c_use_date - today.getDate();
+                return remainingDays >= 0;
+            });
+
+            setNewEvent(prevEvent => ({ ...prevEvent, s_id: businessId.data.s_id }));
+            setNewCoupon(prevCoupon => ({ ...prevCoupon, s_id: businessId.data.s_id }));
+
+            setEvents(activeEvents); // 🔥 만료되지 않은 이벤트만 저장
+            setCoupons(activeCoupons); // 🔥 만료되지 않은 쿠폰만 저장
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+
+    // 이벤트 등록
+    const handleEventSubmit = async () => {
+        if (newEvent.e_name && newEvent.e_start_date && newEvent.e_end_date) {
+            try {
+                const addedEvent = await ApiEvent.createEvents(newEvent);
+                setEvents((prevEvents) => [...prevEvents, addedEvent]);
+                setNewEvent({
+                    e_name: "",
+                    e_start_date: "",
+                    e_end_date: "",
+                    e_type: "",
+                    e_discount: "",
+                    s_id: newEvent.s_id, // 초기화 시에도 s_id 유지
+                });
+            } catch (error) {
+                console.error("Error creating event:", error);
+            }
         }
     };
 
-    const openEventModal = (item) => {
-        setSelectedItem(item);
-        setIsEModalOpen(true);
+    // 쿠폰 등록
+    const handleCouponSubmit = async () => {
+        if (newCoupon.c_name && newCoupon.c_get_date && newCoupon.c_use_date) {
+            try {
+                const addedCoupon = await ApiEvent.createCoupons(newCoupon);
+                setCoupons((prevCoupons) => [...prevCoupons, addedCoupon]);
+                setNewCoupon({
+                    c_name: "",
+                    c_use_date: "",
+                    c_get_date: "",
+                    c_type: "",
+                    c_price: "",
+                    s_id: newCoupon.s_id,
+                });
+            } catch (error) {
+                console.error("Error creating coupon:", error);
+            }
+        }
     };
 
-    const closeEventModal = () => {
-        setSelectedItem(null);
-        setIsEModalOpen(false);
-    };
-
-    const openCouponModal = (item) => {
-        setSelectedItem(item);
-        setIsCModalOpen(true);
-    };
-
-    const closeCouponModal = () => {
-        setSelectedItem(null);
-        setIsCModalOpen(false);
-    };
-
+    const openEventModal = (item) => { setSelectedItem(item); setIsEModalOpen(true); };
+    const closeEventModal = () => { setSelectedItem(null); setIsEModalOpen(false); };
+    const openCouponModal = (item) => { setSelectedItem(item); setIsCModalOpen(true); };
+    const closeCouponModal = () => { setSelectedItem(null); setIsCModalOpen(false); };
 
     // 이벤트와 쿠폰 상태 관리
-    const [events, setEvents] = useState(initialEvents); // 초기 이벤트 데이터
-    const [coupons, setCoupons] = useState(initialCoupons); // 초기 쿠폰 데이터
-    const [sortedData, setSortedData] = useState({ events: [], coupons: [] }); // 정렬된 데이터 상태
+    const [events, setEvents] = useState([]);
+    const [coupons, setCoupons] = useState([]);
+    const [sortedData, setSortedData] = useState({ events: [], coupons: [] });
+    const [sortOrder, setSortOrder] = useState("recently");
 
     useEffect(() => {
-        // 이벤트와 쿠폰 함께 정렬
-        const updatedEvents = [...events].sort((a, b) => {
+        const today = new Date(); // 현재 날짜
+
+        // 🔹 이벤트 정렬
+        const sortedEvents = [...events].sort((a, b) => {
             if (sortOrder === "recently") {
-                return new Date(b.start) - new Date(a.start); // 최신순
-            } else if (sortOrder === "endDate") {
-                return new Date(a.end) - new Date(b.end); // 마감일 순
+                return new Date(b.e_start_date) - new Date(a.e_start_date); // 최신순 (내림차순)
+            } else {
+                return new Date(a.e_end_date) - new Date(b.e_end_date); // 마감일 순 (오름차순)
             }
-            return 0;
         });
 
-        const updatedCoupons = [...coupons].sort((a, b) => {
-            if (sortOrder === "recently") {
-                return new Date(b.start) - new Date(a.start); // 최신순
-            } else if (sortOrder === "endDate") {
-                return new Date(a.end) - new Date(b.end); // 마감일 순
-            }
-            return 0;
-        });
+        // 🔹 쿠폰 정렬
+        const sortedCoupons = [...coupons]
+            .map(coupon => ({
+                ...coupon,
+                remainingDays: coupon.c_use_date - today.getDate() // 남은 일수 계산
+            }))
+            .filter(coupon => coupon.remainingDays >= 0) // 🔥 만료된 쿠폰 제거
+            .sort((a, b) => {
+                if (sortOrder === "recently") {
+                    return new Date(b.c_get_date) - new Date(a.c_get_date); // 최신순 (내림차순)
+                } else {
+                    return a.remainingDays - b.remainingDays; // 남은 일수 짧은 순 (오름차순)
+                }
+            });
 
-        setSortedData({ events: updatedEvents, coupons: updatedCoupons });
-    }, [sortOrder, events, coupons]); // 정렬 기준, 이벤트 또는 쿠폰 변경 시 실행
+        setSortedData({ events: sortedEvents, coupons: sortedCoupons });
+    }, [sortOrder, events, coupons]);
 
-    const handleDeleteEvent = (eventId) => {
-        setEvents((prevEvents) => prevEvents.filter((event) => event.id !== eventId));
-    };
-
-    const handleDeleteCoupon = (couponId) => {
-        setCoupons((prevCoupons) => prevCoupons.filter((coupon) => coupon.id !== couponId));
-    };
-
-
-
-    // // GET 요청으로 초기 데이터 가져오기
-    // useEffect(() => {
-    //     fetch("http://localhost:5000/api/events")
-    //         .then((response) => response.json())
-    //         .then((data) => setEvents(data))
-    //         .catch((error) => console.error("Error fetching events:", error));
-    //
-    //     fetch("http://localhost:5000/api/coupons")
-    //         .then((response) => response.json())
-    //         .then((data) => setCoupons(data))
-    //         .catch((error) => console.error("Error fetching coupons:", error));
-    // }, []);
-    //
-    // // POST 요청으로 이벤트 추가
-    // const handleEventSubmit = () => {
-    //     fetch("http://localhost:1271/shop/addevent", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(newEvent),
-    //     })
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             setEvents(data.events); // 상태 업데이트
-    //             setNewEvent({ title: "", start: "", end: "", detail: "" }); // 입력 초기화
-    //         })
-    //         .catch((error) => console.error("Error adding event:", error));
-    // };
-    //
-    // // POST 요청으로 쿠폰 추가
-    // const handleCouponSubmit = () => {
-    //     fetch("http://localhost:5000/api/coupons", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(newCoupon),
-    //     })
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             setCoupons(data.coupons); // 상태 업데이트
-    //             setNewCoupon({
-    //                 title: "",
-    //                 start: "",
-    //                 end: "",
-    //                 discountType: "",
-    //                 discountValue: "",
-    //                 minimumPurchase: "",
-    //             }); // 입력 초기화
-    //         })
-    //         .catch((error) => console.error("Error adding coupon:", error));
-    // };
 
 
 
@@ -206,7 +211,7 @@ export default function EventCouponMenu() {
                         <div className="border rounded">
                             <table className="w-full table-auto">
                                 <thead>
-                                <tr className="border-b ">
+                                <tr className="border-b">
                                     <th className="p-2 text-left">제목</th>
                                     <th className="p-2 text-left">시작일</th>
                                     <th className="p-2 text-left">종료일</th>
@@ -214,22 +219,21 @@ export default function EventCouponMenu() {
                                 </thead>
                                 <tbody>
                                 {sortedData.events.map((event) => (
-                                    <tr key={event.id} className="border-b hover:bg-gray-50"
-                                        onClick={() => openEventModal(event)}>
+                                    <tr key={event.e_id} className="border-b hover:bg-gray-50" onClick={() => openEventModal(event)}>
                                         <td
                                             className="p-2 cursor-pointer"
                                             onClick={() => console.log(event)}
                                         >
-                                            {event.title}
+                                            {event.e_name}
                                         </td>
-                                        <td className="p-2">{event.start}</td>
+                                        <td className="p-2">{event.e_start_date}</td>
                                         <td className="p-2 flex flex-row justify-between items-center">
-                                            {event.end}
+                                            {event.e_end_date}
                                             <button
                                                 className="text-red-500 hover:text-red-700 ml-auto"
                                                 onClick={(e) => {
-                                                    e.stopPropagation(); // 이벤트 전파 방지
-                                                    handleDeleteEvent(event.id); // 삭제
+                                                    e.stopPropagation();
+                                                    //handleDeleteEvent(event.e_id);
                                                 }}
                                             >
                                                 <Trash2 size={18}/>
@@ -249,34 +253,35 @@ export default function EventCouponMenu() {
                             <table className="w-full table-auto border-collapse">
                                 <thead>
                                 <tr className="border-b">
-                                    <th className="p-2 text-left">제목</th>
-                                    <th className="p-2 text-left">시작일</th>
-                                    <th className="p-2 text-left">종료일</th>
+                                    <th className="p-2 w-1/2 text-left">쿠폰 이름</th>
+                                    <th className="p-2 w-1/2 text-left">남은 수령 가능 기간</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {sortedData.coupons.map((coupon) => (
-                                    <tr key={coupon.id} className="border-b hover:bg-gray-50"
+                                    <tr key={coupon.c_id} className="w-full border-b hover:bg-gray-50"
                                         onClick={() => openCouponModal(coupon)}>
                                         <td
-                                            className="p-2 cursor-pointer"
+                                            className="p-2 w-1/2 cursor-pointer"
                                             onClick={() => console.log(coupon)}
                                         >
-                                            {coupon.title}
+                                            {coupon.c_name}
                                         </td>
-                                        <td className="p-2">{coupon.start}</td>
                                         <td className="p-2 flex flex-row justify-between items-center">
-                                            {coupon.end}
+                                            <div className="px-12 flex justify-center">
+                                                {coupon.c_get_date}일
+                                            </div>
                                             <button
-                                                className="text-red-500 hover:text-red-700 ml-auto"
+                                                className="w-1/2 text-red-500 hover:text-red-700 flex justify-end"
                                                 onClick={(e) => {
-                                                    e.stopPropagation(); // 이벤트 전파 방지
-                                                    handleDeleteCoupon(coupon.id); // 삭제
+                                                    e.stopPropagation();
+                                                    //handleDeleteEvent(event.e_id);
                                                 }}
                                             >
                                                 <Trash2 size={18}/>
                                             </button>
                                         </td>
+
                                     </tr>
                                 ))}
                                 </tbody>

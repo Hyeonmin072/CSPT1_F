@@ -5,25 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91a0d9ef-cc73-41b3-996e-16f7748f6dbb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ScheduleDate.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/eventmenu/EventCouponMenu.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/dummydata/DummyDesigners.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/dummydata/DummyEvents.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/CouponCreateModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/CouponDetailModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/DetailModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/modal/event-coupon/EventCreateModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/evnet-coupon-menu/EventCouponMenuPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientCheck.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/ClientCheck.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/DesignerSchedule.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/clientcheck/DesignerSchedule.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/Notice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ScheduleQuick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/DesingerAbout/main/ScheduleQuick.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/main/MainIcons.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/reservation/ShopReservation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/reservation/ShopReservation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/dummydata/DummySchedules.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/dummydata/DummySchedules.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/modal/sidebar/BusinessSideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/businessabout/designermanage/DesignerSetting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/businessabout/designermanage/DesignerSetting.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="fronten-QRcreate" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -61,15 +45,22 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;frontend-event__coupon__manage&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/CSPT1_B&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Documents\GitHub\CSPT1\frontend\src\components\modal" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/frontend/package.json" />
@@ -83,6 +74,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.dev" />
+        <item itemvalue="npm.dev" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.dev" />
       </list>
@@ -110,13 +103,48 @@
       <workItem from="1742888114633" duration="1766000" />
       <workItem from="1742892163590" duration="4734000" />
       <workItem from="1742954500329" duration="4513000" />
-      <workItem from="1742969245423" duration="2138000" />
-      <workItem from="1743051076173" duration="16797000" />
-      <workItem from="1743149310186" duration="359000" />
+      <workItem from="1742969245423" duration="6059000" />
+      <workItem from="1743167062031" duration="133000" />
+      <workItem from="1743474159116" duration="39000" />
+      <workItem from="1743485339745" duration="10861000" />
+      <workItem from="1743496441505" duration="2527000" />
+      <workItem from="1743558247162" duration="25000" />
+      <workItem from="1743559321900" duration="6744000" />
+      <workItem from="1743567936116" duration="976000" />
+      <workItem from="1743569846182" duration="70000" />
+      <workItem from="1743573342454" duration="4000" />
+      <workItem from="1743573638668" duration="12068000" />
+      <workItem from="1743662784446" duration="10246000" />
+      <workItem from="1743753186455" duration="2050000" />
+      <workItem from="1744090509505" duration="14532000" />
+      <workItem from="1744166331997" duration="69000" />
+      <workItem from="1744166494064" duration="153000" />
+      <workItem from="1744167519987" duration="3046000" />
+      <workItem from="1744172766402" duration="1950000" />
+      <workItem from="1744185289801" duration="6288000" />
+      <workItem from="1744246691049" duration="68000" />
+      <workItem from="1744259035813" duration="2129000" />
+      <workItem from="1744266967916" duration="1255000" />
+      <workItem from="1744271569674" duration="839000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

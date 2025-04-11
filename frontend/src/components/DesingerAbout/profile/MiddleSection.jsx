@@ -20,14 +20,14 @@ export default function MiddleSection() {
             name: "문지훈",
             rating: 5,
             comment: "정말 최고의 디자이너예요!",
-            date: new Date(2025, 2, 21), // 리뷰 작성 날짜
+            date: "2025-04-01", // 리뷰 작성 날짜
         },
         {
             id: 2,
             name: "김민수",
             rating: 4,
             comment: "서비스도 훌륭하고 만족했습니다.",
-            date: new Date(2025, 3, 22), // 리뷰 작성 날짜
+            date: "2025-04-02", // 리뷰 작성 날짜
         },
     ];
 
@@ -61,7 +61,6 @@ export default function MiddleSection() {
     const sliderSettings = {
         dots: true,
         infinite: true,
-        speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
         nextArrow: <NextArrow />,
@@ -109,7 +108,7 @@ export default function MiddleSection() {
                 {reviews.map((review) => (
                     <div
                         key={review.id}
-                        className="bg-gray-100 p-3 rounded-lg h-[330px] flex flex-col"
+                        className="bg-gray-100 p-3 rounded-lg h-[330px] flex flex-col slick-slide"
                     >
                         {/* Header */}
                         <div className="flex items-center border-b-2 pb-2 mb-4 gap-3">
@@ -151,6 +150,7 @@ export default function MiddleSection() {
                     </div>
                 ))}
             </Slider>
+
         </>
     );
 }
