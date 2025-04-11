@@ -5,15 +5,15 @@ import { Zap, LogOut, Bell } from "lucide-react";
 // 사이드바 컴포넌트 자체
 
 const DesignerSideBar = ({ isOpen, onClose }) => {
-    // 각각 페이지가 완성되면 path 추가
-    const menuItems = [
-        { id: 1, title: "홈", path: "/designer"},
-        { id: 2, title: "고객 확인", path: "/client"},
-        { id: 3, title: "실적 확인", path: "/sales"},
-        { id: 4, title: "구인구직", path: "/job" },
-        { id: 5, title: "이력서", path: "/cv"},
-        { id: 6, title: "프로필", path: "/profile"},
-    ];
+  // 각각 페이지가 완성되면 path 추가
+  const menuItems = [
+    { id: 1, title: "홈", path: "/designer" },
+    { id: 2, title: "고객 확인", path: "/client" },
+    { id: 3, title: "실적 확인", path: "/sales" },
+    { id: 4, title: "구인구직", path: "/job" },
+    { id: 5, title: "이력서", path: "/cv" },
+    { id: 6, title: "프로필", path: "/profile" },
+  ];
 
   // 클릭 핸들러
   const handleClick = () => {
@@ -23,8 +23,16 @@ const DesignerSideBar = ({ isOpen, onClose }) => {
 
   return (
     <>
+      {/* 오버레이 */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[60]"
+          onClick={onClose}
+        />
+      )}
+
       <div
-        className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-[70] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

@@ -66,13 +66,13 @@ const BusinessSideBar = ({ isOpen, onClose }) => {
       {/* 오버레이 */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[60]"
           onClick={onClose}
         />
       )}
 
       <div
-        className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed top-0 right-0 w-64 h-full rounded-md bg-white w-[370px] shadow-lg transform transition-transform duration-300 ease-in-out z-[70] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

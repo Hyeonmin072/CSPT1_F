@@ -68,9 +68,7 @@ const SignIntegration = ({ isOpen, onClose }) => {
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
-              "::-webkit-scrollbar": {
-                display: "none",
-              },
+              WebkitScrollbar: "none",
             }}
           >
             <SignupContainer
