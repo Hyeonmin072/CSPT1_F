@@ -24,7 +24,6 @@ import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
-import ChattingPage from "./pages/chatting/ChattingPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -136,10 +135,6 @@ function App() {
           <Route
             path="/reviews/photo"
             element={<PhotoReview onLoginClick={openLoginModal} />}
-          />
-          <Route
-            path="/chat"
-            element={<ChattingPage onLoginClick={openLoginModal} />}
           />
 
           {/* 고객 전용 라우트 */}

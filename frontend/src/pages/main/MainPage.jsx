@@ -3,6 +3,7 @@ import ShopData from "../../components/common/ShopData";
 import Header from "../../components/common/Header";
 import { ArrowRight, Star, TrendingUp, Users, Calendar } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import SignIntergration from "../../components/sign/SignIntergration";
 
 // 스크롤 애니메이션을 위한 커스텀 훅
 function useScrollAnimation() {
@@ -55,9 +56,19 @@ function AnimatedSection({ children, className = "", delay = 0 }) {
 }
 
 export default function MainPage() {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <Header onLoginClick={openLoginModal} />
 
       {/* 헤더 높이만큼 여백 추가 */}
       <div className="h-20"></div>
@@ -203,6 +214,8 @@ export default function MainPage() {
           <div>커스텀 광고 내용</div>
         </MainBottomAd>
       </div>
+
+      <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </div>
   );
 }
