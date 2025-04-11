@@ -139,7 +139,7 @@ export default function Header() {
   return (
     <>
       {/* 상단바 */}
-      <header className="bg-white shadow-md w-full z-40">
+      <header className="fixed top-0 left-0 right-0 bg-white shadow-md w-full z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 w-full">
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center">
