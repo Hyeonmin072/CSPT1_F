@@ -4,6 +4,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //npm install react-toastify
 
+// 공통 컴포넌트
+import Footer from "./components/common/Footer";
+
 // 고객
 import MainPage from "./pages/main/MainPage.jsx";
 import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
@@ -106,7 +109,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col">
         <Routes>
           {/* 기본 라우트 */}
           <Route
@@ -288,6 +291,8 @@ function App() {
           draggable
           theme="light"
         />
+        {/* Footer 컴포넌트 */}
+        <Footer />
       </div>
     </Router>
   );

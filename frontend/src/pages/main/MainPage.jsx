@@ -198,13 +198,11 @@ export default function MainPage() {
       <AnimatedSection>{/* <ShopData /> */}</AnimatedSection>
 
       {/* 하단 광고 */}
-      <AnimatedSection className="flex justify-center -mt-1">
-        <div className="max-w-3xl w-full px-4">
-          <MainBottomAd height={150} className="bg-gray-50">
-            <div>커스텀 광고 내용</div>
-          </MainBottomAd>
-        </div>
-      </AnimatedSection>
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <MainBottomAd height={150} className="bg-gray-50">
+          <div>커스텀 광고 내용</div>
+        </MainBottomAd>
+      </div>
     </div>
   );
 }
