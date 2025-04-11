@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
-import RegisterButton from "../button/RegisterButton";
-import HamburgerButton from "../button/UserHamburgerButton.jsx";
+import UserHamburgerButton from "../button/UserHamburgerButton";
 import DesignerSideBar from "../modal/sidebar/DesignerSideBar";
 import axiosInstance from "../sign/axios/AxiosInstance";
+import Swal from "sweetalert2";
+import hairLogo from "../../assets/logo/hairlogo.png";
 
 export default function DesignerHeader() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,27 +60,30 @@ export default function DesignerHeader() {
   return (
     <>
       {/* 상단바 */}
-      <header className="bg-white shadow-sm w-full z-40">
+      <header className="fixed top-0 left-0 right-0 bg-white shadow-md w-full z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 w-full">
           <div className="flex justify-between items-center w-full">
-            <div className="leading-[0.85]">
-              <h1 className="text-[26px] font-[900] font-sans">HAIRISM</h1>
-              <span className="text-[13px] text-black font-[700] flex justify-center">
-                My Hair Partner
-              </span>
+            <div className="flex items-center">
+              <img src={hairLogo} alt="Hairism Logo" className="h-12 mr-3" />
+              <div className="leading-[0.85]">
+                <h1 className="text-[26px] font-[900] font-sans">HAIRISM</h1>
+                <span className="text-[13px] text-black font-[700] flex justify-center">
+                  My Hair Partner
+                </span>
+              </div>
             </div>
             <nav className="flex space-x-8 gap-[60px] font-bold">
-              <Link to="/designer" className="text-gray-700">
+              <Link to="/" className="text-gray-700">
                 홈
               </Link>
-              <Link to="/client" className="text-gray-700">
-                고객확인
+              <Link to="/hairshop" className="text-gray-700">
+                헤어샵
               </Link>
-              <Link to="/job" className="text-gray-700">
-                구인구직
+              <Link to="/designer" className="text-gray-700">
+                디자이너
               </Link>
-              <Link to="/sales" className="text-gray-700">
-                실적확인
+              <Link to="/chat" className="text-gray-700">
+                채팅
               </Link>
             </nav>
             <div className="flex space-x-4">
@@ -87,13 +92,10 @@ export default function DesignerHeader() {
                   <span className="text-gray-700 font-bold mt-2">
                     {userName}님
                   </span>
-                  <HamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+                  <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
                 </>
               ) : (
-                <>
-                  <RegisterButton />
-                  <LoginButton />
-                </>
+                <LoginButton />
               )}
             </div>
           </div>
