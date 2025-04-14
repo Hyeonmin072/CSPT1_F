@@ -24,6 +24,7 @@ import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
+import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -174,6 +175,7 @@ function App() {
                   <SubscriptDesignerPage onLoginClick={openLoginModal} />
                 }
               />
+              <Route path="/designer/match" element={<DesignerMatchPage />} />
             </>
           )}
 

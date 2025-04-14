@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { DesignerCard } from "../../components/designer/DesignerCard.jsx";
-import { RecommendationBox } from "../../components/designer/RecommendationBox.jsx";
 import Header from "../../components/common/Header.jsx";
 import { Loader2 } from "lucide-react";
 
@@ -190,14 +189,6 @@ export default function DesignerPage() {
               등록된 디자이너가 없습니다
             </div>
           )}
-        </div>
-
-        {/* 추천 디자이너 섹션 */}
-        <div className="bg-gray-100 py-12">
-          <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-2xl font-bold mb-6">추천 디자이너</h2>
-            <RecommendationBox />
-          </div>
         </div>
       </div>
     </div>

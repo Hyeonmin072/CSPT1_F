@@ -153,7 +153,7 @@ export default function MainPage() {
       {/* 최신 디자이너 섹션 */}
       <AnimatedSection className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">신입 디자이너</h2>
+          <h2 className="text-3xl font-bold">인기 디자이너</h2>
           <button className="flex items-center text-teal-600 hover:text-teal-700">
             더보기 <ArrowRight className="ml-2" />
           </button>
