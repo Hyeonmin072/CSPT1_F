@@ -30,7 +30,8 @@ export default function DesignerTimeSelect({ selectedTime, handleTimeClick, unav
                     <button
                         key={time}
                         onClick={() => handleButtonClick(time)}
-                        className={`py-2 border rounded-lg ${unavailableTimes.includes(time) ? 'bg-gray-400 text-gray-700' : time === selectedTime ? 'bg-black text-white font-bold' : 'bg-gray-200'}`}
+                        className={`py-2 border rounded-lg 
+                        ${unavailableTimes.includes(time) ? 'bg-gray-400 text-gray-700' : time === selectedTime ? 'bg-black text-white font-bold' : 'bg-gray-200'}`}
                     >
                         {time}
                     </button>

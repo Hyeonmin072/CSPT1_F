@@ -18,7 +18,7 @@ export default function ShopHeader({ onClick }){
                 </button>
 
                 {shopnames.map((shop, index) => (
-                    <span key={index} className="bg-teal-100 text-black px-5 py-2 rounded-lg text-sm font-semibold">
+                    <span key={index} className="bg-green-500 text-black px-5 py-2 rounded-lg text-sm font-semibold">
                         {shop.name}
                     </span>
                 ))}

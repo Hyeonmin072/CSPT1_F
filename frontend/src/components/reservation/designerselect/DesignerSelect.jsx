@@ -1,6 +1,6 @@
 import { Heart, Star, Check, MessageCircleMore } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import designerEX from "../../../assets/hairshop/designerEX.jpg";
 import d1 from "../../../assets/designer/d1.png";
@@ -13,7 +13,12 @@ export default function DesignerSelect({handleDesignerSelect}) {
     const navigate = useNavigate();
     const [likedDesigners, setLikedDesigners] = useState([]);
 
-    // 좋아요 로직
+    useEffect(() => {
+        // 페이지 로드 시 스크롤 위치 초기화
+        window.scrollTo(0, 0);
+    }, []); // 빈 의존성 배열로 컴포넌트가 마운트될 때만 실행
+
+    // 좋아요
     const handleLikeClick = (designerId) => {
         if (likedDesigners.includes(designerId)) {
             setLikedDesigners(likedDesigners.filter(id => id !== designerId));
@@ -25,7 +30,8 @@ export default function DesignerSelect({handleDesignerSelect}) {
     // 임시 디자이너 리스트
     const designers = [
         { id: 1, name: '디자이너 해나', experience: '7년', description: '앞머리 컬러링 및 건강하게 센스있게', likes: '3.9K', rating: 5.0, reviews: 521, image: designerEX},
-        { id: 2, name: '디자이너 유용운', experience: '9년', description: '세련된 감각과 아름다움을 선물해드립니다.', likes: '1.4K', rating: 4.5, reviews: 466, image: d1}
+        { id: 2, name: '디자이너 유용운', experience: '9년', description: '세련된 감각과 아름다움을 선물해드립니다.', likes: '1.4K', rating: 4.5, reviews: 466, image: d1},
+        { id: 3, name: '디자이너 유용운', experience: '9년', description: '세련된 감각과 아름다움을 선물해드립니다.', likes: '1.4K', rating: 4.5, reviews: 466, image: d1}
     ];
 
     const handleReviewClick = () => {

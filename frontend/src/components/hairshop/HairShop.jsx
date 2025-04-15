@@ -5,14 +5,15 @@ import logo from "../../assets/logo/logo.png";
 
 import HairSearch from "./HairSearch.jsx";
 import HairReservationButton from "../button/HairReservationButton.jsx"
+export const shops = [
+    { id: 1, name: "HAIRSHOP 1", subject: "subject1", description: "설명 1", image: h1 },
+    { id: 2, name: "HAIRSHOP 2", subject: "subject2", description: "설명 2", image: h1 },
+    { id: 3, name: "HAIRSHOP 3", subject: "subject3", description: "설명 3", image: h1 },
+    { id: 4, name: "HAIRSHOP 4", subject: "subject4", description: "설명 4", image: h1 },
+];
 
 export default function ShopPage({ containerRef }) {
-    const shops = [
-        { id: 1, name: "HAIRSHOP 1", subject: "subject1", description: "설명 1", image: h1 },
-        { id: 2, name: "HAIRSHOP 2", subject: "subject2", description: "설명 2", image: h1 },
-        { id: 3, name: "HAIRSHOP 3", subject: "subject3", description: "설명 3", image: h1 },
-        { id: 4, name: "HAIRSHOP 4", subject: "subject4", description: "설명 4", image: h1 },
-    ];
+
 
     const [isVisible, setIsVisible] = useState([]); // isVisible 초기화
 
@@ -29,13 +30,13 @@ export default function ShopPage({ containerRef }) {
     const navigate = useNavigate();
 
     return (
-        <div className="max-w-7xl mx-auto px-4 flex justify-center items-center">
+        <div className="max-w-5xl mx-auto px-4 flex justify-center items-center">
             <div className="flex flex-col items-center gap-6 mx-auto w-full">
                 <div className="flex justify-center w-full pt-4">
                     <HairSearch/>
                 </div>
 
-                <div ref={containerRef} className="mt-2 rounded-lg w-[1000px]">
+                <div ref={containerRef} className="mt-2 rounded-lg w-full">
                     <div className="flex flex-col items-center gap-4 mx-auto">
                         {shops.map((shop, index) => (
                             <div
@@ -76,7 +77,7 @@ export default function ShopPage({ containerRef }) {
                                             <h2 className="text-base font-medium">{shop.description}</h2>
                                         </div>
 
-                                        <div className="flex mt-4">
+                                        <div className="flex mt-4 bg-green-500 w-[100px] rounded-lg">
                                             <HairReservationButton/>
                                         </div>
                                     </div>

@@ -14,6 +14,11 @@ export default function ShopDetail({ handleModalOpen }) {
     };
 
     useEffect(() => {
+        // 페이지 로드 시 스크롤 위치 초기화
+        window.scrollTo(0, 0);
+    }, []); // 빈 의존성 배열로 컴포넌트가 마운트될 때만 실행
+
+    useEffect(() => {
         const handleScroll = () => {
             setScrollPosition(window.scrollY); // 스크롤에 따라 위치 업데이트
         };
@@ -54,7 +59,7 @@ export default function ShopDetail({ handleModalOpen }) {
             </div>
 
             {/* 오른쪽: 디자이너 정보 */}
-            <div className="flex flex-row w-1/5">
+            <div className="flex flex-row w-1/4">
                 <DesignerInfo />
             </div>
         </div>
