@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 
-export default function GiveCoupon() {
+export default function GiveCoupon({ isModalOpen, handleCouponModalOpen, handleCouponModalClose }) {
   const [selectedCoupons, setSelectedCoupons] = useState([]);
   const navigate = useNavigate();
   const [coupons] = useState([
@@ -30,13 +30,7 @@ export default function GiveCoupon() {
     navigate("/coupon");
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+
 
   const handleCouponSelect = (coupon) => {
     setSelectedCoupons((prevCoupons) => {
@@ -48,18 +42,11 @@ export default function GiveCoupon() {
 
   return (
     <div className="mb-4 flex flex-col justify-center items-center w-full">
-      <button
-        className="bg-[#03DAC5] text-black px-6 py-3 rounded-lg flex items-center gap-2"
-        onClick={handleModalOpen}
-      >
-        최대 8,500원 할인 쿠폰 받기
-      </button>
-
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-          <div className="bg-white p-10 rounded-lg text-center relative w-[600px] h-[600px]">
+          <div className="bg-white p-10 rounded-lg text-center relative w-[600px] h-[570px] z-100">
             <button
-              onClick={handleModalClose}
+              onClick={handleCouponModalClose}
               className="absolute top-3 right-5 text-gray-500"
             >
               <X />
@@ -78,7 +65,7 @@ export default function GiveCoupon() {
                                       selectedCoupons.some(
                                         (c) => c.id === coupon.id
                                       )
-                                        ? "bg-[#03DAC5] text-white"
+                                        ? "bg-green-400 text-white"
                                         : "bg-white text-black"
                                     }`}
                 >
@@ -86,17 +73,6 @@ export default function GiveCoupon() {
                   <p>{coupon.description}</p>
                 </div>
               ))}
-            </div>
-
-            {/* "내 쿠폰함 보기" 버튼 배치 */}
-            <div className="mt-auto">
-              <button
-                onClick={handleCouponClick}
-                className="bg-[#03DAC5] text-white px-4 py-2 rounded-lg"
-                disabled={selectedCoupons.length === 0}
-              >
-                내 쿠폰함 보기
-              </button>
             </div>
           </div>
         </div>

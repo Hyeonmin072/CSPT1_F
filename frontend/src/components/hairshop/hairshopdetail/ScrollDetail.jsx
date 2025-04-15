@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import HairShopDetailReview from "../../layout/HairShopDetailReview.jsx";
 import DetailIcon from "./DetailIcon.jsx";
 import ReviewImg from "./DetailReviewimg.jsx";
+import AllCouponGive from "../../modal/coupon/AllCouponGive.jsx";
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DetailTab from "./DetailTab.jsx";
@@ -44,7 +45,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
         const handleScroll = (event) => {
             const header = headerRef.current;
             if (header && scrollPosition > headerFixedThreshold) {
-                smoothScroll(header, headerInitial, 500);
+                smoothScroll(header, headerInitial, 700);
                 event.preventDefault();
             }
         };
@@ -76,7 +77,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
         <>
             {scrollPosition > headerFixedThreshold ? (
                 <div
-                    className="duration-500"
+                    className="duration-300"
                     style={{
                         position: "relative",
                         width: "100%",
@@ -122,13 +123,13 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
 
                             <div className="mb-4 flex flex-col justify-center items-center w-full">
                                 <button
-                                    className="bg-[#03DAC5] text-black px-6 py-3 rounded-lg flex items-center gap-2"
+                                    className="bg-green-500 text-black px-6 py-3 rounded-lg flex items-center gap-2"
                                     onClick={() => {
                                         console.log("쿠폰 받기 클릭확인");
                                         handleModalOpen();
                                     }}
                                 >
-                                    최대 8,500원 할인 쿠폰 받기
+                                    할인 쿠폰 받기
                                 </button>
                             </div>
 
@@ -156,7 +157,7 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
 
                     {/* Detail 컨텐츠: Header 아래에서 추가 스크롤 적용 */}
                     <div
-                        className="duration-300 bg-white p-10 rounded-lg"
+                        className="duration-500 bg-white p-10 rounded-lg"
                         style={{
                             position: 'relative',
                             top: `-230px`,
@@ -181,13 +182,13 @@ export default function ScrollDetail({ handleModalOpen, scrollPosition, setScrol
 
                             <div className="mb-4 flex flex-col justify-center items-center w-full">
                                 <button
-                                    className="bg-[#03DAC5] text-black px-6 py-3 rounded-lg flex items.center gap-2"
+                                    className="bg-green-500 text-black px-6 py-3 rounded-lg flex items.center gap-2"
                                     onClick={() => {
                                         console.log("쿠폰 받기 클릭확인");
                                         handleModalOpen();
                                     }}
                                 >
-                                    최대 8,500원 할인 쿠폰 받기
+                                    할인 쿠폰 받기
                                 </button>
                             </div>
 

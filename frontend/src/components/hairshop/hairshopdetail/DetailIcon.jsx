@@ -11,20 +11,29 @@ export default function DetailIcon(){
     return(
         <div className="p-5 flex gap-20 mb-5 items-center justify-center">
             <div>
-                <StarHalf/>
-                <p className="mt-5">평점</p>
+
+                <button>
+                    <StarHalf/>
+                    <p className="mt-5">평점</p>
+                </button>
             </div>
             <div>
-                <MapPin/>
-                <p className="mt-5">위치</p>
+                <button>
+                    <MapPin/>
+                    <p className="mt-5">위치</p></button>
             </div>
             <div>
-                <PhoneCall/>
-                <p className="mt-5">전화</p>
+
+                <button>
+                    <PhoneCall/>
+                    <p className="mt-5">전화</p>
+                </button>
             </div>
             <div>
-                <Link/>
-                <p className="mt-5">공유</p>
+                <button>
+                    <Link/>
+                    <p className="mt-5">공유</p>
+                </button>
             </div>
         </div>
     );

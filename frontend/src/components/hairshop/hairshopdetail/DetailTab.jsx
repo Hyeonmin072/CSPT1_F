@@ -13,7 +13,7 @@ export default function DetailTab({ activeTab, handleShopDetailClick, handleRese
                     <button
                         onClick={handleShopDetailClick}
                         className={`px-4 py-2 rounded-lg ${
-                            activeTab === "ShopDetail" ? "bg-[#03DAC5] text-black" : "bg-white-200"
+                            activeTab === "ShopDetail" ? "bg-green-500 text-black" : "bg-white-200"
                         }`}
                     >
                         상세정보
@@ -21,7 +21,7 @@ export default function DetailTab({ activeTab, handleShopDetailClick, handleRese
                     <button
                         onClick={handleReviewClick}
                         className={`px-4 py-2 rounded-lg ${
-                            activeTab === "Review" ? "bg-[#03DAC5] text-white" : "bg-white-200"
+                            activeTab === "Review" ? "bg-green-500 text-white" : "bg-white-200"
                         }`}
                     >
                         리뷰
@@ -29,7 +29,7 @@ export default function DetailTab({ activeTab, handleShopDetailClick, handleRese
                 </div>
 
                 {/* 예약하기 버튼 (오른쪽으로 이동) */}
-                <div className="flex bg-[#03DAC5] text-white rounded-lg ml-auto">
+                <div className="flex bg-green-500 text-white rounded-lg ml-auto">
                     <HairReservationButton/>
                 </div>
             </div>

@@ -11,8 +11,8 @@ export default function MenuHeader(){
                     <ChevronLeft className="w-5 h-5"/>
                 </button>
 
-                <span className="bg-teal-100 text-black px-5 py-2 rounded-lg text-sm font-semibold">
-                    날짜 선택
+                <span className="bg-green-500 text-black px-5 py-2 rounded-lg text-sm font-semibold">
+                    메뉴 선택
                 </span>
 
             </div>

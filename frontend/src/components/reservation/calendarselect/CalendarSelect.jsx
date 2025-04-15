@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 import CalendarHeader from "./CalendarHeader.jsx";
@@ -7,7 +7,9 @@ import DesignerTimeSelect from "./Designer&TimeSelect.jsx";
 
 export default function CalendarSelect() {
     const navigate = useNavigate();
-    const [selectedDate, setSelectedDate] = useState('13');
+    const currentDate = new Date();
+    const today = currentDate.getDate(); // 오늘 날짜 가져오기
+    const [selectedDate, setSelectedDate] = useState(today);
     const [selectedTime, setSelectedTime] = useState(null);
 
     const dates = [
@@ -44,6 +46,11 @@ export default function CalendarSelect() {
         }
     };
 
+    useEffect(() => {
+        // 페이지 로드 시 스크롤 위치 초기화
+        window.scrollTo(0, 0);
+    }, []); // 빈 의존성 배열로 컴포넌트가 마운트될 때만 실행
+
     return (
         <>
             <div className="flex items-center justify-between px-10 py-4">
@@ -56,7 +63,14 @@ export default function CalendarSelect() {
                     <hr className="w-full border-t border-gray-300 mb-6" />
 
                     <div className="mb-4 w-full">
-                        <Calendar dates={dates} selectedDate={selectedDate} handleDateClick={handleDateClick} />
+                        <Calendar
+                            selectedDate={selectedDate}
+                            handleDateClick={(date) => {
+                                console.log(date);
+                                setSelectedDate(date);
+                            }}
+                            setSelectedDate={setSelectedDate }
+                        />
                         <hr className="w-full border-t border-gray-300 mt-5" />
                     </div>
 

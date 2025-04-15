@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ChatSidebar from "../../components/chat/ChatSidebar.jsx";
 import ChatWindow from "../../components/chat/ChatWindow.jsx";
+import Header from "../../components/common/Header.jsx";
 
 const ChattingPage = () => {
     const [selectedChat, setSelectedChat] = useState(null);
@@ -52,18 +53,23 @@ const ChattingPage = () => {
     }, []);
 
     return (
-        <div className="flex w-full h-auto bg-white justify-center items-center">
-            <div className="flex w-full max-w-[1300px] h-[90vh] bg-white rounded-lg overflow-hidden">
-                <ChatSidebar setSelectedChat={setSelectedChat} selectedChat={selectedChat} chats={chats} setChats={setChats} />
-                {selectedChat ? (
-                    <ChatWindow selectedChat={selectedChat} socket={socket} />
-                ) : (
-                    <div className="flex-1 flex justify-center items-center text-gray-500">
-                        채팅을 시작하세요
-                    </div>
-                )}
+        <>
+            <Header/>
+            <div className="flex w-full h-auto bg-white justify-center items-center">
+                <div className="flex w-full max-w-[1300px] h-[90vh] bg-white rounded-lg overflow-hidden">
+                    <ChatSidebar setSelectedChat={setSelectedChat} selectedChat={selectedChat} chats={chats}
+                                 setChats={setChats}/>
+                    {selectedChat ? (
+                        <ChatWindow selectedChat={selectedChat} socket={socket}/>
+                    ) : (
+                        <div className="flex-1 flex justify-center items-center text-gray-500">
+                            채팅을 시작하세요
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
+
     );
 };
 

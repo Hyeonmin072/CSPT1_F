@@ -48,7 +48,7 @@ export default function HairShopDetailPage() {
                                 <div
                                     key={coupon.id}
                                     className={`border p-10 mb-4 cursor-pointer ${
-                                        selectedCoupons.some((c) => c.id === coupon.id) ? "bg-[#70EFDE]" : "bg-white"
+                                        selectedCoupons.some((c) => c.id === coupon.id) ? "bg-green-500 text-gray-200" : "bg-white"
                                     }`}
                                     onClick={() => handleCouponSelect(coupon)}
                                 >

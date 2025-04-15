@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 //npm install react-toastify 
 
+import ChattingPage from "./pages/chatting/ChattingPage.jsx";
+
 // 고객
 import MainPage from "./pages/main/MainPage.jsx";
 import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
@@ -45,7 +47,7 @@ import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.j
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("shop");
+  const [userRole, setUserRole] = useState("user");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -122,6 +124,10 @@ function App() {
           {/* 공통 라우트 */}
           <Route path="/social/signup" element={<SocialSignup />} />
           <Route
+              path="/chat"
+              element={<ChattingPage onLoginClick={openLoginModal} />}
+          />
+          <Route
             path="/hairshop"
             element={<HairShopPage onLoginClick={openLoginModal} />}
           />
@@ -143,7 +149,7 @@ function App() {
             <>
               
               <Route
-                path="/designerpage"
+                path="/designer"
                 element={<DesignerPage onLoginClick={openLoginModal} />}
               />
               <Route

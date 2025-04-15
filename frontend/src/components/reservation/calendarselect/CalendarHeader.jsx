@@ -11,7 +11,7 @@ export default function CalendarHeader(){
                     <ChevronLeft className="w-5 h-5"/>
                 </button>
 
-                <span className="bg-teal-100 text-black px-5 py-2 rounded-lg text-sm font-semibold">
+                <span className="bg-green-500 text-black px-5 py-2 rounded-lg text-sm font-semibold">
                     디자이너 선택
                 </span>
 

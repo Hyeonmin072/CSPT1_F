@@ -177,12 +177,12 @@ export default function MenuSelect() {
     const [selectedTab, setSelectedTab] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const sectionsRef = useRef({
-        추천메뉴: null,
-        커트: null,
-        펌: null,
-        염색: null,
-        클리닉: null,
-        스타일링: null,
+        추천메뉴: "",
+        커트: "",
+        펌: "",
+        염색: "",
+        클리닉: "",
+        스타일링: "",
     });
 
     const handleClick = (tab) => {
@@ -206,12 +206,12 @@ export default function MenuSelect() {
 
             <div className="lg:flex-row mx-20 gap-6">
                 <div className="flex flex-col items-center p-8 w-full">
-                    <h2 className="font-bold text-xl mb-6 w-full text-left text-gray-400">예약 정보</h2>
+                    <h2 className="font-bold text-xl mb-6 w-full text-left text-gray-700">예약 정보</h2>
                     <hr className="w-full border-t border-gray-300 mb-6"/>
 
-                    <p className="w-full text-left px-5 pb-2 text-gray-400 font-semibold">헤어살롱: {reservation.salonName}</p>
-                    <p className="w-full text-left px-5 pb-2 text-gray-400 font-semibold">디자이너: {reservation.designer}</p>
-                    <p className="w-full text-left px-5 pb-2 text-gray-400 font-semibold">날짜: {reservation.date}</p>
+                    <p className="w-full text-left px-5 pb-2 text-gray-500 font-semibold">헤어살롱: {reservation.salonName}</p>
+                    <p className="w-full text-left px-5 pb-2 text-gray-500 font-semibold">디자이너: {reservation.designer}</p>
+                    <p className="w-full text-left px-5 pb-2 text-gray-500 font-semibold">날짜: {reservation.date}</p>
                     <hr className="w-full border-t border-gray-300 mb-6 mt-6"/>
 
                     <MenuTabs selectedTab={selectedTab} handleClick={handleClick} />

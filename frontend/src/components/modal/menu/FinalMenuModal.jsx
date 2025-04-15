@@ -1,7 +1,9 @@
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function FinalMenuModal({ reservation, onClose }){
+    const navigate = useNavigate("");
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg w-[600px] relative">
@@ -88,9 +90,17 @@ export default function FinalMenuModal({ reservation, onClose }){
                     <hr className=" w-full border-t border-gray-300 m-3"/>
                     <p className="text-lg font-bold mt-2 px-5">최종 결제 금액: {reservation.finalPrice}원</p>
                     <div className="flex flex-col justify-center items-center m-5 w-full">
-                        <button onClick={onClose} className="bg-[#00B3A6] text-white px-6 py-3 rounded-lg">예약 완료
+                        <button
+                            onClick={() => {
+                                onClose();
+                                navigate("/hairshop");
+                            }}
+                            className="bg-green-500 text-white px-6 py-3 rounded-lg"
+                        >
+                            예약 완료
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>
