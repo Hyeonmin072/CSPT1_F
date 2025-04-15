@@ -10,7 +10,7 @@ const SocialLogin = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const signinStatus = urlParams.get("signin-status");
 
-    console.log("로그인 상태:", signinStatus);
+    console.log("🤔 소셜 로그인 상태:", signinStatus);
 
     if (signinStatus === "success") {
       console.log("로그인 성공 - 헤더 업데이트 이벤트 발생");

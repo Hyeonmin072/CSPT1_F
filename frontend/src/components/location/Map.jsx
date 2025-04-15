@@ -28,10 +28,13 @@ export default function Map({ mapRef, center, setCenter }) {
             };
             const map = new window.kakao.maps.Map(container, options);
             mapRef.current = map;
+
+            map.setMinLevel(1);
+            map.setMaxLevel(14);
     
             // 초기 지도 중심 좌표 확인 (위도, 경도로 확인)
-        const initialCenter = map.getCenter();
-        console.log("지도 중심:", initialCenter.getLat(), initialCenter.getLng());
+            const initialCenter = map.getCenter();
+            console.log("지도 중심:", initialCenter.getLat(), initialCenter.getLng());
     
             // 지도 이벤트 리스너 설정
             window.kakao.maps.event.addListener(map, "idle", () => {
@@ -52,7 +55,7 @@ export default function Map({ mapRef, center, setCenter }) {
                 }
             });
         });
-    }, [center]); // center 값이 변경될 때마다 다시 실행
+    }, []); // center 값이 변경될 때마다 다시 실행
 
     useEffect(() => {
         if (!mapRef.current || !center) return;
@@ -61,7 +64,7 @@ export default function Map({ mapRef, center, setCenter }) {
         console.log("센터 좌표 이동 실행 lat:", center.lat, " lng:", center.lng);
         const moveLatLng = new window.kakao.maps.LatLng(center.lat, center.lng);
         mapRef.current.setCenter(moveLatLng);     
-        setBounceKey(prev => prev + 1); // 마커 애니메이션
+        setBounceKey(prev => prev + 1);
     }, [center]);
 
     const handleLocationSubmit = async () => {

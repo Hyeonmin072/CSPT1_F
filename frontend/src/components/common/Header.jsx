@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
 import UserHamburgerButton from "../button/UserHamburgerButton";
 import Sidebar from "../modal/sidebar/SideBar";
@@ -7,7 +7,16 @@ import axiosInstance from "../sign/axios/AxiosInstance";
 import Swal from "sweetalert2";
 import hairLogo from "../../assets/logo/hairlogo.png";
 
+// 쿠키에서 값을 가져오는 함수
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null;
+};
+
 export default function Header() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,13 +24,10 @@ export default function Header() {
   // 유저 홈페이지 데이터 가져오기
   const fetchUserHomeData = async () => {
     try {
-      const userType = localStorage.getItem("userType");
-      if (userType === "USER") {
-        const response = await axiosInstance.get("/user/loadheader", {
-          withCredentials: true,
-        });
-        console.log("유저 홈페이지 데이터:", response.data);
-      }
+      const response = await axiosInstance.get("/user/loadheader", {
+        withCredentials: true,
+      });
+      console.log("유저 홈페이지 데이터:", response.data);
     } catch (error) {
       console.error("유저 홈페이지 데이터 로드 실패:", error);
     }
@@ -30,24 +36,18 @@ export default function Header() {
   // 로그인 상태 체크 함수
   const checkLoginStatus = async () => {
     try {
-      //유저 정보를 가져오는 엔드 포인트를 호출
-      const response = await axiosInstance.get("/user/header", {
+      const response = await axiosInstance.get("/user/loadheader", {
         withCredentials: true,
       });
 
       if (response.data) {
         setIsLoggedIn(true);
-        // response.data가 객체인 경우 userName 속성을 사용
         if (typeof response.data === "object" && "userName" in response.data) {
           setUserName(response.data.userName);
         } else if (typeof response.data === "string") {
           setUserName(response.data);
         }
-        // 로그인 상태이고 일반 유저인 경우 홈페이지 데이터 가져오기
         await fetchUserHomeData();
-      } else {
-        setIsLoggedIn(false);
-        setUserName("");
       }
     } catch (error) {
       console.error("사용자 정보 조회 실패 : 로그인하지 않음");
@@ -111,7 +111,7 @@ export default function Header() {
   return (
     <>
       {/* 상단바 */}
-      <header className="bg-white shadow-md w-full z-40">
+      <header className="fixed top-0 left-0 right-0 bg-white shadow-md w-full z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 w-full">
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center">
@@ -130,7 +130,7 @@ export default function Header() {
               <Link to="/hairshop" className="text-gray-700">
                 헤어샵
               </Link>
-              <Link to="/designer" className="text-gray-700">
+              <Link to="/designerpage" className="text-gray-700">
                 디자이너
               </Link>
               <Link to="/chat" className="text-gray-700">

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-//npm install react-toastify 
+import "react-toastify/dist/ReactToastify.css";
+//npm install react-toastify
+
+// 공통 컴포넌트
+import Footer from "./components/common/Footer";
 
 import ChattingPage from "./pages/chatting/ChattingPage.jsx";
 
@@ -23,7 +26,6 @@ import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
-
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -109,17 +111,14 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col">
         <Routes>
           {/* 기본 라우트 */}
           <Route
             path="/"
             element={<MainPage onLoginClick={openLoginModal} />}
           />
-          <Route 
-                path="/map" 
-                element={<MapPage />}
-          />
+          <Route path="/map" element={<MapPage />} />
 
           {/* 공통 라우트 */}
           <Route path="/social/signup" element={<SocialSignup />} />
@@ -147,7 +146,6 @@ function App() {
           {/* 고객 전용 라우트 */}
           {userRole === "user" && (
             <>
-              
               <Route
                 path="/designer"
                 element={<DesignerPage onLoginClick={openLoginModal} />}
@@ -263,23 +261,25 @@ function App() {
               />
               {/* 사업자 블랙리스트 페이지 */}
               <Route
-                  path="/blacklist"
-                  element={<BlackListPage onLoginClick={openLoginModal} />}
-                />
+                path="/blacklist"
+                element={<BlackListPage onLoginClick={openLoginModal} />}
+              />
               {/* 사업자 디자이너 스케줄확인 페이지 */}
               <Route
-                  path="/schedulecheck"
-                  element={<ShopReservationCheckPage onLoginClick={openLoginModal} />}
+                path="/schedulecheck"
+                element={
+                  <ShopReservationCheckPage onLoginClick={openLoginModal} />
+                }
               />
               {/* 사업자 이벤트-쿠폰 등록 페이지 */}
               <Route
-                  path="/eventmenu"
-                  element={<EventCouponMenuPage onLoginClick={openLoginModal} />}
+                path="/eventmenu"
+                element={<EventCouponMenuPage onLoginClick={openLoginModal} />}
               />
               {/* 사업자 디자이너 관리 페이지 */}
               <Route
-                  path="/designermanage"
-                  element={<DesignerManagePage onLoginClick={openLoginModal} />}
+                path="/designermanage"
+                element={<DesignerManagePage onLoginClick={openLoginModal} />}
               />
             </>
           )}
@@ -297,6 +297,8 @@ function App() {
           draggable
           theme="light"
         />
+        {/* Footer 컴포넌트 */}
+        <Footer />
       </div>
     </Router>
   );

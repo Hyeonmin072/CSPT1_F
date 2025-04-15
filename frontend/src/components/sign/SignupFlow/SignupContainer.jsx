@@ -42,7 +42,7 @@ const SignupContainer = ({
   //렌더링 추적용
   const [errors, setErrors] = useState({});
   useEffect(() => {
-    console.log("SignupContainer rendered at:", new Date().toISOString());
+    console.log("✅ 로그인/회원가입 컨테이너 렌더링");
   }, []);
 
   // 현재 회원가입 단계 로그 출력
