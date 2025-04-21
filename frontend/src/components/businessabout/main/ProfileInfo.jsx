@@ -21,10 +21,10 @@ export default function ProfileInfo() {
         const response = await axiosInstance.get("/user/loadheader", {
           withCredentials: true,
         });
-        console.log("상점 정보:", response.data);
-        setShopName(response.data.userName || "상점명 없음");
+        console.log("샵 정보:", response.data);
+        setShopName(response.data.userName || "이름 없음");
       } catch (error) {
-        console.error("상점 정보 로드 실패:", error);
+        console.error("샵 정보 로드 실패:", error);
       }
     };
 
