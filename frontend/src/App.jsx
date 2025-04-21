@@ -46,6 +46,7 @@ import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
+import ShopProfile from "./pages/profile/ShopProfile.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("user");
@@ -176,7 +177,7 @@ function App() {
                 }
               />
               <Route path="/designer/match" element={<DesignerMatchPage />} />
-              </>
+            </>
           )}
 
           {/* 디자이너 전용 라우트 */}
@@ -276,6 +277,11 @@ function App() {
               <Route
                 path="/designermanage"
                 element={<DesignerManagePage onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 프로필 페이지 */}
+              <Route
+                path="/shop/profile"
+                element={<ShopProfile onLoginClick={openLoginModal} />}
               />
             </>
           )}

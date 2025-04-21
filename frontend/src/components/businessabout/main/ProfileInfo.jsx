@@ -94,11 +94,6 @@ export default function ProfileInfo() {
 
   // 모달 열기
   const handleOpenModal = () => {
-    // localhost URL 기반 QR 생성
-    // const attendanceUrl = `http://localhost:5173/attendance?sessionId=${Math.random()
-    //     .toString(36)
-    //     .substr(2, 10)}`;
-    //setQrValue(attendanceUrl); // QR 코드 값 설정
     setIsModalOpen(true);
   };
 
@@ -128,7 +123,7 @@ export default function ProfileInfo() {
       <div className="flex border-t-2">
         <button
           className="w-1/2 border-r-2 py-2 px-4 hover:bg-gray-100 flex flex-row gap-2 justify-center"
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate("/shop/profile")}
         >
           <UserRoundPen />
           <p>정보 수정</p>
@@ -145,7 +140,7 @@ export default function ProfileInfo() {
         <QRCodeModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          qrValue={qrValue} // QR 코드 값 전달
+          qrValue={qrValue}
         />
       </div>
     </>
