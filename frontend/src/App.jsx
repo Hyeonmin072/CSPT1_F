@@ -176,7 +176,7 @@ function App() {
                 }
               />
               <Route path="/designer/match" element={<DesignerMatchPage />} />
-            </>
+              </>
           )}
 
           {/* 디자이너 전용 라우트 */}

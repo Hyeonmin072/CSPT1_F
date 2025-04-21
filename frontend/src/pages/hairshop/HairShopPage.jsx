@@ -2,12 +2,30 @@ import { useEffect, useRef, useState } from "react";
 import ShopPage from "../../components/hairshop/HairShop.jsx";
 import Header from "../../components/common/Header.jsx";
 import { Search, MapPin, Star, Clock, Phone, Mail } from "lucide-react";
+import axiosInstance from "../../components/sign/axios/AxiosInstance";
 
 export default function HairShopPage() {
   const [isVisible, setIsVisible] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("전체");
+  const [hairShops, setHairShops] = useState([]);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchHairShops = async () => {
+      try {
+        const response = await axiosInstance.get("/user/hairshop", {
+          withCredentials: true,
+        });
+        console.log("헤어샵 데이터:", response.data);
+        setHairShops(response.data.hairShops || []); // API 응답 구조에 따라 조정 필요
+      } catch (error) {
+        console.error("헤어샵 데이터 로드 실패:", error);
+      }
+    };
+
+    fetchHairShops();
+  }, []);
 
   /* 애니메이션 효과 */
   useEffect(() => {
@@ -135,7 +153,7 @@ export default function HairShopPage() {
         </div>
 
         <div className="p-4" ref={containerRef}>
-          <ShopPage containerRef={containerRef} />
+          <ShopPage containerRef={containerRef} shops={hairShops} />
         </div>
       </div>
 
