@@ -47,6 +47,7 @@ import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPa
 import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 import ShopProfile from "./pages/profile/ShopProfile.jsx";
+import MenuSetting from "./pages/business/MenuSetting.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("user");
@@ -127,7 +128,7 @@ function App() {
             element={<HairShopPage onLoginClick={openLoginModal} />}
           />
           <Route
-            path="/detail"
+            path="/shopdetails/:shopEmail"
             element={<HairShopDetailPage onLoginClick={openLoginModal} />}
           />
           <Route
@@ -282,6 +283,11 @@ function App() {
               <Route
                 path="/shop/profile"
                 element={<ShopProfile onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 메뉴 설정 페이지 */}
+              <Route
+                path="/menu-setting"
+                element={<MenuSetting onLoginClick={openLoginModal} />}
               />
             </>
           )}

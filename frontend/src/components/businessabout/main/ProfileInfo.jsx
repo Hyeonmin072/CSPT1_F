@@ -18,13 +18,14 @@ export default function ProfileInfo() {
   useEffect(() => {
     const fetchShopName = async () => {
       try {
-        const response = await axiosInstance.get("/user/loadheader", {
+        const response = await axiosInstance.get("/shop/loadheader", {
           withCredentials: true,
         });
         console.log("샵 정보:", response.data);
-        setShopName(response.data.userName || "이름 없음");
+        setShopName(response.data.userName || response.data || "이름 없음");
       } catch (error) {
         console.error("샵 정보 로드 실패:", error);
+        setShopName("이름 없음");
       }
     };
 

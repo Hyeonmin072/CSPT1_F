@@ -4,7 +4,7 @@ import { Star, Save, ArrowLeft } from "lucide-react";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Header from "../../components/common/Header";
+import BusinessHeader from "../../components/common/BusinessHeader";
 import { motion } from "framer-motion";
 
 export default function ShopProfile() {
@@ -14,30 +14,28 @@ export default function ShopProfile() {
   const [selectedHolidays, setSelectedHolidays] = useState([]);
   const [shopData, setShopData] = useState({
     name: "",
-    addres: "",
-    post: "",
+    address: "",
+    post: 0,
     tel: "",
     pwd: "",
     desc: "",
     open: "",
     close: "",
     regularHoliday: "",
-    profileImage: "",
-    bannerImage: "",
-    rating: 4.5,
-    reviewCount: 194,
-    reservationCount: 0,
-    joinDate: "",
+    rating: 0.0,
+    reviewNumber: 0,
+    reservationNumber: 0,
+    joinDate: new Date().toISOString().split("T")[0],
   });
 
   const weekDays = [
-    { id: "MON", label: "월" },
-    { id: "TUE", label: "화" },
-    { id: "WED", label: "수" },
-    { id: "THU", label: "목" },
-    { id: "FRI", label: "금" },
-    { id: "SAT", label: "토" },
-    { id: "SUN", label: "일" },
+    { id: "MONDAY", label: "월" },
+    { id: "TUESDAY", label: "화" },
+    { id: "WEDNESDAY", label: "수" },
+    { id: "THURSDAY", label: "목" },
+    { id: "FRIDAY", label: "금" },
+    { id: "SATURDAY", label: "토" },
+    { id: "SUNDAY", label: "일" },
   ];
 
   useEffect(() => {
@@ -48,17 +46,26 @@ export default function ShopProfile() {
           withCredentials: true,
         });
         console.log("샵 정보:", response.data);
+
         setShopData({
           ...response.data,
-          rating: response.data.rating || 4.5,
-          reviewCount: response.data.reviewCount || 194,
-          reservationCount: response.data.reservationCount || 0,
+          // 서버에서 받은 데이터 타입 확인 및 변환
+          post: parseInt(response.data.post, 10),
+          rating: parseFloat(response.data.rating || 0),
+          reviewNumber: parseInt(response.data.reviewNumber || 0, 10),
+          reservationNumber: parseInt(response.data.reservationNumber || 0, 10),
           joinDate:
             response.data.joinDate || new Date().toISOString().split("T")[0],
         });
+
         // 정기 휴무일 문자열을 배열로 변환
-        if (response.data.regularHoliday) {
+        if (
+          response.data.regularHoliday &&
+          response.data.regularHoliday !== "NONE"
+        ) {
           setSelectedHolidays(response.data.regularHoliday.split(","));
+        } else {
+          setSelectedHolidays([]);
         }
       } catch (error) {
         console.error("샵 정보 로드 실패:", error);
@@ -93,35 +100,62 @@ export default function ShopProfile() {
 
   const handleSave = async () => {
     try {
-      const response = await axiosInstance.put(
-        "/shop/profile",
-        {
-          name: shopData.name,
-          addres: shopData.addres,
-          post: shopData.post,
-          tel: shopData.tel,
-          pwd: shopData.pwd,
-          desc: shopData.desc,
-          open: shopData.open,
-          close: shopData.close,
-          regularHoliday: shopData.regularHoliday,
-        },
-        {
-          withCredentials: true,
-        }
+      const requestData = {
+        name: shopData.name,
+        address: shopData.address,
+        post: parseInt(shopData.post, 10),
+        tel: shopData.tel,
+        newPwd: "",
+        newPwdConfirm: "",
+        desc: shopData.desc || "",
+        open: shopData.open || "",
+        close: shopData.close || "",
+        regularHoliday: shopData.regularHoliday || "",
+      };
+
+      // 요청 전 데이터 검증
+      if (
+        !requestData.name ||
+        !requestData.address ||
+        !requestData.post ||
+        !requestData.tel
+      ) {
+        toast.error("필수 항목을 모두 입력해주세요.");
+        return;
+      }
+
+      console.log(
+        "서버로 전송하는 데이터:",
+        JSON.stringify(requestData, null, 2)
       );
+
+      const response = await axiosInstance.patch("/shop/profile", requestData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log("샵 정보 업데이트 성공:", response.data);
       toast.success("샵 정보가 성공적으로 업데이트되었습니다.");
       setIsEditing(false);
     } catch (error) {
       console.error("샵 정보 업데이트 실패:", error);
-      toast.error("샵 정보 업데이트에 실패했습니다.");
+      if (error.response) {
+        console.error("서버 응답:", error.response.data);
+        toast.error(
+          `샵 정보 업데이트 실패: ${
+            error.response.data.message || "알 수 없는 오류"
+          }`
+        );
+      } else {
+        toast.error("샵 정보 업데이트에 실패했습니다.");
+      }
     }
   };
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <BusinessHeader />
 
       {/* 헤더 높이만큼 여백 추가 */}
       <div className="h-24"></div>
@@ -220,7 +254,7 @@ export default function ShopProfile() {
                         주소
                       </h2>
                       <p className="text-gray-800 font-medium">
-                        [{shopData.post}] {shopData.addres}
+                        [{shopData.post}] {shopData.address}
                       </p>
                     </div>
                   </div>
@@ -338,13 +372,13 @@ export default function ShopProfile() {
                   <div className="bg-white p-3 rounded-lg shadow-sm">
                     <p className="text-sm text-green-600">리뷰 수</p>
                     <p className="text-xl font-bold text-green-700">
-                      {shopData.reviewCount}
+                      {shopData.reviewNumber}
                     </p>
                   </div>
                   <div className="bg-white p-3 rounded-lg shadow-sm">
                     <p className="text-sm text-green-600">예약 수</p>
                     <p className="text-xl font-bold text-green-700">
-                      {shopData.reservationCount}
+                      {shopData.reservationNumber}
                     </p>
                   </div>
                   <div className="bg-white p-3 rounded-lg shadow-sm">
