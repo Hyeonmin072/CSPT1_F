@@ -1,75 +1,117 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CalendarHeader from "./CalendarHeader.jsx";
 import Calendar from "./CalendarClick.jsx";
 import DesignerTimeSelect from "./Designer&TimeSelect.jsx";
 
-export default function CalendarSelect() {
-    const navigate = useNavigate();
-    const [selectedDate, setSelectedDate] = useState('13');
-    const [selectedTime, setSelectedTime] = useState(null);
+export default function CalendarSelect({
+  availableTimes,
+  onDateSelect,
+  selectedDate,
+  loading,
+  error,
+  designerEmail,
+}) {
+  const navigate = useNavigate();
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [dates, setDates] = useState([]);
 
-    const dates = [
-        { id: 1, day: '월', date: '13' },
-        { id: 2, day: '화', date: '14' },
-        { id: 3, day: '수', date: '15' },
-        { id: 4, day: '목', date: '16' },
-        { id: 5, day: '금', date: '17' },
-        { id: 6, day: '토', date: '18' },
-        { id: 7, day: '일', date: '19' },
-        { id: 8, day: '월', date: '20' },
-        { id: 9, day: '화', date: '21' },
-        { id: 10, day: '수', date: '22' },
-        { id: 11, day: '목', date: '23' },
-        { id: 12, day: '금', date: '24' },
-    ];
+  // 오늘부터 7일간의 날짜 데이터 생성
+  useEffect(() => {
+    const dateList = [];
+    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
 
-    const unavailableTimes = ['12:00', '16:30', '17:00'];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
 
-    const handleDateClick = (date) => {
-        setSelectedDate(date);
-        setSelectedTime(null);
-    };
+      dateList.push({
+        id: i + 1,
+        day: dayNames[date.getDay()],
+        date: date.getDate().toString().padStart(2, "0"),
+        fullDate: date.toISOString().split("T")[0],
+      });
+    }
 
-    const handleTimeClick = (time) => {
-        if (unavailableTimes.includes(time)) {
-            // 이미 선택된 시간대인 경우 아무 작업도 수행하지 않음
-            return;
-        }
-        if (time === selectedTime) {
-            navigate("/menuselect");
-        } else {
-            setSelectedTime(time);
-        }
-    };
+    setDates(dateList);
+  }, []);
 
-    return (
-        <>
-            <div className="flex items-center justify-between px-10 py-4">
-                <CalendarHeader />
-            </div>
+  const handleTimeSelect = (time) => {
+    setSelectedTime(time);
+  };
 
-            <div className="lg:flex-row mx-20 gap-6">
-                <div className="flex flex-col items-center p-8 w-full">
-                    <h2 className="font-semibold text-xl mb-6 w-full text-left text-gray-400">날짜 선택</h2>
-                    <hr className="w-full border-t border-gray-300 mb-6" />
+  const handleNext = () => {
+    if (selectedDate && selectedTime) {
+      navigate(`/menuselect/${designerEmail}`, {
+        state: { selectedDate, selectedTime },
+      });
+    }
+  };
 
-                    <div className="mb-4 w-full">
-                        <Calendar dates={dates} selectedDate={selectedDate} handleDateClick={handleDateClick} />
-                        <hr className="w-full border-t border-gray-300 mt-5" />
-                    </div>
+  if (loading) {
+    return <div className="text-center py-2 text-sm">로딩 중...</div>;
+  }
 
-                    <div className="w-full">
-                        <h2 className="text-xl font-bold text-gray-400 mb-5 text-left">디자이너 시간 선택</h2>
-                        <hr className="w-full border-t border-gray-300" />
-                    </div>
+  if (error) {
+    return <div className="text-center py-2 text-sm text-red-500">{error}</div>;
+  }
 
-                    <div className="flex w-full">
-                        <DesignerTimeSelect selectedTime={selectedTime} handleTimeClick={handleTimeClick} unavailableTimes={unavailableTimes} />
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <div className="w-full">
+      {/* 날짜 선택 */}
+      <div className="flex overflow-x-auto pb-4 mb-4 scrollbar-hide">
+        {dates.map((date) => (
+          <button
+            key={date.id}
+            onClick={() => onDateSelect(date.fullDate)}
+            className={`flex-shrink-0 w-16 h-16 mx-1 rounded-lg flex flex-col items-center justify-center transition-all ${
+              selectedDate === date.fullDate
+                ? "bg-green-500 text-white shadow-lg transform scale-105"
+                : "bg-white border hover:border-green-500"
+            }`}
+          >
+            <span className="text-xs mb-1">{date.day}</span>
+            <span className="text-lg font-semibold">{date.date}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* 시간 선택 */}
+      {selectedDate && (
+        <div className="mt-4">
+          <h2 className="text-sm font-medium mb-3 text-gray-600">
+            예약 가능 시간
+          </h2>
+          <div className="grid grid-cols-4 gap-2">
+            {availableTimes.map((time, index) => (
+              <button
+                key={index}
+                className={`p-2 text-sm rounded-lg transition-all ${
+                  selectedTime === time
+                    ? "bg-green-500 text-white shadow-md transform scale-105"
+                    : "bg-white border hover:border-green-500"
+                }`}
+                onClick={() => handleTimeSelect(time)}
+              >
+                {time.substring(0, 5)}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 다음 버튼 */}
+      {selectedDate && selectedTime && (
+        <div className="flex justify-end mt-4">
+          <button
+            className="px-4 py-2 text-sm rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors"
+            onClick={handleNext}
+          >
+            다음
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }

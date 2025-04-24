@@ -114,7 +114,7 @@ export default function ShopPage({ containerRef, shops }) {
               </div>
 
               <div className="flex justify-end">
-                <HairReservationButton />
+                <HairReservationButton shopEmail={shop.shopEmail} />
               </div>
             </div>
           </div>

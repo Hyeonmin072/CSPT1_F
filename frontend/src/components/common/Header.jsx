@@ -6,6 +6,8 @@ import Sidebar from "../modal/sidebar/SideBar";
 import axiosInstance from "../sign/axios/AxiosInstance";
 import Swal from "sweetalert2";
 import hairLogo from "../../assets/logo/hairlogo.png";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // 쿠키에서 값을 가져오는 함수
 const getCookie = (name) => {
@@ -33,6 +35,18 @@ export default function Header() {
     }
   };
 
+  // 로그아웃 성공 시 토스트 메시지
+  const showLogoutToast = () => {
+    toast.success("로그아웃 되었습니다!", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   // 로그인 상태 체크 함수
   const checkLoginStatus = async () => {
     try {
@@ -48,8 +62,12 @@ export default function Header() {
           setUserName(response.data);
         }
         await fetchUserHomeData();
+      } else {
+        setIsLoggedIn(false);
+        setUserName("");
+        showLogoutToast(); // 로그아웃 시 토스트 메시지 표시
       }
-    } catch (error) {
+    } catch (err) {
       console.error("사용자 정보 조회 실패 : 로그인하지 않음");
       setIsLoggedIn(false);
       setUserName("");
@@ -70,33 +88,53 @@ export default function Header() {
   }, []);
 
   // 로그아웃 함수
-  const handleLogout = () => {
-    Swal.fire({
-      title: "로그아웃",
-      text: "정말 로그아웃 하시겠습니까?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "로그아웃",
-      cancelButtonText: "취소",
-    }).then((result) => {
+  const handleLogout = async () => {
+    try {
+      const result = await Swal.fire({
+        title: "로그아웃",
+        text: "정말 로그아웃 하시겠습니까?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "로그아웃",
+        cancelButtonText: "취소",
+      });
+
       if (result.isConfirmed) {
-        // 로그인 상태 변경 이벤트 발생
-        window.dispatchEvent(new Event("loginStatusChanged"));
-
-        // 메인 페이지로 이동
-        window.location.href = "/";
-
-        Swal.fire({
-          icon: "success",
-          title: "로그아웃 완료",
-          text: "다음에 또 방문해주세요!",
-          timer: 1500,
-          showConfirmButton: false,
+        // 로그아웃 API 호출
+        const response = await axiosInstance.post("/user/logout", null, {
+          withCredentials: true,
         });
+
+        if (response.status === 200) {
+          // 로컬 스토리지 초기화
+          localStorage.clear();
+
+          // 로그인 상태 변경 이벤트 발생
+          window.dispatchEvent(new Event("loginStatusChanged"));
+
+          // 토스트 메시지 표시
+          toast.success("로그아웃 되었습니다!", {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+
+          // 메인 페이지로 이동
+          navigate("/");
+        }
       }
-    });
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+      toast.error("로그아웃 중 오류가 발생했습니다.", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+    }
   };
 
   // 햄버거 버튼 클릭 시 메뉴 토글
@@ -155,6 +193,9 @@ export default function Header() {
 
       {/* 사이드바 컴포넌트 추가 - 로그인 상태일 때만 표시 */}
       {isLoggedIn && <Sidebar isOpen={isOpen} onClose={closeMenu} />}
+
+      {/* ToastContainer 추가 */}
+      <ToastContainer />
     </>
   );
 }

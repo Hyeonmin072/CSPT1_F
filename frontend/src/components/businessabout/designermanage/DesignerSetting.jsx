@@ -162,7 +162,28 @@ export default function DesignerSetting() {
 
   const deleteSelected = async () => {
     if (selectedIds.length === 0) {
-      alert("삭제할 디자이너를 선택해주세요.");
+      Swal.fire({
+        icon: "warning",
+        title: "선택된 디자이너 없음",
+        text: "삭제할 디자이너를 선택해주세요.",
+        confirmButtonColor: "#3085d6",
+      });
+      return;
+    }
+
+    // 삭제 확인
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "디자이너 삭제",
+      text: `선택한 ${selectedIds.length}명의 디자이너를 정말 삭제하시겠습니까?`,
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+    });
+
+    if (!result.isConfirmed) {
       return;
     }
 
@@ -171,8 +192,12 @@ export default function DesignerSetting() {
       console.log("선택된 디자이너 삭제 시작:", selectedIds);
 
       // 선택된 각 디자이너에 대해 삭제 요청
-      for (const id of selectedIds) {
-        await axiosInstance.delete(`/shop/designer/${id}`);
+      for (const email of selectedIds) {
+        console.log(`디자이너 삭제 요청: ${email}`);
+        const response = await axiosInstance.delete("/shop/designer", {
+          data: { designerEmail: email },
+        });
+        console.log(`디자이너 삭제 응답:`, response.data);
       }
 
       // 디자이너 목록 새로고침
@@ -181,22 +206,29 @@ export default function DesignerSetting() {
 
       // 삭제된 디자이너를 저장
       const removed = designers.filter((designer) =>
-        selectedIds.includes(designer.d_id)
+        selectedIds.includes(designer.email)
       );
       deletedDesigners.current = [...deletedDesigners.current, ...removed];
 
       setSelectedIds([]); // 선택 초기화
-      alert("선택한 디자이너가 성공적으로 삭제되었습니다.");
+
+      // 성공 메시지
+      Swal.fire({
+        icon: "success",
+        title: "삭제 완료",
+        text: "선택한 디자이너가 성공적으로 삭제되었습니다.",
+        confirmButtonColor: "#3085d6",
+      });
     } catch (err) {
       console.error("디자이너 삭제 실패:", err.response?.data || err.message);
-      setError(
-        "디자이너 삭제에 실패했습니다: " +
-          (err.response?.data?.message || err.message)
-      );
-      alert(
-        "디자이너 삭제에 실패했습니다: " +
-          (err.response?.data?.message || err.message)
-      );
+      Swal.fire({
+        icon: "error",
+        title: "삭제 실패",
+        text:
+          "디자이너 삭제에 실패했습니다: " +
+          (err.response?.data?.message || err.message),
+        confirmButtonColor: "#d33",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -207,15 +239,15 @@ export default function DesignerSetting() {
   // 더블 클릭시, 상세보기 열리기 카운트
   const handleDivClick = (designer) => {
     // 클릭 횟수 계산
-    const newCount = (clickCountRef.current[designer.d_id] || 0) + 1;
+    const newCount = (clickCountRef.current[designer.email] || 0) + 1;
 
     // 10초 후 클릭 카운트 초기화
     setTimeout(() => {
-      clickCountRef.current[designer.d_id] = 0; // ref에서 직접 초기화
+      clickCountRef.current[designer.email] = 0; // ref에서 직접 초기화
     }, 3000);
 
     // 클릭 횟수를 ref에 업데이트
-    clickCountRef.current[designer.d_id] = newCount;
+    clickCountRef.current[designer.email] = newCount;
 
     // 클릭이 두 번 되었을 때 모달 열기
     if (newCount === 2) {
@@ -225,7 +257,7 @@ export default function DesignerSetting() {
     // 상태 업데이트 (화면 갱신용, 로직에는 영향을 주지 않음)
     setClickCount((prevClickCount) => ({
       ...prevClickCount,
-      [designer.d_id]: newCount,
+      [designer.email]: newCount,
     }));
   };
 
@@ -258,11 +290,11 @@ export default function DesignerSetting() {
     try {
       console.log(
         "디자이너 직함 변경 시작:",
-        selectedDesigner.d_id,
+        selectedDesigner.email,
         newPosition
       );
       const response = await axiosInstance.patch(
-        `/shop/designer/${selectedDesigner.d_id}`,
+        `/shop/designer/${selectedDesigner.email}`,
         {
           position: newPosition,
         }
@@ -308,11 +340,11 @@ export default function DesignerSetting() {
     try {
       console.log(
         "디자이너 출근 시간 변경 시작:",
-        selectedDesigner.d_id,
+        selectedDesigner.email,
         newStartTime
       );
       const response = await axiosInstance.patch(
-        `/shop/designer/${selectedDesigner.d_id}`,
+        `/shop/designer/${selectedDesigner.email}`,
         {
           startTime: newStartTime,
         }
@@ -358,11 +390,11 @@ export default function DesignerSetting() {
     try {
       console.log(
         "디자이너 퇴근 시간 변경 시작:",
-        selectedDesigner.d_id,
+        selectedDesigner.email,
         newEndTime
       );
       const response = await axiosInstance.patch(
-        `/shop/designer/${selectedDesigner.d_id}`,
+        `/shop/designer/${selectedDesigner.email}`,
         {
           endTime: newEndTime,
         }
@@ -410,9 +442,9 @@ export default function DesignerSetting() {
           {designers.length > 0 ? (
             designers.map((designer) => (
               <button
-                key={designer.d_id}
+                key={designer.email}
                 className={`relative border rounded h-[300px] ${
-                  (clickCount[designer.id] || 0) > 1
+                  (clickCount[designer.email] || 0) > 1
                     ? "shadow-inner"
                     : "shadow-md"
                 } p-4 flex-none w-[200px] justify-center cursor-pointer hover:bg-gray-100`}
@@ -421,21 +453,29 @@ export default function DesignerSetting() {
                 <div className="absolute top-2 left-2">
                   <input
                     type="checkbox"
-                    checked={selectedIds.includes(designer.d_id)}
-                    onChange={() => toggleSelection(designer.d_id)}
+                    checked={selectedIds.includes(designer.email)}
+                    onChange={() => toggleSelection(designer.email)}
                   />
                 </div>
                 <div className="flex flex-col items-center">
                   <img
-                    src={designer.d_image || d1}
-                    alt={`${designer.d_name} 프로필`}
+                    src={designer.image || d1}
+                    alt={`${designer.name} 프로필`}
                     className="rounded-full w-[100px] h-[100px] mb-4"
                   />
-                  <div className="text-center">
-                    <span className="block font-bold">{designer.d_name}</span>
+                  <div className="text-center space-y-1">
+                    <span className="block font-bold">{designer.name}</span>
                     <span className="block text-gray-600">
-                      {designer.position}
+                      {designer.position || "직책 미지정"}
                     </span>
+                    <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
+                      <span className="bg-blue-100 px-2 py-1 rounded">
+                        {designer.gender === "MALE" ? "남성" : "여성"}
+                      </span>
+                      <span className="bg-pink-100 px-2 py-1 rounded flex items-center">
+                        <span>❤️ {designer.like || 0}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </button>
@@ -693,7 +733,7 @@ export default function DesignerSetting() {
           <div className="bg-white p-6 rounded-lg w-[500px] h-[300px] flex flex-col relative">
             <h2 className="font-bold text-xl mb-4">디자이너 정보 상세보기</h2>
             <div className="flex flex-row justify-between mb-3">
-              <p>이름: {selectedDesigner.d_name}</p>
+              <p>이름: {selectedDesigner.name}</p>
               <p>직함: {selectedDesigner.position}</p>
             </div>
             <div className="flex flex-row justify-between space-x-4 mt-4">
@@ -749,7 +789,7 @@ export default function DesignerSetting() {
             <div className="p-2">
               <h2 className="font-bold text-xl mb-4">디자이너 정보 수정</h2>
               <div className="flex flex-row justify-between mb-3">
-                <p>이름: {selectedDesigner.d_name}</p>
+                <p>이름: {selectedDesigner.name}</p>
               </div>
               <div className="flex flex-col space-y-4">
                 <div className="flex flex-col">

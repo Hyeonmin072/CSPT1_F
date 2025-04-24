@@ -93,7 +93,7 @@ export default function BusinessHeader() {
               <Link to="/designermanage" className="text-gray-700">
                 디자이너 관리
               </Link>
-              <Link to="" className="text-gray-700">
+              <Link to="/menu-setting" className="text-gray-700">
                 메뉴설정
               </Link>
               <Link to="/sales" className="text-gray-700">

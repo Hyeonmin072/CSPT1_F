@@ -156,20 +156,20 @@ function App() {
                 element={<UserProfileEdit onLoginClick={openLoginModal} />}
               />
               <Route
-                path="/designerselect"
-                element={<DesignerSelectPage onLoginClick={openLoginModal} />}
+                path="/designerselect/:shopEmail"
+                element={<DesignerSelectPage />}
               />
               <Route
-                path="/calendarselect"
-                element={<CalendarSelectPage onLoginClick={openLoginModal} />}
+                path="/calendarselect/:designerEmail"
+                element={<CalendarSelectPage />}
               />
               <Route
-                path="/menuselect"
-                element={<MenuSelectPage onLoginClick={openLoginModal} />}
+                path="/menuselect/:designerEmail"
+                element={<MenuSelectPage />}
               />
               <Route
                 path="/reservationcheck"
-                element={<ReservationCheckPage onLoginClick={openLoginModal} />}
+                element={<ReservationCheckPage />}
               />
               <Route
                 path="/subscriptdesigner"

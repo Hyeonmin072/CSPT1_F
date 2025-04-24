@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Upload, Plus, Trash2 } from "lucide-react";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
 import BusinessHeader from "../../components/common/BusinessHeader";
+import { toast } from "react-hot-toast";
 
 export default function MenuSetting() {
   const navigate = useNavigate();
   const [menuData, setMenuData] = useState({
     designerEmail: "",
-    id: "",
     name: "",
     desc: "",
     price: "",
@@ -62,12 +62,34 @@ export default function MenuSetting() {
   // 메뉴 저장 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 필수 필드 검증
+    if (!menuData.name || !menuData.desc || !menuData.common) {
+      toast.error("필수 항목을 모두 입력해주세요.", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    // 디자이너 선택 검증 (공통 메뉴가 아닌 경우)
+    if (menuData.common === "no" && !menuData.designerEmail) {
+      toast.error("담당 디자이너를 선택해주세요.", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+      return;
+    }
+
     try {
-      console.log("메뉴 등록 시작:", menuData);
+      console.log("\n=== 메뉴 등록 시작 ===");
+      console.log("메뉴 데이터:", menuData);
 
       const formData = new FormData();
-      formData.append("designerEmail", menuData.designerEmail);
-      formData.append("id", menuData.id);
+      // 공통 메뉴가 아닌 경우에만 디자이너 이메일 전송
+      if (menuData.common === "no") {
+        formData.append("designerEmail", menuData.designerEmail);
+      }
       formData.append("name", menuData.name);
       formData.append("desc", menuData.desc);
       formData.append("price", menuData.price);
@@ -77,27 +99,46 @@ export default function MenuSetting() {
         formData.append("image", menuData.image);
       }
 
-      console.log("전송할 데이터:", {
-        designerEmail: menuData.designerEmail,
-        id: menuData.id,
-        name: menuData.name,
-        desc: menuData.desc,
-        price: menuData.price,
-        estimatedTime: menuData.estimatedTime,
-        common: menuData.common,
-      });
+      // FormData 내용 확인
+      console.log("\n=== 서버로 전송되는 데이터 ===");
+      for (let [key, value] of formData.entries()) {
+        if (key === "image") {
+          console.log("이미지 파일 정보:");
+          console.log("- 파일명:", value.name);
+          console.log("- 파일크기:", value.size, "bytes");
+          console.log("- 파일타입:", value.type);
+        } else {
+          console.log(`${key}:`, value);
+        }
+      }
 
       const response = await axiosInstance.post("/shop/menu", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        withCredentials: true,
       });
 
-      console.log("메뉴 등록 성공:", response.data);
-      navigate("/business");
+      console.log("\n=== 메뉴 등록 성공 ===");
+      console.log("서버 응답:", response.data);
+
+      toast.success("메뉴가 성공적으로 등록되었습니다.", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+
+      navigate("/shop");
     } catch (err) {
-      console.error("메뉴 등록 실패:", err.response?.data || err.message);
-      setError("메뉴 저장 중 오류가 발생했습니다.");
+      console.error("\n=== 메뉴 등록 실패 ===");
+      console.error("에러 메시지:", err.message);
+      console.error("에러 상세:", err.response?.data);
+      console.error("에러 상태 코드:", err.response?.status);
+
+      toast.error(
+        "메뉴 등록에 실패했습니다: " +
+          (err.response?.data?.message || err.message),
+        {
+          position: "bottom-right",
+          autoClose: 2000,
+        }
+      );
     }
   };
 
@@ -108,23 +149,10 @@ export default function MenuSetting() {
         <h1 className="text-2xl font-bold mb-8">메뉴 설정</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* 메뉴 ID */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              메뉴 ID
-            </label>
-            <input
-              type="text"
-              value={menuData.id}
-              onChange={(e) => setMenuData({ ...menuData, id: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
-          </div>
-
           {/* 메뉴 이름 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              메뉴 이름
+              메뉴 이름 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -193,7 +221,6 @@ export default function MenuSetting() {
                   setMenuData({ ...menuData, price: e.target.value })
                 }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
               />
               <span className="absolute right-4 top-2 text-gray-500">원</span>
             </div>
@@ -212,7 +239,6 @@ export default function MenuSetting() {
                   setMenuData({ ...menuData, estimatedTime: e.target.value })
                 }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
               />
               <span className="absolute right-4 top-2 text-gray-500">분</span>
             </div>
@@ -221,7 +247,7 @@ export default function MenuSetting() {
           {/* 설명 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              설명
+              설명 <span className="text-red-500">*</span>
             </label>
             <textarea
               value={menuData.desc}
@@ -237,7 +263,7 @@ export default function MenuSetting() {
           {/* 공통 메뉴 여부 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              공통 메뉴 여부
+              공통 메뉴 여부 <span className="text-red-500">*</span>
             </label>
             <select
               value={menuData.common}
@@ -277,9 +303,6 @@ export default function MenuSetting() {
                         className="h-4 w-4 text-green-500"
                       />
                       <span>{designer.name}</span>
-                      <span className="text-sm text-gray-500">
-                        ({designer.position})
-                      </span>
                     </div>
                   </div>
                 ))}

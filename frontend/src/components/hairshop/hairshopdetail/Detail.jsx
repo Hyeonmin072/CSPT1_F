@@ -37,7 +37,7 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
 
   // 탭 클릭 핸들러
   const handleShopDetailClick = () => setActiveTab("ShopDetail");
-  const handleReservationClick = () => navigate("/designerselect");
+  const handleReservationClick = () => navigate(`/designerselect/${shopEmail}`);
   const handleReviewClick = () => navigate("/reviews");
 
   useState(() => {
@@ -95,6 +95,7 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
               handleShopDetailClick={handleShopDetailClick}
               handleReservationClick={handleReservationClick}
               handleReviewClick={handleReviewClick}
+              shopEmail={shopData.shop.shopEmail}
             />
           </div>
 
