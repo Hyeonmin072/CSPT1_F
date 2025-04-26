@@ -27,6 +27,7 @@ import ReservationCheckPage from "./pages/reservation/reservationcheck/Reservati
 import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
 import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
+import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -297,6 +298,7 @@ function App() {
               />
             </>
           )}
+          <Route path="/reservation/confirm" element={<ReservationConfirmPage />} />
         </Routes>
         {/* 로그인 모달 */}
         <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
