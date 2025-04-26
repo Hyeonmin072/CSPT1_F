@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Header from "../../components/common/Header.jsx";
 import { IoChevronBackOutline } from "react-icons/io5";
+import axiosInstance from "../../components/sign/axios/AxiosInstance";
 
 export default function ReservationConfirmPage() {
   const location = useLocation();
@@ -22,9 +23,38 @@ export default function ReservationConfirmPage() {
     return `${date.getMonth() + 1}월 ${date.getDate()}일 (${days[date.getDay()]})`;
   };
 
-  const handlePayment = () => {
-    // 결제 로직 구현 예정
-    toast.success("결제 진행중...");
+  const handlePayment = async () => {
+    try {
+      // 서버에 보낼 데이터 형식 맞추기
+      const requestData = {
+        price: reservationData.menuInfo.finalPrice,
+        serviceDate: `${reservationData.reservationDate}T${reservationData.reservationTime}:00`,
+        designerEmail: reservationData.designerEmail,
+        shopEmail: reservationData.shopInfo.shopEmail,
+        menuId: reservationData.menuInfo.menuId
+      };
+
+      console.log("\n=== 서버 전송 데이터 ===");
+      console.log("가격:", requestData.price);
+      console.log("서비스 날짜:", requestData.serviceDate);
+      console.log("디자이너 이메일:", requestData.designerEmail);
+      console.log("샵 이메일:", requestData.shopEmail);
+      console.log("메뉴 ID:", requestData.menuId);
+      console.log("\n=== 전체 요청 데이터 ===");
+      console.log(JSON.stringify(requestData, null, 2));
+      console.log("========================\n");
+
+      // API 호출
+      const response = await axiosInstance.post('/user/reservation', requestData);
+      
+      if (response.status === 200 || response.status === 201) {
+        toast.success("예약이 완료되었습니다!");
+        navigate('/reservation/check');
+      }
+    } catch (error) {
+      console.error("예약 실패:", error);
+      toast.error("예약에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
