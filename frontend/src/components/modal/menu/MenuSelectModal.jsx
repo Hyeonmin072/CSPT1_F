@@ -76,7 +76,7 @@ export default function MenuSelectModal({item, onClose}){
                                 <p className="mt-4 px-5 p-1">{item.description}</p>
                                 <div className="flex flex-col w-full mt-10">
                                     <button onClick={handleFinalReservation}
-                                            className="bg-[#00B3A6] text-white px-4 py-2 rounded-lg">예약하기
+                                            className="bg-green-500 text-white px-4 py-2 rounded-lg">예약하기
                                     </button>
                                 </div>
                             </div>

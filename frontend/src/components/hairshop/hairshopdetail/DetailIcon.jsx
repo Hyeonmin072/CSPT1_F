@@ -1,5 +1,6 @@
 import { MapPin, PhoneCall, Link, Star } from "lucide-react";
 
+<<<<<<< HEAD
 export default function DetailIcon({ shopData }) {
   // 별점 계산 및 렌더링 함수
   const renderStars = (rating) => {
@@ -38,6 +39,37 @@ export default function DetailIcon({ shopData }) {
         <br />
         <span>{secondLine}</span>
       </>
+=======
+export default function DetailIcon(){
+    return(
+        <div className="p-5 flex gap-20 mb-5 items-center justify-center">
+            <div>
+
+                <button>
+                    <StarHalf/>
+                    <p className="mt-5">평점</p>
+                </button>
+            </div>
+            <div>
+                <button>
+                    <MapPin/>
+                    <p className="mt-5">위치</p></button>
+            </div>
+            <div>
+
+                <button>
+                    <PhoneCall/>
+                    <p className="mt-5">전화</p>
+                </button>
+            </div>
+            <div>
+                <button>
+                    <Link/>
+                    <p className="mt-5">공유</p>
+                </button>
+            </div>
+        </div>
+>>>>>>> d01c27b2791eaa44514e92a0074a647f76b66c22
     );
   };
 

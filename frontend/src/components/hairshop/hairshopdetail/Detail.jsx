@@ -59,10 +59,22 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
       }
     };
 
+<<<<<<< HEAD
     if (shopEmail) {
       fetchShopData();
     }
   }, [shopEmail]);
+=======
+    useEffect(() => {
+        // 페이지 로드 시 스크롤 위치 초기화
+        window.scrollTo(0, 0);
+    }, []); // 빈 의존성 배열로 컴포넌트가 마운트될 때만 실행
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY); // 스크롤에 따라 위치 업데이트
+        };
+>>>>>>> d01c27b2791eaa44514e92a0074a647f76b66c22
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error}</div>;
@@ -122,6 +134,7 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
                 <p className="text-gray-500">설명: {shopData.shop.shopDesc}</p>
               </div>
 
+<<<<<<< HEAD
               <div>
                 <DetailIcon shopData={shopData.shop} />
               </div>
@@ -147,6 +160,11 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
                 />
                 <HairShopDetailReview reviews={shopData.reviews} />
               </div>
+=======
+            {/* 오른쪽: 디자이너 정보 */}
+            <div className="flex flex-row w-1/4">
+                <DesignerInfo />
+>>>>>>> d01c27b2791eaa44514e92a0074a647f76b66c22
             </div>
           </div>
         </div>

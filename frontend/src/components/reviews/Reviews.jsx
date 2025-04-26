@@ -167,7 +167,7 @@ export default function Reviews() {
                                     <div className="text-sm text-gray-400 mb-4">&gt; {selectedReview.designer}</div>
                                     <div className="flex flex-row items-center gap-1 mt-2 mb-2">
                                         {Array.from({length: Math.floor(selectedReview.rating)}).map((_, idx) => (
-                                            <Star key={idx} color="#FFF33F" className="w-5 h-5"/>
+                                            <Star key={idx} color="#FFF33F" className="w-5 h-5 fill-current text-[#FFF33F]"/>
                                         ))}
                                     </div>
 

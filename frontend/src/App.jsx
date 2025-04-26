@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 // 공통 컴포넌트
 import Footer from "./components/common/Footer";
 
+import ChattingPage from "./pages/chatting/ChattingPage.jsx";
+
 // 고객
 import MainPage from "./pages/main/MainPage.jsx";
 import HairShopPage from "./pages/hairshop/HairShopPage.jsx";
@@ -124,6 +126,10 @@ function App() {
           {/* 공통 라우트 */}
           <Route path="/social/signup" element={<SocialSignup />} />
           <Route
+              path="/chat"
+              element={<ChattingPage onLoginClick={openLoginModal} />}
+          />
+          <Route
             path="/hairshop"
             element={<HairShopPage onLoginClick={openLoginModal} />}
           />
@@ -144,7 +150,7 @@ function App() {
           {userRole === "user" && (
             <>
               <Route
-                path="/designerpage"
+                path="/designer"
                 element={<DesignerPage onLoginClick={openLoginModal} />}
               />
               <Route
