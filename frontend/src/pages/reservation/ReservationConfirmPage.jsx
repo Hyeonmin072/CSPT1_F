@@ -47,12 +47,22 @@ export default function ReservationConfirmPage() {
       // API 호출
       const response = await axiosInstance.post('/user/reservation', requestData);
       
+      console.log("\n=== 서버 응답 데이터 ===");
+      console.log("상태 코드:", response.status);
+      console.log("응답 헤더:", response.headers);
+      console.log("응답 데이터:", response.data);
+      console.log("========================\n");
+      
       if (response.status === 200 || response.status === 201) {
         toast.success("예약이 완료되었습니다!");
         navigate('/reservation/check');
       }
     } catch (error) {
-      console.error("예약 실패:", error);
+      console.error("\n=== 예약 실패 ===");
+      console.error("에러 상태:", error.response?.status);
+      console.error("에러 데이터:", error.response?.data);
+      console.error("에러 메시지:", error.message);
+      console.error("========================\n");
       toast.error("예약에 실패했습니다. 다시 시도해주세요.");
     }
   };
