@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 import Header from "../../components/common/Header.jsx";
 import { IoChevronBackOutline } from "react-icons/io5";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
+import React, { useEffect } from 'react';
 
 export default function ReservationConfirmPage() {
   const location = useLocation();
@@ -22,6 +23,23 @@ export default function ReservationConfirmPage() {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     return `${date.getMonth() + 1}월 ${date.getDate()}일 (${days[date.getDay()]})`;
   };
+
+  // TossPayments 스크립트 로드
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://js.tosspayments.com/v1/payment";
+    script.async = true;
+    script.onload = () => {
+      console.log("TossPayments 스크립트가 로드되었습니다.");
+    };
+    document.body.appendChild(script);
+
+    // Cleanup: 컴포넌트가 언마운트될 때 스크립트 제거
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
 
   const handlePayment = async () => {
     try {
@@ -54,8 +72,19 @@ export default function ReservationConfirmPage() {
       console.log("========================\n");
       
       if (response.status === 200 || response.status === 201) {
-        toast.success("예약이 완료되었습니다!");
-        navigate('/reservation/check');
+        const data = response.data;
+
+        const tossPayments = window.TossPayments('test_ck_DnyRpQWGrNqx9ow4JNabVKwv1M9E');
+  
+        await tossPayments.requestPayment('CARD', {
+          amount: data.price,                 // 결제 금액
+          orderId: data.paymentId,             // 결제 ID를 orderId로 사용
+          orderName: data.reservMenuName,      // 메뉴 이름
+          customerName: data.userName,         // 유저 이름
+          customerEmail: data.userEmail,       // 유저 이메일
+          successUrl: data.successUrl,         // 서버가 넘겨준 successUrl
+          failUrl: data.failUrl                // 서버가 넘겨준 failUrl
+        });
       }
     } catch (error) {
       console.error("\n=== 예약 실패 ===");
