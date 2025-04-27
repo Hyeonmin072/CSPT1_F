@@ -71,6 +71,8 @@ export default function ReservationConfirmPage() {
       console.log("응답 데이터:", response.data);
       console.log("========================\n");
       
+      // 첫번째 API 호출 성공 시, 토스 결제 API 호출 -> 서버에서 redirect하기 때문에 navigate 필요 없음
+      // http://localhost:5173/reservation/check?success=true 또는 false
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
 
