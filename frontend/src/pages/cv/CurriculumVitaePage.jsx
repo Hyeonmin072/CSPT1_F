@@ -2,18 +2,35 @@ import DesignerHeader from "../../components/common/DesignerHeader.jsx";
 import CurriculumVitae from "../../components/DesingerAbout/cv/CurriculumVitae.jsx";
 import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { selectedDesigner } from "../../components/dummydata/DummydbDesigner.jsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function CurriculumVitaePage(){
+export default function CurriculumVitaePage() {
+  const [resumeData, setResumeData] = useState(null);
 
-    return (
-        <div>
-            <DesignerHeader/>
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        const response = await axios.get("/designer/resume");
+        console.log("디자이너 이력서 데이터:", response.data);
+        setResumeData(response.data);
+      } catch (error) {
+        console.error("디자이너 이력서 데이터 가져오기 실패:", error);
+      }
+    };
 
-            <div className="p-4">
-                <CurriculumVitae/>
-            </div>
+    fetchResumeData();
+  }, []);
 
-            <DesignerID designer={selectedDesigner} />
-        </div>
-    );
+  return (
+    <div>
+      <DesignerHeader />
+
+      <div className="p-4">
+        <CurriculumVitae resumeData={resumeData} />
+      </div>
+
+      <DesignerID designer={selectedDesigner} />
+    </div>
+  );
 }

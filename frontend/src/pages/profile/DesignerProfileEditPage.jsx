@@ -36,52 +36,56 @@ export default function DesignerProfileEditPage() {
       // FormData 객체 생성
       const updateData = new FormData();
 
-      // 각 필드 추가 (변경되지 않은 필드도 모두 포함)
-      updateData.append("updateNickName", formData.nickname || "");
-      updateData.append("updateDesc", formData.description || "");
-      updateData.append("updateTel", formData.tel || "");
+      // JSON 데이터를 위한 객체 생성
+      const jsonData = {
+        updateNickName: formData.nickname || "",
+        updateDesc: formData.description || "",
+        updateTel: formData.tel || "",
+        oldPwd:
+          formData.currentPassword && formData.currentPassword.trim() !== ""
+            ? formData.currentPassword
+            : null,
+        newPwd:
+          formData.newPassword && formData.newPassword.trim() !== ""
+            ? formData.newPassword
+            : null,
+        checkPwd:
+          formData.confirmPassword && formData.confirmPassword.trim() !== ""
+            ? formData.confirmPassword
+            : null,
+      };
 
-      // 이미지 파일 처리 - 변경된 경우에만 파일 추가, 변경되지 않은 경우 null로 설정
+      // JSON 데이터를 FormData에 추가
+      updateData.append(
+        "request",
+        new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+      );
+
+      // 이미지 파일 처리 - 변경된 경우에만 파일 추가, 변경되지 않은 경우 null 값 추가
       if (formData.profileImage && formData.profileImage instanceof File) {
         updateData.append("updateImage", formData.profileImage);
       } else {
-        updateData.append("updateImage", null);
+        // null 값을 문자열로 변환하여 추가
+        updateData.append("updateImage", "null");
       }
 
       if (formData.bannerImage && formData.bannerImage instanceof File) {
         updateData.append("updateBackgroundImage", formData.bannerImage);
       } else {
-        updateData.append("updateBackgroundImage", null);
-      }
-
-      // 비밀번호 관련 필드 추가 - 변경되지 않은 경우 null로 설정
-      if (formData.currentPassword && formData.currentPassword.trim() !== "") {
-        updateData.append("oldPwd", formData.currentPassword);
-      } else {
-        updateData.append("oldPwd", null);
-      }
-
-      if (formData.newPassword && formData.newPassword.trim() !== "") {
-        updateData.append("newPwd", formData.newPassword);
-      } else {
-        updateData.append("newPwd", null);
-      }
-
-      if (formData.confirmPassword && formData.confirmPassword.trim() !== "") {
-        updateData.append("checkPwd", formData.confirmPassword);
-      } else {
-        updateData.append("checkPwd", null);
+        // null 값을 문자열로 변환하여 추가
+        updateData.append("updateBackgroundImage", "null");
       }
 
       // FormData 내용 로깅
       console.log("전송할 프로필 업데이트 데이터:");
+      console.log("JSON 데이터:", jsonData);
       for (const [key, value] of updateData.entries()) {
         if (value instanceof File) {
           console.log(
             `${key}: File 객체 (${value.name}, ${value.type}, ${value.size} bytes)`
           );
-        } else if (value === null) {
-          console.log(`${key}: null`);
+        } else if (value instanceof Blob) {
+          console.log(`${key}: Blob 객체 (${value.type})`);
         } else {
           console.log(`${key}: ${value}`);
         }
