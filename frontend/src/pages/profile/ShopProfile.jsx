@@ -26,6 +26,8 @@ export default function ShopProfile() {
     reviewNumber: 0,
     reservationNumber: 0,
     joinDate: new Date().toISOString().split("T")[0],
+    profileImage: "",
+    bannerImage: "",
   });
 
   const weekDays = [
@@ -56,6 +58,8 @@ export default function ShopProfile() {
           reservationNumber: parseInt(response.data.reservationNumber || 0, 10),
           joinDate:
             response.data.joinDate || new Date().toISOString().split("T")[0],
+          profileImage: response.data.profileImage || "",
+          bannerImage: response.data.bannerImage || "",
         });
 
         // 정기 휴무일 문자열을 배열로 변환
@@ -98,6 +102,13 @@ export default function ShopProfile() {
     });
   };
 
+  const handleImageUpload = (type, imageUrl) => {
+    setShopData((prev) => ({
+      ...prev,
+      [type]: imageUrl,
+    }));
+  };
+
   const handleSave = async () => {
     try {
       const requestData = {
@@ -111,6 +122,8 @@ export default function ShopProfile() {
         open: shopData.open || "",
         close: shopData.close || "",
         regularHoliday: shopData.regularHoliday || "",
+        profileImage: shopData.profileImage || "",
+        bannerImage: shopData.bannerImage || "",
       };
 
       // 요청 전 데이터 검증
@@ -174,7 +187,16 @@ export default function ShopProfile() {
           {/* 프로필 배너 섹션 */}
           <div className="w-full max-w-5xl mb-8">
             <div className="h-48 rounded-xl overflow-hidden shadow-lg bg-gray-200">
-              {shopData.bannerImage ? (
+              {isEditing ? (
+                <ImageUploader
+                  imageType="banner"
+                  defaultImage={shopData.bannerImage}
+                  onImageUploaded={(url) =>
+                    handleImageUpload("bannerImage", url)
+                  }
+                  className="w-full h-full"
+                />
+              ) : shopData.bannerImage ? (
                 <img
                   src={shopData.bannerImage}
                   alt="샵 배너"
@@ -195,7 +217,16 @@ export default function ShopProfile() {
               <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
                 <div className="relative">
                   <div className="w-40 h-40 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
-                    {shopData.profileImage ? (
+                    {isEditing ? (
+                      <ImageUploader
+                        imageType="profile"
+                        defaultImage={shopData.profileImage}
+                        onImageUploaded={(url) =>
+                          handleImageUpload("profileImage", url)
+                        }
+                        className="w-full h-full"
+                      />
+                    ) : shopData.profileImage ? (
                       <img
                         src={shopData.profileImage}
                         alt="샵 프로필"
@@ -242,9 +273,19 @@ export default function ShopProfile() {
                       <h2 className="text-sm font-medium text-gray-500">
                         연락처
                       </h2>
-                      <p className="text-gray-800 font-medium">
-                        {shopData.tel}
-                      </p>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={shopData.tel}
+                          onChange={(e) => handleChange("tel", e.target.value)}
+                          className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all text-gray-800"
+                          placeholder="연락처를 입력하세요"
+                        />
+                      ) : (
+                        <p className="text-gray-800 font-medium">
+                          {shopData.tel}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -253,9 +294,32 @@ export default function ShopProfile() {
                       <h2 className="text-sm font-medium text-gray-500">
                         주소
                       </h2>
-                      <p className="text-gray-800 font-medium">
-                        [{shopData.post}] {shopData.address}
-                      </p>
+                      {isEditing ? (
+                        <div className="space-y-2">
+                          <input
+                            type="text"
+                            value={shopData.post}
+                            onChange={(e) =>
+                              handleChange("post", e.target.value)
+                            }
+                            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all text-gray-800"
+                            placeholder="우편번호를 입력하세요"
+                          />
+                          <input
+                            type="text"
+                            value={shopData.address}
+                            onChange={(e) =>
+                              handleChange("address", e.target.value)
+                            }
+                            className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all text-gray-800"
+                            placeholder="주소를 입력하세요"
+                          />
+                        </div>
+                      ) : (
+                        <p className="text-gray-800 font-medium">
+                          [{shopData.post}] {shopData.address}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
