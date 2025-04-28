@@ -29,6 +29,9 @@ export default function Map({ mapRef, center, setCenter }) {
       const map = new window.kakao.maps.Map(container, options);
       mapRef.current = map;
 
+      map.setMinLevel(1);
+      map.setMaxLevel(14);
+
       // 초기 지도 중심 좌표 확인 (위도, 경도로 확인)
       const initialCenter = map.getCenter();
       console.log("지도 중심:", initialCenter.getLat(), initialCenter.getLng());
@@ -98,50 +101,9 @@ export default function Map({ mapRef, center, setCenter }) {
         } else {
           reject("주소 변환 실패");
         }
-<<<<<<< HEAD
       });
     });
   };
-=======
-    
-        // 카카오 지도 API 로드 후 지도 초기화
-        window.kakao.maps.load(() => {
-            const container = document.getElementById("map");
-            const options = {
-                center: new window.kakao.maps.LatLng(center.lat, center.lng),
-                level: 3,
-            };
-            const map = new window.kakao.maps.Map(container, options);
-            mapRef.current = map;
-
-            map.setMinLevel(1);
-            map.setMaxLevel(14);
-    
-            // 초기 지도 중심 좌표 확인 (위도, 경도로 확인)
-            const initialCenter = map.getCenter();
-            console.log("지도 중심:", initialCenter.getLat(), initialCenter.getLng());
-    
-            // 지도 이벤트 리스너 설정
-            window.kakao.maps.event.addListener(map, "idle", () => {
-                const newCenter = map.getCenter();
-                const newCoords = {
-                    lat: newCenter.getLat(),
-                    lng: newCenter.getLng(),
-                };
-    
-                // 이동했을 때만 업데이트
-                if (
-                    !isNaN(newCoords.lat) &&
-                    !isNaN(newCoords.lng) &&
-                    (newCoords.lat !== center.lat || newCoords.lng !== center.lng)
-                ) {
-                    console.log("현재 좌표: ", newCoords);
-                    setCenter(newCoords);
-                }
-            });
-        });
-    }, []); // center 값이 변경될 때마다 다시 실행
->>>>>>> d01c27b2791eaa44514e92a0074a647f76b66c22
 
   return (
     <div
@@ -166,7 +128,6 @@ export default function Map({ mapRef, center, setCenter }) {
         }}
       ></div>
 
-<<<<<<< HEAD
       {/* 마커 아이콘 */}
       <div
         style={{
@@ -185,13 +146,6 @@ export default function Map({ mapRef, center, setCenter }) {
           className="bounce"
         />
       </div>
-=======
-        console.log("센터 좌표 이동 실행 lat:", center.lat, " lng:", center.lng);
-        const moveLatLng = new window.kakao.maps.LatLng(center.lat, center.lng);
-        mapRef.current.setCenter(moveLatLng);     
-        setBounceKey(prev => prev + 1);
-    }, [center]);
->>>>>>> d01c27b2791eaa44514e92a0074a647f76b66c22
 
       {/* 하단 버튼 */}
       <div
