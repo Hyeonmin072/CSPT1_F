@@ -30,7 +30,7 @@ export default function ProfileHeader({ name, nickName, image, like }) {
         </div>
 
         {/* 이름과 소속 */}
-        <div className="absolute top-[320px] left-[calc(50%-60px)] text-center">
+        <div className="absolute top-[320px] left-1/2 transform -translate-x-1/2 text-center">
           <h1 className="text-xl font-bold">{nickName}</h1>
           <p className="text-gray-600">{name}</p>
         </div>
@@ -49,7 +49,7 @@ export default function ProfileHeader({ name, nickName, image, like }) {
             className="bg-green-600 px-4 py-2 rounded-lg text-white text-sm font-semibold"
             onClick={() => navigate("/profileedit")}
           >
-            프로필 수정
+            프로필 변경
           </button>
         </div>
       </div>
