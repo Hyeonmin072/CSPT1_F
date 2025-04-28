@@ -6,11 +6,14 @@ import ProfileEditHeader from "./ProfileEditHeader.jsx";
 
 export default function DesignerProfileEdit({
   name,
+  nickname,
   email,
   tel,
   description,
   image,
   backgroundImage,
+  onUpdate,
+  isSubmitting,
 }) {
   const navigate = useNavigate();
 
@@ -18,7 +21,7 @@ export default function DesignerProfileEdit({
   const [profileImage, setProfileImage] = useState(image);
   const [bannerImage, setBannerImage] = useState(backgroundImage);
   const [introduction, setIntroduction] = useState(description || "");
-  const [nickname, setNickname] = useState("");
+  const [nicknameState, setNicknameState] = useState(nickname || "");
   const [emailPrefix, setEmailPrefix] = useState(
     email ? email.split("@")[0] : ""
   );
@@ -51,6 +54,27 @@ export default function DesignerProfileEdit({
     setDomain(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 폼 데이터 수집
+    const formData = {
+      nickname: nicknameState,
+      description: introduction,
+      tel: telephone,
+      profileImage,
+      bannerImage,
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    };
+
+    // 부모 컴포넌트의 onUpdate 함수 호출
+    if (onUpdate) {
+      onUpdate(formData);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-10">
       {/* Header */}
@@ -65,7 +89,7 @@ export default function DesignerProfileEdit({
 
       {/* Body */}
       <div className="mt-20">
-        <form>
+        <form onSubmit={handleSubmit}>
           {/* 이름 입력 */}
           <div className="mb-4">
             <label
@@ -98,12 +122,15 @@ export default function DesignerProfileEdit({
                 type="text"
                 id="nickname"
                 name="nickname"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                value={nicknameState}
+                onChange={(e) => setNicknameState(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm bg-[#F9F9F9]"
                 placeholder="디자이너 닉네임을 입력하세요"
               />
-              <button className="w-[200px] bg-green-600 rounded-lg text-white">
+              <button
+                type="button"
+                className="w-[200px] bg-green-600 rounded-lg text-white"
+              >
                 중복확인
               </button>
             </div>
@@ -157,7 +184,10 @@ export default function DesignerProfileEdit({
                   <option value="custom.com">직접 입력</option>
                 </select>
               )}
-              <button className="px-2 py-2 rounded-lg w-[120px] text-white bg-green-600">
+              <button
+                type="button"
+                className="px-2 py-2 rounded-lg w-[120px] text-white bg-green-600"
+              >
                 이메일 확인
               </button>
             </div>
@@ -266,10 +296,12 @@ export default function DesignerProfileEdit({
             취소하기
           </button>
           <button
-            type="submit"
+            type="button"
             className="w-40 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
           >
-            변경하기
+            {isSubmitting ? "변경 중..." : "변경하기"}
           </button>
         </div>
       </div>

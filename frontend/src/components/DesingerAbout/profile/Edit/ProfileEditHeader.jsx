@@ -16,9 +16,13 @@ export default function ProfileEditHeader({
   const handleImageChange = (event, setImage) => {
     const file = event.target.files[0];
     if (file) {
+      // File 객체를 그대로 저장
+      setImage(file);
+
+      // 미리보기를 위한 URL 생성
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        // 미리보기 URL은 사용하지 않고 File 객체만 저장
       };
       reader.readAsDataURL(file);
     }
@@ -34,12 +38,22 @@ export default function ProfileEditHeader({
     event.stopPropagation();
     const file = event.dataTransfer.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // File 객체를 그대로 저장
+      setImage(file);
     }
+  };
+
+  // 이미지 미리보기 URL 생성
+  const getImagePreview = (image) => {
+    if (!image) return null;
+
+    // 이미 File 객체인 경우
+    if (image instanceof File) {
+      return URL.createObjectURL(image);
+    }
+
+    // URL 문자열인 경우
+    return image;
   };
 
   return (
@@ -47,12 +61,12 @@ export default function ProfileEditHeader({
       {/* 배경 이미지 */}
       <div
         onDragOver={handleDragOver}
-        onDrop={(event) => handleDrop(event, setBannerImageState)}
+        onDrop={(event) => handleDrop(event, setBannerImage)}
         className="w-full h-64 bg-gray-300 rounded-lg flex items-center justify-center border-2 border-gray-400"
       >
-        {bannerImageState ? (
+        {bannerImage ? (
           <img
-            src={bannerImageState}
+            src={getImagePreview(bannerImage)}
             alt="Designer Banner"
             className="w-full h-full object-cover rounded-lg"
           />
@@ -64,7 +78,7 @@ export default function ProfileEditHeader({
           accept="image/*"
           className="hidden"
           id="bannerImageInput"
-          onChange={(event) => handleImageChange(event, setBannerImageState)}
+          onChange={(event) => handleImageChange(event, setBannerImage)}
         />
         <label
           htmlFor="bannerImageInput"
@@ -76,19 +90,19 @@ export default function ProfileEditHeader({
       <div
         className="absolute top-[200px] left-1/2 transform -translate-x-1/2 flex flex-col items-center"
         onDragOver={handleDragOver}
-        onDrop={(event) => handleDrop(event, setProfileImageState)}
+        onDrop={(event) => handleDrop(event, setProfileImage)}
       >
         <input
           type="file"
           accept="image/*"
           className="hidden"
           id="profileImageInput"
-          onChange={(event) => handleImageChange(event, setProfileImageState)}
+          onChange={(event) => handleImageChange(event, setProfileImage)}
         />
         <label htmlFor="profileImageInput" className="cursor-pointer">
-          {profileImageState ? (
+          {profileImage ? (
             <img
-              src={profileImageState}
+              src={getImagePreview(profileImage)}
               alt="Designer Profile"
               className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-lg"
             />
