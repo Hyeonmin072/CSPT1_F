@@ -35,6 +35,7 @@ const UserProfile = () => {
         const response = await axiosInstance.get("/user/profile", {
           withCredentials: true,
         });
+        console.log("load된 유저 데이터", response.data);
         if (response.data) {
           setUserData((prevData) => ({
             ...prevData,

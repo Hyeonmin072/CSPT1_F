@@ -20,6 +20,7 @@ export default function DesignerProfileEditPage() {
       try {
         const response = await axios.get("/designer/profile/update");
         console.log("디자이너 프로필 수정 데이터:", response.data);
+        console.log("요청 주소: /designer/profile/update");
         setDesignerData(response.data);
       } catch (error) {
         console.error("디자이너 프로필 수정 데이터 가져오기 실패:", error);
