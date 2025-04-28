@@ -19,7 +19,7 @@ export default function CVProfile({ isEditable, resumeData }) {
       try {
         console.log("CVProfile - 받은 resumeData:", resumeData);
 
-        // resumeData가 있으면 사용
+        // resumeDa        ta가 있으면 사용
         if (resumeData) {
           const profileData = {
             d_id: resumeData.d_id || "",
@@ -30,7 +30,10 @@ export default function CVProfile({ isEditable, resumeData }) {
             d_age: resumeData.d_age || "",
           };
 
-          console.log("CVProfile - 설정할 프로필 데이터:", profileData);
+          console.log(
+            "CVProfi          le - 설정할 프로필 데이터:",
+            profileData
+          );
           setProfile(profileData);
 
           // d_image가 null이 아니면 초기 이미지로 설정
@@ -153,9 +156,9 @@ export default function CVProfile({ isEditable, resumeData }) {
 
         {/* 생년월일 */}
         <div className="flex items-center mb-4">
-          <label className="w-32 text-gray-700 font-bold">생년월일</label>
+          <label className="w-32 text-gray-700 font-bold">나이</label>
           <span className="w-[400px] border rounded p-2 bg-gray-100">
-            {profile.d_birth_date}
+            {profile.d_age}
           </span>
         </div>
       </div>
