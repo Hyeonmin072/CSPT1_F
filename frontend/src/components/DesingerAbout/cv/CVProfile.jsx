@@ -150,7 +150,11 @@ export default function CVProfile({ isEditable, resumeData }) {
         <div className="flex items-center mb-4">
           <label className="w-32 text-gray-700 font-bold">성별</label>
           <span className="w-[400px] border rounded p-2 bg-gray-100">
-            {profile.d_gender}
+            {profile.d_gender === "MALE"
+              ? "남성"
+              : profile.d_gender === "FEMALE"
+              ? "여성"
+              : profile.d_gender}
           </span>
         </div>
 

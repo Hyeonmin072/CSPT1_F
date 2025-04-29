@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BusinessHeader from "../../components/common/BusinessHeader";
 import { motion } from "framer-motion";
+import ImageUploader from "../../components/DesingerAbout/profile/ImageUploader";
 
 export default function ShopProfile() {
   const navigate = useNavigate();
@@ -102,67 +103,58 @@ export default function ShopProfile() {
     });
   };
 
-  const handleImageUpload = (type, imageUrl) => {
+  const handleImageUpload = (type, file) => {
+    // 이미지 파일을 상태에 저장
     setShopData((prev) => ({
       ...prev,
-      [type]: imageUrl,
+      [`${type}File`]: file, // 파일 객체를 저장
     }));
   };
 
   const handleSave = async () => {
     try {
-      const requestData = {
-        name: shopData.name,
-        address: shopData.address,
-        post: parseInt(shopData.post, 10),
-        tel: shopData.tel,
-        newPwd: "",
-        newPwdConfirm: "",
-        desc: shopData.desc || "",
-        open: shopData.open || "",
-        close: shopData.close || "",
-        regularHoliday: shopData.regularHoliday || "",
-        profileImage: shopData.profileImage || "",
-        bannerImage: shopData.bannerImage || "",
-      };
+      const formData = new FormData();
 
-      // 요청 전 데이터 검증
-      if (
-        !requestData.name ||
-        !requestData.address ||
-        !requestData.post ||
-        !requestData.tel
-      ) {
-        toast.error("필수 항목을 모두 입력해주세요.");
-        return;
+      // 기본 데이터 추가
+      formData.append("name", shopData.name);
+      formData.append("address", shopData.address);
+      formData.append("post", parseInt(shopData.post, 10));
+      formData.append("tel", shopData.tel);
+      formData.append("newPwd", "");
+      formData.append("newPwdConfirm", "");
+      formData.append("desc", shopData.desc || "");
+      formData.append("open", shopData.open || "");
+      formData.append("close", shopData.close || "");
+      formData.append("regularHoliday", shopData.regularHoliday || "");
+
+      // 이미지 파일 추가
+      if (shopData.profileImageFile) {
+        formData.append("profileImage", shopData.profileImageFile);
+      }
+      if (shopData.bannerImageFile) {
+        formData.append("bannerImage", shopData.bannerImageFile);
       }
 
-      console.log(
-        "서버로 전송하는 데이터:",
-        JSON.stringify(requestData, null, 2)
-      );
-
-      const response = await axiosInstance.patch("/shop/profile", requestData, {
-        withCredentials: true,
+      // 서버로 데이터 전송
+      const response = await axiosInstance.post("/shop/profile", formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
-      console.log("샵 정보 업데이트 성공:", response.data);
-      toast.success("샵 정보가 성공적으로 업데이트되었습니다.");
-      setIsEditing(false);
-    } catch (error) {
-      console.error("샵 정보 업데이트 실패:", error);
-      if (error.response) {
-        console.error("서버 응답:", error.response.data);
-        toast.error(
-          `샵 정보 업데이트 실패: ${
-            error.response.data.message || "알 수 없는 오류"
-          }`
-        );
-      } else {
-        toast.error("샵 정보 업데이트에 실패했습니다.");
+
+      // 성공 시 처리
+      if (response.status === 200) {
+        // 성공 메시지 표시
+        toast.success("프로필이 성공적으로 업데이트되었습니다.");
+        // 편집 모드 종료
+        setIsEditing(false);
+        // 데이터 새로고침
+        fetchShopData();
       }
+    } catch (error) {
+      console.error("프로필 업데이트 중 오류 발생:", error);
+      toast.error("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -191,8 +183,8 @@ export default function ShopProfile() {
                 <ImageUploader
                   imageType="banner"
                   defaultImage={shopData.bannerImage}
-                  onImageUploaded={(url) =>
-                    handleImageUpload("bannerImage", url)
+                  onImageSelected={(type, file) =>
+                    handleImageUpload(type, file)
                   }
                   className="w-full h-full"
                 />
@@ -221,8 +213,8 @@ export default function ShopProfile() {
                       <ImageUploader
                         imageType="profile"
                         defaultImage={shopData.profileImage}
-                        onImageUploaded={(url) =>
-                          handleImageUpload("profileImage", url)
+                        onImageSelected={(type, file) =>
+                          handleImageUpload(type, file)
                         }
                         className="w-full h-full"
                       />
