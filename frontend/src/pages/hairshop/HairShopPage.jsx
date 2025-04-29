@@ -9,6 +9,11 @@ export default function HairShopPage() {
   const [selectedLocation, setSelectedLocation] = useState("전체");
   const containerRef = useRef(null);
 
+  useEffect(() => {
+    // 페이지 로드 시 스크롤 위치 초기화
+    window.scrollTo(0, 0);
+  }, []);
+
   /* 애니메이션 효과 */
   useEffect(() => {
     const observer = new IntersectionObserver(

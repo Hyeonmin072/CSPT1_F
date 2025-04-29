@@ -43,7 +43,7 @@ export default function DesignerSelect({handleDesignerSelect}) {
     }
 
     return (
-        <div className="max-w-8xl">
+        <div className="max-w-8xl pt-10 mt-5">
             <div className="flex items-center justify-between px-4 py-2">
                 <DesignerHeader/>
             </div>

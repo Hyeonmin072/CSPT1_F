@@ -147,7 +147,7 @@ export default function BlackList() {
     };
 
     return (
-        <div className="max-w-8xl p-6 flex flex-col items-center">
+        <div className="max-w-8xl p-6 flex flex-col items-center pt-10 mt-10">
             <div className="w-[1000px] flex flex-row justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">블랙리스트</h1>
 

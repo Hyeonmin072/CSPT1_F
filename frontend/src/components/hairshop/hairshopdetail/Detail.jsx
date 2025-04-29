@@ -16,7 +16,7 @@ export default function ShopDetail({ handleModalOpen }) {
     useEffect(() => {
         // 페이지 로드 시 스크롤 위치 초기화
         window.scrollTo(0, 0);
-    }, []); // 빈 의존성 배열로 컴포넌트가 마운트될 때만 실행
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -41,7 +41,7 @@ export default function ShopDetail({ handleModalOpen }) {
     }, []);
 
     return (
-        <div className="max-w-6xl mx-auto flex flex-row justify-center items-start px-20 gap-6"
+        <div className="max-w-6xl pt-20 mt-1 mx-auto flex flex-row justify-center items-start px-20 gap-6"
              onWheel={handleWheel}>
             {/* 왼쪽: 가게 상세 정보 */}
             <div className="flex flex-col w-4/5 mb-0 bg-white">

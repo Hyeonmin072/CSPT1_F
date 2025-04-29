@@ -49,7 +49,7 @@ import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.j
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("user");
+  const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {

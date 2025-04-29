@@ -63,10 +63,10 @@ export default function SalesCalendar() {
     };
 
     return (
-        <>
+        <div>
             <BusinessHeader />
 
-            <div className="p-4">
+            <div className="p-5 pt-10 mt-10">
                 <div className="flex flex-col items-center justify-center w-full">
                     <h2 className="text-xl font-bold mb-4">
                         {designer?.name}의 매출 캘린더
@@ -150,6 +150,6 @@ export default function SalesCalendar() {
                     color: #ffffff !important;
                 }
             `}</style>
-        </>
+        </div>
     );
 }

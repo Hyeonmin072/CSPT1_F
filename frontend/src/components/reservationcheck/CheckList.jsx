@@ -21,8 +21,8 @@ export default function CheckList({ handleRowClick, filteredReservations, reserv
                             <td className="border py-2 px-4">{reservation.designer}</td>
                             <td className="border py-2 px-4">{reservation.menu}</td>
                             <td className="border py-2 px-4">
-                                <span className={`inline-block px-2 py-1 font-bold rounded-full
-                                    ${reservation.status === "예약완료" ? "bg-[#C8FFF4] text-[#00B3A6]" : reservation.status === "예약취소" ? "bg-red-200 text-red-600" : ""}`}>
+                                <span className={`inline-block px-2 py-1 font-bold rounded
+                                    ${reservation.status === "예약완료" ? "bg-green-500 text-white" : reservation.status === "예약취소" ? "bg-red-500 text-white" : ""}`}>
                                     {reservation.status}
                                 </span>
                             </td>
