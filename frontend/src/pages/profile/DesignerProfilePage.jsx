@@ -11,6 +11,7 @@ axios.defaults.withCredentials = true; // CORS 인증 설정
 
 export default function DesignerProfilePage() {
   const [designerData, setDesignerData] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchDesignerProfile = async () => {
@@ -25,6 +26,10 @@ export default function DesignerProfilePage() {
 
     fetchDesignerProfile();
   }, []);
+
+  const handleProfileUpdate = () => {
+    // Implementation of handleProfileUpdate function
+  };
 
   // 데이터가 로딩 중일 때 표시할 내용
   if (!designerData) {
@@ -46,6 +51,9 @@ export default function DesignerProfilePage() {
           like={designerData.like}
           email={designerData.email}
           tel={designerData.tel}
+          backgroundImage={designerData.backgroundImage}
+          onUpdate={handleProfileUpdate}
+          isSubmitting={isSubmitting}
         />
       </div>
 

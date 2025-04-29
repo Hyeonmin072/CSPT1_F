@@ -1,15 +1,32 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Heart, UserRound, Image } from "lucide-react";
 
-export default function ProfileHeader({ name, nickName, image, like }) {
+export default function ProfileHeader({
+  name,
+  nickName,
+  image,
+  like,
+  backgroundImage,
+}) {
   const { d_id } = useParams();
   const navigate = useNavigate();
 
   return (
     <>
       {/* 배경 이미지 */}
-      <div className="w-full h-64 bg-gray-300 rounded-lg flex items-center justify-center border-2 border-gray-400">
-        <Image className="w-20 h-20 text-gray-500" />
+      <div
+        className="w-full h-64 bg-gray-300 rounded-lg flex items-center justify-center border-2 border-gray-400"
+        style={
+          backgroundImage
+            ? {
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : {}
+        }
+      >
+        {!backgroundImage && <Image className="w-20 h-20 text-gray-500" />}
       </div>
 
       {/* 프로필 정보 */}

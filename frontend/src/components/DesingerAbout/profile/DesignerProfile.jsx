@@ -26,6 +26,7 @@ export default function DesignerProfile({
   like,
   email,
   tel,
+  backgroundImage,
 }) {
   return (
     <div className="max-w-6xl mx-auto p-10">
@@ -36,6 +37,7 @@ export default function DesignerProfile({
           nickName={nickName}
           image={image}
           like={like}
+          backgroundImage={backgroundImage}
         />
       </div>
 
