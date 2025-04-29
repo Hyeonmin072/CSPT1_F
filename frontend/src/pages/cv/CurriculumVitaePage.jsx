@@ -13,7 +13,18 @@ export default function CurriculumVitaePage() {
       try {
         const response = await axios.get("/designer/resume");
         console.log("디자이너 이력서 데이터:", response.data);
-        setResumeData(response.data);
+
+        // API 응답 데이터를 컴포넌트에서 사용하는 형식으로 변환
+        const formattedData = {
+          ...response.data,
+          d_exp: response.data.exp,
+          employmentHistory: response.data.careers,
+          certifications: response.data.certifications,
+          wantedDays: response.data.wantedDays,
+        };
+
+        console.log("변환된 이력서 데이터:", formattedData);
+        setResumeData(formattedData);
       } catch (error) {
         console.error("디자이너 이력서 데이터 가져오기 실패:", error);
       }

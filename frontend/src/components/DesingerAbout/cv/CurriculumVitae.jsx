@@ -13,6 +13,23 @@ export default function CurriculumVitae() {
   const [dDesc, setDDesc] = useState(""); // 소개글 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [resumeData, setResumeData] = useState(null); // 이력서 데이터
+  const [wantedDays, setWantedDays] = useState([]); // 희망 근무일 상태
+  const [careers, setCareers] = useState([]); // 경력 상태
+  const [certifications, setCertifications] = useState([]); // 자격증 상태
+
+  // 요일 ID 변환 함수
+  const convertDayId = (dayId) => {
+    const dayMap = {
+      MONDAY: "MON",
+      TUESDAY: "TUE",
+      WEDNESDAY: "WED",
+      THURSDAY: "THU",
+      FRIDAY: "FRI",
+      SATURDAY: "SAT",
+      SUNDAY: "SUN",
+    };
+    return dayMap[dayId] || dayId;
+  };
 
   // 이력서 데이터 가져오기
   useEffect(() => {
@@ -34,12 +51,15 @@ export default function CurriculumVitae() {
           d_exp: response.data.exp || "",
           employmentHistory: response.data.careers || [],
           certifications: response.data.certifications || [],
-          selectedDays: response.data.wantedDays || [],
+          wantedDays: response.data.wantedDays || [],
           decisionType: "SELECT_DAYS",
         };
 
         console.log("변환된 이력서 데이터:", formattedData);
         setResumeData(formattedData);
+        setWantedDays(formattedData.wantedDays || []);
+        setCareers(formattedData.employmentHistory || []);
+        setCertifications(formattedData.certifications || []);
 
         // 소개글 설정
         setDDesc(formattedData.d_desc);
@@ -53,24 +73,65 @@ export default function CurriculumVitae() {
     fetchResumeData();
   }, []);
 
+  // 희망 근무일 변경 처리 함수
+  const handleWantedDaysChange = (days) => {
+    console.log("CurriculumVitae - 희망 근무일 변경:", days);
+    setWantedDays(days);
+    if (resumeData) {
+      resumeData.wantedDays = days;
+    }
+  };
+
+  // 경력 변경 처리 함수
+  const handleCareerChange = (updatedCareers) => {
+    console.log("CurriculumVitae - 경력 변경:", updatedCareers);
+    setCareers(updatedCareers);
+    if (resumeData) {
+      resumeData.employmentHistory = updatedCareers;
+    }
+  };
+
+  // 자격증 변경 처리 함수
+  const handleCertificationChange = (updatedCertifications) => {
+    console.log("CurriculumVitae - 자격증 변경:", updatedCertifications);
+    setCertifications(updatedCertifications);
+    if (resumeData) {
+      resumeData.certifications = updatedCertifications;
+    }
+  };
+
   const handleSave = async () => {
     setShowMessage(true);
     setIsEditable(false); // 저장 후 수정 모드 종료
     setFadeOut(false);
 
     try {
+      // wantedDays를 객체 형태로 변환하고 요일 ID를 짧은 형식으로 변환
+      const formattedWantedDays = wantedDays.map((day) => {
+        // 이미 객체 형태인 경우
+        if (typeof day === "object" && day.wantedDay) {
+          return { wantedDay: convertDayId(day.wantedDay) };
+        }
+        // 문자열인 경우 객체로 변환하고 요일 ID를 짧은 형식으로 변환
+        return { wantedDay: convertDayId(day) };
+      });
+
       // 백엔드 요구사항에 맞게 데이터 구성
       const updateData = {
         content: dDesc,
         exp: resumeData.d_exp,
         portfolio: "", // 포트폴리오 데이터가 있다면 추가
         image: resumeData.d_image,
-        careers: resumeData.employmentHistory,
-        certificates: resumeData.certifications,
-        wantedDays: resumeData.selectedDays,
+        careers: careers, // 상태에서 직접 가져옴
+        certifications: certifications, // 상태에서 직접 가져옴
+        wantedDays: formattedWantedDays, // 객체 형태로 변환된 wantedDays
       };
 
       console.log("전송할 데이터:", updateData);
+      console.log("전송할 데이터 상세:", JSON.stringify(updateData, null, 2));
+      console.log("희망 근무일 데이터:", updateData.wantedDays);
+      console.log("경력 데이터:", updateData.careers);
+      console.log("자격증 데이터:", updateData.certificates);
 
       // API 호출
       const response = await axios.post("/designer/resume/update", updateData);
@@ -107,17 +168,29 @@ export default function CurriculumVitae() {
 
       {/* 경력 */}
       <section className="flex flex-col items-center justify-center p-8 w-full">
-        <Career isEditable={isEditable} resumeData={resumeData} />
+        <Career
+          isEditable={isEditable}
+          resumeData={resumeData}
+          onCareerChange={handleCareerChange}
+        />
       </section>
 
       {/* 희망 근무조건 */}
       <section className="flex flex-col items-center justify-center w-full">
-        <DesiredWorkDays isEditable={isEditable} resumeData={resumeData} />
+        <DesiredWorkDays
+          isEditable={isEditable}
+          resumeData={resumeData}
+          onWantedDaysChange={handleWantedDaysChange}
+        />
       </section>
 
       {/* 자격증 파트 */}
       <section className="flex flex-col items-center justify-center w-full p-8">
-        <Certification isEditable={isEditable} resumeData={resumeData} />
+        <Certification
+          isEditable={isEditable}
+          resumeData={resumeData}
+          onCertificationChange={handleCertificationChange}
+        />
       </section>
 
       {/* 소개글 파트 */}
