@@ -13,12 +13,12 @@ export default function ReservationCheck() {
 
     // 임시 리스트
     const reservations = [
-        { id: 1, date: '2024-5-7', salonName: 'HAIRISM', designer: 'Jane Doe', menu: 'Haircut', status: '예약완료', price: '100000', title: '컷트', imageUrl: reviewEX, finalPrice: '90000', selectedCoupon: '10% 할인 쿠폰', selectedMembership: 'Gold' },
-        { id: 2, date: '2024-5-15', salonName: 'Hair Heaven', designer: 'John Smith', menu: 'Color', status: '예약취소', price: '120000', title: '컬러링', imageUrl: reviewEX, finalPrice: '120000', selectedCoupon: '5% 할인 쿠폰', selectedMembership: 'Silver' },
-        { id: 3, date: '2025-3-10', salonName: 'Hair Magic', designer: 'Alice Brown', menu: 'Perm', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
-        { id: 4, date: '2025-7-10', salonName: 'Hair Magic', designer: 'Alice Brown', menu: 'Perm', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
-        { id: 5, date: '2024-10-15', salonName: 'Hair Magic', designer: 'Alice Brown', menu: 'Perm', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
-        { id: 6, date: '2024-11-23', salonName: 'Hair Magic', designer: 'Alice Brown', menu: 'Perm', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
+        { id: 1, date: '2024-5-7', salonName: 'HAIRISM', designer: 'Jane Doe', menu: '컷트', status: '예약완료', price: '100000', title: '컷트', imageUrl: reviewEX, finalPrice: '90000', selectedCoupon: '10% 할인 쿠폰', selectedMembership: 'Gold' },
+        { id: 2, date: '2024-5-15', salonName: 'Hair Heaven', designer: 'John Smith', menu: '염색', status: '예약취소', price: '120000', title: '컬러링', imageUrl: reviewEX, finalPrice: '120000', selectedCoupon: '5% 할인 쿠폰', selectedMembership: 'Silver' },
+        { id: 3, date: '2025-3-10', salonName: 'Hair Magic', designer: '김 미영', menu: '펌', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
+        { id: 4, date: '2025-7-10', salonName: 'Hair Magic', designer: '김 미영', menu: '펌', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
+        { id: 5, date: '2024-10-15', salonName: 'Hair Magic', designer: '김 미나', menu: '펌', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
+        { id: 6, date: '2024-11-23', salonName: 'Hair Magic', designer: '정 아영', menu: '펌', status: '예약완료', price: '90000', title: '펌', imageUrl: reviewEX, finalPrice: '85000', selectedCoupon: '없음', selectedMembership: 'Bronze' },
     ];
 
     // id를 기준으로 정렬
@@ -50,7 +50,7 @@ export default function ReservationCheck() {
     };
 
     return (
-        <div className="container mx-auto px-10 m-10">
+        <div className="container mx-auto px-10 m-10 pt-20 mt-10">
             <div className="mb-4 pb-4 flex items-center">
                 <CheckHeader
                     selectedYear={selectedYear}

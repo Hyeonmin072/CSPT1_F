@@ -7,7 +7,7 @@ import SaleStaus from "./SaleStaus.jsx";
 export default function Sales() {
 
     return (
-        <div className="container mx-auto max-w-7xl p-10">
+        <div className="container mx-auto max-w-7xl p-10 mt-20">
             {/* 윗줄 */}
             <div className="flex flex-row gap-4">
                 <SaleStaus />

@@ -137,7 +137,7 @@ export default function GetJob() {
     }
 
     return (
-        <div className="p-10 mx-auto max-w-7xl">
+        <div className="p-10 mx-auto max-w-7xl mt-10">
             {/* 정렬 옵션 */}
             <div className="flex justify-end max-w-7xl px-10">
                 <select

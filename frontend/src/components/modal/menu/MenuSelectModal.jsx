@@ -26,7 +26,7 @@ export default function MenuSelectModal({item, onClose}){
 
 
     return (
-        <div>
+        <div className="pt-10 mt-5">
             {showFinalModal && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-40">
                     <FinalMenuModal

@@ -5,7 +5,7 @@ import ScheduleQuick from "./ScheduleQuick.jsx";
 
 export default function DesignerMain() {
     return (
-        <div className="mx-auto max-w-7xl flex flex-row">
+        <div className="mx-auto max-w-7xl flex flex-row pt-10 mt-10">
             <div className="flex items-center justify-center w-[1000px] pt-8 ">
                 <Notice/>
             </div>

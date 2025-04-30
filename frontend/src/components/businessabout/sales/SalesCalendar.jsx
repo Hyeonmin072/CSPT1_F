@@ -2,6 +2,7 @@ import BusinessHeader from "../../common/BusinessHeader.jsx";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Calendar from "react-calendar";
+import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
 import { designers } from "./DesignerSales.jsx";
 import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
@@ -63,10 +64,10 @@ export default function SalesCalendar() {
     };
 
     return (
-        <>
+        <div>
             <BusinessHeader />
 
-            <div className="p-4">
+            <div className="p-5 pt-10 mt-20">
                 <div className="flex flex-col items-center justify-center w-full">
                     <h2 className="text-xl font-bold mb-4">
                         {designer?.name}의 매출 캘린더
@@ -98,7 +99,7 @@ export default function SalesCalendar() {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-[600px]">
                         <h2 className="text-xl font-bold mb-4">
-                            {clickedDate.toLocaleDateString()}의 일정
+                            {clickedDate ? format(selectedDate, "yyyy년 MM월 dd일") : "Null"}의 일정
                         </h2>
 
                         {/* Table 형식으로 변경 */}
@@ -150,6 +151,6 @@ export default function SalesCalendar() {
                     color: #ffffff !important;
                 }
             `}</style>
-        </>
+        </div>
     );
 }

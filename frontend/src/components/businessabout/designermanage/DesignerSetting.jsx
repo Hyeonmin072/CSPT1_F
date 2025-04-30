@@ -298,6 +298,7 @@ export default function DesignerSetting() {
         {
           position: newPosition,
         }
+
       );
       console.log("디자이너 직함 변경 성공:", response.data);
 

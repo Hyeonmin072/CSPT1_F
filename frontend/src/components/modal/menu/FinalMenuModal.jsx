@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function FinalMenuModal({ reservation, onClose }){
     const navigate = useNavigate("");
     return (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 pt-10 mt-10">
             <div className="bg-white p-6 rounded-lg w-[600px] relative">
                 <button onClick={onClose} className="absolute top-2 right-2">
                     <X className="w-6 h-6 text-gray-600"/>
@@ -41,7 +41,7 @@ export default function FinalMenuModal({ reservation, onClose }){
                             <div className="w-2/3 text-right">{reservation.price}원</div>
                         </div>
                     </div>
-                    <div className="flex flex-col mt-4">
+                    <div className="flex flex-col">
                         <div className="flex justify-between w-full px-4 gap-4">
                             <div className="flex-grow">
                                 <div
@@ -81,8 +81,8 @@ export default function FinalMenuModal({ reservation, onClose }){
                                 </AnimatePresence>
                             </div>
                             <div className="flex-grow">
-                                <div className="flex items-center bg-gray-100 p-2 border rounded-lg">
-                                    <p className="mr-2">멤버십: {reservation.selectedMembership}</p>
+                                <div className="flex items-center bg-gray-100 border rounded-lg">
+                                    <p className="mx-2 py-2">멤버십: {reservation.selectedMembership}</p>
                                 </div>
                             </div>
                         </div>
