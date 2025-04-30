@@ -1,13 +1,53 @@
-import { Search, LocateFixed, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SignIntegration from "../sign/SignIntergration";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getUserLocation } from "../location/MapAxios";
 import { toast } from "react-toastify";
 
-export default function HairSearch({ userLocation }) {
+export default function HairSearch({ userLocation = "" }) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
+
+  const fetchAddressFromCoords = async (lat, lng) => {
+    return new Promise((resolve, reject) => {
+      if (!window.kakao || !window.kakao.maps) {
+        reject("카카오 지도 API가 로드되지 않았습니다.");
+        return;
+      }
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      const coord = new window.kakao.maps.LatLng(lat, lng);
+
+      geocoder.coord2Address(coord.getLng(), coord.getLat(), (result) => {
+        if (result && result.length > 0) {
+          const address = result[0].address.address_name;
+          resolve(address);
+        } else {
+          reject("주소 변환 실패");
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    const updateAddress = async () => {
+      try {
+        const location = await getUserLocation();
+        if (location && location.lat && location.lng) {
+          const address = await fetchAddressFromCoords(
+            location.lat,
+            location.lng
+          );
+          setAddress(address);
+        }
+      } catch (error) {
+        console.error("주소 변환 실패:", error);
+      }
+    };
+
+    updateAddress();
+  }, []);
 
   const handleMapClick = async () => {
     try {
@@ -26,34 +66,23 @@ export default function HairSearch({ userLocation }) {
         toast.warning("로그인이 필요한 기능입니다 😊");
         setTimeout(() => {
           setIsLoginModalOpen(true);
-        }, 200); // 알림 후 2초 뒤 모달 열기
+        }, 200);
       } else {
         toast.error("위치 정보를 불러오지 못했습니다.");
       }
     }
   };
+
   return (
-    <div className="flex items-center bg-white rounded-lg shadow-sm py-2 px-4 w-[700px] ">
+    <div className="flex items-center bg-white rounded-lg shadow-sm py-2 px-4">
       <div
         className="flex items-center cursor-pointer"
         onClick={handleMapClick}
       >
         <MapPin className="w-5 h-5" />
-        <span className="text-sm mx-2">
-          {userLocation ? userLocation : "위치를 등록해주세요"}
-        </span>
+        <span className="text-sm mx-2">{address || "위치를 등록해주세요"}</span>
       </div>
 
-      <div className="mx-4 h-6 w-px bg-gray-200"></div>
-
-      <div className="flex-1 flex items-center">
-        <input
-          type="text"
-          placeholder="가게 이름 검색"
-          className="w-full outline-none"
-        />
-        <Search className="w-5 h-5 text-gray-400" />
-      </div>
       {/* 로그인 모달 */}
       <SignIntegration
         isOpen={isLoginModalOpen}

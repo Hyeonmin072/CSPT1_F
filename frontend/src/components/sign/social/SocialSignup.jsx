@@ -26,6 +26,7 @@ const SocialSignup = () => {
     address: "",
     post: "",
     gender: "",
+    detailAddress: "", // 상세주소 추가
   });
 
   const [errors, setErrors] = useState({});

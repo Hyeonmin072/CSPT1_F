@@ -5,19 +5,25 @@ export const signupApi = {
   // 일반 회원 가입
   customerSignup: (userData) => {
     console.log("유저 회원가입: ", userData);
-    return axiosInstance.post("/user/signup", userData);
+    return axiosInstance.post("/user/signup", userData, {
+      withCredentials: true,
+    });
   },
 
   // 사장님 회원 가입
   ownerSignup: (userData) => {
     console.log("사장 회원가입: ", userData);
-    return axiosInstance.post("/shop/signup", userData);
+    return axiosInstance.post("/shop/signup", userData, {
+      withCredentials: true,
+    });
   },
 
   // 디자이너 회원 가입
   designerSignup: (userData) => {
     console.log("디자이너 회원가입: ", userData);
-    return axiosInstance.post("/designer/signup", userData);
+    return axiosInstance.post("/designer/signup", userData, {
+      withCredentials: true,
+    });
   },
 
   // 이메일 중복 확인

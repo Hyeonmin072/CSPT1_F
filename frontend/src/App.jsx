@@ -26,6 +26,8 @@ import PhotoReview from "./pages/reviews/PhotoReview.jsx";
 import ReservationCheckPage from "./pages/reservation/reservationcheck/ReservationCheckPage.jsx";
 import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
+import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
+import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -47,6 +49,8 @@ import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
 import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
+import ShopProfile from "./pages/profile/ShopProfile.jsx";
+import MenuSetting from "./pages/business/MenuSetting.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("shop");
@@ -131,7 +135,7 @@ function App() {
             element={<HairShopPage onLoginClick={openLoginModal} />}
           />
           <Route
-            path="/detail"
+            path="/shopdetails/:shopEmail"
             element={<HairShopDetailPage onLoginClick={openLoginModal} />}
           />
           <Route
@@ -159,20 +163,20 @@ function App() {
                 element={<UserProfileEdit onLoginClick={openLoginModal} />}
               />
               <Route
-                path="/designerselect"
-                element={<DesignerSelectPage onLoginClick={openLoginModal} />}
+                path="/designerselect/:shopEmail"
+                element={<DesignerSelectPage />}
               />
               <Route
-                path="/calendarselect"
-                element={<CalendarSelectPage onLoginClick={openLoginModal} />}
+                path="/calendarselect/:designerEmail"
+                element={<CalendarSelectPage />}
               />
               <Route
-                path="/menuselect"
-                element={<MenuSelectPage onLoginClick={openLoginModal} />}
+                path="/menuselect/:designerEmail"
+                element={<MenuSelectPage />}
               />
               <Route
                 path="/reservationcheck"
-                element={<ReservationCheckPage onLoginClick={openLoginModal} />}
+                element={<ReservationCheckPage />}
               />
               <Route
                 path="/subscriptdesigner"
@@ -180,6 +184,7 @@ function App() {
                   <SubscriptDesignerPage onLoginClick={openLoginModal} />
                 }
               />
+              <Route path="/designer/match" element={<DesignerMatchPage />} />
             </>
           )}
 
@@ -281,8 +286,19 @@ function App() {
                 path="/designermanage"
                 element={<DesignerManagePage onLoginClick={openLoginModal} />}
               />
+              {/* 사업자 프로필 페이지 */}
+              <Route
+                path="/shop/profile"
+                element={<ShopProfile onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 메뉴 설정 페이지 */}
+              <Route
+                path="/menu-setting"
+                element={<MenuSetting onLoginClick={openLoginModal} />}
+              />
             </>
           )}
+          <Route path="/reservation/confirm" element={<ReservationConfirmPage />} />
         </Routes>
         {/* 로그인 모달 */}
         <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />

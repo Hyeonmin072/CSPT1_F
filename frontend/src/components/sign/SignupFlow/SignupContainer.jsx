@@ -265,7 +265,9 @@ const SignupContainer = ({
     try {
       console.log("닉네임 중복 검사 시도:", nickname);
       const response = await axios.get(
-        `http://localhost:1271/nickname/${encodeURIComponent(nickname)}/exists`
+        `http://localhost:1271/designer/nickname/${encodeURIComponent(
+          nickname
+        )}/exists`
       );
       console.log("백엔드 응답:", response.data);
       console.log("응답 타입:", typeof response.data);

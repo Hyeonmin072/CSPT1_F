@@ -1,230 +1,262 @@
 import { useState, useEffect } from "react";
+import { Plus, Trash2 } from "lucide-react";
 
-export default function Career({ isEditable }) {
-    const [employmentHistory, setEmploymentHistory] = useState([]); // 경력 데이터
-    const [newCareerEntry, setNewCareerEntry] = useState({
-        cr_name: "",
-        cr_join_date: "",
-        cr_out_date: "",
-    }); // 신규 경력 입력 필드
-    const [employmentType, setEmploymentType] = useState("신입"); // "신입" 또는 "경력" 구분
-    const [employmentPeriod, setEmploymentPeriod] = useState("1개월 이상"); // "근무 기간" 선택
-    const [crId, setCrId] = useState(null); // 고유 이력서 ID
-    const [reId, setReId] = useState("67890-xyz"); // 구직 지원서 ID
-    const [loading, setLoading] = useState(true); // 로딩 상태
+export default function Career({ isEditable, resumeData, onCareerChange }) {
+  const [careers, setCareers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isBasicExp, setIsBasicExp] = useState(false);
 
-    // 더미 데이터 (경력 정보)
-    const dummyEmploymentHistory = [
-        {
-            cr_id: "12345-abcde",
-            re_id: "67890-xyz",
-            cr_name: "ABC 회사",
-            cr_join_date: "2020-01-01",
-            cr_out_date: "2022-12-31",
-        },
-        {
-            cr_id: "67890-fghij",
-            re_id: "67890-xyz",
-            cr_name: "XYZ 회사",
-            cr_join_date: "2018-05-15",
-            cr_out_date: "2019-12-20",
-        },
-    ];
+  useEffect(() => {
+    const fetchCareers = async () => {
+      try {
+        console.log("Career - 받은 resumeData:", resumeData);
 
-    // 고유 이력서 ID 초기화
-    useEffect(() => {
-        const fetchCrId = async () => {
-            try {
-                // 서버에서 고유 ID 가져오기
-                // const response = await fetch(`/api/crid?re_id=${reId}`);
-                // const data = await response.json();
-                // setCrId(data.cr_id);
+        if (resumeData) {
+          // exp 값 확인
+          setIsBasicExp(resumeData.d_exp === "NEW");
 
-                setCrId("12345-abcde"); // 더미 데이터로 설정
-            } catch (error) {
-                console.error("Error fetching cr_id:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCrId();
-    }, [reId]);
-
-    // 경력 데이터 초기화
-    useEffect(() => {
-        const fetchEmploymentHistory = async () => {
-            try {
-                const data = dummyEmploymentHistory.filter((entry) => entry.re_id === reId);
-                setEmploymentHistory(data);
-            } catch (error) {
-                console.error("Error fetching employment history:", error);
-            }
-        };
-
-        fetchEmploymentHistory();
-    }, [reId]);
-
-    // 신규 경력 저장
-    const handleSaveCareer = () => {
-        const { cr_name, cr_join_date, cr_out_date } = newCareerEntry;
-
-        if (cr_name && cr_join_date && cr_out_date) {
-            const newEntry = {
-                cr_id: crId, // 고유 이력서 ID 유지
-                re_id: reId, // 구직 지원서 ID 참조
-                cr_name,
-                cr_join_date,
-                cr_out_date,
-            };
-            setEmploymentHistory([...employmentHistory, newEntry]);
-            setNewCareerEntry({ cr_name: "", cr_join_date: "", cr_out_date: "" });
-
-            console.log("저장된 경력:", newEntry);
+          if (resumeData.employmentHistory) {
+            console.log(
+              "Career - employmentHistory 설정:",
+              resumeData.employmentHistory
+            );
+            setCareers(resumeData.employmentHistory);
+          }
         }
+      } catch (error) {
+        console.error("Error fetching careers:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // 경력 삭제
-    const handleDeleteCareer = (cr_id) => {
-        const updatedHistory = employmentHistory.filter((entry) => entry.cr_id !== cr_id);
-        setEmploymentHistory(updatedHistory);
-    };
+    fetchCareers();
+  }, [resumeData]);
 
-    // 입력 변경
-    const handleInputChange = (field, value) => {
-        setNewCareerEntry((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
+  // 경력 추가
+  const handleAddCareer = () => {
+    const newCareer = {
+      id: Date.now().toString(), // 임시 ID 생성
+      shopName: "",
+      joinDate: "",
+      outDate: "",
+      position: "",
     };
+    const updatedCareers = [...careers, newCareer];
+    setCareers(updatedCareers);
 
-    if (loading) {
-        return <div className="text-center mt-4">로딩 중...</div>;
+    // 부모 컴포넌트에 변경사항 전달
+    if (onCareerChange) {
+      onCareerChange(updatedCareers);
+      console.log("경력 추가 후 employmentHistory:", updatedCareers);
+    }
+  };
+
+  // 경력 삭제
+  const handleDeleteCareer = (id) => {
+    const updatedCareers = careers.filter((career) => career.id !== id);
+    setCareers(updatedCareers);
+
+    // 부모 컴포넌트에 변경사항 전달
+    if (onCareerChange) {
+      onCareerChange(updatedCareers);
+      console.log("경력 삭제 후 employmentHistory:", updatedCareers);
+    }
+  };
+
+  // 경력 정보 업데이트
+  const handleCareerChange = (id, field, value) => {
+    const updatedCareers = careers.map((career) => {
+      if (career.id === id) {
+        return { ...career, [field]: value };
+      }
+      return career;
+    });
+    setCareers(updatedCareers);
+
+    // 부모 컴포넌트에 변경사항 전달
+    if (onCareerChange) {
+      onCareerChange(updatedCareers);
+      console.log("경력 수정 후 employmentHistory:", updatedCareers);
+    }
+  };
+
+  // 날짜 입력 시 자동으로 하이픈 추가
+  const handleDateChange = (id, field, value) => {
+    // 숫자만 입력 가능하도록
+    const numericValue = value.replace(/[^0-9]/g, "");
+
+    // 최대 8자리로 제한
+    if (numericValue.length > 8) return;
+
+    let formattedValue = numericValue;
+
+    // 4자리 이상일 때 하이픈 추가
+    if (numericValue.length >= 4) {
+      formattedValue =
+        numericValue.substring(0, 4) + "-" + numericValue.substring(4);
     }
 
-    return (
-        <div className="flex flex-col w-full max-w-4xl p-3 border-b-2 pb-8">
-            <div className="flex items-center mb-4">
-                <h2 className="text-2xl w-32 font-semibold">경력</h2>
-                <div className="flex border rounded-lg overflow-hidden w-64">
-                    <button
-                        className={`w-1/2 p-2 text-center ${employmentType === "신입" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700"}`}
-                        disabled={!isEditable}
-                        onClick={() => setEmploymentType("신입")}
-                    >
-                        신입
-                    </button>
-                    <button
-                        className={`w-1/2 p-2 text-center ${employmentType === "경력" ? "bg-green-600 text-white" : "bg-gray-100 text-gray-700"}`}
-                        disabled={!isEditable}
-                        onClick={() => setEmploymentType("경력")}
-                    >
-                        경력
-                    </button>
-                </div>
+    // 6자리 이상일 때 두 번째 하이픈 추가
+    if (numericValue.length >= 6) {
+      formattedValue =
+        formattedValue.substring(0, 7) + "-" + formattedValue.substring(7);
+    }
+
+    handleCareerChange(id, field, formattedValue);
+  };
+
+  // 경력 수준 변경
+  const handleExpLevelChange = (level) => {
+    setIsBasicExp(level === "NEW");
+
+    // 부모 컴포넌트에 변경사항 전달
+    if (onCareerChange) {
+      const updatedData = {
+        ...resumeData,
+        d_exp: level,
+      };
+      onCareerChange(updatedData);
+      console.log("경력 수준 변경:", level);
+    }
+  };
+
+  if (loading) {
+    return <div className="text-center mt-4">로딩 중...</div>;
+  }
+
+  return (
+    <div className="flex flex-col w-full max-w-4xl p-4 border-b-2 pb-8">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-semibold">경력</h2>
+          {isEditable && (
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleExpLevelChange("NEW")}
+                className={`px-3 py-1 rounded ${
+                  isBasicExp
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                신입
+              </button>
+              <button
+                onClick={() => handleExpLevelChange("EXP")}
+                className={`px-3 py-1 rounded ${
+                  !isBasicExp
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                경력
+              </button>
             </div>
-
-            {employmentType === "경력" && (
-                <div className="border p-8 rounded-lg w-full max-w-4xl">
-                    <div className="flex items-center mb-4">
-                        <label className="w-32 text-gray-700 font-bold">회사명</label>
-                        <input
-                            type="text"
-                            className="flex-grow border rounded p-2"
-                            placeholder="회사명을 입력해주세요."
-                            value={newCareerEntry.cr_name}
-                            onChange={(e) => handleInputChange("cr_name", e.target.value)}
-                            disabled={!isEditable}
-                        />
-                    </div>
-                    <div className="flex items-center mb-4">
-                        <label className="w-32 font-bold text-gray-700">근무 기간</label>
-                        <div className="flex items-center">
-                            <input
-                                type="radio"
-                                id="lessThanMonth"
-                                name="period"
-                                value="1개월 미만"
-                                className="m-2"
-                                onChange={(e) => setEmploymentPeriod(e.target.value)}
-                                disabled={!isEditable}
-                                checked={employmentPeriod === "1개월 미만"}
-                            />
-                            <label htmlFor="lessThanMonth" className="cursor-pointer">1개월 미만</label>
-                            <div className="pl-2" />
-                            <input
-                                type="radio"
-                                id="moreThanMonth"
-                                name="period"
-                                value="1개월 이상"
-                                className="m-2"
-                                onChange={(e) => setEmploymentPeriod(e.target.value)}
-                                disabled={!isEditable}
-                                checked={employmentPeriod === "1개월 이상"}
-                            />
-                            <label htmlFor="moreThanMonth" className="cursor-pointer">1개월 이상</label>
-                        </div>
-                    </div>
-
-                    {employmentPeriod === "1개월 이상" && (
-                        <div className="flex items-center mb-4">
-                            <div className="w-32"></div>
-                            <label className="w-20 text-gray-700 font-bold">입사년도</label>
-                            <input
-                                type="date"
-                                className="border rounded p-2 mr-4"
-                                value={newCareerEntry.cr_join_date}
-                                onChange={(e) => handleInputChange("cr_join_date", e.target.value)}
-                                disabled={!isEditable}
-                            />
-                            <div className="w-5"> /</div>
-                            <label className="w-20 text-gray-700 font-bold">퇴사년도</label>
-                            <input
-                                type="date"
-                                className="border rounded p-2"
-                                value={newCareerEntry.cr_out_date}
-                                onChange={(e) => handleInputChange("cr_out_date", e.target.value)}
-                                disabled={!isEditable}
-                            />
-                        </div>
-                    )}
-
-                    <div className="flex justify-end">
-                        <button
-                            className="bg-green-600 text-white px-8 py-2 rounded"
-                            onClick={handleSaveCareer}
-                            disabled={!isEditable}
-                        >
-                            저장
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            {employmentHistory.length > 0 && (
-                <div className="mt-8">
-                    <h3 className="text-xl font-semibold mb-4">저장된 경력</h3>
-                    {employmentHistory.map((entry) => (
-                        <div key={entry.cr_id} className="border p-4 mb-4 rounded">
-                            <div className="flex items-center">
-                                <span className="font-bold w-32">{entry.cr_name}</span>
-                                <span>
-                                    {entry.cr_join_date && `입사년도: ${entry.cr_join_date}`}
-                                    {entry.cr_out_date && ` / 퇴사년도: ${entry.cr_out_date}`}
-                                </span>
-                                {isEditable && (
-                                    <button
-                                        className="ml-auto text-red-500"
-                                        onClick={() => handleDeleteCareer(entry.cr_id)}
-                                    >
-                                        삭제
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+          )}
         </div>
-    );
+        {isEditable && !isBasicExp && (
+          <button
+            onClick={handleAddCareer}
+            className="flex items-center gap-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            <span>경력 추가</span>
+          </button>
+        )}
+      </div>
+
+      {isBasicExp ? (
+        <div className="text-center text-gray-500 py-4">신입입니다</div>
+      ) : careers.length === 0 ? (
+        <div className="text-center text-gray-500 py-4">
+          등록된 경력이 없습니다.
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {careers.map((career) => (
+            <div
+              key={career.id}
+              className="p-4 border rounded-lg bg-gray-50 relative"
+            >
+              {isEditable && (
+                <button
+                  onClick={() => handleDeleteCareer(career.id)}
+                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    회사명
+                  </label>
+                  <input
+                    type="text"
+                    value={career.shopName}
+                    onChange={(e) =>
+                      handleCareerChange(career.id, "shopName", e.target.value)
+                    }
+                    className="w-full p-2 border rounded"
+                    placeholder="회사명을 입력하세요"
+                    disabled={!isEditable}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    직책
+                  </label>
+                  <input
+                    type="text"
+                    value={career.position}
+                    onChange={(e) =>
+                      handleCareerChange(career.id, "position", e.target.value)
+                    }
+                    className="w-full p-2 border rounded"
+                    placeholder="직책을 입력하세요"
+                    disabled={!isEditable}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    시작일
+                  </label>
+                  <input
+                    type="text"
+                    value={career.joinDate}
+                    onChange={(e) =>
+                      handleDateChange(career.id, "joinDate", e.target.value)
+                    }
+                    className="w-full p-2 border rounded"
+                    placeholder="YYYY-MM-DD"
+                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+                    maxLength={10}
+                    disabled={!isEditable}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    종료일
+                  </label>
+                  <input
+                    type="text"
+                    value={career.outDate}
+                    onChange={(e) =>
+                      handleDateChange(career.id, "outDate", e.target.value)
+                    }
+                    className="w-full p-2 border rounded"
+                    placeholder="YYYY-MM-DD"
+                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+                    maxLength={10}
+                    disabled={!isEditable}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

@@ -1,14 +1,16 @@
+import React from "react";
+
 //eslint-disable-next-line
 const ProfileImage = ({ profileImage }) => {
   return (
-    <div className="absolute left-1/2 -bottom-12 transform -translate-x-1/2">
-      <div className="w-24 h-24 bg-white rounded-full overflow-hidden border-4 border-white">
+    <div className="relative">
+      <div className="w-40 h-40 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
         <img
           src={profileImage}
-          alt="Profile"
+          alt="프로필 이미지"
           className="w-full h-full object-cover"
         />
-      </div>    
+      </div>
     </div>
   );
 };

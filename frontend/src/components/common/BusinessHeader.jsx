@@ -35,11 +35,7 @@ export default function BusinessHeader() {
 
       if (response.data) {
         setIsLoggedIn(true);
-        if (typeof response.data === "object" && "userName" in response.data) {
-          setUserName(response.data.userName);
-        } else if (typeof response.data === "string") {
-          setUserName(response.data);
-        }
+        setUserName(response.data.userName || response.data || "");
         // 로그인 상태이고 사업자인 경우 정보 가져오기
         await fetchShopData();
       } else {
@@ -97,7 +93,7 @@ export default function BusinessHeader() {
               <Link to="/designermanage" className="text-gray-700">
                 디자이너 관리
               </Link>
-              <Link to="" className="text-gray-700">
+              <Link to="/menu-setting" className="text-gray-700">
                 메뉴설정
               </Link>
               <Link to="/sales" className="text-gray-700">
