@@ -77,7 +77,6 @@ export default function Certification({
     // 부모 컴포넌트에 변경사항 전달
     if (onCertificationChange) {
       onCertificationChange(updatedCertifications);
-      console.log("자격증 추가 후 certifications:", updatedCertifications);
     }
   };
 
@@ -91,7 +90,6 @@ export default function Certification({
     // 부모 컴포넌트에 변경사항 전달
     if (onCertificationChange) {
       onCertificationChange(updatedCertifications);
-      console.log("자격증 삭제 후 certifications:", updatedCertifications);
     }
   };
 
@@ -108,7 +106,6 @@ export default function Certification({
     // 부모 컴포넌트에 변경사항 전달
     if (onCertificationChange) {
       onCertificationChange(updatedCertifications);
-      console.log("자격증 수정 후 certifications:", updatedCertifications);
     }
   };
 
@@ -170,14 +167,14 @@ export default function Certification({
 
       {certifications.length > 0 ? (
         <div className="space-y-4">
-          {certifications.map((cert) => (
+          {certifications.map((cert, index) => (
             <div
-              key={cert.id}
+              key={cert.id || `cert-${index}`}
               className="p-4 border rounded-lg bg-gray-50 relative"
             >
               {isEditable && (
                 <button
-                  onClick={() => handleDeleteCertification(cert.id)}
+                  onClick={() => handleDeleteCertification(cert.id || index)}
                   className="absolute top-2 right-2 text-red-500 hover:text-red-700"
                 >
                   <Trash2 className="w-5 h-5" />

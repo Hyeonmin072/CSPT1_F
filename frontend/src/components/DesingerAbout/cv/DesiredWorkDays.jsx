@@ -19,17 +19,33 @@ export default function DesiredWorkDays({
     { id: "SUN", label: "일요일" },
   ];
 
+  // 전체 요일 이름을 축약형으로 변환하는 함수
+  const convertDayToShort = (fullDay) => {
+    const dayMap = {
+      MONDAY: "MON",
+      TUESDAY: "TUE",
+      WEDNESDAY: "WED",
+      THURSDAY: "THU",
+      FRIDAY: "FRI",
+      SATURDAY: "SAT",
+      SUNDAY: "SUN",
+    };
+    return dayMap[fullDay] || fullDay;
+  };
+
   useEffect(() => {
     const fetchDesiredDays = async () => {
       try {
         console.log("DesiredWorkDays - 받은 resumeData:", resumeData);
 
         if (resumeData && resumeData.wantedDays) {
-          console.log(
-            "DesiredWorkDays - wantedDays 설정:",
-            resumeData.wantedDays
-          );
-          setDesiredDays(resumeData.wantedDays);
+          // wantedDays 배열의 각 항목에서 wantedDay 필드를 확인하고 축약형으로 변환
+          const formattedDays = resumeData.wantedDays.map((day) => {
+            const shortDay = convertDayToShort(day.wantedDay || day);
+            return { wantedDay: shortDay };
+          });
+          console.log("DesiredWorkDays - 포맷된 wantedDays:", formattedDays);
+          setDesiredDays(formattedDays);
         }
       } catch (error) {
         console.error("Error fetching desired days:", error);
@@ -46,8 +62,7 @@ export default function DesiredWorkDays({
     if (typeof day === "string") {
       return day;
     } else if (day && typeof day === "object") {
-      // 객체인 경우 day 속성이 있으면 사용
-      return day.day || JSON.stringify(day);
+      return day.wantedDay || "";
     }
     return "";
   };
@@ -62,23 +77,12 @@ export default function DesiredWorkDays({
   const handleToggleDay = (dayId) => {
     let updatedDays;
 
-    if (
-      desiredDays.some(
-        (day) =>
-          (typeof day === "string" && day === dayId) ||
-          (typeof day === "object" && day.wantedDay === dayId)
-      )
-    ) {
+    if (desiredDays.some((day) => day.wantedDay === dayId)) {
       // 이미 선택된 경우 제거
-      updatedDays = desiredDays.filter(
-        (day) =>
-          (typeof day === "string" && day !== dayId) ||
-          (typeof day === "object" && day.wantedDay !== dayId)
-      );
+      updatedDays = desiredDays.filter((day) => day.wantedDay !== dayId);
     } else {
-      // 선택되지 않은 경우 추가 (객체 형태로)
-      const newDay = { wantedDay: dayId };
-      updatedDays = [...desiredDays, newDay];
+      // 선택되지 않은 경우 추가
+      updatedDays = [...desiredDays, { wantedDay: dayId }];
     }
 
     setDesiredDays(updatedDays);
@@ -92,11 +96,7 @@ export default function DesiredWorkDays({
 
   // 요일이 선택되었는지 확인하는 함수
   const isDaySelected = (dayId) => {
-    return desiredDays.some(
-      (day) =>
-        (typeof day === "string" && day === dayId) ||
-        (typeof day === "object" && day.wantedDay === dayId)
-    );
+    return desiredDays.some((day) => day.wantedDay === dayId);
   };
 
   if (loading) {

@@ -127,8 +127,8 @@ function App() {
           {/* 공통 라우트 */}
           <Route path="/social/signup" element={<SocialSignup />} />
           <Route
-              path="/chat"
-              element={<ChattingPage onLoginClick={openLoginModal} />}
+            path="/chat"
+            element={<ChattingPage onLoginClick={openLoginModal} />}
           />
           <Route
             path="/hairshop"
@@ -151,7 +151,7 @@ function App() {
           {userRole === "user" && (
             <>
               <Route
-                path="/designer"
+                path="/designerpage"
                 element={<DesignerPage onLoginClick={openLoginModal} />}
               />
               <Route
@@ -298,7 +298,10 @@ function App() {
               />
             </>
           )}
-          <Route path="/reservation/confirm" element={<ReservationConfirmPage />} />
+          <Route
+            path="/reservation/confirm"
+            element={<ReservationConfirmPage />}
+          />
         </Routes>
         {/* 로그인 모달 */}
         <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />

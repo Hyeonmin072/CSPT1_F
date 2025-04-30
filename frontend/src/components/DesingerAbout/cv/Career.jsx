@@ -10,18 +10,39 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
     const fetchCareers = async () => {
       try {
         console.log("Career - 받은 resumeData:", resumeData);
+        console.log("Career - isEditable:", isEditable);
 
         if (resumeData) {
           // exp 값 확인
-          setIsBasicExp(resumeData.d_exp === "NEW");
+          const isNew = resumeData.d_exp === "NEW";
+          setIsBasicExp(isNew);
+          console.log(
+            "Career - 경력 수준 설정:",
+            isNew ? "NEW" : "EXP",
+            "d_exp:",
+            resumeData.d_exp
+          );
 
           if (resumeData.employmentHistory) {
-            console.log(
-              "Career - employmentHistory 설정:",
-              resumeData.employmentHistory
+            const mappedCareers = resumeData.employmentHistory.map(
+              (career) => ({
+                ...career,
+                shopName: career.name || career.shopName || "", // name이 있으면 shopName으로 사용
+              })
             );
-            setCareers(resumeData.employmentHistory);
+            console.log("Career - 매핑된 employmentHistory:", mappedCareers);
+            setCareers(mappedCareers);
+          } else if (resumeData.careers) {
+            // careers 배열이 있는 경우
+            const mappedCareers = resumeData.careers.map((career) => ({
+              ...career,
+              shopName: career.name || career.shopName || "", // name이 있으면 shopName으로 사용
+            }));
+            console.log("Career - 매핑된 careers:", mappedCareers);
+            setCareers(mappedCareers);
           }
+        } else {
+          console.log("Career - resumeData가 없습니다.");
         }
       } catch (error) {
         console.error("Error fetching careers:", error);
@@ -31,24 +52,31 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
     };
 
     fetchCareers();
-  }, [resumeData]);
+  }, [resumeData, isEditable]);
 
   // 경력 추가
   const handleAddCareer = () => {
+    console.log("경력 추가 버튼 클릭");
     const newCareer = {
-      id: Date.now().toString(), // 임시 ID 생성
+      id: Date.now().toString(),
       shopName: "",
       joinDate: "",
       outDate: "",
       position: "",
     };
     const updatedCareers = [...careers, newCareer];
+    console.log("새로운 경력 데이터:", newCareer);
+    console.log("업데이트된 경력 데이터:", updatedCareers);
+
+    // 경력 데이터 업데이트
     setCareers(updatedCareers);
+
+    // 경력 모드로 설정
+    setIsBasicExp(false);
 
     // 부모 컴포넌트에 변경사항 전달
     if (onCareerChange) {
       onCareerChange(updatedCareers);
-      console.log("경력 추가 후 employmentHistory:", updatedCareers);
     }
   };
 
@@ -60,7 +88,6 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
     // 부모 컴포넌트에 변경사항 전달
     if (onCareerChange) {
       onCareerChange(updatedCareers);
-      console.log("경력 삭제 후 employmentHistory:", updatedCareers);
     }
   };
 
@@ -108,16 +135,35 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
 
   // 경력 수준 변경
   const handleExpLevelChange = (level) => {
-    setIsBasicExp(level === "NEW");
+    const newIsBasicExp = level === "NEW";
+    console.log("경력 수준 변경:", level, "isBasicExp:", newIsBasicExp);
+
+    // 경력 수준 상태 업데이트
+    setIsBasicExp(newIsBasicExp);
 
     // 부모 컴포넌트에 변경사항 전달
     if (onCareerChange) {
-      const updatedData = {
-        ...resumeData,
-        d_exp: level,
-      };
-      onCareerChange(updatedData);
-      console.log("경력 수준 변경:", level);
+      if (level === "NEW") {
+        // 신입으로 변경하면 경력 데이터를 빈 배열로 초기화
+        setCareers([]);
+        onCareerChange([]);
+      } else {
+        // 경력으로 변경할 때 기존 경력이 없으면 빈 경력 데이터 추가
+        if (careers.length === 0) {
+          const newCareer = {
+            id: Date.now().toString(),
+            shopName: "",
+            joinDate: "",
+            outDate: "",
+            position: "",
+          };
+          const updatedCareers = [newCareer];
+          setCareers(updatedCareers);
+          onCareerChange(updatedCareers);
+        } else {
+          onCareerChange(careers);
+        }
+      }
     }
   };
 
@@ -171,6 +217,16 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
       ) : careers.length === 0 ? (
         <div className="text-center text-gray-500 py-4">
           등록된 경력이 없습니다.
+          {isEditable && (
+            <div className="mt-2">
+              <button
+                onClick={handleAddCareer}
+                className="text-blue-500 hover:text-blue-600"
+              >
+                경력 추가하기
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-4">

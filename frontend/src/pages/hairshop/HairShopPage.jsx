@@ -23,14 +23,18 @@ export default function HairShopPage() {
         const response = await axiosInstance.get("/user/hairshop", {
           withCredentials: true,
         });
-        console.log("헤어샵 데이터:", response.data);
+        // 데이터가 변경되었을 때만 로그 출력
+        if (JSON.stringify(hairShops) !== JSON.stringify(response.data.shops)) {
+          console.log("헤어샵 데이터:", response.data);
+        }
         setHairShops(response.data.shops || []); // shops 배열 설정
-        // 통계 데이터 설정
-        setStats({
+        // 통계 데이터가 변경되었을 때만 설정
+        const newStats = {
           registeredShopCnt: response.data.registeredShopCnt || 0,
           registeredDesignerCnt: response.data.registeredDesignerCnt || 0,
           registeredReviewCnt: response.data.registeredReviewCnt || 0,
-        });
+        };
+        setStats(newStats);
       } catch (error) {
         console.error("헤어샵 데이터 로드 실패:", error);
       }

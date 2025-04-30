@@ -8,6 +8,41 @@ import axios from "axios";
 export default function CurriculumVitaePage() {
   const [resumeData, setResumeData] = useState(null);
 
+  // 영문 요일을 한글 요일로 변환하는 함수
+  const convertDayToKorean = (day) => {
+    const dayMap = {
+      MON: "월",
+      TUE: "화",
+      WED: "수",
+      THU: "목",
+      FRI: "금",
+      SAT: "토",
+      SUN: "일",
+    };
+    return dayMap[day] || day;
+  };
+
+  // 영문 요일을 3글자 형식으로 변환하는 함수
+  const convertDayToShortFormat = (day) => {
+    const dayMap = {
+      MONDAY: "MON",
+      TUESDAY: "TUE",
+      WEDNESDAY: "WED",
+      THURSDAY: "THU",
+      FRIDAY: "FRI",
+      SATURDAY: "SAT",
+      SUNDAY: "SUN",
+      MON: "MON",
+      TUE: "TUE",
+      WED: "WED",
+      THU: "THU",
+      FRI: "FRI",
+      SAT: "SAT",
+      SUN: "SUN",
+    };
+    return dayMap[day] || day;
+  };
+
   useEffect(() => {
     const fetchResumeData = async () => {
       try {
@@ -33,12 +68,55 @@ export default function CurriculumVitaePage() {
     fetchResumeData();
   }, []);
 
+  // 이력서 데이터를 API 요청 형식으로 변환하는 함수
+  const formatResumeDataForApi = (data) => {
+    if (!data) return null;
+
+    // wantedDays에서 id 제거하고 요일 형식 변환
+    const formattedWantedDays = (data.wantedDays || []).map((day) => {
+      if (typeof day === "object" && day.wantedDay) {
+        // id가 있는 경우 제거하고 wantedDay만 유지
+        const { id, ...rest } = day;
+        // wantedDay 값을 3글자 형식으로 변환
+        return { wantedDay: convertDayToShortFormat(day.wantedDay) };
+      }
+      // 문자열인 경우 3글자 형식으로 변환
+      if (typeof day === "string") {
+        return { wantedDay: convertDayToShortFormat(day) };
+      }
+      return day;
+    });
+
+    // certificates에서 id 제거
+    const formattedCertificates = (data.certifications || []).map((cert) => {
+      if (typeof cert === "object") {
+        // id가 있는 경우 제거하고 name만 유지
+        const { id, ...rest } = cert;
+        return rest;
+      }
+      return cert;
+    });
+
+    // API 요청 형식으로 변환
+    return {
+      content: data.d_desc || "",
+      exp: data.d_exp || "",
+      careers: data.employmentHistory || [],
+      wantedDays: formattedWantedDays,
+      certificates: formattedCertificates,
+      image: data.d_image || null,
+    };
+  };
+
   return (
     <div>
       <DesignerHeader />
 
       <div className="p-4">
-        <CurriculumVitae resumeData={resumeData} />
+        <CurriculumVitae
+          resumeData={resumeData}
+          formatResumeDataForApi={formatResumeDataForApi}
+        />
       </div>
 
       <DesignerID designer={selectedDesigner} />

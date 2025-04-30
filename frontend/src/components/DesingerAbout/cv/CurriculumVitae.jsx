@@ -6,16 +6,23 @@ import DesiredWorkDays from "./DesiredWorkDays.jsx";
 import Certification from "./Certification.jsx";
 import axios from "axios";
 
-export default function CurriculumVitae() {
-  const [isEditable, setIsEditable] = useState(false); // 수정 가능 여부 상태
+export default function CurriculumVitae({
+  isEditable: isEditableProp,
+  resumeData: resumeDataProp,
+  onCareerChange,
+  onWantedDaysChange,
+  onCertificationChange,
+  formatResumeDataForApi,
+}) {
+  const [isEditable, setIsEditable] = useState(isEditableProp || false); // 수정 가능 여부 상태
   const [showMessage, setShowMessage] = useState(false); // 저장 메시지 상태
   const [fadeOut, setFadeOut] = useState(false); // 저장 메시지 fade-out 상태
   const [dDesc, setDDesc] = useState(""); // 소개글 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
-  const [resumeData, setResumeData] = useState(null); // 이력서 데이터
   const [wantedDays, setWantedDays] = useState([]); // 희망 근무일 상태
   const [careers, setCareers] = useState([]); // 경력 상태
   const [certifications, setCertifications] = useState([]); // 자격증 상태
+  const [resumeData, setResumeData] = useState(null); // 이력서 데이터 상태
 
   // 요일 ID 변환 함수
   const convertDayId = (dayId) => {
@@ -31,38 +38,93 @@ export default function CurriculumVitae() {
     return dayMap[dayId] || dayId;
   };
 
+  // 축약형 요일을 전체 요일 이름으로 변환하는 함수
+  const convertDayToFull = (shortDay) => {
+    const dayMap = {
+      MON: "MONDAY",
+      TUE: "TUESDAY",
+      WED: "WEDNESDAY",
+      THU: "THURSDAY",
+      FRI: "FRIDAY",
+      SAT: "SATURDAY",
+      SUN: "SUNDAY",
+    };
+    return dayMap[shortDay] || shortDay;
+  };
+
   // 이력서 데이터 가져오기
   useEffect(() => {
     const fetchResumeData = async () => {
       try {
-        const response = await axios.get("/designer/resume");
-        console.log("이력서 데이터:", response.data);
+        // props로 resumeData가 전달된 경우
+        if (resumeDataProp) {
+          console.log("이력서 데이터:", resumeDataProp);
 
-        // 데이터 구조 변환
-        const formattedData = {
-          d_id: response.data.id || "",
-          d_name: response.data.name || "",
-          d_email: response.data.email || "",
-          d_tel: response.data.tel || "",
-          d_gender: response.data.gender || "",
-          d_age: response.data.age || "",
-          d_image: response.data.image || null,
-          d_desc: response.data.content || "",
-          d_exp: response.data.exp || "",
-          employmentHistory: response.data.careers || [],
-          certifications: response.data.certifications || [],
-          wantedDays: response.data.wantedDays || [],
-          decisionType: "SELECT_DAYS",
-        };
+          // 데이터 구조 변환
+          const formattedData = {
+            d_id: resumeDataProp.id || "",
+            d_name: resumeDataProp.name || "",
+            d_email: resumeDataProp.email || "",
+            d_tel: resumeDataProp.tel || "",
+            d_gender: resumeDataProp.gender || "",
+            d_age: resumeDataProp.age || "",
+            d_image: resumeDataProp.image || null,
+            d_desc: resumeDataProp.content || "",
+            d_exp: resumeDataProp.exp || "",
+            employmentHistory: (resumeDataProp.careers || []).map((career) => ({
+              ...career,
+              shopName: career.name || career.shopName || "", // name이 있으면 shopName으로 사용
+            })),
+            certifications:
+              resumeDataProp.certifications ||
+              resumeDataProp.certificates ||
+              [],
+            wantedDays: resumeDataProp.wantedDays || [],
+            decisionType: "SELECT_DAYS",
+          };
 
-        console.log("변환된 이력서 데이터:", formattedData);
-        setResumeData(formattedData);
-        setWantedDays(formattedData.wantedDays || []);
-        setCareers(formattedData.employmentHistory || []);
-        setCertifications(formattedData.certifications || []);
+          console.log("변환된 이력서 데이터:", formattedData);
+          setResumeData(formattedData);
+          setWantedDays(formattedData.wantedDays || []);
+          setCareers(formattedData.employmentHistory || []);
+          setCertifications(formattedData.certifications || []);
 
-        // 소개글 설정
-        setDDesc(formattedData.d_desc);
+          // 소개글 설정
+          setDDesc(formattedData.d_desc);
+        } else {
+          // API에서 데이터 가져오기
+          const response = await axios.get("/designer/resume");
+          console.log("이력서 데이터:", response.data);
+
+          // 데이터 구조 변환
+          const formattedData = {
+            d_id: response.data.id || "",
+            d_name: response.data.name || "",
+            d_email: response.data.email || "",
+            d_tel: response.data.tel || "",
+            d_gender: response.data.gender || "",
+            d_age: response.data.age || "",
+            d_image: response.data.image || null,
+            d_desc: response.data.content || "",
+            d_exp: response.data.exp || "",
+            employmentHistory: (response.data.careers || []).map((career) => ({
+              ...career,
+              shopName: career.name || career.shopName || "", // name이 있으면 shopName으로 사용
+            })),
+            certifications: response.data.certifications || [],
+            wantedDays: response.data.wantedDays || [],
+            decisionType: "SELECT_DAYS",
+          };
+
+          console.log("변환된 이력서 데이터:", formattedData);
+          setResumeData(formattedData);
+          setWantedDays(formattedData.wantedDays || []);
+          setCareers(formattedData.employmentHistory || []);
+          setCertifications(formattedData.certifications || []);
+
+          // 소개글 설정
+          setDDesc(formattedData.d_desc);
+        }
       } catch (error) {
         console.error("이력서 데이터 가져오기 실패:", error);
       } finally {
@@ -71,33 +133,35 @@ export default function CurriculumVitae() {
     };
 
     fetchResumeData();
-  }, []);
+  }, [resumeDataProp]);
 
   // 희망 근무일 변경 처리 함수
   const handleWantedDaysChange = (days) => {
-    console.log("CurriculumVitae - 희망 근무일 변경:", days);
     setWantedDays(days);
-    if (resumeData) {
-      resumeData.wantedDays = days;
-    }
   };
 
   // 경력 변경 처리 함수
   const handleCareerChange = (updatedCareers) => {
-    console.log("CurriculumVitae - 경력 변경:", updatedCareers);
+    console.log("경력 변경 처리:", updatedCareers);
+
+    // 경력 데이터 업데이트
     setCareers(updatedCareers);
-    if (resumeData) {
-      resumeData.employmentHistory = updatedCareers;
-    }
+
+    // resumeData 업데이트
+    setResumeData((prevData) => {
+      const newData = {
+        ...prevData,
+        d_exp: updatedCareers && updatedCareers.length > 0 ? "EXP" : "NEW",
+        employmentHistory: updatedCareers,
+      };
+      console.log("업데이트된 resumeData:", newData);
+      return newData;
+    });
   };
 
   // 자격증 변경 처리 함수
   const handleCertificationChange = (updatedCertifications) => {
-    console.log("CurriculumVitae - 자격증 변경:", updatedCertifications);
     setCertifications(updatedCertifications);
-    if (resumeData) {
-      resumeData.certifications = updatedCertifications;
-    }
   };
 
   const handleSave = async () => {
@@ -106,32 +170,50 @@ export default function CurriculumVitae() {
     setFadeOut(false);
 
     try {
-      // wantedDays를 객체 형태로 변환하고 요일 ID를 짧은 형식으로 변환
-      const formattedWantedDays = wantedDays.map((day) => {
-        // 이미 객체 형태인 경우
-        if (typeof day === "object" && day.wantedDay) {
-          return { wantedDay: convertDayId(day.wantedDay) };
-        }
-        // 문자열인 경우 객체로 변환하고 요일 ID를 짧은 형식으로 변환
-        return { wantedDay: convertDayId(day) };
-      });
-
-      // 백엔드 요구사항에 맞게 데이터 구성
-      const updateData = {
-        content: dDesc,
-        exp: resumeData.d_exp,
-        portfolio: "", // 포트폴리오 데이터가 있다면 추가
-        image: resumeData.d_image,
-        careers: careers, // 상태에서 직접 가져옴
-        certifications: certifications, // 상태에서 직접 가져옴
-        wantedDays: formattedWantedDays, // 객체 형태로 변환된 wantedDays
-      };
+      // API 요청 데이터 형식으로 변환
+      const updateData = formatResumeDataForApi
+        ? formatResumeDataForApi({
+            d_desc: dDesc,
+            d_exp: resumeData?.d_exp || "",
+            employmentHistory: careers.map((career) => ({
+              id: career.id,
+              shopName: career.shopName,
+              joinDate: career.joinDate,
+              outDate: career.outDate,
+              position: career.position,
+            })),
+            certifications: certifications,
+            wantedDays: wantedDays.map((day) => ({
+              wantedDay: convertDayToFull(day.wantedDay || day),
+            })),
+            d_image: resumeData?.d_image || null,
+          })
+        : {
+            content: dDesc,
+            exp: resumeData?.d_exp || "",
+            portfolio: "",
+            image: resumeData?.d_image || null,
+            careers: careers.map((career) => ({
+              id: career.id,
+              shopName: career.shopName,
+              joinDate: career.joinDate,
+              outDate: career.outDate,
+              position: career.position,
+            })),
+            certifications: certifications,
+            wantedDays: wantedDays.map((day) => ({
+              wantedDay: convertDayToFull(day.wantedDay || day),
+            })),
+          };
 
       console.log("전송할 데이터:", updateData);
       console.log("전송할 데이터 상세:", JSON.stringify(updateData, null, 2));
       console.log("희망 근무일 데이터:", updateData.wantedDays);
       console.log("경력 데이터:", updateData.careers);
-      console.log("자격증 데이터:", updateData.certificates);
+      console.log(
+        "자격증 데이터:",
+        updateData.certificates || updateData.certifications
+      );
 
       // API 호출
       const response = await axios.post("/designer/resume/update", updateData);
