@@ -39,8 +39,8 @@ export default function DesignerSetting() {
         d_image: "",
     });
 
-    // uuid 입력과 동시에 디자이너 검색
-    useEffect(() => {
+    // 검색 버튼으로만 검색되도록 수정된 로직
+    const handleSearch = () => {
         if (searchQuery.trim() === "") {
             setFilteredDesigners([]);
             setCurrentIndex(0);
@@ -57,9 +57,7 @@ export default function DesignerSetting() {
 
         setFilteredDesigners(results); // 필터링된 결과 업데이트
         setCurrentIndex(0);
-    }, [searchQuery, designers]);
-
-
+    };
 
     // 디자이너 등록
     const handleRegisterDesigner = () => {
@@ -189,7 +187,7 @@ export default function DesignerSetting() {
 
 
     return (
-        <div className="p-8 mx-auto max-w-7xl">
+        <div className="p-8 mx-auto max-w-7xl mt-10">
             <div className="w-full flex flex-col justify-between mb-4">
                 <h1 className="font-bold text-2xl">디자이너 관리</h1>
 
@@ -256,20 +254,29 @@ export default function DesignerSetting() {
                                 setSearchQuery(""); // 검색어 초기화
                             }}
                         >
-                            <X size={20} className="text-gray-500 hover:text-red-500"/>
+                            <X size={20} className="text-gray-500 hover:text-red-500" />
                         </button>
 
-                        {/* 디자이너 ID 검색창 */}
+                        {/* 디자이너 ID 검색 */}
                         <h2 className="font-bold text-xl mb-4">디자이너 추가</h2>
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="디자이너 ID 또는 이름 검색"
-                            className="border p-2 rounded mb-4 w-full"
-                        />
+                        <div className="flex space-x-2 mb-4">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="디자이너 ID 또는 이름 검색"
+                                className="w-2/3 border p-2 rounded w-full"
+                            />
+                            <button
+                                className="w-1/3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                                onClick={handleSearch} // 검색 버튼 클릭 이벤트
+                            >
+                                검색
+                            </button>
+                        </div>
                         {filteredDesigners.length > 0 ? (
                             <div className="flex flex-col items-center mt-4 border p-4 rounded relative">
+                                {/* 디자이너 정보 */}
                                 <div
                                     className="flex flex-col items-center"
                                     onClick={() => {
@@ -277,22 +284,22 @@ export default function DesignerSetting() {
                                     }}
                                 >
                                     <img
-                                        src={filteredDesigners[currentIndex].d_image}
-                                        alt={`${filteredDesigners[currentIndex].name} 프로필`}
+                                        src={filteredDesigners[currentIndex]?.d_image}
+                                        alt={`${filteredDesigners[currentIndex]?.d_name} 프로필`}
                                         className="rounded-full w-[100px] h-[100px] mb-4"
                                     />
-                                    <p>{filteredDesigners[currentIndex].d_name}</p>
-                                    <p>{filteredDesigners[currentIndex].d_id}</p>
+                                    <p>{filteredDesigners[currentIndex]?.d_name}</p>
+                                    <p>{filteredDesigners[currentIndex]?.d_id}</p>
                                 </div>
                                 {/* Chevron Left/Right 버튼 */}
                                 <div className="absolute inset-y-0 left-2 flex items-center">
                                     <button onClick={handlePrevious}>
-                                        <ChevronLeft size={24} className="text-gray-500 hover:text-gray-700"/>
+                                        <ChevronLeft size={24} className="text-gray-500 hover:text-gray-700" />
                                     </button>
                                 </div>
                                 <div className="absolute inset-y-0 right-2 flex items-center">
                                     <button onClick={handleNext}>
-                                        <ChevronRight size={24} className="text-gray-500 hover:text-gray-700"/>
+                                        <ChevronRight size={24} className="text-gray-500 hover:text-gray-700" />
                                     </button>
                                 </div>
                             </div>
@@ -302,7 +309,9 @@ export default function DesignerSetting() {
                     </div>
                 </div>
             )}
-            
+
+
+
             {/* 확인 모달 */}
             {isConfirmModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">

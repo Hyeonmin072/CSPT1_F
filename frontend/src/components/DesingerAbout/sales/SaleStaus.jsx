@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import d1 from "../../../assets/designer/d1.png";
+import { format } from "date-fns";
 import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
 import { dummySalesData } from "../../dummydata/DummySalesData.jsx";
 
 export default function SaleStaus() {
     const [salesData, setSalesData] = useState(null); // 매출 데이터 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [designerProfile, setDesignerProfile] = useState(null); // 디자이너 데이터 상태
 
     // 백엔드 데이터 가져오기
@@ -43,27 +45,33 @@ export default function SaleStaus() {
     return (
         <>
             {/* 매출 현황 */}
-            <div className="w-3/4 mr-10 ml-10 flex flex-row mb-8 items-center justify-center space-x-4 bg-white shadow-md rounded">
-                <div className="p-4 w-1/2 text-center">
-                    <h2 className="text-lg font-semibold mb-4">이번 달 매출</h2>
-                    <p className="text-3xl font-bold text-green-500">
-                        ₩{salesData.monthlySales.toLocaleString()}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-2">
-                        증가: {salesData.monthlyIncrease}%
-                    </p>
+            <div
+                className="w-3/4 mr-10 ml-10 flex flex-col mb-8 justify-center space-x-4 bg-white shadow-md rounded">
+                <div className="p-3 text-gray-400">
+                    오늘 날짜 : {selectedDate ? format(selectedDate, "MM월 dd일") : "Null"}
                 </div>
-                <div className="p-4 w-1/2 text-center">
-                    <h2 className="text-lg font-semibold mb-4">오늘 매출</h2>
-                    <p className="text-3xl font-bold text-red-500">
-                        ₩{salesData.dailySales.toLocaleString()}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-2">
-                        감소: {salesData.dailyDecrease}%
-                    </p>
-                    <p className="text-sm text-gray-500">
-                        주문 수: {salesData.dailyOrders}
-                    </p>
+                <div className="flex flex-row">
+                    <div className="p-4 w-1/2 text-center">
+                        <h2 className="text-lg font-semibold mb-4">이번 달 매출</h2>
+                        <p className="text-3xl font-bold text-green-500">
+                            ₩{salesData.monthlySales.toLocaleString()}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                            증가: {salesData.monthlyIncrease}%
+                        </p>
+                    </div>
+                    <div className="p-4 w-1/2 text-center">
+                        <h2 className="text-lg font-semibold mb-4">오늘 매출</h2>
+                        <p className="text-3xl font-bold text-red-500">
+                            ₩{salesData.dailySales.toLocaleString()}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                            감소: {salesData.dailyDecrease}%
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            주문 수: {salesData.dailyOrders}
+                        </p>
+                    </div>
                 </div>
             </div>
 
