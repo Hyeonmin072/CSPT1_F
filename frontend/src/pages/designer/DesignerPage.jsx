@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { DesignerCard } from "../../components/designer/DesignerCard.jsx";
 import Header from "../../components/common/Header.jsx";
-import { Loader2 } from "lucide-react";
+import { Sparkles, MapPin, Loader2 } from "lucide-react";
 
 export default function DesignerPage() {
+
+  //더미 데이터 (나중에 삭제할거임)
+  //
   const [designers, setDesigners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -110,6 +113,18 @@ export default function DesignerPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // 더미 데이터 (임시로)
+
+    // 평점 순 정렬
+  const topRatedDesigners = [...designers].sort((a, b) => b.rating - a.rating).slice(0, 3);
+
+  // 위치 기준 (예: 서울시 마포구 포함된 디자이너)
+  const userLocation = "서울"; // 실제로는 사용자 위치 기반으로 변경 가능
+  const nearbyTopDesigners = designers
+    .filter((d) => d.location.includes(userLocation))
+    .sort((a, b) => b.rating - a.rating);
+
+
   // 무한 스크롤 설정 (더미 데이터에서는 실제로 페이지를 늘리지 않음)
   useEffect(() => {
     const options = {
@@ -140,57 +155,145 @@ export default function DesignerPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+
       <div className="pt-20">
         {/* 히어로 섹션 */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-700 text-white py-16">
-          <div className="max-w-7xl mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">
-              최고의 디자이너를 만나보세요
+        <div className="bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 text-white py-20 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 relative z-10">
+            <h1 className="text-5xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+              최고의 디자이너를 <br /> 지금 바로 만나보세요
             </h1>
-            <p className="text-xl opacity-90">
-              당신의 스타일을 완성하는 전문 디자이너들이 기다리고 있습니다
+            <p className="text-xl opacity-90 mb-6">
+              당신의 스타일을 완성할 전문 디자이너들이 기다리고 있어요
             </p>
+            <button className="bg-white text-teal-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-gray-100 transition">
+              <span className="mr-2">🔍</span> 디자이너 찾아보러가기
+            </button>
           </div>
+          {/* 백그라운드 효과 */}
+          <div className="absolute inset-0 opacity-10 bg-[url('/pattern.svg')] bg-cover z-0" />
         </div>
 
         {/* 메인 컨텐츠 */}
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {designers.map((designer, index) => (
-              <div
-                key={designer.id || index}
-                ref={
-                  index === designers.length - 1 ? lastDesignerElementRef : null
-                }
-                className="transform transition-all duration-300 hover:scale-105"
-              >
-                <DesignerCard designer={designer} />
+        <div className="max-w-7xl mx-auto px-4 py-16 space-y-20">
+          {/* 전체 평점 높은 디자이너 */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <span className="w-6 h-6 text-teal-500">🔥</span>
+                   요즘 엄청 HOT 해요!
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {topRatedDesigners.map((designer, index) => (
+                <div
+                  key={designer.id || index}
+                  className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-white rounded-xl overflow-hidden shadow-md"
+                >
+                  <DesignerCard designer={designer} />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 내 주변 평점 높은 디자이너 */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <MapPin className="w-6 h-6 text-emerald-500" />
+              내 주변과 가깝고 잘해요 !
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {nearbyTopDesigners.map((designer, index) => (
+                <div
+                  key={designer.id || index}
+                  ref={
+                    index === nearbyTopDesigners.length - 1
+                      ? lastDesignerElementRef
+                      : null
+                  }
+                  className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-white rounded-xl overflow-hidden shadow-md"
+                >
+                  <DesignerCard designer={designer} />
+                </div>
+              ))}
+            </div>
+
+            {/* 로딩 UI */}
+            {loading && (
+              <div className="flex justify-center items-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
               </div>
-            ))}
-          </div>
+            )}
 
-          {/* 로딩 상태 */}
-          {loading && (
-            <div className="flex justify-center items-center py-8">
-              <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
-            </div>
-          )}
+            {/* 더 이상 데이터 없음 */}
+            {!hasMore && !loading && nearbyTopDesigners.length > 0 && (
+              <div className="text-center py-8 text-gray-500">
+                더 이상 표시할 디자이너가 없습니다
+              </div>
+            )}
 
-          {/* 더 이상 데이터가 없을 때 */}
-          {!hasMore && !loading && designers.length > 0 && (
-            <div className="text-center py-8 text-gray-500">
-              더 이상 표시할 디자이너가 없습니다
-            </div>
-          )}
-
-          {/* 데이터가 없을 때 */}
-          {!loading && designers.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              등록된 디자이너가 없습니다
-            </div>
-          )}
+            {/* 주변 디자이너 없음 */}
+            {!loading && nearbyTopDesigners.length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                주변에 등록된 디자이너가 없습니다
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </div>
+
+    // <div className="min-h-screen bg-gray-50">
+    //   <Header />
+    //   <div className="pt-20">
+    //     {/* 히어로 섹션 */}
+    //     <div className="bg-gradient-to-r from-teal-500 to-teal-700 text-white py-16">
+    //       <div className="max-w-7xl mx-auto px-4">
+    //         <h1 className="text-4xl font-bold mb-4">
+    //           최고의 디자이너를 만나보세요
+    //         </h1>
+    //         <p className="text-xl opacity-90">
+    //           당신의 스타일을 완성하는 전문 디자이너들이 기다리고 있습니다
+    //         </p>
+    //       </div>
+    //     </div>
+
+    //     {/* 메인 컨텐츠 */}
+    //     <div className="max-w-7xl mx-auto px-4 py-8">
+    //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    //         {designers.map((designer, index) => (
+    //           <div
+    //             key={designer.id || index}
+    //             ref={
+    //               index === designers.length - 1 ? lastDesignerElementRef : null
+    //             }
+    //             className="transform transition-all duration-300 hover:scale-105"
+    //           >
+    //             <DesignerCard designer={designer} />
+    //           </div>
+    //         ))}
+    //       </div>
+
+    //       {/* 로딩 상태 */}
+    //       {loading && (
+    //         <div className="flex justify-center items-center py-8">
+    //           <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
+    //         </div>
+    //       )}
+
+    //       {/* 더 이상 데이터가 없을 때 */}
+    //       {!hasMore && !loading && designers.length > 0 && (
+    //         <div className="text-center py-8 text-gray-500">
+    //           더 이상 표시할 디자이너가 없습니다
+    //         </div>
+    //       )}
+
+    //       {/* 데이터가 없을 때 */}
+    //       {!loading && designers.length === 0 && (
+    //         <div className="text-center py-8 text-gray-500">
+    //           등록된 디자이너가 없습니다
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
