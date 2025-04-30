@@ -121,7 +121,6 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
                 </p>
                 <p className="text-gray-500">설명: {shopData.shop.shopDesc}</p>
               </div>
-
               <div>
                 <DetailIcon shopData={shopData.shop} />
               </div>

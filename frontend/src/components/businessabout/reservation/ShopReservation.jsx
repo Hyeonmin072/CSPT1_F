@@ -72,7 +72,7 @@ export default function ShopReservation() {
     }, []);
 
     return (
-        <div className="p-8 mx-auto max-w-7xl">
+        <div className="p-8 mx-auto max-w-7xl pt-10 mt-10">
             <div className="flex flex-row justify-between">
                 <ScheduleDate
                     selectedDate={selectedDate}

@@ -3,9 +3,6 @@ import { LineChart, AreaChart , Line, Area,  XAxis, YAxis,
     CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { dummyData } from "../../dummydata/DummyGraph.jsx";
 
-// 임시 더미들
-
-
 export default function Graph(){
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true); // 로딩 상태
@@ -16,11 +13,6 @@ export default function Graph(){
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 실제 API 호출 시 아래 코드 활성화
-                // const response = await fetch("/api/sales?period=" + period);
-                // const result = await response.json();
-
-                // 지금은 더미 데이터를 사용
                 const result =
                     period === "이번 주"
                         ? dummyData.weekly
@@ -86,7 +78,7 @@ export default function Graph(){
                         <Area
                             type="monotone"
                             dataKey="sales"
-                            stroke="green"
+                            rokste="green"
                             fill="url(#salesGradient)"
                         />
                     </AreaChart>

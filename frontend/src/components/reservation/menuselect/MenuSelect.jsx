@@ -199,7 +199,7 @@ export default function MenuSelect() {
     };
 
     return (
-        <>
+        <div className="max-w-8xl pt-10 mt-5">
             <div className="flex items-center justify-between px-10 py-4">
                 <MenuHeader />
             </div>
@@ -231,6 +231,6 @@ export default function MenuSelect() {
                     {selectedItem && <MenuSelectModal item={selectedItem} onClose={handleCloseModal} />}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

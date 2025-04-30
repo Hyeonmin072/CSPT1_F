@@ -57,7 +57,7 @@ export default function CheckDetailModal({ reservation, onClose}) {
                             {reservation.status !== "예약취소" ? (
                                 <>
                                     <button onClick={onClose}
-                                            className="bg-[#00B3A6] text-white px-6 py-3 rounded-lg">예약 확인
+                                            className="bg-green-500 text-white px-6 py-3 rounded-lg">예약 확인
                                     </button>
                                     <button onClick={/* 이후 취소 로직 추가 */onClose}
                                             className="bg-red-500 text-white px-6 py-3 rounded-lg">예약 취소
@@ -65,7 +65,7 @@ export default function CheckDetailModal({ reservation, onClose}) {
                                 </>
                             ) : (
                                 <button onClick={onClose}
-                                        className="bg-[#00B3A6] text-white px-6 py-3 rounded-lg">확인</button>
+                                        className="bg-green-500 text-white px-6 py-3 rounded-lg">확인</button>
                             )}
                         </div>
                     </div>

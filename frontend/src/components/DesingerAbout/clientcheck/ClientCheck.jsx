@@ -95,7 +95,7 @@ export default function Clientcheck({ onClose }) {
     }, []);
 
     return (
-        <div className="p-10 mx-auto max-w-7xl">
+        <div className="p-10 mt-10 mx-auto max-w-7xl">
             {/* 날짜, 스케줄 보기, 일주일(오늘), 디자이너 간단 이름 */}
             <div className="flex mb-5">
                 <ScheduleDate

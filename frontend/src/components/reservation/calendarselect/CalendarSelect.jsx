@@ -52,7 +52,6 @@ export default function CalendarSelect({
   if (loading) {
     return <div className="text-center py-2 text-sm">로딩 중...</div>;
   }
-
   if (error) {
     return <div className="text-center py-2 text-sm text-red-500">{error}</div>;
   }

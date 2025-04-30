@@ -3,8 +3,8 @@ import d1 from "../../../assets/designer/d1.png";
 
 export const designers = [
     { id: 1, name: "김봉팔 원장님", sales: 452000, profileImg: d1 },
-    { id: 2, name: "이청순 실장님", sales: 778000, profileImg: d1 },
-    { id: 3, name: "홍길동 부실장님", sales: 350000, profileImg: d1 },
+    { id: 2, name: "이청순 실장님", sales: 770000, profileImg: d1 },
+    { id: 3, name: "홍길동 부실장님", sales: 330000, profileImg: d1 },
 ];
 
 
@@ -23,7 +23,6 @@ export default function DesignerSales() {
                     >
                         <img
                             src={designer.profileImg}
-                            alt={`${designer.name} 프로필`}
                             className="w-20 h-20 rounded-full"
                         />
                         <div className="flex flex-col justify-center space-y-2">

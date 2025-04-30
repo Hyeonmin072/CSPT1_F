@@ -53,7 +53,7 @@ import ShopProfile from "./pages/profile/ShopProfile.jsx";
 import MenuSetting from "./pages/business/MenuSetting.jsx";
 
 function App() {
-  const [userRole, setUserRole] = useState("user");
+  const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
