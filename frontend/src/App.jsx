@@ -28,6 +28,7 @@ import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
 import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
 import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.jsx";
+import ReservationLastCheckPage from "./pages/reservation/ReservationLastCheckPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -46,7 +47,6 @@ import BusinessMainPage from "./pages/main/BusinessMainPage.jsx";
 import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
-import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 import ShopProfile from "./pages/profile/ShopProfile.jsx";
@@ -187,6 +187,10 @@ function App() {
                 }
               />
               <Route path="/designer/match" element={<DesignerMatchPage />} />
+              <Route
+                path="/reservationlastcheck"
+                element={<ReservationLastCheckPage />}
+              />
             </>
           )}
 
@@ -280,13 +284,6 @@ function App() {
               <Route
                 path="/blacklist"
                 element={<BlackListPage onLoginClick={openLoginModal} />}
-              />
-              {/* 사업자 디자이너 스케줄확인 페이지 */}
-              <Route
-                path="/schedulecheck"
-                element={
-                  <ShopReservationCheckPage onLoginClick={openLoginModal} />
-                }
               />
               {/* 사업자 이벤트-쿠폰 등록 페이지 */}
               <Route
