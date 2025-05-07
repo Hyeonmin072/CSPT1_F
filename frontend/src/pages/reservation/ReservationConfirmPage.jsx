@@ -79,6 +79,12 @@ export default function ReservationConfirmPage() {
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
 
+        //결제창 띄우기 전에 로컬 스토리지에 데이터 저장
+        localStorage.setItem(
+          "reservationData",
+          JSON.stringify(reservationData)
+        );
+
         const tossPayments = window.TossPayments(
           "test_ck_DnyRpQWGrNqx9ow4JNabVKwv1M9E"
         );
@@ -92,12 +98,6 @@ export default function ReservationConfirmPage() {
           successUrl: `${window.location.origin}/reservationlastcheck?success=true`,
           failUrl: `${window.location.origin}/reservationlastcheck?success=false`,
         });
-
-        // 결제창 띄우기 전에 데이터 저장
-        localStorage.setItem(
-          "reservationData",
-          JSON.stringify(reservationData)
-        );
       } else {
         setSuccess(false);
       }
