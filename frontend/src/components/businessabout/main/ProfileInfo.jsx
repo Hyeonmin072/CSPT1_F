@@ -1,36 +1,15 @@
 import { Star, QrCode, UserRoundPen, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axiosInstance from "../../sign/axios/AxiosInstance";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import QRCodeModal from "../../modal/qrcode/QRCode.jsx";
 
-export default function ProfileInfo() {
+export default function ProfileInfo({ shopName, rating, reviewCount }) {
   const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [qrValue, setQrValue] = useState(""); // QR 코드 값 상태 관리
-  const [shopName, setShopName] = useState(""); // 상점 이름 상태
-
-  useEffect(() => {
-    const fetchShopName = async () => {
-      try {
-        const response = await axiosInstance.get("/shop/loadheader", {
-          withCredentials: true,
-        });
-        console.log("샵 정보:", response.data);
-        setShopName(response.data.userName || response.data || "이름 없음");
-      } catch (error) {
-        console.error("샵 정보 로드 실패:", error);
-        setShopName("이름 없음");
-      }
-    };
-
-    fetchShopName();
-  }, []);
 
   // 로그아웃 처리 함수
   const handleLogout = async () => {
@@ -108,7 +87,9 @@ export default function ProfileInfo() {
           </div>
           <div className="flex flex-row items-center gap-2">
             <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <p className="text-gray-500"> 4.5 (194 리뷰)</p>
+            <p className="text-gray-500">
+              {rating} ({reviewCount} 리뷰)
+            </p>
           </div>
         </div>
         {/* 로그아웃 버튼 */}

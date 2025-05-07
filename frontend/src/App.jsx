@@ -51,6 +51,8 @@ import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.j
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 import ShopProfile from "./pages/profile/ShopProfile.jsx";
 import MenuSetting from "./pages/business/MenuSetting.jsx";
+import ShopNoticePage from "./pages/notice/ShopNoticePage.jsx";
+import ShopNoticeListPage from "./pages/notice/ShopNoticeListPage.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState("shop");
@@ -252,6 +254,16 @@ function App() {
               <Route
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
+              />
+              {/* 공지사항 등록 페이지 */}
+              <Route
+                path="/shop/notice"
+                element={<ShopNoticePage onLoginClick={openLoginModal} />}
+              />
+              {/* 공지사항 목록 페이지 */}
+              <Route
+                path="/shop/notices"
+                element={<ShopNoticeListPage onLoginClick={openLoginModal} />}
               />
               {/* 사업자 매출 페이지 */}
               <Route

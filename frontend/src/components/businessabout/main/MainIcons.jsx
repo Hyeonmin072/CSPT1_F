@@ -16,7 +16,7 @@ export default function MainIcons() {
   return (
     <>
       {[
-        { icon: <Newspaper />, label: "공지사항 등록" },
+        { icon: <Newspaper />, label: "공지사항 등록", path: "/shop/notice" },
         { icon: <Scissors />, label: "근태 관리" },
         { icon: <Gift />, label: "이벤트 및 쿠폰 관리", path: "/eventmenu" },
         { icon: <Building2 />, label: "구인 구직" },
