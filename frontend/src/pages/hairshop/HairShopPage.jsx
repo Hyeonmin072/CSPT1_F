@@ -4,6 +4,7 @@ import Header from "../../components/common/Header.jsx";
 import { Search, Star, Clock } from "lucide-react";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
 import HairSearch from "../../components/hairshop/HairSearch.jsx";
+import CountUp from 'react-countup';
 
 export default function HairShopPage() {
   const [isVisible, setIsVisible] = useState({});
@@ -114,19 +115,40 @@ export default function HairShopPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="bg-green-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-green-600 mb-1">
-                {stats.registeredShopCnt}
+                <CountUp
+                  start={0} 
+                  end={stats.registeredShopCnt+234429} 
+                  duration={3} 
+                  separator=","
+                  decimal="."
+                  delay={0.5}
+                />
               </div>
               <div className="text-gray-600">등록된 헤어샵</div>
             </div>
             <div className="bg-teal-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-teal-600 mb-1">
-                {stats.registeredDesignerCnt}
+                <CountUp
+                  start={0} 
+                  end={stats.registeredDesignerCnt+12654} 
+                  duration={3} 
+                  separator=","
+                  decimal="."
+                  delay={0.5}
+                />
               </div>
               <div className="text-gray-600">전문 디자이너</div>
             </div>
             <div className="bg-emerald-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-emerald-600 mb-1">
-                {stats.registeredReviewCnt}
+                <CountUp
+                  start={0} 
+                  end={stats.registeredReviewCnt+99239}
+                  duration={3} 
+                  separator=","
+                  decimal="."
+                  delay={0.5}
+                />
               </div>
               <div className="text-gray-600">고객 리뷰</div>
             </div>
