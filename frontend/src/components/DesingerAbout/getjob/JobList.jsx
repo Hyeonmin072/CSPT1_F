@@ -11,19 +11,25 @@ export default function JobList({ filteredJobs, formatPostedTime, navigate }) {
                     >
                         {/* 상단 정보 섹션 */}
                         <div>
-                            {/* 이미지 섹션 */}
+                            {/* 배경이미지 섹션 */}
                             <div className="h-[200px] w-full rounded-lg mb-4 overflow-hidden">
-                                <img
-                                    src={job.image} // 이미지 경로 설정
-                                    alt="Shop preview"
-                                    className="w-full h-[200px] object-cover rounded-lg"
-                                />
+                                {job.image ? (
+                                    <img
+                                        src={job.image}
+                                        alt="Shop preview"
+                                        className="w-full h-[200px] object-cover rounded-lg"
+                                    />
+                                ) : (
+                                    <div className="w-full h-[200px] bg-gray-200 flex items-center justify-center">
+                                        <span className="text-gray-400">이미지 없음</span>
+                                    </div>
+                                )}
                             </div>
 
                             {/* 텍스트 정보 섹션 */}
                             <div className="px-4">
                                 <p className="text-xs text-gray-500 pb-2">
-                                    {formatPostedTime(job.postedTime)} {/* 게시 시간 포맷 */}
+                                    {formatPostedTime(job.postedTime)} {/* 게시된 시간 */}
                                 </p>
                                 <h3 className="text-lg font-bold">{job.title}</h3>
                                 <p className="text-sm text-gray-500 mb-2">{job.company}</p>
@@ -46,7 +52,7 @@ export default function JobList({ filteredJobs, formatPostedTime, navigate }) {
                     </div>
                 ))
             ) : (
-                <p className="text-center text-gray-500">검색 결과가 없습니다.</p> // 데이터가 없을 경우
+                <p className="text-center text-gray-500">등록된 구인구직이 없습니다.</p> // 데이터가 없을 경우
             )}
         </div>
     );

@@ -5,7 +5,6 @@ import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
 export default function DesignerSchedule({ selectedDate, setModalData, setIsModalOpen }) {
     const [personalSchedule, setPersonalSchedule] = useState([]); // 디자이너의 개인 스케줄
     const [currentWeekRange, setCurrentWeekRange] = useState({ start: null, end: null }); // 주간 범위
-    const designerId = 1; // 특정 디자이너 ID
 
     // 시간 슬롯
     const timeSlots = [
@@ -13,8 +12,7 @@ export default function DesignerSchedule({ selectedDate, setModalData, setIsModa
         "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00",
     ];
 
-    // 요일 이름
-    const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"];
+    const daysOfWeek = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
     // 주간 범위 계산 및 스케줄 필터링
     useEffect(() => {
@@ -26,56 +24,50 @@ export default function DesignerSchedule({ selectedDate, setModalData, setIsModa
         const filteredSchedule = dummySchedules.filter((schedule) => {
             const scheduleDate = parseISO(schedule.date); // 스케줄의 날짜 변환
             return (
-                isWithinInterval(scheduleDate, { start, end }) && schedule.id === designerId
-            ); // 주간 범위 내 일정 필터링 및 디자이너 ID 확인
+                isWithinInterval(scheduleDate, { start, end })
+            ); // 주간 범위 내 일정 필터링 
         });
 
         setPersonalSchedule(filteredSchedule);
-    }, [selectedDate, designerId]);
+    }, [selectedDate]);
 
     return (
-        <div className="flex">
+        <div className="flex overflow-x-auto">
             {daysOfWeek.map((day, dayIndex) => {
-                const currentDayDate = addDays(currentWeekRange.start, dayIndex); // 요일에 해당하는 날짜 계산
-                const formattedDate = format(currentDayDate, "yyyy-MM-dd"); // yyyy-MM-dd 형식으로 변환
-
+                const currentDayDate = addDays(currentWeekRange.start, dayIndex);
+                const formattedDate = format(currentDayDate, "yyyy-MM-dd");
+                const isSelectedDate = formattedDate === format(selectedDate, "yyyy-MM-dd");
+    
                 return (
                     <div
                         key={dayIndex}
-                        className={`min-w-[165px] ${
-                            formattedDate === format(selectedDate, "yyyy-MM-dd")
-                                ? "bg-yellow-100"
-                                : ""
-                        }`}
+                        className={`min-w-[165px] ${isSelectedDate ? "bg-yellow-100" : ""}`}
                     >
                         <h3 className="text-lg font-bold flex items-center justify-center h-24">
                             {day}
                         </h3>
                         <div>
                             {timeSlots.map((time, slotIndex) => {
-                                // 요일과 시간에 맞는 예약 필터링
                                 const appointment = personalSchedule.find(
                                     (app) =>
                                         app.time === time &&
                                         format(parseISO(app.date), "yyyy-MM-dd") === formattedDate
                                 );
-
-                                // 예약 상태에 따른 색상 설정
-                                const leftBorderColor =
-                                    appointment?.status === "완료"
-                                        ? "border-l-4 border-l-green-600"
-                                        : appointment?.status === "미완료"
-                                            ? "border-l-4 border-l-red-600"
-                                            : "";
-
+    
+                                const getBorderColor = () => {
+                                    if (appointment?.status === "완료") return "border-l-4 border-l-green-600";
+                                    if (appointment?.status === "미완료") return "border-l-4 border-l-red-600";
+                                    return "";
+                                };
+    
                                 return (
                                     <div
                                         key={slotIndex}
-                                        className={`h-24 flex items-center justify-center border ${leftBorderColor}`}
+                                        className={`h-24 flex items-center justify-center border ${getBorderColor()}`}
                                         onClick={() => {
                                             if (appointment) {
-                                                setModalData(appointment); // 모달에 데이터 전달
-                                                setIsModalOpen(true); // 모달 열기
+                                                setModalData(appointment);
+                                                setIsModalOpen(true);
                                             }
                                         }}
                                     >
@@ -89,7 +81,7 @@ export default function DesignerSchedule({ selectedDate, setModalData, setIsModa
                                                 </span>
                                             </button>
                                         ) : (
-                                            <span>&nbsp;</span> // 빈 슬롯
+                                            <span>&nbsp;</span>
                                         )}
                                     </div>
                                 );
