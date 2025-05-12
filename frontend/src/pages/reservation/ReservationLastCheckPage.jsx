@@ -1,12 +1,91 @@
 import Header from "../../components/common/Header";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axiosInstance from "../../components/sign/axios/AxiosInstance";
+import { toast } from "react-hot-toast";
 
 export default function ReservationLastCheckPage() {
-  const [searchParams] = useSearchParams();
-  const success = searchParams.get("success");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [reservationData, setReservationData] = useState(null);
   const [countdown, setCountdown] = useState(10); // 10초로 변경
+
+  useEffect(() => {
+    const handlePaymentResult = async () => {
+      try {
+        const searchParams = new URLSearchParams(location.search);
+        const success = searchParams.get("success") === "true";
+        const paymentKey = searchParams.get("paymentKey");
+        const orderId = searchParams.get("orderId");
+        const amount = searchParams.get("amount");
+
+        console.log("결제 파라미터:", {
+          success,
+          paymentKey,
+          orderId,
+          amount,
+        });
+
+        if (success) {
+          if (!paymentKey || !orderId || !amount) {
+            throw new Error("필수 결제 정보가 누락되었습니다.");
+          }
+
+          // 결제 성공 처리
+          try {
+            const response = await axiosInstance.get("/user/payment/success", {
+              params: {
+                paymentKey,
+                orderId,
+                amount,
+              },
+            });
+
+            console.log("결제 성공 응답:", response.data);
+
+            if (response.data.success) {
+              toast.success("결제가 완료되었습니다.");
+            } else {
+              throw new Error(
+                response.data.message || "결제 처리 중 오류가 발생했습니다."
+              );
+            }
+          } catch (apiError) {
+            console.error("API 에러 상세:", {
+              status: apiError.response?.status,
+              data: apiError.response?.data,
+              message: apiError.message,
+            });
+            throw new Error(
+              apiError.response?.data?.message ||
+                "결제 처리 중 오류가 발생했습니다."
+            );
+          }
+        } else {
+          toast.error("결제에 실패했습니다.");
+        }
+
+        // 3초 후 예약 목록 페이지로 이동
+        setTimeout(() => {
+          navigate("/mypage/reservations");
+        }, 3000);
+      } catch (error) {
+        console.error("결제 처리 실패 상세:", {
+          message: error.message,
+          stack: error.stack,
+        });
+        setError(error.message || "결제 처리 중 오류가 발생했습니다.");
+        toast.error(error.message || "결제 처리 중 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handlePaymentResult();
+  }, [location, navigate]);
 
   useEffect(() => {
     const data = localStorage.getItem("reservationData");
@@ -34,7 +113,7 @@ export default function ReservationLastCheckPage() {
 
   // 10초 카운트다운 및 자동 이동
   useEffect(() => {
-    if (success === "true") {
+    if (loading) {
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -47,7 +126,7 @@ export default function ReservationLastCheckPage() {
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [success]);
+  }, [loading]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -57,11 +136,38 @@ export default function ReservationLastCheckPage() {
     })`;
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">결제 처리 중입니다...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500">{error}</p>
+          <button
+            onClick={() => navigate("/mypage/reservations")}
+            className="mt-4 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+          >
+            예약 목록으로 이동
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
       <div className="max-w-md mx-auto p-4 mt-20">
-        {success === "true" ? (
+        {loading ? (
           <div className="text-green-600 font-bold text-xl mb-4 text-center">
             예약이 완료되었습니다 🎉
             <div className="text-sm text-gray-500 mt-2">

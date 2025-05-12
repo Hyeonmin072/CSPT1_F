@@ -54,41 +54,19 @@ export default function ReservationConfirmPage() {
         menuId: reservationData.menuInfo.menuId,
       };
 
-      console.log("\n=== 서버 전송 데이터 ===");
-      console.log("가격:", requestData.price);
-      console.log("서비스 날짜:", requestData.serviceDate);
-      console.log("디자이너 이메일:", requestData.designerEmail);
-      console.log("샵 이메일:", requestData.shopEmail);
-      console.log("메뉴 ID:", requestData.menuId);
-      console.log("\n=== 전체 요청 데이터 ===");
-      console.log(JSON.stringify(requestData, null, 2));
-      console.log("========================\n");
-
       // API 호출
       const response = await axiosInstance.post(
         "/user/reservation",
         requestData
       );
 
-      console.log("\n=== 서버 응답 데이터 ===");
-      console.log("상태 코드:", response.status);
-      console.log("응답 헤더:", response.headers);
-      console.log("응답 데이터:", response.data);
-      console.log("========================\n");
-
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
-
-        //결제창 띄우기 전에 로컬 스토리지에 데이터 저장
-        localStorage.setItem(
-          "reservationData",
-          JSON.stringify(reservationData)
-        );
-
         const tossPayments = window.TossPayments(
           "test_ck_DnyRpQWGrNqx9ow4JNabVKwv1M9E"
         );
 
+        // 결제 요청
         await tossPayments.requestPayment("CARD", {
           amount: data.price,
           orderId: data.paymentId,
@@ -100,13 +78,10 @@ export default function ReservationConfirmPage() {
         });
       } else {
         setSuccess(false);
+        toast.error("예약 생성에 실패했습니다.");
       }
     } catch (error) {
-      console.error("\n=== 예약 실패 ===");
-      console.error("에러 상태:", error.response?.status);
-      console.error("에러 데이터:", error.response?.data);
-      console.error("에러 메시지:", error.message);
-      console.error("========================\n");
+      console.error("예약 실패:", error);
       setSuccess(false);
       toast.error("예약에 실패했습니다. 다시 시도해주세요.");
     }
