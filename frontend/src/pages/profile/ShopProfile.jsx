@@ -19,6 +19,8 @@ export default function ShopProfile() {
     post: 0,
     tel: "",
     pwd: "",
+    newPwd: "",
+    newPwdConfirm: "",
     desc: "",
     open: "",
     close: "",
@@ -41,47 +43,53 @@ export default function ShopProfile() {
     { id: "SUNDAY", label: "일" },
   ];
 
-  useEffect(() => {
-    const fetchShopData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.get("/shop/profile", {
-          withCredentials: true,
-        });
-        console.log("샵 정보:", response.data);
+  const fetchShopData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axiosInstance.get("/shop/profile", {
+        withCredentials: true,
+      });
+      console.log("샵 정보:", response.data);
 
-        setShopData({
-          ...response.data,
-          // 서버에서 받은 데이터 타입 확인 및 변환
-          post: parseInt(response.data.post, 10),
-          rating: parseFloat(response.data.rating || 0),
-          reviewNumber: parseInt(response.data.reviewNumber || 0, 10),
-          reservationNumber: parseInt(response.data.reservationNumber || 0, 10),
-          joinDate:
-            response.data.joinDate || new Date().toISOString().split("T")[0],
-          profileImage: response.data.profileImage || "",
-          bannerImage: response.data.bannerImage || "",
-        });
+      setShopData({
+        ...response.data,
+        // 서버에서 받은 데이터 타입 확인 및 변환
+        post: parseInt(response.data.post, 10),
+        rating: parseFloat(response.data.rating || 0),
+        reviewNumber: parseInt(response.data.reviewNumber || 0, 10),
+        reservationNumber: parseInt(response.data.reservationNumber || 0, 10),
+        joinDate:
+          response.data.joinDate || new Date().toISOString().split("T")[0],
+        profileImage: response.data.profileImage || "",
+        bannerImage: response.data.bannerImage || "",
+        newPwd: "",
+        newPwdConfirm: "",
+      });
 
-        // 정기 휴무일 문자열을 배열로 변환
-        if (
-          response.data.regularHoliday &&
-          response.data.regularHoliday !== "NONE"
-        ) {
-          setSelectedHolidays(response.data.regularHoliday.split(","));
-        } else {
-          setSelectedHolidays([]);
-        }
-      } catch (error) {
-        console.error("샵 정보 로드 실패:", error);
-        toast.error("샵 정보를 불러오는데 실패했습니다.");
-      } finally {
-        setIsLoading(false);
+      // 정기 휴무일 문자열을 배열로 변환
+      if (
+        response.data.regularHoliday &&
+        response.data.regularHoliday !== "NONE"
+      ) {
+        setSelectedHolidays(response.data.regularHoliday.split(","));
+      } else {
+        setSelectedHolidays([]);
       }
-    };
+    } catch (error) {
+      console.error("샵 정보 로드 실패:", error);
+      toast.error("샵 정보를 불러오는데 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchShopData();
   }, []);
+
+  useEffect(() => {
+    console.log("shopData 변경됨:", shopData);
+  }, [shopData]);
 
   const handleChange = (field, value) => {
     setShopData((prev) => ({
@@ -104,52 +112,47 @@ export default function ShopProfile() {
   };
 
   const handleImageUpload = (type, file) => {
-    // 이미지 파일을 상태에 저장
-    setShopData((prev) => ({
-      ...prev,
-      [`${type}File`]: file, // 파일 객체를 저장
-    }));
+    console.log("업로드 타입:", type, "파일:", file);
+    if (type === "profileImage") {
+      setShopData((prev) => ({
+        ...prev,
+        profileImageFile: file,
+      }));
+    } else if (type === "bannerImage") {
+      setShopData((prev) => ({
+        ...prev,
+        bannerImageFile: file,
+      }));
+    }
   };
 
   const handleSave = async () => {
     try {
       const formData = new FormData();
-
-      // 기본 데이터 추가
-      formData.append("name", shopData.name);
-      formData.append("address", shopData.address);
-      formData.append("post", parseInt(shopData.post, 10));
-      formData.append("tel", shopData.tel);
-      formData.append("newPwd", "");
-      formData.append("newPwdConfirm", "");
-      formData.append("desc", shopData.desc || "");
-      formData.append("open", shopData.open || "");
-      formData.append("close", shopData.close || "");
-      formData.append("regularHoliday", shopData.regularHoliday || "");
-
-      // 이미지 파일 추가
+      formData.append(
+        "request",
+        new Blob([JSON.stringify(shopData)], { type: "application/json" })
+      );
       if (shopData.profileImageFile) {
-        formData.append("profileImage", shopData.profileImageFile);
+        formData.append("thumbnail", shopData.profileImageFile);
       }
       if (shopData.bannerImageFile) {
-        formData.append("bannerImage", shopData.bannerImageFile);
+        formData.append("banner", shopData.bannerImageFile);
       }
 
-      // 서버로 데이터 전송
-      const response = await axiosInstance.post("/shop/profile", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      // === 서버로 전송하는 데이터 로깅 ===
+      for (let pair of formData.entries()) {
+        console.log("서버 전송 데이터:", pair[0], pair[1]);
+      }
+      console.log("저장 직전 shopData:", shopData);
+      // 서버로 데이터 전송 (반드시 formData를 두 번째 인자로!)
+      const response = await axiosInstance.patch("/shop/profile", formData, {
         withCredentials: true,
       });
-
       // 성공 시 처리
       if (response.status === 200) {
-        // 성공 메시지 표시
         toast.success("프로필이 성공적으로 업데이트되었습니다.");
-        // 편집 모드 종료
         setIsEditing(false);
-        // 데이터 새로고침
         fetchShopData();
       }
     } catch (error) {

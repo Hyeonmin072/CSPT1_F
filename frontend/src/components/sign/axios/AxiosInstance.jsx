@@ -7,9 +7,6 @@ const API_BASE_URL = "http://localhost:1271";
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true, // 쿠키 기반 인증을 위해 필요
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // 요청 인터셉터 추가
