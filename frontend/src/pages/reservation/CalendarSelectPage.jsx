@@ -116,8 +116,8 @@ export default function CalendarSelectPage() {
           </p>
           <button
             onClick={() => goToNextStep(1)}
-            className="mt-8 w-full bg-[#03DAC5] text-white py-4 rounded-lg font-medium
-              hover:bg-[#00a896] transition-colors"
+            className="mt-8 w-full bg-green-500 text-white py-4 rounded-lg font-medium
+              hover:bg-green-600 transition-colors"
           >
             이 디자이너로 예약하기
           </button>
@@ -165,7 +165,7 @@ export default function CalendarSelectPage() {
                   min-w-[60px] transition-all duration-200
                   ${
                     selectedDate === item.fullDate
-                      ? "bg-[#03DAC5] text-white"
+                      ? "bg-green-500 text-white"
                       : "hover:bg-gray-50"
                   }
                 `}
@@ -218,8 +218,8 @@ export default function CalendarSelectPage() {
               key={time}
               className={`p-3 rounded-lg border text-center ${
                 selectedTime === time
-                  ? "bg-[#03DAC5] text-white border-[#03DAC5]"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-[#03DAC5]"
+                  ? "bg-green-500 text-white border-green-600"
+                  : "bg-white text-gray-700 border-gray-200 hover:border-green-600"
               }`}
               onClick={() => handleTimeSelect(time)}
             >
@@ -330,7 +330,7 @@ export default function CalendarSelectPage() {
               className={`w-full py-3 rounded-lg font-medium
                 ${
                   selectedDate && selectedTime
-                    ? "bg-[#03DAC5] text-white"
+                    ? "bg-green-500 text-white"
                     : "bg-gray-200 text-gray-500 cursor-not-allowed"
                 }`}
               disabled={!selectedDate || !selectedTime}

@@ -209,7 +209,7 @@ export default function ReservationConfirmPage() {
         <div className="max-w-2xl mx-auto">
           <button
             onClick={handlePayment}
-            className="w-full py-4 bg-[#03DAC5] text-white font-medium rounded-lg hover:bg-[#00a896] transition-colors"
+            className="w-full py-4 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors"
           >
             결제하기
           </button>

@@ -174,7 +174,7 @@ export default function MenuSelectPage() {
                       className={`bg-white rounded-lg shadow p-4 cursor-pointer transition-all
                         ${
                           selectedMenu?.menuId === menu.menuId
-                            ? "ring-2 ring-[#03DAC5]"
+                            ? "ring-2 ring-green-500"
                             : "hover:shadow-lg"
                         }`}
                       onClick={() => setSelectedMenu(menu)}
@@ -211,7 +211,7 @@ export default function MenuSelectPage() {
             className={`w-full py-3 rounded-lg font-medium
               ${
                 selectedMenu
-                  ? "bg-[#03DAC5] text-white"
+                  ? "bg-green-500 text-white"
                   : "bg-gray-200 text-gray-500 cursor-not-allowed"
               }`}
             disabled={!selectedMenu}
