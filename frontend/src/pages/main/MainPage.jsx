@@ -217,9 +217,9 @@ export default function MainPage() {
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-lg mb-2">
-                    {designer.designerName}
+                    {designer.designerNickName}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-4">
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2 min-h-[40px]">
                     {designer.designerDesc || "설명이 없습니다"}
                   </p>
                   <div className="flex items-center text-sm text-gray-500">
