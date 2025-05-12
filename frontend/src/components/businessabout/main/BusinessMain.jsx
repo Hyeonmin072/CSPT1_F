@@ -75,6 +75,8 @@ export default function BusinessMain() {
               bestLikedesignerName={mainData.bestLikedesignerName}
               bestLikedesignerEmail={mainData.bestLikedesignerEmail}
               increasedLikes={mainData.increasedLikes}
+              bestSalesdesignerImage={mainData.bestSalesdesignerImage}
+              bestLikedesignerImage={mainData.bestLikedesignerImage}
             />
           </div>
         </div>
