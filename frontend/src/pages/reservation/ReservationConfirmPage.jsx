@@ -196,7 +196,7 @@ export default function ReservationConfirmPage() {
           <div className="mb-4">
             <div className="flex justify-between items-center text-xl font-bold">
               <span>총 결제 금액</span>
-              <span className="text-[#03DAC5]">
+              <span className="text-black">
                 {reservationData.menuInfo.finalPrice.toLocaleString()}원
               </span>
             </div>

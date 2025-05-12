@@ -161,6 +161,37 @@ export default function MenuSelectPage() {
           <div className="text-center py-8">로딩 중...</div>
         ) : error ? (
           <div className="text-center text-red-500 py-8">{error}</div>
+        ) : !menuData?.cutMenus?.length ? (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <svg
+                className="w-16 h-16 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <h3 className="text-xl font-medium text-gray-700">
+                등록된 메뉴가 없습니다
+              </h3>
+              <p className="text-gray-500">
+                현재 등록된 메뉴가 없습니다. 나중에 다시 확인해주세요.
+              </p>
+              <button
+                onClick={() => navigate(-2)}
+                className="mt-4 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                다른 디자이너 선택하기
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="space-y-6">
             {/* 컷트 메뉴 */}
