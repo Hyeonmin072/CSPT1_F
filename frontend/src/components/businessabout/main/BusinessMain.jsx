@@ -69,14 +69,14 @@ export default function BusinessMain() {
           {/* 디자이너 성과 */}
           <div>
             <DesignerSetting
-              bestSalesdesignerName={mainData.bestSalesdesignerName}
-              bestSalesdesignerEmail={mainData.bestSalesdesignerEmail}
+              bestSalesdesignerName={mainData.bestSalesDesignerName}
+              bestSalesdesignerEmail={mainData.bestSalesDesignerEmail}
+              bestSalesdesignerImage={mainData.bestSalesDesignerImage}
               sales={mainData.sales}
               bestLikedesignerName={mainData.bestLikedesignerName}
               bestLikedesignerEmail={mainData.bestLikedesignerEmail}
-              increasedLikes={mainData.increasedLikes}
-              bestSalesdesignerImage={mainData.bestSalesdesignerImage}
               bestLikedesignerImage={mainData.bestLikedesignerImage}
+              increasedLikes={mainData.increasedLikes}
             />
           </div>
         </div>

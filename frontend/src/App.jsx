@@ -311,6 +311,14 @@ function App() {
             path="/reservation/confirm"
             element={<ReservationConfirmPage />}
           />
+          <Route
+            path="/user/payment/success"
+            element={<ReservationLastCheckPage />}
+          />
+          <Route
+            path="/user/payment/fail"
+            element={<ReservationLastCheckPage />}
+          />
         </Routes>
         {/* 로그인 모달 */}
         <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />

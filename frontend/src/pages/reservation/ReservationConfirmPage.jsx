@@ -73,8 +73,8 @@ export default function ReservationConfirmPage() {
           orderName: data.reservMenuName,
           customerName: data.userName,
           customerEmail: data.userEmail,
-          successUrl: `${window.location.origin}/reservationlastcheck?success=true`,
-          failUrl: `${window.location.origin}/reservationlastcheck?success=false`,
+          successUrl: data.successUrl,
+          failUrl: data.failUrl,
         });
       } else {
         setSuccess(false);

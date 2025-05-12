@@ -16,31 +16,23 @@ export default function ReservationLastCheckPage() {
   useEffect(() => {
     const handlePaymentResult = async () => {
       try {
+        const path = location.pathname;
+        const isSuccess = path.includes("/user/payment/success");
+
         const searchParams = new URLSearchParams(location.search);
-        const success = searchParams.get("success") === "true";
-        const paymentKey = searchParams.get("paymentKey");
-        const orderId = searchParams.get("orderId");
-        const amount = searchParams.get("amount");
 
         console.log("결제 파라미터:", {
-          success,
-          paymentKey,
-          orderId,
-          amount,
+          isSuccess,
         });
 
-        if (success) {
-          if (!paymentKey || !orderId || !amount) {
-            throw new Error("필수 결제 정보가 누락되었습니다.");
-          }
-
+        if (isSuccess) {
           // 결제 성공 처리
           try {
             const response = await axiosInstance.get("/user/payment/success", {
               params: {
-                paymentKey,
-                orderId,
-                amount,
+                paymentKey: searchParams.get("paymentKey"),
+                orderId: searchParams.get("orderId"),
+                amount: searchParams.get("amount"),
               },
             });
 
@@ -68,10 +60,10 @@ export default function ReservationLastCheckPage() {
           toast.error("결제에 실패했습니다.");
         }
 
-        // 3초 후 예약 목록 페이지로 이동
+        // 8초 후 메인 페이지로 이동
         setTimeout(() => {
-          navigate("/mypage/reservations");
-        }, 3000);
+          navigate("/");
+        }, 8000);
       } catch (error) {
         console.error("결제 처리 실패 상세:", {
           message: error.message,
@@ -156,7 +148,7 @@ export default function ReservationLastCheckPage() {
             onClick={() => navigate("/mypage/reservations")}
             className="mt-4 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
           >
-            예약 목록으로 이동
+            메인 페이지로 이동
           </button>
         </div>
       </div>
