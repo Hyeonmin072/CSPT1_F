@@ -40,7 +40,7 @@ export default function DesignerProfilePage() {
     <div>
       <DesignerHeader />
 
-      <div className="p-4">
+      <div className="p-4 mt-16">
         <DesignerProfile
           name={designerData.name}
           nickName={designerData.nickName}

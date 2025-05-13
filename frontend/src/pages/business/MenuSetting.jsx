@@ -104,7 +104,6 @@ export default function MenuSetting() {
         category: menuData.category,
         designerEmail: menuData.designerEmail,
         designerEmails: menuData.designerEmail ? [menuData.designerEmail] : [], // 리스트 형태로 변환
-        common: "no", // m_common 필드에 대한 값 추가 (문자열 형식)
       };
 
       console.log("요청 DTO:", requestDto); // 요청 DTO 로깅
@@ -117,9 +116,6 @@ export default function MenuSetting() {
       });
 
       formData.append("request", requestBlob);
-
-      // 개별 필드도 추가 (백엔드에서 읽을 수 있도록)
-      formData.append("common", "no");
 
       // 이미지 파일 추가
       if (menuData.image) {
