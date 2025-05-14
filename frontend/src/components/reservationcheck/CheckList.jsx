@@ -1,3 +1,5 @@
+import { Button } from "@mui/material";
+
 export default function CheckList({
   handleRowClick,
   filteredReservations,
@@ -14,6 +16,7 @@ export default function CheckList({
             <th className="py-2 px-4">담당 디자이너</th>
             <th className="py-2 px-4">메뉴</th>
             <th className="py-2 px-4">결제 가격</th>
+            <th className="py-2 px-4">리뷰</th>
           </tr>
         </thead>
         <tbody>
@@ -32,6 +35,11 @@ export default function CheckList({
                 <td className="border py-2 px-4">{reservation.menu}</td>
                 <td className="border py-2 px-4">
                   <span>{reservation.price}원</span>
+                </td>
+                <td className="border py-2 px-4">
+                  <span>
+                    <Button>리뷰 작성</Button>
+                  </span>
                 </td>
               </tr>
             ))
