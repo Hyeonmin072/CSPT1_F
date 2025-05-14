@@ -29,6 +29,7 @@ import SocialSignup from "./components/sign/social/SocialSignup";
 import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
 import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.jsx";
 import ReservationLastCheckPage from "./pages/reservation/ReservationLastCheckPage.jsx";
+import DesignerInfoPage from "./pages/designer/DesignerInfoPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -155,6 +156,10 @@ function App() {
               <Route
                 path="/designerpage"
                 element={<DesignerPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/designerinfo/:designerEmail"
+                element={<DesignerInfoPage />}
               />
               <Route
                 path="/userprofile"
