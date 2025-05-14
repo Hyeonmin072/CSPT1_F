@@ -12,7 +12,10 @@ export default function ShopProfile() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [selectedHolidays, setSelectedHolidays] = useState([]);
+  const [profileImageFile, setProfileImageFile] = useState(null); // 프로필 이미지 파일 상태 분리
+  const [bannerImageFile, setBannerImageFile] = useState(null); // 배너 이미지 파일 상태 분리
   const [shopData, setShopData] = useState({
     name: "",
     address: "",
@@ -30,7 +33,9 @@ export default function ShopProfile() {
     reservationNumber: 0,
     joinDate: new Date().toISOString().split("T")[0],
     profileImage: "",
+    thumbnail: "",
     bannerImage: "",
+    bannerImages: [],
   });
 
   const weekDays = [
@@ -49,7 +54,38 @@ export default function ShopProfile() {
       const response = await axiosInstance.get("/shop/profile", {
         withCredentials: true,
       });
-      console.log("샵 정보:", response.data);
+      console.log("샵 정보 원본:", response.data);
+
+      // 이미지 데이터 로깅
+      console.log("이미지 데이터:", {
+        bannerImage: response.data.bannerImage,
+        bannerImages: response.data.bannerImages,
+        thumbnail: response.data.thumbnail,
+        profileImage: response.data.profileImage,
+      });
+
+      // 배너 이미지 처리
+      let bannerImageUrl = "";
+      if (response.data.bannerImages && response.data.bannerImages.length > 0) {
+        bannerImageUrl = response.data.bannerImages[0];
+        console.log("배너 이미지 URL (배열에서):", bannerImageUrl);
+      } else if (response.data.bannerImage) {
+        bannerImageUrl = response.data.bannerImage;
+        console.log("배너 이미지 URL (단일 필드에서):", bannerImageUrl);
+      }
+
+      // 프로필 이미지 처리
+      let profileImageUrl = "";
+      if (response.data.thumbnail) {
+        profileImageUrl = response.data.thumbnail;
+        console.log("프로필 이미지 URL (thumbnail 필드에서):", profileImageUrl);
+      } else if (response.data.profileImage) {
+        profileImageUrl = response.data.profileImage;
+        console.log(
+          "프로필 이미지 URL (profileImage 필드에서):",
+          profileImageUrl
+        );
+      }
 
       setShopData({
         ...response.data,
@@ -60,8 +96,10 @@ export default function ShopProfile() {
         reservationNumber: parseInt(response.data.reservationNumber || 0, 10),
         joinDate:
           response.data.joinDate || new Date().toISOString().split("T")[0],
-        profileImage: response.data.profileImage || "",
-        bannerImage: response.data.bannerImage || "",
+        // 처리된 프로필 이미지 URL 사용
+        profileImage: profileImageUrl,
+        // 처리된 배너 이미지 URL 사용
+        bannerImage: bannerImageUrl,
         newPwd: "",
         newPwdConfirm: "",
       });
@@ -113,51 +151,115 @@ export default function ShopProfile() {
 
   const handleImageUpload = (type, file) => {
     console.log("업로드 타입:", type, "파일:", file);
-    if (type === "profileImage") {
-      setShopData((prev) => ({
-        ...prev,
-        profileImageFile: file,
-      }));
-    } else if (type === "bannerImage") {
-      setShopData((prev) => ({
-        ...prev,
-        bannerImageFile: file,
-      }));
+    // 이미지 파일 상태 분리하여 관리
+    if (type === "profile") {
+      setProfileImageFile(file);
+      // 미리보기용 URL 생성
+      if (file) {
+        const previewUrl = URL.createObjectURL(file);
+        handleChange("profileImage", previewUrl);
+      }
+    } else if (type === "banner") {
+      setBannerImageFile(file);
+      // 미리보기용 URL 생성
+      if (file) {
+        const previewUrl = URL.createObjectURL(file);
+        handleChange("bannerImage", previewUrl);
+      }
     }
   };
 
   const handleSave = async () => {
     try {
+      setIsSaving(true);
+
+      console.log("저장 전 상태:", {
+        shopData,
+        profileImageFile,
+        bannerImageFile,
+      });
+
       const formData = new FormData();
+
+      // shopData에서 이미지 URL 제외
+      const shopDataWithoutImages = {
+        ...shopData,
+        // 이미지 URL은 서버에 전송하지 않음 (파일은 별도로 전송)
+        profileImage: undefined,
+        thumbnail: undefined,
+        bannerImage: undefined,
+        // bannerImages가 필요한 경우 빈 배열로 초기화
+        bannerImages: [],
+      };
+
+      console.log("서버로 전송할 데이터:", shopDataWithoutImages);
+
       formData.append(
         "request",
-        new Blob([JSON.stringify(shopData)], { type: "application/json" })
+        new Blob([JSON.stringify(shopDataWithoutImages)], {
+          type: "application/json",
+        })
       );
-      if (shopData.profileImageFile) {
-        formData.append("thumbnail", shopData.profileImageFile);
+
+      // 프로필 이미지 파일이 있으면 추가
+      if (profileImageFile) {
+        console.log(
+          "프로필 이미지 파일 추가 (thumbnail):",
+          profileImageFile.name
+        );
+        formData.append("thumbnail", profileImageFile);
       }
-      if (shopData.bannerImageFile) {
-        formData.append("banner", shopData.bannerImageFile);
+
+      // 배너 이미지 파일이 있으면 추가
+      if (bannerImageFile) {
+        console.log("배너 이미지 파일 추가 (banner):", bannerImageFile.name);
+        formData.append("banner", bannerImageFile);
       }
 
       // === 서버로 전송하는 데이터 로깅 ===
+      console.log("=== 서버 전송 데이터 로깅 시작 ===");
       for (let pair of formData.entries()) {
-        console.log("서버 전송 데이터:", pair[0], pair[1]);
+        if (pair[0] === "request") {
+          try {
+            const requestData = JSON.parse(await pair[1].text());
+            console.log("request 데이터:", requestData);
+          } catch (error) {
+            console.error("request 데이터 파싱 실패:", error);
+          }
+        } else {
+          console.log(
+            `${pair[0]}: ${pair[1] instanceof File ? "파일 객체" : pair[1]} ${
+              pair[1] instanceof File
+                ? `(파일명: ${pair[1].name}, 타입: ${pair[1].type}, 크기: ${pair[1].size} bytes)`
+                : ""
+            }`
+          );
+        }
       }
-      console.log("저장 직전 shopData:", shopData);
-      // 서버로 데이터 전송 (반드시 formData를 두 번째 인자로!)
+      console.log("=== 서버 전송 데이터 로깅 종료 ===");
+
+      // Content-Type을 지정하지 않고 axios가 알아서 설정하도록 함
       const response = await axiosInstance.patch("/shop/profile", formData, {
         withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
       // 성공 시 처리
       if (response.status === 200) {
         toast.success("프로필이 성공적으로 업데이트되었습니다.");
         setIsEditing(false);
-        fetchShopData();
+        // 이미지 파일 상태 초기화
+        setProfileImageFile(null);
+        setBannerImageFile(null);
+        fetchShopData(); // 업데이트된 데이터 다시 불러오기
       }
     } catch (error) {
       console.error("프로필 업데이트 중 오류 발생:", error);
       toast.error("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -244,10 +346,22 @@ export default function ShopProfile() {
                   {isEditing ? (
                     <button
                       onClick={handleSave}
-                      className="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors flex items-center gap-2"
+                      disabled={isSaving}
+                      className={`px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors flex items-center gap-2 ${
+                        isSaving ? "opacity-70 cursor-not-allowed" : ""
+                      }`}
                     >
-                      <Save className="w-4 h-4" />
-                      <span>저장</span>
+                      {isSaving ? (
+                        <>
+                          <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+                          <span>저장 중...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4" />
+                          <span>저장</span>
+                        </>
+                      )}
                     </button>
                   ) : (
                     <button
