@@ -95,8 +95,11 @@ export default function DesignerInfoPage() {
       designerData.backgroundImage ||
       "https://via.placeholder.com/1200x400?text=Background",
     shopName: designerData.shopName || "소속 샵 정보 없음",
-    reviews: designerData.reviews || [],
+    reviews: designerData.reviews || [], // 빈 배열을 기본값으로 사용
   };
+
+  // 리뷰 데이터 로깅
+  console.log("리뷰 데이터:", dummyData.reviews);
 
   return (
     <motion.div
@@ -119,6 +122,7 @@ export default function DesignerInfoPage() {
           tel={dummyData.tel}
           backgroundImage={dummyData.backgroundImage}
           isViewMode={true} // 유저 모드로 설정 (프로필 수정 버튼 숨김)
+          reviews={dummyData.reviews} // 리뷰 데이터 전달
         />
       </div>
 

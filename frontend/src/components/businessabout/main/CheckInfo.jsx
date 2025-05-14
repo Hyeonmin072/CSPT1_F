@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 export default function CheckInfo({ remainReservation, monthSales }) {
   const navigate = useNavigate();
 
+  // 금액에 천 단위 구분 콤마 추가하는 함수
+  const formatCurrency = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <>
       <div className="shadow-md flex flex-col justify-center border items-center p-4 rounded-lg">
@@ -21,8 +26,10 @@ export default function CheckInfo({ remainReservation, monthSales }) {
       <div className="shadow-md flex flex-col justify-center items-center border p-4 rounded-lg">
         <p className="p-10">
           이번 달 동안{" "}
-          <span className="font-bold text-green-600">{monthSales}원</span>의
-          매출을 달성하셨네요.
+          <span className="font-bold text-green-600">
+            {formatCurrency(monthSales)}원
+          </span>
+          의 매출을 달성하셨네요.
         </p>
         <button
           className="text-white bg-black rounded-lg h-10 w-[200px]"
