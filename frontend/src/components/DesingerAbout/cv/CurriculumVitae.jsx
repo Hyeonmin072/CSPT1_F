@@ -23,6 +23,8 @@ export default function CurriculumVitae({
   const [careers, setCareers] = useState([]); // 경력 상태
   const [certifications, setCertifications] = useState([]); // 자격증 상태
   const [resumeData, setResumeData] = useState(null); // 이력서 데이터 상태
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   // 요일 ID 변환 함수
   const convertDayId = (dayId) => {
@@ -91,6 +93,11 @@ export default function CurriculumVitae({
 
           // 소개글 설정
           setDDesc(formattedData.d_desc);
+
+          if (formattedData.d_image) {
+            setPreview(formattedData.d_image);
+            setImage(null);
+          }
         } else {
           // API에서 데이터 가져오기
           const response = await axios.get("/designer/resume");
@@ -124,6 +131,11 @@ export default function CurriculumVitae({
 
           // 소개글 설정
           setDDesc(formattedData.d_desc);
+
+          if (formattedData.d_image) {
+            setPreview(formattedData.d_image);
+            setImage(null);
+          }
         }
       } catch (error) {
         console.error("이력서 데이터 가져오기 실패:", error);
@@ -186,13 +198,13 @@ export default function CurriculumVitae({
             wantedDays: wantedDays.map((day) => ({
               wantedDay: convertDayToFull(day.wantedDay || day),
             })),
-            d_image: resumeData?.d_image || null,
+            d_image: image && image instanceof File ? image : null,
           })
         : {
             content: dDesc,
             exp: resumeData?.d_exp || "",
             portfolio: "",
-            image: resumeData?.d_image || null,
+            image: image && image instanceof File ? image : null,
             careers: careers.map((career) => ({
               id: career.id,
               shopName: career.shopName,
@@ -237,6 +249,15 @@ export default function CurriculumVitae({
     setIsEditable(false);
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setImage(file); // 반드시 File 객체로!
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
   if (loading) {
     return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
   }
@@ -245,7 +266,14 @@ export default function CurriculumVitae({
     <div className="container mx-auto p-10">
       {/* 간단 프로필 */}
       <section className="flex flex-col items-center justify-center w-full">
-        <CVProfile isEditable={isEditable} resumeData={resumeData} />
+        <CVProfile
+          isEditable={isEditable}
+          resumeData={resumeData}
+          image={image}
+          setImage={setImage}
+          preview={preview}
+          setPreview={setPreview}
+        />
       </section>
 
       {/* 경력 */}

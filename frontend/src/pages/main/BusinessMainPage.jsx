@@ -6,7 +6,7 @@ export default function BusinessMainPage() {
     <div>
       <BusinessHeader />
 
-      <div className="p-4">
+      <div className="p-4 mt-16">
         <BusinessMain />
       </div>
     </div>

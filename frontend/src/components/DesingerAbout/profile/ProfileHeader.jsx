@@ -7,6 +7,7 @@ export default function ProfileHeader({
   image,
   like,
   backgroundImage,
+  isViewMode = false,
 }) {
   const { d_id } = useParams();
   const navigate = useNavigate();
@@ -60,15 +61,17 @@ export default function ProfileHeader({
           </div>
         </div>
 
-        {/* 프로필 변경 버튼 */}
-        <div className="absolute top-[270px] right-4">
-          <button
-            className="bg-green-600 px-4 py-2 rounded-lg text-white text-sm font-semibold"
-            onClick={() => navigate("/profileedit")}
-          >
-            프로필 변경
-          </button>
-        </div>
+        {/* 프로필 변경 버튼 - 유저 모드일 때는 표시하지 않음 */}
+        {!isViewMode && (
+          <div className="absolute top-[270px] right-4">
+            <button
+              className="bg-green-600 px-4 py-2 rounded-lg text-white text-sm font-semibold"
+              onClick={() => navigate("/profileedit")}
+            >
+              프로필 변경
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

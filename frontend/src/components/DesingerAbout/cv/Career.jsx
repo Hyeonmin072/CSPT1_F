@@ -9,9 +9,6 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
   useEffect(() => {
     const fetchCareers = async () => {
       try {
-        console.log("Career - 받은 resumeData:", resumeData);
-        console.log("Career - isEditable:", isEditable);
-
         if (resumeData) {
           // exp 값 확인
           const isNew = resumeData.d_exp === "NEW";
@@ -30,7 +27,6 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
                 shopName: career.name || career.shopName || "", // name이 있으면 shopName으로 사용
               })
             );
-            console.log("Career - 매핑된 employmentHistory:", mappedCareers);
             setCareers(mappedCareers);
           } else if (resumeData.careers) {
             // careers 배열이 있는 경우
@@ -38,7 +34,6 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
               ...career,
               shopName: career.name || career.shopName || "", // name이 있으면 shopName으로 사용
             }));
-            console.log("Career - 매핑된 careers:", mappedCareers);
             setCareers(mappedCareers);
           }
         } else {
@@ -136,7 +131,6 @@ export default function Career({ isEditable, resumeData, onCareerChange }) {
   // 경력 수준 변경
   const handleExpLevelChange = (level) => {
     const newIsBasicExp = level === "NEW";
-    console.log("경력 수준 변경:", level, "isBasicExp:", newIsBasicExp);
 
     // 경력 수준 상태 업데이트
     setIsBasicExp(newIsBasicExp);

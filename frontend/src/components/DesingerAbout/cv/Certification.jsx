@@ -16,13 +16,7 @@ export default function Certification({
   useEffect(() => {
     const fetchCertifications = async () => {
       try {
-        console.log("Certification - 받은 resumeData:", resumeData);
-
         if (resumeData && resumeData.certifications) {
-          console.log(
-            "Certification - certifications 설정:",
-            resumeData.certifications
-          );
           setCertifications(resumeData.certifications);
         }
       } catch (error) {

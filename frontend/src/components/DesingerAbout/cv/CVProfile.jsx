@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Upload } from "lucide-react";
+import { Upload, UserRound } from "lucide-react";
+import axios from "axios";
 
-export default function CVProfile({ isEditable, resumeData }) {
+export default function CVProfile({ isEditable, resumeData, image, setImage }) {
   const [profile, setProfile] = useState({
     d_id: "",
     d_name: "",
@@ -9,17 +10,15 @@ export default function CVProfile({ isEditable, resumeData }) {
     d_tel: "",
     d_gender: "",
     d_age: "",
+    d_image: "",
   }); // 프로필 데이터 상태
-  const [image, setImage] = useState(null); // 업로드된 이미지 상태
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태
 
   // 프로필 데이터 가져오기
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        console.log("CVProfile - 받은 resumeData:", resumeData);
-
-        // resumeDa        ta가 있으면 사용
         if (resumeData) {
           const profileData = {
             d_id: resumeData.d_id || "",
@@ -28,18 +27,17 @@ export default function CVProfile({ isEditable, resumeData }) {
             d_tel: resumeData.d_tel || "",
             d_gender: resumeData.d_gender || "",
             d_age: resumeData.d_age || "",
+            d_image: resumeData.d_image || "",
           };
 
-          console.log(
-            "CVProfi          le - 설정할 프로필 데이터:",
-            profileData
-          );
+          console.log(profileData);
           setProfile(profileData);
 
           // d_image가 null이 아니면 초기 이미지로 설정
           if (resumeData.d_image) {
             console.log("CVProfile - 이미지 설정:", resumeData.d_image);
             setImage(resumeData.d_image);
+            setPreview(URL.createObjectURL(resumeData.d_image));
           }
         }
       } catch (error) {
@@ -55,12 +53,9 @@ export default function CVProfile({ isEditable, resumeData }) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
     if (file) {
-      reader.readAsDataURL(file);
+      setImage(file); // File 객체만 저장
+      setPreview(URL.createObjectURL(file));
     }
   };
 
@@ -70,13 +65,21 @@ export default function CVProfile({ isEditable, resumeData }) {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
     if (file) {
-      reader.readAsDataURL(file);
+      setImage(file); // File 객체만 저장
+      setPreview(URL.createObjectURL(file));
     }
+  };
+
+  const handleSave = () => {
+    const formData = new FormData();
+    if (image && image instanceof File) {
+      formData.append("image", image);
+    }
+    // ...다른 데이터 append
+    axios.post("/api/your-endpoint", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
 
   if (loading) {
@@ -100,17 +103,21 @@ export default function CVProfile({ isEditable, resumeData }) {
             isEditable && document.getElementById("fileInput").click()
           }
         >
-          {image ? (
+          {preview ? (
             <img
-              src={image}
+              src={preview}
               alt="Uploaded"
               className="w-full h-full object-cover rounded-lg"
             />
-          ) : (
+          ) : isEditable ? (
             <>
               <Upload className="w-12 h-12 text-gray-600" />
               <span className="text-gray-600 mt-2">사진을 올려주세요!</span>
             </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+              <UserRound size={80} className="text-gray-400" />
+            </div>
           )}
           <input
             id="fileInput"

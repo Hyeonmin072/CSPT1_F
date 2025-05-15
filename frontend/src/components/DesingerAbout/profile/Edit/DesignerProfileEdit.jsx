@@ -296,7 +296,7 @@ export default function DesignerProfileEdit({
             취소하기
           </button>
           <button
-            type="button"
+            type="submit"
             className="w-40 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none"
             onClick={handleSubmit}
             disabled={isSubmitting}

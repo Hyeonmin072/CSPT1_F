@@ -1,299 +1,356 @@
 import { useState, useEffect, useRef } from "react";
 import { DesignerCard } from "../../components/designer/DesignerCard.jsx";
 import Header from "../../components/common/Header.jsx";
-import { Sparkles, MapPin, Loader2 } from "lucide-react";
+import {
+  MapPin,
+  Loader2,
+  Trophy,
+  Search,
+  Star,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import { fetchDesignerPageData } from "./DesignerPageAxios.jsx";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+
+// 애니메이션 variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+};
 
 export default function DesignerPage() {
-
-  //더미 데이터 (나중에 삭제할거임)
-  //
-  const [designers, setDesigners] = useState([]);
+  const [topDesigners, setTopDesigners] = useState([]);
+  const [hotDesigners, setHotDesigners] = useState([]);
+  const [designersForUser, setDesignersForUser] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const lastDesignerElementRef = useRef();
 
-  // 더미 데이터
-  const dummyDesigners = [
-    {
-      id: 1,
-      name: "김스타일",
-      description:
-        "20년 경력의 남성 전문 헤어 디자이너입니다. 클래식한 스타일링이 특기이며, 고객님의 얼굴형에 맞는 최적의 스타일을 제안해드립니다.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      rating: 4.8,
-      reviewCount: 128,
-      specialties: ["커트", "펌", "염색"],
-      experience: 20,
-      shopName: "스타일리시 헤어",
-      location: "서울시 강남구",
-    },
-    {
-      id: 2,
-      name: "이트렌디",
-      description:
-        "젊은 감각과 트렌디한 스타일링으로 많은 고객님들의 사랑을 받고 있습니다. 특히 여성 스타일링에 특화되어 있습니다.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      rating: 4.9,
-      reviewCount: 256,
-      specialties: ["여성커트", "펌", "염색", "스타일링"],
-      experience: 8,
-      shopName: "트렌디 헤어",
-      location: "서울시 홍대입구",
-    },
-    {
-      id: 3,
-      name: "박프리미엄",
-      description:
-        "프리미엄 헤어 디자이너로서 고급스러운 스타일링을 선보입니다. VIP 고객님들을 위한 맞춤 서비스를 제공합니다.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1595499330062-747b3f5b1b9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      rating: 4.7,
-      reviewCount: 89,
-      specialties: ["프리미엄커트", "펌", "염색", "스타일링"],
-      experience: 15,
-      shopName: "프리미엄 헤어",
-      location: "서울시 청담동",
-    },
-    {
-      id: 4,
-      name: "최아트",
-      description:
-        "예술적인 감각과 창의적인 스타일링으로 새로운 트렌드를 만들어가는 디자이너입니다. 독특한 스타일을 원하시는 분들에게 추천합니다.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      rating: 4.6,
-      reviewCount: 167,
-      specialties: ["아트커트", "펌", "염색", "스타일링"],
-      experience: 12,
-      shopName: "아트 헤어",
-      location: "서울시 마포구",
-    },
-    {
-      id: 5,
-      name: "정클래식",
-      description:
-        "클래식한 스타일링에 현대적인 요소를 더해 완성도 높은 헤어스타일을 만들어내는 디자이너입니다. 기본에 충실하면서도 트렌디한 스타일을 추구합니다.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1595499330062-747b3f5b1b9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      rating: 4.8,
-      reviewCount: 203,
-      specialties: ["클래식커트", "펌", "염색", "스타일링"],
-      experience: 18,
-      shopName: "클래식 헤어",
-      location: "서울시 종로구",
-    },
-    {
-      id: 6,
-      name: "강모던",
-      description:
-        "모던하고 세련된 스타일링을 추구하는 디자이너입니다. 최신 트렌드를 반영한 스타일링으로 젊은 고객님들에게 인기가 많습니다.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-      rating: 4.7,
-      reviewCount: 145,
-      specialties: ["모던커트", "펌", "염색", "스타일링"],
-      experience: 10,
-      shopName: "모던 헤어",
-      location: "서울시 이태원",
-    },
-  ];
+  // Intersection Observer를 React의 관점으로 개선
+  const topSectionRef = useRef(null);
+  const hotSectionRef = useRef(null);
+  const nearSectionRef = useRef(null);
 
-  // 더미 데이터 로드 (API 호출 대신 사용)
+  const isTopSectionInView = useInView(topSectionRef, {
+    once: false,
+    amount: 0.2,
+  });
+  const isHotSectionInView = useInView(hotSectionRef, {
+    once: false,
+    amount: 0.2,
+  });
+  const isNearSectionInView = useInView(nearSectionRef, {
+    once: false,
+    amount: 0.2,
+  });
+
   useEffect(() => {
-    // 로딩 시뮬레이션
-    const timer = setTimeout(() => {
-      setDesigners(dummyDesigners);
-      setLoading(false);
-    }, 1000);
+    const fetchDesigners = async () => {
+      try {
+        const data = await fetchDesignerPageData();
+        console.log(data);
+        setTopDesigners(data.topDesigners || []);
+        setHotDesigners(data.hotDesigners || []);
+        setDesignersForUser(data.designersForUser || []);
+      } catch (error) {
+        console.error("디자이너 목록을 불러오는 데 실패했습니다:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
+    fetchDesigners();
   }, []);
 
-  // 더미 데이터 (임시로)
-
-    // 평점 순 정렬
-  const topRatedDesigners = [...designers].sort((a, b) => b.rating - a.rating).slice(0, 3);
-
-  // 위치 기준 (예: 서울시 마포구 포함된 디자이너)
-  const userLocation = "서울"; // 실제로는 사용자 위치 기반으로 변경 가능
-  const nearbyTopDesigners = designers
-    .filter((d) => d.location.includes(userLocation))
-    .sort((a, b) => b.rating - a.rating);
-
-
-  // 무한 스크롤 설정 (더미 데이터에서는 실제로 페이지를 늘리지 않음)
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0,
-    };
-
-    observer.current = new IntersectionObserver((entries) => {
-      const target = entries[0];
-      if (target.isIntersecting && hasMore && !loading) {
-        // 더미 데이터에서는 페이지를 늘리지 않고 hasMore를 false로 설정
-        setHasMore(false);
-      }
-    }, options);
-
-    if (lastDesignerElementRef.current) {
-      observer.current.observe(lastDesignerElementRef.current);
-    }
-
-    return () => {
-      if (observer.current) {
-        observer.current.disconnect();
-      }
-    };
-  }, [hasMore, loading]);
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F9FAFB]">
       <Header />
 
       <div className="pt-20">
-        {/* 히어로 섹션 */}
-        <div className="bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 text-white py-20 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 relative z-10">
-            <h1 className="text-5xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-              최고의 디자이너를 <br /> 지금 바로 만나보세요
-            </h1>
-            <p className="text-xl opacity-90 mb-6">
-              당신의 스타일을 완성할 전문 디자이너들이 기다리고 있어요
-            </p>
-            <button className="bg-white text-teal-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-gray-100 transition">
-              <span className="mr-2">🔍</span> 디자이너 찾아보러가기
-            </button>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-green-600 text-white py-24 md:py-32 relative overflow-hidden"
+        >
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute w-full h-full bg-[url('/pattern-dots.svg')] bg-repeat rotate-12 scale-150 z-0" />
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+                rotate: [0, 15, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -right-20 -bottom-20 w-96 h-96 bg-blue-400 rounded-full blur-3xl opacity-20"
+            />
+            <motion.div
+              animate={{
+                scale: [1, 1.4, 1],
+                rotate: [0, -10, 0],
+                x: [0, -30, 0],
+                y: [0, 50, 0],
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2,
+              }}
+              className="absolute -left-20 -top-20 w-96 h-96 bg-purple-500 rounded-full blur-3xl opacity-20"
+            />
           </div>
-          {/* 백그라운드 효과 */}
-          <div className="absolute inset-0 opacity-10 bg-[url('/pattern.svg')] bg-cover z-0" />
-        </div>
 
-        {/* 메인 컨텐츠 */}
-        <div className="max-w-7xl mx-auto px-4 py-16 space-y-20">
-          {/* 전체 평점 높은 디자이너 */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <span className="w-6 h-6 text-teal-500">🔥</span>
-                   요즘 엄청 HOT 해요!
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {topRatedDesigners.map((designer, index) => (
-                <div
-                  key={designer.id || index}
-                  className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-white rounded-xl overflow-hidden shadow-md"
+          <div className="max-w-7xl mx-auto px-4 relative z-10">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-4xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight tracking-tight"
+            >
+              최고의 디자이너를
+              <br className="hidden md:block" />
+              <span className="relative inline-block">
+                지금 바로
+                <motion.span
+                  className="absolute -bottom-1 left-0 w-full h-1 bg-yellow-300"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                />
+              </span>{" "}
+              만나보세요
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-lg md:text-xl opacity-90 mb-8 font-light"
+            >
+              당신의 스타일을 완성할 전문 디자이너들이 기다리고 있어요
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+              >
+                <Search className="w-5 h-5" />
+                디자이너 찾아보기
+              </motion.button>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 space-y-24 md:space-y-40">
+          {/* 실력이 좋은 디자이너 섹션 */}
+          <motion.section
+            ref={topSectionRef}
+            initial="hidden"
+            animate={isTopSectionInView ? "visible" : "hidden"}
+            variants={containerVariants}
+            className="relative"
+          >
+            <motion.div variants={itemVariants} className="mb-10">
+              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
+                인기 디자이너
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-2 mb-2">
+                <Trophy className="w-8 h-8 text-yellow-500" />
+                실력이 상당해요!
+              </h2>
+              <p className="text-gray-600">
+                검증된 실력을 가진 디자이너를 만나보세요
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {topDesigners.map((designer, index) => (
+                <motion.div
+                  key={designer.designerEmail || index}
+                  variants={itemVariants}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                 >
-                  <DesignerCard designer={designer} />
-                </div>
+                  <div className="relative">
+                    <div className="absolute top-3 right-3 z-10">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="bg-white bg-opacity-90 rounded-full p-2 shadow-md"
+                      >
+                        <Star className="w-5 h-5 text-yellow-500" />
+                      </motion.div>
+                    </div>
+                    <DesignerCard designer={designer} />
+                  </div>
+                </motion.div>
               ))}
-            </div>
-          </section>
+            </motion.div>
+          </motion.section>
 
-          {/* 내 주변 평점 높은 디자이너 */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-              <MapPin className="w-6 h-6 text-emerald-500" />
-              내 주변과 가깝고 잘해요 !
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {nearbyTopDesigners.map((designer, index) => (
-                <div
+          {/* 핫한 디자이너 섹션 */}
+          <motion.section
+            ref={hotSectionRef}
+            initial="hidden"
+            animate={isHotSectionInView ? "visible" : "hidden"}
+            variants={containerVariants}
+            className="relative"
+          >
+            <motion.div variants={itemVariants} className="mb-10">
+              <span className="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium mb-4">
+                트렌드
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-2 mb-2">
+                <TrendingUp className="w-8 h-8 text-red-500" />
+                요즘 엄청 HOT 해요!
+              </h2>
+              <p className="text-gray-600">
+                많은 고객들이 선택한 인기 있는 디자이너입니다
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {hotDesigners.map((designer, index) => (
+                <motion.div
+                  key={designer.id || index}
+                  variants={itemVariants}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="relative">
+                    <div className="absolute top-3 right-3 z-10">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="bg-white bg-opacity-90 rounded-full p-2 shadow-md"
+                      >
+                        <Users className="w-5 h-5 text-red-500" />
+                      </motion.div>
+                    </div>
+                    <DesignerCard designer={designer} />
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.section>
+
+          {/* 내 주변 디자이너 섹션 */}
+          <motion.section
+            ref={nearSectionRef}
+            initial="hidden"
+            animate={isNearSectionInView ? "visible" : "hidden"}
+            variants={containerVariants}
+            className="relative"
+          >
+            <motion.div variants={itemVariants} className="mb-10">
+              <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">
+                내 근처
+              </span>
+              <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-2 mb-2">
+                <MapPin className="w-8 h-8 text-green-500" />내 주변과 가깝고
+                잘해요!
+              </h2>
+              <p className="text-gray-600">
+                가까운 거리의 디자이너를 만나보세요
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {designersForUser.map((designer, index) => (
+                <motion.div
                   key={designer.id || index}
                   ref={
-                    index === nearbyTopDesigners.length - 1
+                    index === designersForUser.length - 1
                       ? lastDesignerElementRef
                       : null
                   }
-                  className="transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-white rounded-xl overflow-hidden shadow-md"
+                  variants={itemVariants}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                 >
-                  <DesignerCard designer={designer} />
-                </div>
+                  <div className="relative">
+                    <div className="absolute top-3 right-3 z-10">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="bg-white bg-opacity-90 rounded-full p-2 shadow-md"
+                      >
+                        <MapPin className="w-5 h-5 text-green-500" />
+                      </motion.div>
+                    </div>
+                    <DesignerCard designer={designer} />
+                  </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            {/* 로딩 UI */}
             {loading && (
-              <div className="flex justify-center items-center py-8">
-                <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
+              <div className="flex justify-center items-center py-12">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                >
+                  <Loader2 className="w-10 h-10 text-blue-500" />
+                </motion.div>
               </div>
             )}
 
-            {/* 더 이상 데이터 없음 */}
-            {!hasMore && !loading && nearbyTopDesigners.length > 0 && (
-              <div className="text-center py-8 text-gray-500">
+            {!hasMore && !loading && designersForUser.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-8 text-gray-500 mt-8"
+              >
                 더 이상 표시할 디자이너가 없습니다
-              </div>
+              </motion.div>
             )}
 
-            {/* 주변 디자이너 없음 */}
-            {!loading && nearbyTopDesigners.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                주변에 등록된 디자이너가 없습니다
-              </div>
+            {!loading && designersForUser.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-8 text-gray-500 mt-8"
+              >
+                <div className="p-10 bg-gray-50 rounded-2xl">
+                  <div className="flex justify-center mb-4">
+                    <MapPin className="w-16 h-16 text-gray-300" />
+                  </div>
+                  <h3 className="text-xl font-medium text-gray-700 mb-2">
+                    주변에 등록된 디자이너가 없습니다
+                  </h3>
+                  <p className="text-gray-500">다른 지역을 검색해보세요</p>
+                </div>
+              </motion.div>
             )}
-          </section>
+          </motion.section>
         </div>
       </div>
     </div>
-
-    // <div className="min-h-screen bg-gray-50">
-    //   <Header />
-    //   <div className="pt-20">
-    //     {/* 히어로 섹션 */}
-    //     <div className="bg-gradient-to-r from-teal-500 to-teal-700 text-white py-16">
-    //       <div className="max-w-7xl mx-auto px-4">
-    //         <h1 className="text-4xl font-bold mb-4">
-    //           최고의 디자이너를 만나보세요
-    //         </h1>
-    //         <p className="text-xl opacity-90">
-    //           당신의 스타일을 완성하는 전문 디자이너들이 기다리고 있습니다
-    //         </p>
-    //       </div>
-    //     </div>
-
-    //     {/* 메인 컨텐츠 */}
-    //     <div className="max-w-7xl mx-auto px-4 py-8">
-    //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    //         {designers.map((designer, index) => (
-    //           <div
-    //             key={designer.id || index}
-    //             ref={
-    //               index === designers.length - 1 ? lastDesignerElementRef : null
-    //             }
-    //             className="transform transition-all duration-300 hover:scale-105"
-    //           >
-    //             <DesignerCard designer={designer} />
-    //           </div>
-    //         ))}
-    //       </div>
-
-    //       {/* 로딩 상태 */}
-    //       {loading && (
-    //         <div className="flex justify-center items-center py-8">
-    //           <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
-    //         </div>
-    //       )}
-
-    //       {/* 더 이상 데이터가 없을 때 */}
-    //       {!hasMore && !loading && designers.length > 0 && (
-    //         <div className="text-center py-8 text-gray-500">
-    //           더 이상 표시할 디자이너가 없습니다
-    //         </div>
-    //       )}
-
-    //       {/* 데이터가 없을 때 */}
-    //       {!loading && designers.length === 0 && (
-    //         <div className="text-center py-8 text-gray-500">
-    //           등록된 디자이너가 없습니다
-    //         </div>
-    //       )}
-    //     </div>
-    //   </div>
-    // </div>
   );
 }

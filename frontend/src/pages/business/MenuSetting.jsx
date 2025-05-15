@@ -13,11 +13,21 @@ export default function MenuSetting() {
     desc: "",
     price: "",
     estimatedTime: "",
-    common: "no", // 기본값 no로 설정
+    category: "NONE", // 기본값 NONE으로 설정
   });
   const [designers, setDesigners] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
   const [error, setError] = useState("");
+
+  // 카테고리 매핑 객체
+  const categoryMap = {
+    NONE: "선택 안함",
+    CUT: "컷",
+    PERM: "펌",
+    DYEING: "염색",
+    CLINIC: "클리닉",
+    STYLING: "스타일링",
+  };
 
   useEffect(() => {
     const fetchDesigners = async () => {
@@ -64,7 +74,7 @@ export default function MenuSetting() {
     e.preventDefault();
 
     // 필수 필드 검증
-    if (!menuData.name || !menuData.desc || !menuData.common) {
+    if (!menuData.name || !menuData.desc || !menuData.category) {
       toast.error("필수 항목을 모두 입력해주세요.", {
         position: "bottom-right",
         autoClose: 2000,
@@ -72,8 +82,8 @@ export default function MenuSetting() {
       return;
     }
 
-    // 디자이너 선택 검증 (공통 메뉴가 아닌 경우)
-    if (menuData.common === "no" && !menuData.designerEmail) {
+    // 디자이너 선택 검증
+    if (!menuData.designerEmail) {
       toast.error("담당 디자이너를 선택해주세요.", {
         position: "bottom-right",
         autoClose: 2000,
@@ -85,16 +95,29 @@ export default function MenuSetting() {
       console.log("\n=== 메뉴 등록 시작 ===");
       console.log("메뉴 데이터:", menuData);
 
+      // 요청 DTO 객체 생성
+      const requestDto = {
+        name: menuData.name,
+        desc: menuData.desc,
+        price: menuData.price,
+        estimatedTime: menuData.estimatedTime,
+        category: menuData.category,
+        designerEmail: menuData.designerEmail,
+        designerEmails: menuData.designerEmail ? [menuData.designerEmail] : [], // 리스트 형태로 변환
+      };
+
+      console.log("요청 DTO:", requestDto); // 요청 DTO 로깅
+
       const formData = new FormData();
-      // 공통 메뉴가 아닌 경우에만 디자이너 이메일 전송
-      if (menuData.common === "no") {
-        formData.append("designerEmail", menuData.designerEmail);
-      }
-      formData.append("name", menuData.name);
-      formData.append("desc", menuData.desc);
-      formData.append("price", menuData.price);
-      formData.append("estimatedTime", menuData.estimatedTime);
-      formData.append("common", menuData.common);
+
+      // JSON을 문자열로 변환한 후 Blob으로 변환
+      const requestBlob = new Blob([JSON.stringify(requestDto)], {
+        type: "application/json",
+      });
+
+      formData.append("request", requestBlob);
+
+      // 이미지 파일 추가
       if (menuData.image) {
         formData.append("image", menuData.image);
       }
@@ -107,6 +130,14 @@ export default function MenuSetting() {
           console.log("- 파일명:", value.name);
           console.log("- 파일크기:", value.size, "bytes");
           console.log("- 파일타입:", value.type);
+        } else if (key === "request") {
+          console.log("요청 DTO (JSON)");
+          // FormData의 request 내용 확인을 위해 추가
+          const reader = new FileReader();
+          reader.onload = () => {
+            console.log("request 내용:", reader.result);
+          };
+          reader.readAsText(value);
         } else {
           console.log(`${key}:`, value);
         }
@@ -149,29 +180,13 @@ export default function MenuSetting() {
         <h1 className="text-2xl font-bold mb-8">메뉴 설정</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* 메뉴 이름 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              메뉴 이름 <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={menuData.name}
-              onChange={(e) =>
-                setMenuData({ ...menuData, name: e.target.value })
-              }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            />
-          </div>
-
           {/* 메뉴 이미지 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 text-center">
               메뉴 이미지
             </label>
-            <div className="flex items-center space-x-4">
-              <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="w-64 h-64 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative">
                 {previewImage ? (
                   <>
                     <img
@@ -191,21 +206,58 @@ export default function MenuSetting() {
                     </button>
                   </>
                 ) : (
-                  <label className="cursor-pointer">
+                  <label className="cursor-pointer flex flex-col items-center justify-center w-full h-full">
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
                       className="hidden"
                     />
-                    <Upload className="w-8 h-8 text-gray-400" />
+                    <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                    <p className="text-sm text-gray-500">
+                      이미지를 업로드하려면 클릭하세요
+                    </p>
                   </label>
                 )}
               </div>
-              <p className="text-sm text-gray-500">
-                이미지를 업로드하려면 클릭하세요
-              </p>
             </div>
+          </div>
+
+          {/* 메뉴 이름 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              메뉴 이름 <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={menuData.name}
+              onChange={(e) =>
+                setMenuData({ ...menuData, name: e.target.value })
+              }
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              required
+            />
+          </div>
+
+          {/* 카테고리 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              카테고리 <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={menuData.category}
+              onChange={(e) =>
+                setMenuData({ ...menuData, category: e.target.value })
+              }
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              required
+            >
+              {Object.entries(categoryMap).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* 가격 */}
@@ -260,28 +312,10 @@ export default function MenuSetting() {
             />
           </div>
 
-          {/* 공통 메뉴 여부 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              공통 메뉴 여부 <span className="text-red-500">*</span>
-            </label>
-            <select
-              value={menuData.common}
-              onChange={(e) =>
-                setMenuData({ ...menuData, common: e.target.value })
-              }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              required
-            >
-              <option value="no">아니오</option>
-              <option value="yes">예</option>
-            </select>
-          </div>
-
           {/* 담당 디자이너 선택 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              담당 디자이너
+              담당 디자이너 <span className="text-red-500">*</span>
             </label>
             {designers.length > 0 ? (
               <div className="grid grid-cols-3 gap-4">

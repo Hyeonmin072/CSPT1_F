@@ -15,16 +15,31 @@ export default function CalendarSelectPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [step, setStep] = useState(0);
-  const [slideDirection, setSlideDirection] = useState('enter'); // 'enter' 또는 'exit'
+  const [slideDirection, setSlideDirection] = useState("enter"); // 'enter' 또는 'exit'
 
   // timeSlots 배열 추가
   const timeSlots = [
-    "10:00", "10:30", "11:00", "11:30",
-    "12:00", "12:30", "13:00", "13:30",
-    "14:00", "14:30", "15:00", "15:30",
-    "16:00", "16:30", "17:00", "17:30",
-    "18:00", "18:30", "19:00", "19:30",
-    "20:00"
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
+    "18:00",
+    "18:30",
+    "19:00",
+    "19:30",
+    "20:00",
   ];
 
   // 날짜 선택 핸들러
@@ -64,39 +79,45 @@ export default function CalendarSelectPage() {
 
   // 다음 단계로 이동하는 함수
   const goToNextStep = (nextStep) => {
-    setSlideDirection('exit');
+    setSlideDirection("exit");
     setTimeout(() => {
       setStep(nextStep);
-      setSlideDirection('enter');
+      setSlideDirection("enter");
     }, 300); // 애니메이션 시간과 맞춤
   };
 
   // 디자이너 카드 컴포넌트
   const renderDesignerCard = () => (
-    <div 
+    <div
       className={`
-        transform transition-all duration-300 ease-in-out w-full max-w-md
-        ${slideDirection === 'enter' 
-          ? 'translate-x-0 opacity-100' 
-          : 'translate-x-[-100%] opacity-0'
-        }
+      transform transition-all duration-300 ease-in-out w-full max-w-md
+      ${
+        slideDirection === "enter"
+          ? "translate-x-0 opacity-100"
+          : "translate-x-[-100%] opacity-0"
+      }
       `}
     >
+      <div className="text-2xl font-bold text-center mb-6">선택한 디자이너</div>
       <div className="bg-white rounded-xl p-8 shadow-lg">
         <div className="flex flex-col items-center">
           <div className="w-32 h-32 rounded-full overflow-hidden mb-6">
             <img
-              src={designerInfo?.designerImage || "/default-avatar.png"}
+              src={designerInfo?.designerImage}
               alt={designerInfo?.designerName}
               className="w-full h-full object-cover"
             />
           </div>
-          <h2 className="text-2xl font-bold text-center">{designerInfo?.designerName}</h2>
-          <p className="text-gray-600 mt-3 text-center">{designerInfo?.designerDesc || "소개가 없습니다"}</p>
+          <h2 className="text-2xl font-bold text-center">
+            {designerInfo?.designerName}
+          </h2>
+          <p className="text-gray-600 mt-3 text-center">
+            {designerInfo?.designerDesc || "소개가 없습니다"}
+          </p>
           <button
             onClick={() => goToNextStep(1)}
-            className="mt-8 w-full bg-[#03DAC5] text-white py-4 rounded-lg font-medium
-              hover:bg-[#00a896] transition-colors"
+            className="mt-8 w-full bg-green-500 text-white py-4 rounded-lg font-medium
+              hover:bg-green-600 transition-colors"
           >
             이 디자이너로 예약하기
           </button>
@@ -113,18 +134,19 @@ export default function CalendarSelectPage() {
       date.setDate(date.getDate() + i);
       return {
         date: date.getDate(),
-        day: ['일', '월', '화', '수', '목', '금', '토'][date.getDay()],
-        fullDate: date.toISOString().split('T')[0]
+        day: ["일", "월", "화", "수", "목", "금", "토"][date.getDay()],
+        fullDate: date.toISOString().split("T")[0],
       };
     });
 
     return (
-      <div 
+      <div
         className={`
           transform transition-all duration-300 ease-in-out w-full max-w-2xl
-          ${slideDirection === 'enter' 
-            ? 'translate-x-0 opacity-100' 
-            : 'translate-x-[-100%] opacity-0'
+          ${
+            slideDirection === "enter"
+              ? "translate-x-0 opacity-100"
+              : "translate-x-[-100%] opacity-0"
           }
         `}
       >
@@ -141,21 +163,31 @@ export default function CalendarSelectPage() {
                 className={`
                   flex flex-col items-center justify-center p-3 rounded-lg
                   min-w-[60px] transition-all duration-200
-                  ${selectedDate === item.fullDate
-                    ? 'bg-[#03DAC5] text-white'
-                    : 'hover:bg-gray-50'
+                  ${
+                    selectedDate === item.fullDate
+                      ? "bg-green-500 text-white"
+                      : "hover:bg-gray-50"
                   }
                 `}
               >
-                <span className={`text-sm mb-1 ${
-                  item.day === '일' ? 'text-red-500' :
-                  item.day === '토' ? 'text-blue-500' : 'text-gray-500'
-                } ${selectedDate === item.fullDate ? 'text-white' : ''}`}>
+                <span
+                  className={`text-sm mb-1 ${
+                    item.day === "일"
+                      ? "text-red-500"
+                      : item.day === "토"
+                      ? "text-blue-500"
+                      : "text-gray-500"
+                  } ${selectedDate === item.fullDate ? "text-white" : ""}`}
+                >
                   {item.day}
                 </span>
-                <span className={`text-lg font-semibold ${
-                  selectedDate === item.fullDate ? 'text-white' : 'text-gray-700'
-                }`}>
+                <span
+                  className={`text-lg font-semibold ${
+                    selectedDate === item.fullDate
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                >
                   {item.date}
                 </span>
               </button>
@@ -168,12 +200,13 @@ export default function CalendarSelectPage() {
 
   // 시간 선택 컴포넌트
   const renderTimeSelect = () => (
-    <div 
+    <div
       className={`
         transform transition-all duration-300 ease-in-out w-full max-w-2xl
-        ${slideDirection === 'enter' 
-          ? 'translate-x-0 opacity-100' 
-          : 'translate-x-[-100%] opacity-0'
+        ${
+          slideDirection === "enter"
+            ? "translate-x-0 opacity-100"
+            : "translate-x-[-100%] opacity-0"
         }
       `}
     >
@@ -185,8 +218,8 @@ export default function CalendarSelectPage() {
               key={time}
               className={`p-3 rounded-lg border text-center ${
                 selectedTime === time
-                  ? "bg-[#03DAC5] text-white border-[#03DAC5]"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-[#03DAC5]"
+                  ? "bg-green-500 text-white border-green-600"
+                  : "bg-white text-gray-700 border-gray-200 hover:border-green-600"
               }`}
               onClick={() => handleTimeSelect(time)}
             >
@@ -214,11 +247,11 @@ export default function CalendarSelectPage() {
       // 응답이 성공적이면 다음 페이지로 이동
       // 선택한 날짜와 시간은 state로 전달
       navigate(`/menuselect/${designerEmail}`, {
-        state: { 
-          selectedDate,    // 날짜는 다음 페이지에서 사용하기 위해 state로 전달
-          selectedTime,    // 시간도 다음 페이지에서 사용하기 위해 state로 전달
-          designerInfo: response.data  // 서버에서 받은 메뉴 정보
-        }
+        state: {
+          selectedDate, // 날짜는 다음 페이지에서 사용하기 위해 state로 전달
+          selectedTime, // 시간도 다음 페이지에서 사용하기 위해 state로 전달
+          designerInfo: response.data, // 서버에서 받은 메뉴 정보
+        },
       });
     } catch (error) {
       console.error("메뉴 선택 페이지 이동 중 오류:", error);
@@ -254,21 +287,24 @@ export default function CalendarSelectPage() {
       {/* 커스텀 헤더 */}
       <div className="fixed top-16 left-0 right-0 bg-white border-b z-10 mt-3">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
-          <button 
+          <button
             onClick={() => {
               if (step > 0) {
                 goToNextStep(step - 1);
               } else {
                 navigate(-1);
               }
-            }} 
+            }}
             className="text-gray-600 p-2"
           >
             <IoChevronBackOutline size={24} />
           </button>
           <h1 className="ml-2 text-lg font-medium">
-            {step === 0 ? "디자이너 선택" : 
-             step === 1 ? "날짜 선택" : "시간 선택"}
+            {step === 0
+              ? "디자이너 선택"
+              : step === 1
+              ? "날짜 선택"
+              : "시간 선택"}
           </h1>
         </div>
       </div>
@@ -292,9 +328,10 @@ export default function CalendarSelectPage() {
             <button
               onClick={handleNext}
               className={`w-full py-3 rounded-lg font-medium
-                ${selectedDate && selectedTime
-                  ? "bg-[#03DAC5] text-white"
-                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                ${
+                  selectedDate && selectedTime
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
                 }`}
               disabled={!selectedDate || !selectedTime}
             >

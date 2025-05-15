@@ -22,9 +22,9 @@ export default function MenuSelectPage() {
       try {
         const [menuResponse, designerResponse] = await Promise.all([
           axiosInstance.get(`/user/reservation/selectmenu/${designerEmail}`),
-          axiosInstance.get(`/user/reservation/selecttime/${designerEmail}`)
+          axiosInstance.get(`/user/reservation/selecttime/${designerEmail}`),
         ]);
-        
+
         // 메뉴 데이터 로깅
         console.log("\n=== 메뉴 정보 응답 데이터 ===");
         console.log("전체 메뉴 응답:", menuResponse.data);
@@ -34,14 +34,17 @@ export default function MenuSelectPage() {
           console.log("메뉴 개수:", menuResponse.data.length);
         }
         console.log("================================\n");
-        
+
         // 디자이너 데이터 로깅
         console.log("=== 디자이너 정보 응답 데이터 ===");
         console.log("전체 디자이너 응답:", designerResponse.data);
-        console.log("디자이너 데이터 속성:", Object.keys(designerResponse.data));
+        console.log(
+          "디자이너 데이터 속성:",
+          Object.keys(designerResponse.data)
+        );
         console.log("디자이너 데이터 타입:", typeof designerResponse.data);
         console.log("================================\n");
-        
+
         setMenuData(menuResponse.data);
         setDesignerInfo(designerResponse.data);
       } catch (error) {
@@ -63,8 +66,10 @@ export default function MenuSelectPage() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    return `${date.getMonth() + 1}월 ${date.getDate()}일 (${days[date.getDay()]})`;
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    return `${date.getMonth() + 1}월 ${date.getDate()}일 (${
+      days[date.getDay()]
+    })`;
   };
 
   const handleComplete = () => {
@@ -77,18 +82,18 @@ export default function MenuSelectPage() {
       // 샵 정보 추가
       shopInfo: {
         shopName: menuData?.shopName,
-        shopEmail: menuData?.shopEmail
+        shopEmail: menuData?.shopEmail,
       },
       // 디자이너 정보
       designerName: designerInfo?.designerName,
       designerDesc: designerInfo?.designerDesc,
       designerEmail: designerEmail,
       designerImage: designerInfo?.designerImage,
-      
+
       // 예약 일시
       reservationDate: selectedDate,
       reservationTime: selectedTime,
-      
+
       // 선택된 메뉴 정보
       menuInfo: {
         menuId: selectedMenu.menuId,
@@ -97,12 +102,12 @@ export default function MenuSelectPage() {
         originalPrice: selectedMenu.menuPrice,
         discountPrice: selectedMenu.discountPrice,
         discountType: selectedMenu.discountType,
-        finalPrice: selectedMenu.menuPrice - (selectedMenu.discountPrice || 0)
-      }
+        finalPrice: selectedMenu.menuPrice - (selectedMenu.discountPrice || 0),
+      },
     };
 
     // ReservationConfirmPage로 이동
-    navigate('/reservation/confirm', { state: reservationData });
+    navigate("/reservation/confirm", { state: reservationData });
   };
 
   return (
@@ -111,10 +116,7 @@ export default function MenuSelectPage() {
       {/* 커스텀 헤더 */}
       <div className="fixed top-16 left-0 right-0 bg-white border-b z-10 mt-3">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
-          <button 
-            onClick={() => navigate(-1)} 
-            className="text-gray-600 p-2"
-          >
+          <button onClick={() => navigate(-1)} className="text-gray-600 p-2">
             <IoChevronBackOutline size={24} />
           </button>
           <h1 className="ml-2 text-lg font-medium">메뉴 선택</h1>
@@ -129,7 +131,7 @@ export default function MenuSelectPage() {
             <h2 className="text-xl font-bold mb-1">{menuData?.shopName}</h2>
             <p className="text-gray-600 text-sm">{menuData?.shopEmail}</p>
           </div>
-          
+
           {/* 기존 디자이너 정보 */}
           <div className="flex items-center mb-4">
             <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
@@ -140,7 +142,9 @@ export default function MenuSelectPage() {
               />
             </div>
             <div>
-              <h2 className="text-xl font-bold mb-1">{designerInfo?.designerName}</h2>
+              <h2 className="text-xl font-bold mb-1">
+                {designerInfo?.designerName}
+              </h2>
               <p className="text-gray-600">{designerInfo?.designerDesc}</p>
             </div>
           </div>
@@ -157,6 +161,37 @@ export default function MenuSelectPage() {
           <div className="text-center py-8">로딩 중...</div>
         ) : error ? (
           <div className="text-center text-red-500 py-8">{error}</div>
+        ) : !menuData?.cutMenus?.length ? (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <svg
+                className="w-16 h-16 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <h3 className="text-xl font-medium text-gray-700">
+                등록된 메뉴가 없습니다
+              </h3>
+              <p className="text-gray-500">
+                현재 등록된 메뉴가 없습니다. 나중에 다시 확인해주세요.
+              </p>
+              <button
+                onClick={() => navigate(-2)}
+                className="mt-4 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                다른 디자이너 선택하기
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="space-y-6">
             {/* 컷트 메뉴 */}
@@ -168,18 +203,25 @@ export default function MenuSelectPage() {
                     <div
                       key={menu.menuId}
                       className={`bg-white rounded-lg shadow p-4 cursor-pointer transition-all
-                        ${selectedMenu?.menuId === menu.menuId ? 'ring-2 ring-[#03DAC5]' : 'hover:shadow-lg'}`}
+                        ${
+                          selectedMenu?.menuId === menu.menuId
+                            ? "ring-2 ring-green-500"
+                            : "hover:shadow-lg"
+                        }`}
                       onClick={() => setSelectedMenu(menu)}
                     >
                       <h4 className="font-medium text-lg">{menu.menuName}</h4>
-                      <p className="text-gray-600 text-sm mt-1">{menu.menuDesc}</p>
+                      <p className="text-gray-600 text-sm mt-1">
+                        {menu.menuDesc}
+                      </p>
                       <div className="flex justify-between items-center mt-4">
                         <span className="font-bold text-lg">
                           {menu.menuPrice.toLocaleString()}원
                         </span>
                         {menu.discountPrice > 0 && (
                           <span className="text-red-500 text-sm">
-                            {menu.discountType} {menu.discountPrice.toLocaleString()}원
+                            {menu.discountType}{" "}
+                            {menu.discountPrice.toLocaleString()}원
                           </span>
                         )}
                       </div>
@@ -198,9 +240,10 @@ export default function MenuSelectPage() {
           <button
             onClick={handleComplete}
             className={`w-full py-3 rounded-lg font-medium
-              ${selectedMenu
-                ? "bg-[#03DAC5] text-white"
-                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              ${
+                selectedMenu
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
               }`}
             disabled={!selectedMenu}
           >

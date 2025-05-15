@@ -28,6 +28,8 @@ import MapPage from "./pages/location-setting/MapPage.jsx";
 import SocialSignup from "./components/sign/social/SocialSignup";
 import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
 import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.jsx";
+import ReservationLastCheckPage from "./pages/reservation/ReservationLastCheckPage.jsx";
+import DesignerInfoPage from "./pages/designer/DesignerInfoPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -46,7 +48,6 @@ import BusinessMainPage from "./pages/main/BusinessMainPage.jsx";
 import BusinessSalesPage from "./pages/salesstatus/BusinessSalesPage.jsx";
 import SalesCalendar from "./components/businessabout/sales/SalesCalendar.jsx";
 import BlackListPage from "./pages/blacklist/BlackListPage.jsx";
-import ShopReservationCheckPage from "./pages/reservation/ShopReservationCheckPage.jsx";
 import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.jsx";
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 import ShopProfile from "./pages/profile/ShopProfile.jsx";
@@ -55,6 +56,7 @@ import NoticesPage from "./pages/notices/NoticesPage.jsx";
 import RegisterNotice from "./pages/notices/RegisterNotice.jsx";
 import DetailNotice from "./pages/notices/DetailNotice.jsx";
 import EditNotice from "./pages/notices/EditNotice.jsx";
+
 
 function App() {
   const [userRole, setUserRole] = useState("shop");
@@ -159,6 +161,10 @@ function App() {
                 element={<DesignerPage onLoginClick={openLoginModal} />}
               />
               <Route
+                path="/designerinfo/:designerEmail"
+                element={<DesignerInfoPage />}
+              />
+              <Route
                 path="/userprofile"
                 element={<UserProfile onLoginClick={openLoginModal} />}
               />
@@ -189,6 +195,10 @@ function App() {
                 }
               />
               <Route path="/designer/match" element={<DesignerMatchPage />} />
+              <Route
+                path="/reservationlastcheck"
+                element={<ReservationLastCheckPage />}
+              />
             </>
           )}
 
@@ -257,6 +267,16 @@ function App() {
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
               />
+              {/* 공지사항 등록 페이지 */}
+              <Route
+                path="/shop/notice"
+                element={<ShopNoticePage onLoginClick={openLoginModal} />}
+              />
+              {/* 공지사항 목록 페이지 */}
+              <Route
+                path="/shop/notices"
+                element={<ShopNoticeListPage onLoginClick={openLoginModal} />}
+              />
               {/* 사업자 매출 페이지 */}
               <Route
                 path="/sales"
@@ -272,13 +292,6 @@ function App() {
               <Route
                 path="/blacklist"
                 element={<BlackListPage onLoginClick={openLoginModal} />}
-              />
-              {/* 사업자 디자이너 스케줄확인 페이지 */}
-              <Route
-                path="/schedulecheck"
-                element={
-                  <ShopReservationCheckPage onLoginClick={openLoginModal} />
-                }
               />
               {/* 사업자 이벤트-쿠폰 등록 페이지 */}
               <Route
@@ -324,6 +337,14 @@ function App() {
           <Route
             path="/reservation/confirm"
             element={<ReservationConfirmPage />}
+          />
+          <Route
+            path="/user/payment/success"
+            element={<ReservationLastCheckPage />}
+          />
+          <Route
+            path="/user/payment/fail"
+            element={<ReservationLastCheckPage />}
           />
         </Routes>
         {/* 로그인 모달 */}
