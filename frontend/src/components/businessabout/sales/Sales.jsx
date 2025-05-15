@@ -74,7 +74,6 @@ export default function Sales() {
         });
     }, [todayName, yesterdayName]);
 
-        // 백엔드 데이터 가져오기
     useEffect(() => {
         const fetchSalesData = async () => {
             try {
@@ -97,7 +96,7 @@ export default function Sales() {
         fetchSalesData();
     }, [period]);
 
-    const [data, setData] = useState(dummyData.weekly); // 초기값은 weekly 데이터
+    const [data, setData] = useState(dummyData.weekly); 
 
     // 기간 변경 핸들러
     const handlePeriodChange = (event) => {
@@ -169,7 +168,7 @@ export default function Sales() {
                         className="absolute top-0 bottom-0 bg-green-600"
                         style={{width: "50%"}} // 버튼 크기와 맞게 조정
                         animate={{x: view === "store" ? "0%" : "100%"}}
-                        transition={{type: "spring", stiffness: 100, damping: 20}}
+                        transition={{type: "spring", stiffness: 100, damping: 15}}
                     />
                     {/* 버튼들 */}
                     <button
