@@ -266,17 +266,7 @@ function App() {
               <Route
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
-              />
-              {/* 공지사항 등록 페이지 */}
-              <Route
-                path="/shop/notice"
-                element={<ShopNoticePage onLoginClick={openLoginModal} />}
-              />
-              {/* 공지사항 목록 페이지 */}
-              <Route
-                path="/shop/notices"
-                element={<ShopNoticeListPage onLoginClick={openLoginModal} />}
-              />
+              />              
               {/* 사업자 매출 페이지 */}
               <Route
                 path="/sales"
