@@ -52,6 +52,7 @@ export default function Sales() {
         // API 응답 데이터 저장
         setSalesApiData(response.data);
 
+
         // 그래프 데이터 변환
         const graphData = Object.entries(response.data.graph).map(
           ([key, value]) => ({
@@ -121,6 +122,7 @@ export default function Sales() {
   ];
   const todayName = weekdays[todayIndex]; // 오늘 이름
   const yesterdayName = weekdays[(todayIndex - 1 + 7) % 7]; // 어제 이름
+
 
   // 기간 변경 핸들러
   const handlePeriodChange = (event) => {

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 import d1 from "../../../assets/designer/d1.png";
 import { format } from "date-fns";
 import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
@@ -10,16 +12,13 @@ export default function SaleStaus() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [designerProfile, setDesignerProfile] = useState(null); // 디자이너 데이터 상태
 
-    // 백엔드 데이터 가져오기
     useEffect(() => {
         const fetchSalesData = async () => {
             try {
-                // 실제 API 호출 시 아래 코드 활성화
-                // const response = await fetch("/api/sales");
-                // const data = await response.json();
-
-                // 지금은 더미 데이터 사용
+                // const response = await axiosInstance.get("/designer/sales");
+                
                 const data = dummySalesData;
+                // const data = await response.json();
                 setSalesData(data);
 
                 const profile = dummyProfile;
@@ -54,7 +53,7 @@ export default function SaleStaus() {
                     <div className="p-4 w-1/2 text-center">
                         <h2 className="text-lg font-semibold mb-4">이번 달 매출</h2>
                         <p className="text-3xl font-bold text-green-500">
-                            ₩{salesData.monthlySales.toLocaleString()}
+                            {salesData.monthlySales.toLocaleString()}원
                         </p>
                         <p className="text-sm text-gray-500 mt-2">
                             증가: {salesData.monthlyIncrease}%
@@ -63,13 +62,13 @@ export default function SaleStaus() {
                     <div className="p-4 w-1/2 text-center">
                         <h2 className="text-lg font-semibold mb-4">오늘 매출</h2>
                         <p className="text-3xl font-bold text-red-500">
-                            ₩{salesData.dailySales.toLocaleString()}
+                            {salesData.dailySales.toLocaleString()}원
                         </p>
                         <p className="text-sm text-gray-500 mt-2">
                             감소: {salesData.dailyDecrease}%
                         </p>
                         <p className="text-sm text-gray-500">
-                            주문 수: {salesData.dailyOrders}
+                            오늘 주문: {salesData.dailyOrders}개
                         </p>
                     </div>
                 </div>
