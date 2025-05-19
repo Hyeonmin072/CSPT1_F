@@ -6,37 +6,10 @@ import {
   useTransform,
 } from "framer-motion";
 import { Heart, X } from "lucide-react";
-import axios from "axios";
 import Header from "../../components/common/Header";
+import axiosInstance from "../../components/sign/axios/AxiosInstance";
 
-// 임시 더미 데이터
-const dummyDesigners = [
-  {
-    id: 1,
-    reviewImage:
-      "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-  },
-  {
-    id: 2,
-    reviewImage:
-      "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
-  },
-  {
-    id: 3,
-    reviewImage:
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
-  },
-  {
-    id: 4,
-    reviewImage:
-      "https://images.unsplash.com/photo-1595499330062-747b3a5c2b5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-  },
-  {
-    id: 5,
-    reviewImage:
-      "https://images.unsplash.com/photo-1595499330062-747b3a5c2b5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-  },
-];
+// 더미 디자이너 데이터는 제거 (API에서 실제 데이터를 받을 것이므로)
 
 const DesignerMatchPage = () => {
   const [designers, setDesigners] = useState([]);
@@ -50,11 +23,42 @@ const DesignerMatchPage = () => {
   const opacity = useTransform(x, [-200, 0, 200], [0.5, 1, 0.5]);
 
   useEffect(() => {
-    // 실제 API 호출 대신 더미 데이터 사용
-    setTimeout(() => {
-      setDesigners(dummyDesigners);
-      setLoading(false);
-    }, 1000);
+    const fetchDesigners = async () => {
+      try {
+        // axios 인스턴스를 사용하여 요청
+        const response = await axiosInstance.get("/user/own-designerpage");
+        console.log("API 응답 데이터:", response.data);
+
+        // API에서 받은 디자이너 목록 설정
+        // 리뷰 이미지가 비어있는 경우에는 기본 이미지 사용
+        const designersWithImages = response.data.map((designer) => {
+          // 디자이너 이미지 배열에서 비어있지 않은 첫 번째 이미지를 사용
+          // 모든 이미지가 비어있으면 디자이너 프로필 이미지 사용
+          // 프로필 이미지도 없으면 기본 이미지 사용
+          const validReviewImages = designer.reviewImage.filter(
+            (img) => img && img.trim() !== ""
+          );
+          const displayImage =
+            validReviewImages.length > 0
+              ? validReviewImages[0]
+              : designer.designerImage ||
+                "https://via.placeholder.com/500x700?text=No+Image";
+
+          return {
+            ...designer,
+            displayImage,
+          };
+        });
+
+        setDesigners(designersWithImages);
+        setLoading(false);
+      } catch (error) {
+        console.error("디자이너 데이터 로딩 실패:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchDesigners();
   }, []);
 
   const handleDragEnd = (event, info) => {
@@ -72,7 +76,7 @@ const DesignerMatchPage = () => {
     setDirection(direction);
     if (direction === "right") {
       // 마음에 드는 경우 처리
-      handleLike(designers[currentIndex].id);
+      handleLike(designers[currentIndex].designerEmail);
     }
     setTimeout(() => {
       setDirection(null);
@@ -81,10 +85,10 @@ const DesignerMatchPage = () => {
     }, 200);
   };
 
-  const handleLike = async (designerId) => {
+  const handleLike = async (designerEmail) => {
     try {
       // 실제 API 호출 대신 콘솔에 로그 출력
-      console.log(`디자이너 ${designerId}를 좋아합니다.`);
+      console.log(`디자이너 ${designerEmail}를 좋아합니다.`);
     } catch (error) {
       console.error("좋아요 처리에 실패했습니다:", error);
     }
@@ -149,8 +153,8 @@ const DesignerMatchPage = () => {
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full cursor-grab active:cursor-grabbing">
                   <div className="relative h-full">
                     <img
-                      src={currentDesigner.reviewImage}
-                      alt="디자이너 작품"
+                      src={currentDesigner.displayImage}
+                      alt={`디자이너 작품`}
                       className="w-full h-full object-cover"
                       draggable={false}
                     />
