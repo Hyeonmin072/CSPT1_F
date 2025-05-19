@@ -3,6 +3,8 @@ import { Bell } from "lucide-react";
 import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
 import { startOfWeek, endOfWeek, parseISO, isWithinInterval, format } from "date-fns";
 
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
+
 export default function ScheduleQuick() {
     const [currentTime, setCurrentTime] = useState(new Date()); // 현재 시간 상태
     const [upcomingReservations, setUpcomingReservations] = useState([]); // 다음 예약 상태
@@ -24,12 +26,25 @@ export default function ScheduleQuick() {
         // 주간 범위 상태 저장
         setCurrentWeekRange({ start, end });
 
+        const fetchDate = async () => {
+            try {
+                const response = await axiosInstance.get("/designer/schedule"); // 디자이너 스케줄 API 호출
+                const data = response.data.map((item) => ({
+                    ...item,
+                    date: format(new Date(item.date), "yyyy-MM-dd"), // 날짜 포맷팅
+                }));
+                
+            } catch (error) {
+                
+            }
+        }
+
         // 더미 데이터에서 현재 주간 스케줄 필터링
         const filteredSchedule = dummySchedules.filter((schedule) => {
             const scheduleDate = parseISO(schedule.date); // 일정 날짜를 파싱
             return isWithinInterval(scheduleDate, { start, end }); // 주간 범위 내인지 확인
         });
-
+        
         const todayDay = getDayOfWeek(); // 현재 요일 확인
 
         // 현재 요일과 일치하는 데이터를 필터링
@@ -50,11 +65,8 @@ export default function ScheduleQuick() {
             .sort((a, b) => a.reservationTime - b.reservationTime); // 가까운 순으로 정렬
 
         setUpcomingReservations(futureReservations.slice(0, 4)); // 가장 가까운 4개만 저장
-        setLoading(false); // 로딩 상태 종료
-
-
-        console.log("주간 스케줄:", filteredSchedule);
-        console.log("예약 데이터:", todaySchedules);
+        setLoading(false); 
+        fetchDate(); 
     }, [currentTime]);
 
     if (loading) {
@@ -63,7 +75,7 @@ export default function ScheduleQuick() {
 
     if (upcomingReservations.length === 0) {
         return (
-            <div className="flex flex-col ml-4  min-h-[250px] overflow-y-auto">
+            <div className="flex flex-col ml-4 min-h-[260px] overflow-y-auto">
                 <div className="text-l font-bold">
                     예정된 나의 예약 손님: {upcomingReservations.length}명
                 </div>
@@ -74,37 +86,34 @@ export default function ScheduleQuick() {
     }
 
     return (
-        <>
-            <div className="flex items-center mb-4 w-full">
+        <div className="w-full ">
+            <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-                    <Bell className="w-[30px] h-[30px] text-white"/>
+                    <Bell className="w-6 h-6 text-white" />
                 </div>
                 <div className="ml-4">
-                    <div className="text-l font-bold">
-                        오늘 나의 예약 손님: {upcomingReservations.length}명
-                    </div>
+                    <p className="text-m font-bold text-gray-800">
+                        오늘의 예약 손님: {upcomingReservations.length}명
+                    </p>
                 </div>
             </div>
-            <div className="flex flex-col w-full min-h-[250px] overflow-y-auto">
+            <div className="flex flex-col w-full max-h-[250px] overflow-y-auto space-y-2">
                 {upcomingReservations.map((item, index) => (
-                    <div key={index} className="mb-2">
-                        <div className="flex items-center py-1 border-gray-300">
-                            <div className="font-bold w-[60px] text-sm">{item.time}</div>
-                            <div
-                                className={`p-1 flex-1 border-l-4 pl-1 border-l-[#8239BC] bg-gray-200 rounded-lg`}
-                            >
-                                <div className="flex justify-between pb-1">
-                                    <p className="font-bold text-xs px-2">{item.client}</p>
-                                    <p className="font-bold text-gray-400 text-xs">상태 | {item.status}</p>
-                                </div>
-                                <div>
-                                    <p className="text-xs px-4"> {item.menu}</p>
-                                </div>
+                    <div
+                        key={index}
+                        className="flex items-center p-3 bg-gray-100 rounded-lg shadow-sm "
+                    >
+                        <div className="font-bold w-[50px] text-sm text-gray-700">{item.time}</div>
+                        <div className="flex-1 border-l-4 pl-2 border-purple-500">
+                            <div className="flex justify-between">
+                                <p className="font-bold text-gray-800 text-sm">{item.client}</p>
+                                <p className="text-xs text-gray-500">상태 | {item.status}</p>
                             </div>
+                            <p className="text-xs text-gray-600 mt-1">{item.menu}</p>
                         </div>
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     );
 }

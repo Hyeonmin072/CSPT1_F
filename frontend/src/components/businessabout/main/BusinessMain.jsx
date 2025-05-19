@@ -38,7 +38,7 @@ export default function BusinessMain() {
 
   return (
     <div className="p-10 w-full">
-      <div className="max-w-6xl mx-auto flex gap-6">
+      <div className="max-w-6xl mx-auto flex gap-6 mt-20 ">
         {/* 좌측 컨테이너 */}
         <div className="w-2/3 flex flex-col space-y-6 ">
           {/* 주요 아이콘 */}

@@ -52,8 +52,11 @@ import EventCouponMenuPage from "./pages/evnet-coupon-menu/EventCouponMenuPage.j
 import DesignerManagePage from "./pages/designermanage/DesignerManagePage.jsx";
 import ShopProfile from "./pages/profile/ShopProfile.jsx";
 import MenuSetting from "./pages/business/MenuSetting.jsx";
-import ShopNoticePage from "./pages/notice/ShopNoticePage.jsx";
-import ShopNoticeListPage from "./pages/notice/ShopNoticeListPage.jsx";
+import NoticesPage from "./pages/notices/NoticesPage.jsx";
+import RegisterNotice from "./pages/notices/RegisterNotice.jsx";
+import DetailNotice from "./pages/notices/DetailNotice.jsx";
+import EditNotice from "./pages/notices/EditNotice.jsx";
+
 
 function App() {
   const [userRole, setUserRole] = useState("shop");
@@ -263,17 +266,7 @@ function App() {
               <Route
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
-              />
-              {/* 공지사항 등록 페이지 */}
-              <Route
-                path="/shop/notice"
-                element={<ShopNoticePage onLoginClick={openLoginModal} />}
-              />
-              {/* 공지사항 목록 페이지 */}
-              <Route
-                path="/shop/notices"
-                element={<ShopNoticeListPage onLoginClick={openLoginModal} />}
-              />
+              />              
               {/* 사업자 매출 페이지 */}
               <Route
                 path="/sales"
@@ -309,6 +302,25 @@ function App() {
               <Route
                 path="/menu-setting"
                 element={<MenuSetting onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 공지사항 작성/등록 페이지 */}
+              <Route
+                path="/notices"
+                element={<NoticesPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/notices/register"
+                element={<RegisterNotice onLoginClick={openLoginModal} />}  
+              />
+              {/* 사업자 공지사항 상세 페이지 */}
+              <Route
+                path="/notices/detail/:noticeId"
+                element={<DetailNotice onLoginClick={openLoginModal} />}  
+              />
+              {/* 사업자 공지사항 수정 페이지 */}
+              <Route
+                path="/notices/edit/:noticeId"
+                element={<EditNotice onLoginClick={openLoginModal} />}
               />
             </>
           )}

@@ -9,7 +9,7 @@ export default function WeekNotice() {
         <div>
             <DesignerHeader />
 
-            <div className="max-w-7xl h-full mx-auto p-10 flex flex-col justify-center items-center">
+            <div className="max-w-7xl h-[1000px] mx-auto p-10 mt-20 flex flex-col items-center">
                 <h3 className="text-2xl font-bold text-center mb-6">{notice.title}</h3>
                 <p className="text-sm text-gray-600 mb-4 ml-auto">{notice.date}</p>
 
