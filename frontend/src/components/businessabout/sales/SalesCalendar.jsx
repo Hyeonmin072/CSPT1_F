@@ -1,66 +1,100 @@
 import BusinessHeader from "../../common/BusinessHeader.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
-import { designers } from "./DesignerSales.jsx";
-import { dummySchedules } from "../../dummydata/DummySchedules.jsx";
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 
 export default function SalesCalendar() {
-    const { id } = useParams(); // URL에서 id 가져오기
-    const designer = designers.find((d) => d.id === parseInt(id));
-    console.log("선택한 디자이너:", designer); // 선택한 디자이너만 출력
-
-
-
+    const { designerEmail } = useParams(); 
+    const [details, setDetails] = useState([]);
+    const [schedules, setSchedules] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [showModal, setShowModal] = useState(false); // 모달 상태 관리
-    const [clickedDate, setClickedDate] = useState(null); // 클릭한 날짜 저장
+    const [showModal, setShowModal] = useState(false);
+    const [clickedDate, setClickedDate] = useState(null);
 
-    // 선택된 날짜의 예약 데이터를 필터링
+    useEffect(() => {
+        const fetchDesignerCalendar = async () => {
+            try {
+                const year = selectedDate.getFullYear(); 
+                const month = selectedDate.getMonth() + 1;
+    
+                const response = await axiosInstance.get(
+                    `/shop/sales/designers/${designerEmail}?year=${year}&month=${month}`
+                );
+                const data = response.data;
+                console.log("디자이너 캘린더 데이터: ", data);
+    
+                if (data) {
+                    // 날짜별 매출 데이터를 스케줄 형식으로 변환
+                    const formattedSchedules = Object.entries(data).map(([day, cash]) => ({
+                        date: new Date(year, month - 1, parseInt(day)).toISOString().split("T")[0],
+                        cash: cash,
+                    }));
+                    setSchedules(formattedSchedules);
+                }
+            } catch (error) {
+                console.log("디자이너 캘린더 데이터 오류 :", error);
+            }
+        };
+    
+        fetchDesignerCalendar();
+    }, [designerEmail, selectedDate]);
+
+    useEffect(() => {
+        if (showModal) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [showModal]);
+
     const getSchedulesByDate = (date) => {
         const formattedDate = date.toISOString().split("T")[0];
-        return dummySchedules.filter((schedule) => schedule.date === formattedDate);
-    };
-
-    // 특정 날짜의 총 매출 계산
-    const getTotalCashByDate = (date) => {
-        const schedules = getSchedulesByDate(date);
-        return schedules.reduce(
-            (acc, schedule) => acc + parseInt(schedule.cash.replace(/,/g, "")),
-            0
-        );
+        return schedules.filter((schedule) => schedule.date === formattedDate);
     };
 
     // 달력에 표시할 매출 형식화
     const formatSales = (date) => {
-        const totalCash = getTotalCashByDate(date);
-        return totalCash > 0 ? `${totalCash.toLocaleString()} 원` : "-";
+        const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD 형식
+        const schedule = schedules.find((s) => s.date === formattedDate); // 문자열 비교
+        return schedule ? `${schedule.cash.toLocaleString()} 원` : "-";
     };
 
     // 날짜 클릭 시 모달 열기
-    const [clickTimeout, setClickTimeout] = useState(null);
-
-    const handleDateClick = (date) => {
-        if (clickTimeout) {
-            clearTimeout(clickTimeout); // 단일 클릭 타이머 취소
-            setClickTimeout(null);
-            setClickedDate(date); // 클릭한 날짜 저장
-            setShowModal(true); // 모달 열기
-        } else {
-            const timeout = setTimeout(() => {
-                setClickTimeout(null); // 더블 클릭 아닌 경우 초기화
-            }, 300); // 더블 클릭 감지 시간 (300ms)
-            setClickTimeout(timeout);
-        }
+    const handleDateClick = async (date) => {
+        setClickedDate(date);
+        await fetchDetails(date); // 상세 데이터 요청
+        setShowModal(true);
     };
-
 
     // 모달 닫기
     const closeModal = () => {
         setShowModal(false);
         setClickedDate(null);
+    };
+
+    const fetchDetails = async (date) => {
+        try {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+    
+            const response = await axiosInstance.get(
+                `/shop/sales/designers/${designerEmail}/detail?year=${year}&month=${month}&day=${day}`
+            );
+            const data = response.data;
+            console.log("상세 데이터: ", data);
+    
+            setDetails(data); // 상세 데이터를 상태에 저장
+        } catch (error) {
+            console.log("상세 데이터 요청 오류: ", error);
+        }
     };
 
     return (
@@ -69,14 +103,12 @@ export default function SalesCalendar() {
 
             <div className="p-5 pt-10 mt-20">
                 <div className="flex flex-col items-center justify-center w-full">
-                    <h2 className="text-xl font-bold mb-4">
-                        {designer?.name}의 매출 캘린더
-                    </h2>
+                    <h2 className="text-xl font-bold mb-4">디자이너 매출 캘린더</h2>
                     <div className="w-full max-w-[900px]">
                         <Calendar
                             onChange={setSelectedDate}
                             value={selectedDate}
-                            onClickDay={handleDateClick} // 날짜 클릭 이벤트
+                            onClickDay={handleDateClick}
                             tileContent={({ date }) => (
                                 <div className="text-xs text-center mt-1">
                                     {formatSales(date)}
@@ -84,8 +116,6 @@ export default function SalesCalendar() {
                             )}
                             className="calendar-custom rounded"
                         />
-
-
                     </div>
 
                     <Link to="/sales" className="mt-10 text-[#01A299] block">
@@ -96,31 +126,34 @@ export default function SalesCalendar() {
 
             {/* 모달 */}
             {showModal && clickedDate && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-[600px]">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-60">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-[600px] max-h-[500px] overflow-y-auto">
                         <h2 className="text-xl font-bold mb-4">
-                            {clickedDate ? format(selectedDate, "yyyy년 MM월 dd일") : "Null"}의 일정
+                            {clickedDate ? format(clickedDate, "yyyy년 MM월 dd일") : "Null"}의 일정
                         </h2>
 
-                        {/* Table 형식으로 변경 */}
                         <table className="w-full border-collapse border border-gray-300">
                             <thead>
-                            <tr className="bg-gray-100">
-                                <th className="border border-gray-300 px-4 py-2 text-left">시간</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">메뉴</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">매출</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left">고객</th>
-                            </tr>
+                                <tr className="bg-gray-100">
+                                    <th className="border border-gray-300 px-4 py-2 text-left">시간</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">메뉴</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">매출</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">고객 성함</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {getSchedulesByDate(clickedDate).map((schedule, index) => (
-                                <tr key={index} className="hover:bg-gray-50">
-                                    <td className="border border-gray-300 px-4 py-2">{schedule.time}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{schedule.menu}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{schedule.cash}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{schedule.client}</td>
-                                </tr>
-                            ))}
+                                {details
+                                    .sort((a, b) => new Date(a.paymentTime) - new Date(b.paymentTime)) // 시간 정렬
+                                    .map((detail, index) => (
+                                        <tr key={index} className="hover:bg-gray-50">
+                                            <td className="border border-gray-300 px-4 py-2">
+                                                {new Date(detail.paymentTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </td>
+                                            <td className="border border-gray-300 px-4 py-2">{detail.menuName}</td>
+                                            <td className="border border-gray-300 px-4 py-2">{detail.integer.toLocaleString()} 원</td>
+                                            <td className="border border-gray-300 px-4 py-2">{detail.userName}</td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
 
