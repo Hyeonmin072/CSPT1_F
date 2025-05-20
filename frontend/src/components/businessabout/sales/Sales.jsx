@@ -176,7 +176,7 @@ export default function Sales() {
         <div className="border rounded-xl overflow-hidden inline-flex relative w-full">
           {/* Motion Div: 버튼들에 맞게 크기 조정 */}
           <motion.div
-            className="absolute top-0 bottom-0 bg-green-600"
+            className="absolute top-0 bottom-0 bg-green-500"
             style={{ width: "50%" }} // 버튼 크기와 맞게 조정
             animate={{ x: view === "store" ? "0%" : "100%" }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}

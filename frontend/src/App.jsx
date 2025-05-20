@@ -275,7 +275,7 @@ function App() {
 
               {/* 사업자 매출 상세 페이지 */}
               <Route
-                path="/sales/calendar"
+                path="/sales/calendar/:designerEmail"
                 element={<SalesCalendar onLoginClick={openLoginModal} />}
               />
               {/* 사업자 블랙리스트 페이지 */}
