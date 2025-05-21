@@ -99,6 +99,7 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
+        console.log("파일 업로드 로그:",res);
         fileUrls = res.data.fileUrls;
         messageType = res.data.messageType;
       } catch (err) {
@@ -113,6 +114,11 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
       fileUrls,
       messageType,
     };
+
+    console.log('📤 메시지 전송 시도:', {
+        destination: `/publish/chat/${selectedChat.chatRoomId}`,
+        body: messageDto,
+        });
 
     socket.publish({
       destination: `/publish/chat/${selectedChat.chatRoomId}`,
@@ -219,7 +225,7 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
                     className="text-xs select-none"
                     style={{ color: msg.isRead ? "#3b82f6" : "#999" }}
                   >
-                    {msg.isRead ? "읽음 ✓" : "안읽음 ●"}
+                    {msg.isRead ? "읽음 ✓" : "안읽음 🔴"}
                   </div>
                 )}
               </div>
