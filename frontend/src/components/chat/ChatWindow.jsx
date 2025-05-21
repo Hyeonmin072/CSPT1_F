@@ -63,13 +63,52 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
       }
     );
 
+   const enterSubscription = socket.subscribe(
+        `/subscribe/chat/enter/${selectedChat.chatRoomId}`,
+        (message) => {
+            const unreadMessageIds = JSON.parse(message.body); // ex) [1, 2, 3]
+            console.log("읽지 않은 메시지 ID 목록 ✅:", unreadMessageIds);
+
+            // 메시지 상태 업데이트 (읽음 처리)
+            setMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+                unreadMessageIds.includes(msg.messageId)
+                ? { ...msg, isRead: true }
+                : msg
+            )
+            );
+
+            // selectedChat에도 반영
+            setSelectedChat((prev) => ({
+            ...prev,
+            messages: prev.messages.map((msg) =>
+                unreadMessageIds.includes(msg.messageId)
+                ? { ...msg, isRead: true }
+                : msg
+            ),
+            }));
+        }
+    );
+
+    // ✅ 입장 메시지 서버로 발행
+    console.log("채팅방에 입장하셨습니다.")
+    socket.publish({
+      destination: `/publish/chat/enter/${selectedChat.chatRoomId}`,
+      body: JSON.stringify({}),
+    });
+
+
+     // 컴포넌트 언마운트 시 구독 해제
     return () => {
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe();
-        subscriptionRef.current = null;
-      }
-    };
-  }, [socket, selectedChat, setSelectedChat]);
+            if (subscriptionRef.current) {
+                subscriptionRef.current.unsubscribe();
+                subscriptionRef.current = null;
+            }
+            if (enterSubscription) {
+                enterSubscription.unsubscribe();
+            }
+        };
+    }, [socket, selectedChat, setSelectedChat]);
 
   useEffect(() => {
     if (!selectedChat?.messages) return;
