@@ -54,6 +54,8 @@ export default function ReservationConfirmPage() {
         menuId: reservationData.menuInfo.menuId,
       };
 
+      console.log("임시 예약 요청 데이터:", requestData);
+
       // API 호출
       const response = await axiosInstance.post(
         "/user/reservation",
@@ -62,6 +64,11 @@ export default function ReservationConfirmPage() {
 
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
+        console.log("임시 예약 생성 응답:", data);
+
+        // 임시 예약 데이터 저장
+        localStorage.setItem("tempReservation", JSON.stringify(data));
+
         const tossPayments = window.TossPayments(
           "test_ck_DnyRpQWGrNqx9ow4JNabVKwv1M9E"
         );
@@ -73,10 +80,11 @@ export default function ReservationConfirmPage() {
           orderName: data.reservMenuName,
           customerName: data.userName,
           customerEmail: data.userEmail,
-          successUrl: data.successUrl,
-          failUrl: data.failUrl,
+          successUrl: "http://localhost:5173/reservationlastcheck",
+          failUrl: "http://localhost:5173/reservationlastcheck",
         });
       } else {
+        console.error("임시 예약 생성 실패:", response);
         setSuccess(false);
         toast.error("예약 생성에 실패했습니다.");
       }

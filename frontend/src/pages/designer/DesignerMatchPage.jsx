@@ -69,7 +69,7 @@ const DesignerMatchPage = () => {
     } else {
       // 스와이프가 충분하지 않으면 원래 위치로
       x.set(0);
-    }
+    } 
   };
 
   const handleSwipe = (direction) => {
