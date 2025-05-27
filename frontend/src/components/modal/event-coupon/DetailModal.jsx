@@ -4,21 +4,21 @@ export default function DetailModal({ isEModalOpen, selectedItem, closeEventModa
     return(
         <div>
             {isEModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="z-50 fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white rounded-md p-6 max-w-lg w-full">
-                        <h3 className="text-xl font-semibold mb-4">{selectedItem.e_name}</h3>
+                        <h3 className="text-xl font-semibold mb-4">{selectedItem.name}</h3>
                         <div className="flex flex-row space-x-5">
-                            <p className="mb-2">진행 날짜 : {selectedItem.e_start_date}</p>
+                            <p className="mb-2">진행 날짜 : {selectedItem.startDate}</p>
                             <p>/</p>
-                            <p className="mb-4">{selectedItem.e_end_date}</p>
+                            <p className="mb-4">{selectedItem.endDate}</p>
                         </div>
                         <div>
                             <p className="mb-4">
                                 할인 금액 :
-                                {selectedItem.e_type === "PERCENT"
-                                    ? ` ${selectedItem.e_discount}%`
-                                    : selectedItem.e_type === "FIXED"
-                                        ? ` ${selectedItem.e_discount}원`
+                                {selectedItem.type === "PERCENT"
+                                    ? ` ${selectedItem.price}%`
+                                    : selectedItem.type === "FIXED"
+                                        ? ` ${selectedItem.price}원`
                                         : "없음"}
                             </p>
                         </div>

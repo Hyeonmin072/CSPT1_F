@@ -4,19 +4,18 @@ import axios from "axios";
 
 import BlackListCreateModal from "../../modal/blacklist/BlackListCreateModal.jsx";
 import BlackListDetailModal from "../../modal/blacklist/BlackListDetailModal.jsx";
-import ApiBlacklist from "./api/ApiBlackList.jsx";
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 
 export default function BlackList() {
   const [blacklist, setBlacklist] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
-  const [sId, setSId] = useState("merchant123"); // 현재 로그인한 사업자 ID
 
   useEffect(() => {
     const fetchBlacklists = async () => {
       try {
-        const response = await axios.get("/shop/blacklists");
+        const response = await axiosInstance.get("/shop/blacklists");
         console.log("블랙리스트 데이터:", response.data);
         setBlacklist(response.data);
       } catch (error) {
@@ -24,44 +23,20 @@ export default function BlackList() {
       }
     };
     fetchBlacklists();
-  }, [sId]);
+  }, []);
 
-  const toggleCheck = (b_id) => {
+  const toggleCheck = (id) => {
     setCheckedItems((prev) => ({
       ...prev,
-      [b_id]: !prev[b_id],
+      [id]: !prev[id],
     }));
   };
 
-  const handleDelete = async (b_id) => {
+  const handleDelete = async (name) => {
     try {
-      const result = await ApiBlacklist.deleteBlacklist([b_id]); // 배열로 전달
+      const result = await axiosInstance.deleteBlacklist("/shop/blacklist"); // 배열로 전달
       if (result) {
-        setBlacklist((prev) => prev.filter((entry) => entry.b_id !== b_id));
-      }
-    } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
-      alert("삭제에 실패했습니다.");
-    }
-  };
-
-  const handleDeleteChecked = async () => {
-    const idsToDelete = Object.keys(checkedItems).filter(
-      (b_id) => checkedItems[b_id]
-    );
-
-    if (idsToDelete.length === 0) {
-      alert("삭제할 항목을 선택하세요.");
-      return;
-    }
-
-    try {
-      const result = await ApiBlacklist.deleteBlacklist(idsToDelete);
-      if (result) {
-        setBlacklist((prev) =>
-          prev.filter((entry) => !idsToDelete.includes(entry.b_id))
-        );
-        setCheckedItems({});
+        setBlacklist((prev) => prev.filter((entry) => entry.userName !== name));
       }
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
@@ -73,21 +48,19 @@ export default function BlackList() {
 
   const handleRowClick = (item) => {
     setClickCounts((prev) => {
-      const currentCount = prev[item.b_id] || 0; // 해당 유저의 현재 클릭 횟수 가져오기
+      const currentCount = prev[item.userEmail] || 0; // 해당 유저의 현재 클릭 횟수 가져오기
 
       if (currentCount + 1 === 2) {
         // 두 번 클릭된 경우 모달 열기
         setSelectedItem(item);
-        return { ...prev, [item.b_id]: 0 }; // 클릭 횟수 초기화
+        return { ...prev, [item.userEmail]: 0 }; // 클릭 횟수 초기화
       } else {
-        // 첫 번째 클릭인 경우 클릭 횟수 증가
-        return { ...prev, [item.b_id]: currentCount + 1 };
+        return { ...prev, [item.userEmail]: currentCount + 1 };
       }
     });
 
-    // 클릭 초기화를 위한 타이머 설정
     setTimeout(() => {
-      setClickCounts((prev) => ({ ...prev, [item.b_id]: 0 })); // 타이머 종료 후 해당 유저 클릭 횟수 초기화
+      setClickCounts((prev) => ({ ...prev, [item.userEmail]: 0 })); // 타이머 종료 후 해당 유저 클릭 횟수 초기화
     }, 1000);
   };
 
@@ -113,9 +86,9 @@ export default function BlackList() {
           </button>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-            onClick={handleDeleteChecked}
+            onClick={handleDelete}
           >
-            체크목록 삭제
+            삭제
           </button>
         </div>
       </div>
@@ -132,8 +105,8 @@ export default function BlackList() {
                   {Object.keys(checkedItems).length > 0 ? "−" : ""}
                 </button>
               </th>
-              <th className="px-6 py-4 border-gray-300">이름</th>
-              <th className="px-6 py-4 border-gray-300">유저 ID</th>
+              <th className="px-6 py-4 border-gray-300">유저 이름</th>
+              <th className="px-6 py-4 border-gray-300">유저 이메일</th>
               <th className="px-6 py-4 border-gray-300">사유</th>
             </tr>
           </thead>
@@ -141,7 +114,7 @@ export default function BlackList() {
             {blacklist.length > 0 ? (
               blacklist.map((item) => (
                 <tr
-                  key={item.b_id}
+                  key={item.userEmail}
                   className="hover:bg-gray-100"
                   onClick={() => handleRowClick(item)}
                 >
@@ -149,22 +122,22 @@ export default function BlackList() {
                     <input
                       type="checkbox"
                       className="form-checkbox h-5 w-5 text-blue-500"
-                      checked={checkedItems[item.b_id] || false}
+                      checked={checkedItems[item.userEmail] || false}
                       onChange={(e) => {
                         e.stopPropagation();
-                        toggleCheck(item.b_id);
+                        toggleCheck(item.userEmail);
                       }}
                     />
                   </td>
-                  <td className="px-6 py-5 border">{item.u_name}</td>
-                  <td className="px-6 py-5 border">{item.u_id}</td>
+                  <td className="px-6 py-5 border">{item.userName}</td>
+                  <td className="px-6 py-5 border">{item.userEmail}</td>
                   <td className="px-6 py-5 flex flex-row justify-between items-center border">
-                    <span>{item.b_reason}</span>
+                    <span>{item.reason}</span>
                     <button
                       className="text-red-500 hover:text-red-700 ml-auto"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete(item.b_id);
+                        handleDelete(item.userEmail);
                       }}
                     >
                       <Trash2 size={18} />
@@ -191,7 +164,6 @@ export default function BlackList() {
         showModal={showModal}
         setShowModal={setShowModal}
         setBlacklist={setBlacklist}
-        sId={sId}
       />
 
       {/* 상세 모달 */}

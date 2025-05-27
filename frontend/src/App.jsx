@@ -56,6 +56,8 @@ import NoticesPage from "./pages/notices/NoticesPage.jsx";
 import RegisterNotice from "./pages/notices/RegisterNotice.jsx";
 import DetailNotice from "./pages/notices/DetailNotice.jsx";
 import EditNotice from "./pages/notices/EditNotice.jsx";
+import ReviewManagePage from "./pages/reviews/BusinessReviewPage.jsx";
+import EventCouponCreate from "./components/businessabout/eventmenu/EventCouponCreate.jsx";
 
 
 function App() {
@@ -288,6 +290,10 @@ function App() {
                 path="/eventmenu"
                 element={<EventCouponMenuPage onLoginClick={openLoginModal} />}
               />
+              <Route
+                path="/eventmenu/create"
+                element={<EventCouponCreate onLoginClick={openLoginModal} />}
+              />
               {/* 사업자 디자이너 관리 페이지 */}
               <Route
                 path="/designermanage"
@@ -321,6 +327,11 @@ function App() {
               <Route
                 path="/notices/edit/:noticeId"
                 element={<EditNotice onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 리뷰 관리 페이지 */}
+              <Route
+                path="/reviewsmanage"
+                element={<ReviewManagePage onLoginClick={openLoginModal} />}
               />
             </>
           )}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ApiBlacklist from "../../businessabout/blacklist/api/ApiBlackList.jsx";
+import axiosInstance from "../../sign/axios/AxiosInstance";
 
 export default function BlackListCreateModal({ showModal, setShowModal, setBlacklist, sId }) {
     // 이후 리뷰페이지 제작 후, 그 고객 리뷰게시글에서 신고 버튼을 눌렀을 떄,유저 id와 name을 props로 받아 가져오도록 수정
@@ -9,8 +9,7 @@ export default function BlackListCreateModal({ showModal, setShowModal, setBlack
     const handleAdd = async () => {
         if (newEntry.u_name && newEntry.u_id && newEntry.b_reason) {
             try {
-                // 중복 체크 API 호출
-                const isAlreadyBlacklisted = await ApiBlacklist.checkBlacklistEntry(sId, newEntry.u_id);
+                const isAlreadyBlacklisted = await axiosInstance.post(sId, newEntry.u_id);
                 if (isAlreadyBlacklisted) {
                     alert("이미 등록되어있습니다.");
                     return;
@@ -24,7 +23,7 @@ export default function BlackListCreateModal({ showModal, setShowModal, setBlack
                     b_reason: newEntry.b_reason, // 등록 사유
                 };
 
-                const addedEntry = await ApiBlacklist.addBlacklist(entryWithIds); // API 호출
+                const addedEntry = await axiosInstance.post(entryWithIds);
                 setBlacklist((prev) => [...prev, addedEntry]); // 상태 업데이트
                 setNewEntry({ u_name: "", u_id: "", b_reason: "" }); // 입력 필드 초기화
                 setShowModal(false);

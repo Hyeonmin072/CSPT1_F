@@ -1,6 +1,5 @@
 import designerEX from "../../../assets/hairshop/designerEX.jpg";
 import { useState, useEffect } from "react";
-import ApiDesigner from "./api/DesignerInfoApi.jsx";
 import { TrendingUp, Heart } from "lucide-react";
 
 export default function DesignerSetting({

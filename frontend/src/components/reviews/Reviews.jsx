@@ -5,6 +5,7 @@ import { Star, X } from "lucide-react";
 import ReviewsPhoto from "./ReviewsPhoto.jsx";
 import ReviewSort from "./ReviewSort.jsx";
 import ReviewTabs from "./ReviewsTabs.jsx";
+import axiosInstance from '../sign/axios/AxiosInstance.jsx';
 
 // 임시 데이터
 const reviews = [
@@ -95,7 +96,6 @@ export default function Reviews() {
     const [selectedTab, setSelectedTab] = useState('전체');
     const [sortOrder, setSortOrder] = useState('최신순');
     const [displayedReviews, setDisplayedReviews] = useState([]);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleTabClick = (tab) => setSelectedTab(tab);
 
@@ -107,7 +107,6 @@ export default function Reviews() {
     const photoReviewsCount = reviews.filter(review => review.image !== null).length;
 
     useEffect(() => {
-        // 확인용 console
         console.log(`선택된 탭: ${selectedTab}, 정렬 기준: ${sortOrder}`);
 
         // 리뷰 필터링: 선택된 탭에 따라 필터링
