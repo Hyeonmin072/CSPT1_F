@@ -4,6 +4,7 @@ import SocialLogin from "../sign/shared/SocialLogin";
 import FormInput from "../sign/shared/FormInput";
 import { loginApi } from "./axios/authApi";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
   const navigate = useNavigate();
@@ -113,6 +114,30 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
       });
 
       onClose();
+
+      try {
+        const eventSource = new EventSource("/notification/connect", {
+          withCredentials: true,
+        });
+        console.log("📤 알림 서버 연결 성공");
+
+        //서버에서 넘어오는 이름이 지정 되지 않은 모든 메세지
+        eventSource.onmessage = (event) => {
+          console.log("기본 메시지:", event.data);
+        };
+
+        //서버에서 test라고 이름이 지정 된 메세지 (최초 연결 확인)
+        eventSource.addEventListener("test", (event) => {
+          console.log("📤 알림 이벤트:", event.data);
+        });
+
+        //서버에서 connect라고 이름이 지정 된 메세지 (주 내용)
+        eventSource.addEventListener("connect", (event) => {
+          console.log("📤 알림 이벤트:", event.data);
+        });
+      } catch (err) {
+        console.error("알림 서버 연결 실패:", err);
+      }
 
       // 유저 타입에 따른 리다이렉트
       switch (userType) {
