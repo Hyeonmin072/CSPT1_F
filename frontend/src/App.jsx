@@ -58,7 +58,6 @@ import DetailNotice from "./pages/notices/DetailNotice.jsx";
 import EditNotice from "./pages/notices/EditNotice.jsx";
 import ShopReservations from "./pages/reservation/ShopReservations.jsx";
 
-
 function App() {
   const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -197,7 +196,7 @@ function App() {
               />
               <Route path="/designer/match" element={<DesignerMatchPage />} />
               <Route
-                path="/reservationlastcheck"
+                path="/user/payment/success-page"
                 element={<ReservationLastCheckPage />}
               />
             </>
@@ -267,7 +266,7 @@ function App() {
               <Route
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
-              />              
+              />
               {/* 사업자 매출 페이지 */}
               <Route
                 path="/sales"
@@ -311,12 +310,12 @@ function App() {
               />
               <Route
                 path="/notices/register"
-                element={<RegisterNotice onLoginClick={openLoginModal} />}  
+                element={<RegisterNotice onLoginClick={openLoginModal} />}
               />
               {/* 사업자 공지사항 상세 페이지 */}
               <Route
                 path="/notices/detail/:noticeId"
-                element={<DetailNotice onLoginClick={openLoginModal} />}  
+                element={<DetailNotice onLoginClick={openLoginModal} />}
               />
               {/* 사업자 공지사항 수정 페이지 */}
               <Route
@@ -325,8 +324,8 @@ function App() {
               />
               {/* 사업자 예약 목록 페이지 */}
               <Route
-                  path="/reservations"
-                  element={<ShopReservations onLoginClick={openLoginModal} />}
+                path="/reservations"
+                element={<ShopReservations onLoginClick={openLoginModal} />}
               />
             </>
           )}

@@ -62,9 +62,40 @@ export default function ReservationConfirmPage() {
         requestData
       );
 
+      console.log("서버 응답 전체:", response);
+      console.log("서버 응답 데이터:", response.data);
+
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
-        console.log("임시 예약 생성 응답:", data);
+
+        // 서버 응답 데이터 검증
+        console.log("서버 응답 데이터 상세:", {
+          price: data.price,
+          paymentId: data.paymentId,
+          reservMenuName: data.reservMenuName,
+          userName: data.userName,
+          userEmail: data.userEmail,
+          successUrl: data.successUrl,
+          failUrl: data.failUrl,
+        });
+
+        if (!data.successUrl || !data.failUrl) {
+          console.error("서버 응답에 URL이 없습니다:", data);
+          toast.error("결제 URL을 받지 못했습니다.");
+          return;
+        }
+
+        if (!data.paymentId) {
+          console.error("서버 응답에 paymentId가 없습니다:", data);
+          toast.error("결제 ID를 받지 못했습니다.");
+          return;
+        }
+
+        if (!data.price || data.price <= 0) {
+          console.error("서버 응답에 올바른 금액이 없습니다:", data);
+          toast.error("결제 금액이 올바르지 않습니다.");
+          return;
+        }
 
         // 임시 예약 데이터 저장
         localStorage.setItem("tempReservation", JSON.stringify(data));
@@ -73,25 +104,44 @@ export default function ReservationConfirmPage() {
           "test_ck_DnyRpQWGrNqx9ow4JNabVKwv1M9E"
         );
 
-        // 결제 요청
-        await tossPayments.requestPayment("CARD", {
+        // 결제 요청 데이터 검증
+        const paymentRequestData = {
           amount: data.price,
           orderId: data.paymentId,
           orderName: data.reservMenuName,
           customerName: data.userName,
           customerEmail: data.userEmail,
-          successUrl: "http://localhost:5173/reservationlastcheck",
-          failUrl: "http://localhost:5173/reservationlastcheck",
-        });
+          successUrl: data.successUrl,
+          failUrl: data.failUrl,
+        };
+
+        console.log("토스페이먼츠 결제 요청 데이터:", paymentRequestData);
+
+        // 금액이 올바른지 확인
+        if (!paymentRequestData.amount || paymentRequestData.amount <= 0) {
+          console.error("잘못된 결제 금액:", paymentRequestData.amount);
+          toast.error("결제 금액이 올바르지 않습니다.");
+          return;
+        }
+
+        // 결제 요청
+        await tossPayments.requestPayment("CARD", paymentRequestData);
       } else {
         console.error("임시 예약 생성 실패:", response);
         setSuccess(false);
         toast.error("예약 생성에 실패했습니다.");
       }
     } catch (error) {
-      console.error("예약 실패:", error);
+      console.error("예약 실패 상세:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
       setSuccess(false);
-      toast.error("예약에 실패했습니다. 다시 시도해주세요.");
+      toast.error(
+        error.response?.data?.message ||
+          "예약에 실패했습니다. 다시 시도해주세요."
+      );
     }
   };
 
