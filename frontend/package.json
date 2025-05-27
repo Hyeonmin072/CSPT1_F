@@ -32,6 +32,7 @@
     "react-router-dom": "^7.0.2",
     "react-toastify": "^11.0.5",
     "recoil": "^0.7.7",
+    "stomp": "^0.1.1",
     "sweetalert2": "^11.17.2",
     "swiper": "^11.2.0",
     "tailwind-scrollbar-hide": "^2.0.0",

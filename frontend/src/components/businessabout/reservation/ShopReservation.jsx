@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 
 import ClientClock from "../../DesingerAbout/clientcheck/ClientClock.jsx";
 import ScheduleDate from "../../DesingerAbout/clientcheck/ScheduleDate.jsx";
-import ShopReservationCheck from "../../modal/reservationcheck/ShopReservation.jsx";
+import ShopReservationCheck from "../../../pages/reservation/ShopReservations.jsx";
 import { dummyDesigners } from "../../dummydata/DummyDesigners.jsx";
 
 // 정렬 함수 (ㄱㄴㄷ 순서)

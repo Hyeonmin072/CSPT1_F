@@ -56,6 +56,7 @@ import NoticesPage from "./pages/notices/NoticesPage.jsx";
 import RegisterNotice from "./pages/notices/RegisterNotice.jsx";
 import DetailNotice from "./pages/notices/DetailNotice.jsx";
 import EditNotice from "./pages/notices/EditNotice.jsx";
+import ShopReservations from "./pages/reservation/ShopReservations.jsx";
 
 
 function App() {
@@ -321,6 +322,11 @@ function App() {
               <Route
                 path="/notices/edit/:noticeId"
                 element={<EditNotice onLoginClick={openLoginModal} />}
+              />
+              {/* 사업자 예약 목록 페이지 */}
+              <Route
+                  path="/reservations"
+                  element={<ShopReservations onLoginClick={openLoginModal} />}
               />
             </>
           )}

@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   // 각각 페이지가 완성되면 path 추가
   const menuItems = [
-    { id: 1, title: "현재 예약", path: "/reservationcheck" },
+    { id: 1, title: "현재 예약", path: "/reservations" },
     { id: 2, title: "헤어샵", path: "/hairshop" },
     { id: 3, title: "디자이너", path: "/designerpage" },
     { id: 4, title: "채팅" },
