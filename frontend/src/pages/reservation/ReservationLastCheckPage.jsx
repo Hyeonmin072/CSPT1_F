@@ -1,6 +1,6 @@
 import Header from "../../components/common/Header";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
 import { toast } from "react-hot-toast";
@@ -11,9 +11,13 @@ export default function ReservationLastCheckPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reservationData, setReservationData] = useState(null);
-  const [countdown, setCountdown] = useState(999); // 10초로 변경
+  const [countdown, setCountdown] = useState(10); // 10초로 변경
+
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
     const handlePaymentResult = async () => {
       try {
         const searchParams = new URLSearchParams(location.search);
@@ -151,7 +155,7 @@ export default function ReservationLastCheckPage() {
 
   // 10초 카운트다운 및 자동 이동
   useEffect(() => {
-    if (loading) {
+    if (!loading && !error) {
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -161,10 +165,10 @@ export default function ReservationLastCheckPage() {
           }
           return prev - 1;
         });
-      }, 10000);
+      }, 1000);
       return () => clearInterval(timer);
     }
-  }, [loading]);
+  }, [loading, error]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -295,7 +299,7 @@ export default function ReservationLastCheckPage() {
             <div className="mt-6">
               <button
                 onClick={() => (window.location.href = "/")}
-                className="w-full bg-[#03DAC5] text-white py-3 rounded-lg hover:bg-[#00a896] transition-colors"
+                className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors"
               >
                 메인으로 돌아가기
               </button>
