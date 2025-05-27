@@ -53,7 +53,6 @@ export default function ShopReservationsPage() {
                     <option value="CUSTOMER_NAME">고객 이름순</option>
                     <option value="DESIGNER_NAME">디자이너 이름순</option>
                     <option value="PRICE">가격순</option>
-                    <option value="PAYMENT_STATUS">결제 상태순</option>
                 </select>
                 <input
                     type="text"
@@ -64,32 +63,40 @@ export default function ShopReservationsPage() {
                 />
             </div>
 
-            {/* 예약 리스트 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {reservations.length === 0 ? (
-                    <p className="text-center text-gray-500">예약이 없습니다.</p>
-                ) : (
-                    reservations.map((res, index) => (
-                        <div
-                            key={index}
-                            className="bg-white shadow-md rounded-lg p-4 flex flex-col gap-2"
-                        >
-                            <h3 className="text-lg font-bold">{res.userName}</h3>
-                            <p className="text-gray-600 text-sm">
-                                {res.menuName} - <span className="font-bold">{res.menuPrice}원</span>
-                            </p>
-                            <p className="text-gray-600 text-sm">
-                                예약 시간: {res.serviceDate.split("T")[1]}
-                            </p>
-                            <p className="text-gray-600 text-sm">
-                                예약 날짜: {res.serviceDate.split("T")[0]}
-                            </p>
-                            <p className={`font-bold ${res.paymentStatus === "결제완료" ? "text-green-500" : "text-red-500"}`}>
-                                {res.paymentStatus}
-                            </p>
-                        </div>
-                    ))
-                )}
+            {/* 예약 리스트 - 리스트 형식으로 표시 */}
+            <div className="bg-white shadow-md rounded p-4">
+                <table className="w-full border-collapse">
+                    <thead className="bg-gray-100">
+                    <tr className="border-b">
+                        <th className="py-2 px-4 text-left">예약 날짜</th>
+                        <th className="py-2 px-4 text-left">고객 이름</th>
+                        <th className="py-2 px-4 text-left">디자이너</th>
+                        <th className="py-2 px-4 text-left">메뉴</th>
+                        <th className="py-2 px-4 text-left">가격</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {reservations.length === 0 ? (
+                        <tr>
+                            <td colSpan="5" className="text-center text-gray-500 py-4">
+                                예약이 없습니다.
+                            </td>
+                        </tr>
+                    ) : (
+                        reservations.map((res, index) => (
+                            <tr key={index} className="border-b">
+                                <td className="py-2 px-4">
+                                    {res.serviceDate.replace("T", " ")}
+                                </td>
+                                <td className="py-2 px-4">{res.userName}</td>
+                                <td className="py-2 px-4">{res.designerName}</td>
+                                <td className="py-2 px-4">{res.menuName}</td>
+                                <td className="py-2 px-4">{res.menuPrice}원</td>
+                            </tr>
+                        ))
+                    )}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
