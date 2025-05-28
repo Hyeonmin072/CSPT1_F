@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //npm install react-toastify
 
@@ -105,9 +105,66 @@ function App() {
 
     window.addEventListener("loginStatusChanged", handleLoginStatusChange);
 
+    // SSE 연결 설정
+    const eventSource = new EventSource("/notification/connect", {
+      withCredentials: true,
+    });
+
+    // 기본 메시지 핸들러
+    eventSource.onmessage = (event) => {
+      console.log("기본 메시지:", event.data);
+      toast.info(event.data, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    };
+
+    // 연결 성공 이벤트 핸들러
+    eventSource.addEventListener("test", (event) => {
+      console.log("📤 최초 연결 성공:", event.data);
+    });
+
+    // 알림 이벤트 핸들러
+    eventSource.addEventListener("connect", (event) => {
+      console.log("📤 알림 이벤트:", event.data);
+      try {
+        // JSON 형식인지 확인
+        const notification = JSON.parse(event.data);
+        toast.info(notification.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } catch (e) {
+        // JSON이 아닌 경우 일반 텍스트로 처리
+        toast.info(event.data, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    });
+
+    // 에러 핸들러
+    eventSource.onerror = (error) => {
+      console.error("SSE 연결 에러:", error);
+      eventSource.close();
+    };
+
     // 클린업 함수
     return () => {
       window.removeEventListener("loginStatusChanged", handleLoginStatusChange);
+      eventSource.close();
     };
   }, []);
 
