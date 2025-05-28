@@ -6,7 +6,7 @@ export default function DesignerManagePage() {
     <div>
       <BusinessHeader />
 
-      <div className="p-4 mt-36">
+      <div className="p-4 mt-36g">
         <DesignerSetting />
       </div>
     </div>

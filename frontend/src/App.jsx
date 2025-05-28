@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //npm install react-toastify
 
@@ -56,11 +56,14 @@ import NoticesPage from "./pages/notices/NoticesPage.jsx";
 import RegisterNotice from "./pages/notices/RegisterNotice.jsx";
 import DetailNotice from "./pages/notices/DetailNotice.jsx";
 import EditNotice from "./pages/notices/EditNotice.jsx";
+
 import ReviewManagePage from "./pages/reviews/BusinessReviewPage.jsx";
 import EventCouponCreate from "./components/businessabout/eventmenu/EventCouponCreate.jsx";
 import SearchJobPage from "./pages/searchjob/SearchJobPage.jsx";
 import RegisterJobPage from "./pages/searchjob/RegisterJobPage.jsx";
 import EditJobPage from "./pages/searchjob/EditJobPage.jsx";
+
+import ShopReservations from "./pages/reservation/ShopReservations.jsx";
 
 
 function App() {
@@ -110,9 +113,66 @@ function App() {
 
     window.addEventListener("loginStatusChanged", handleLoginStatusChange);
 
+    // SSE 연결 설정
+    const eventSource = new EventSource("/notification/connect", {
+      withCredentials: true,
+    });
+
+    // 기본 메시지 핸들러
+    eventSource.onmessage = (event) => {
+      console.log("기본 메시지:", event.data);
+      toast.info(event.data, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    };
+
+    // 연결 성공 이벤트 핸들러
+    eventSource.addEventListener("test", (event) => {
+      console.log("📤 최초 연결 성공:", event.data);
+    });
+
+    // 알림 이벤트 핸들러
+    eventSource.addEventListener("connect", (event) => {
+      console.log("📤 알림 이벤트:", event.data);
+      try {
+        // JSON 형식인지 확인
+        const notification = JSON.parse(event.data);
+        toast.info(notification.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } catch (e) {
+        // JSON이 아닌 경우 일반 텍스트로 처리
+        toast.info(event.data, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    });
+
+    // 에러 핸들러
+    eventSource.onerror = (error) => {
+      console.error("SSE 연결 에러:", error);
+      eventSource.close();
+    };
+
     // 클린업 함수
     return () => {
       window.removeEventListener("loginStatusChanged", handleLoginStatusChange);
+      eventSource.close();
     };
   }, []);
 
@@ -201,7 +261,7 @@ function App() {
               />
               <Route path="/designer/match" element={<DesignerMatchPage />} />
               <Route
-                path="/reservationlastcheck"
+                path="/user/payment/success-page"
                 element={<ReservationLastCheckPage />}
               />
             </>
@@ -271,7 +331,7 @@ function App() {
               <Route
                 path="/shop"
                 element={<BusinessMainPage onLoginClick={openLoginModal} />}
-              />              
+              />
               {/* 사업자 매출 페이지 */}
               <Route
                 path="/sales"
@@ -319,12 +379,12 @@ function App() {
               />
               <Route
                 path="/notices/register"
-                element={<RegisterNotice onLoginClick={openLoginModal} />}  
+                element={<RegisterNotice onLoginClick={openLoginModal} />}
               />
               {/* 사업자 공지사항 상세 페이지 */}
               <Route
                 path="/notices/detail/:noticeId"
-                element={<DetailNotice onLoginClick={openLoginModal} />}  
+                element={<DetailNotice onLoginClick={openLoginModal} />}
               />
               {/* 사업자 공지사항 수정 페이지 */}
               <Route
@@ -349,6 +409,12 @@ function App() {
               <Route
                 path="/searchjob/edit/:id"
                 element={<EditJobPage onLoginClick={openLoginModal} />}
+
+              {/* 사업자 예약 목록 페이지 */}
+              <Route
+                path="/reservations"
+                element={<ShopReservations onLoginClick={openLoginModal} />}
+
               />
             </>
           )}

@@ -1,6 +1,6 @@
 import Header from "../../components/common/Header";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
 import { toast } from "react-hot-toast";
@@ -13,57 +13,107 @@ export default function ReservationLastCheckPage() {
   const [reservationData, setReservationData] = useState(null);
   const [countdown, setCountdown] = useState(10); // 10초로 변경
 
+  const hasRun = useRef(false);
+
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
     const handlePaymentResult = async () => {
       try {
-        const path = location.pathname;
-        const isSuccess = path.includes("/user/payment/success");
-
         const searchParams = new URLSearchParams(location.search);
+        const paymentKey = searchParams.get("paymentKey");
+        const orderId = searchParams.get("orderId");
+        const amount = searchParams.get("amount");
 
         console.log("결제 파라미터:", {
-          isSuccess,
+          paymentKey,
+          orderId,
+          amount,
         });
 
-        if (isSuccess) {
-          // 결제 성공 처리
-          try {
-            const response = await axiosInstance.get("/user/payment/success", {
-              params: {
-                paymentKey: searchParams.get("paymentKey"),
-                orderId: searchParams.get("orderId"),
-                amount: searchParams.get("amount"),
-              },
-            });
+        // 임시 예약 데이터 확인
+        const tempReservation = localStorage.getItem("tempReservation");
+        console.log(
+          "임시 예약 데이터:",
+          tempReservation ? JSON.parse(tempReservation) : "없음"
+        );
 
-            console.log("결제 성공 응답:", response.data);
-
-            if (response.data.success) {
-              toast.success("결제가 완료되었습니다.");
-            } else {
-              throw new Error(
-                response.data.message || "결제 처리 중 오류가 발생했습니다."
-              );
-            }
-          } catch (apiError) {
-            console.error("API 에러 상세:", {
-              status: apiError.response?.status,
-              data: apiError.response?.data,
-              message: apiError.message,
-            });
-            throw new Error(
-              apiError.response?.data?.message ||
-                "결제 처리 중 오류가 발생했습니다."
-            );
-          }
-        } else {
-          toast.error("결제에 실패했습니다.");
+        if (!paymentKey || !orderId || !amount) {
+          setError("결제 정보가 올바르지 않습니다.");
+          toast.error("결제 정보가 올바르지 않습니다.");
+          return;
         }
 
-        // 8초 후 메인 페이지로 이동
-        setTimeout(() => {
-          navigate("/");
-        }, 8000);
+        try {
+          // 결제 성공 처리
+          const response = await axiosInstance.get("/user/payment/success", {
+            params: {
+              paymentKey,
+              orderId,
+              amount: parseInt(amount, 10), // 문자열을 숫자로 변환
+            },
+          });
+
+          console.log("결제 성공 응답:", response.data);
+
+          if (!response.data) {
+            throw new Error("결제 정보를 찾을 수 없습니다.");
+          }
+
+          setReservationData({
+            shopInfo: {
+              shopName: response.data.shopName || "미지정",
+              shopEmail: response.data.shopEmail || "미지정",
+            },
+            designerName: response.data.designerName || "미지정",
+            designerImage: response.data.designerImage || "/default-avatar.png",
+            designerDesc: response.data.designrDesc || "설명 없음",
+            reservationDate:
+              response.data.serviceDate?.split("T")[0] ||
+              new Date().toISOString().split("T")[0],
+            reservationTime:
+              response.data.serviceDate?.split("T")[1]?.substring(0, 5) ||
+              "00:00",
+            menuInfo: {
+              menuName: response.data.menuName || "미지정",
+              menuDesc: response.data.menuDesc || "설명 없음",
+              finalPrice: response.data.price || 0,
+            },
+          });
+
+          toast.success("결제가 완료되었습니다.");
+        } catch (apiError) {
+          console.error("API 에러 상세:", {
+            status: apiError.response?.status,
+            statusText: apiError.response?.statusText,
+            data: apiError.response?.data,
+            message: apiError.message,
+            config: {
+              url: apiError.config?.url,
+              method: apiError.config?.method,
+              params: apiError.config?.params,
+            },
+          });
+
+          // 토스 결제 API 에러 처리
+          if (apiError.response?.data?.code === "PROVIDER_ERROR") {
+            setError(
+              "결제 처리 중 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+            );
+            toast.error(
+              "결제 처리 중 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+            );
+          } else {
+            const errorMessage =
+              apiError.response?.data?.message ||
+              apiError.response?.data?.error ||
+              apiError.message ||
+              "결제 처리 중 오류가 발생했습니다.";
+
+            setError(errorMessage);
+            toast.error(errorMessage);
+          }
+        }
       } catch (error) {
         console.error("결제 처리 실패 상세:", {
           message: error.message,
@@ -105,7 +155,7 @@ export default function ReservationLastCheckPage() {
 
   // 10초 카운트다운 및 자동 이동
   useEffect(() => {
-    if (loading) {
+    if (!loading && !error) {
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -118,7 +168,7 @@ export default function ReservationLastCheckPage() {
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [loading]);
+  }, [loading, error]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -145,7 +195,7 @@ export default function ReservationLastCheckPage() {
         <div className="text-center">
           <p className="text-red-500">{error}</p>
           <button
-            onClick={() => navigate("/mypage/reservations")}
+            onClick={() => navigate("/")}
             className="mt-4 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
           >
             메인 페이지로 이동
@@ -160,16 +210,26 @@ export default function ReservationLastCheckPage() {
       <Header />
       <div className="max-w-md mx-auto p-4 mt-20">
         {loading ? (
-          <div className="text-green-600 font-bold text-xl mb-4 text-center">
-            예약이 완료되었습니다 🎉
-            <div className="text-sm text-gray-500 mt-2">
-              {countdown}초 후 메인 페이지로 이동합니다
-            </div>
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600">결제 처리 중입니다...</p>
           </div>
         ) : (
-          <div className="text-red-600 font-bold text-xl mb-4 text-center">
-            결제에 실패했습니다 😢 다시 시도해주세요.
-          </div>
+          <>
+            {error ? (
+              <div className="text-red-600 font-bold text-xl mb-4 text-center">
+                <div>{countdown}초 후 메인 페이지로 이동합니다</div>
+                결제에 실패했습니다 😢 다시 시도해주세요.
+              </div>
+            ) : (
+              <div className="text-green-600 font-bold text-xl mb-4 text-center">
+                예약이 완료되었습니다 🎉
+                <div className="text-sm text-gray-500 mt-2">
+                  {countdown}초 후 메인 페이지로 이동합니다
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {reservationData && (
@@ -218,20 +278,12 @@ export default function ReservationLastCheckPage() {
                   {reservationData.menuInfo.menuDesc}
                 </p>
                 <div className="flex justify-between text-sm">
-                  <span>정가</span>
+                  <span>결제 금액</span>
                   <span>
-                    {reservationData.menuInfo.originalPrice.toLocaleString()}원
+                    {reservationData.menuInfo.finalPrice?.toLocaleString() || 0}
+                    원
                   </span>
                 </div>
-                {reservationData.menuInfo.discountPrice > 0 && (
-                  <div className="flex justify-between text-sm text-red-500">
-                    <span>{reservationData.menuInfo.discountType}</span>
-                    <span>
-                      -{reservationData.menuInfo.discountPrice.toLocaleString()}
-                      원
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -239,7 +291,7 @@ export default function ReservationLastCheckPage() {
             <div className="text-right">
               <div className="text-lg font-bold">
                 총 결제 금액:{" "}
-                {reservationData.menuInfo.finalPrice.toLocaleString()}원
+                {reservationData.menuInfo.finalPrice?.toLocaleString() || 0}원
               </div>
             </div>
 
@@ -247,7 +299,7 @@ export default function ReservationLastCheckPage() {
             <div className="mt-6">
               <button
                 onClick={() => (window.location.href = "/")}
-                className="w-full bg-[#03DAC5] text-white py-3 rounded-lg hover:bg-[#00a896] transition-colors"
+                className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors"
               >
                 메인으로 돌아가기
               </button>

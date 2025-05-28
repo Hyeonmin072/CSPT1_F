@@ -1,86 +1,69 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import ChatSidebar from "../../components/chat/ChatSidebar.jsx";
-import ChatWindow from "../../components/chat/ChatWindow.jsx";
-import Header from "../../components/common/Header.jsx";
+import { useState, useCallback } from "react";
+import ChatSidebar from "../../components/chat/ChatSidebar";
+import ChatWindow from "../../components/chat/ChatWindow";
+import useStompClient from "./useStompClient";
+import Header from "../../components/common/Header";
 
-const ChattingPage = () => {
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [socket, setSocket] = useState(null);
+const ChattingPage = ({ token }) => {
   const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
 
-  useEffect(() => {
-    if (selectedChat) {
-      axios
-        .get(`http://localhost:5000/api/chats/${selectedChat.id}/messages`)
-        .then((response) => {
-          setSelectedChat((prevChat) => ({
-            ...prevChat,
-            messages: response.data,
-          }));
-        })
-        .catch((error) =>
-          console.error("채팅 메시지를 불러오는 중 오류 발생:", error)
-        );
-    }
-  }, [selectedChat]);
-
-  useEffect(() => {
-    const newSocket = new WebSocket("ws://localhost:5000");
-
-    newSocket.onopen = () => console.log("WebSocket 연결됨");
-
-    newSocket.onmessage = (event) => {
-      const newMessage = JSON.parse(event.data);
-
-      setChats((prevChats) =>
-        prevChats.map((chat) =>
-          chat.id === newMessage.chatId
+  // 새 메시지 왔을 때 처리 함수
+  const onNewMessage = useCallback(
+    (newMessage) => {
+      setChats((prev) =>
+        prev.map((chat) =>
+          chat.chatRoomId === newMessage.chatRoomId
             ? {
                 ...chat,
-                lastMessage: newMessage.text,
-                lastMessageTime: newMessage.timestamp,
+                lastMessage: newMessage.content,
+                sendDate: newMessage.sendDate,
               }
             : chat
         )
       );
 
-      setSelectedChat((prevChat) => {
-        if (!prevChat || prevChat.id !== newMessage.chatId) return prevChat;
-        return {
-          ...prevChat,
-          messages: [...prevChat.messages, newMessage],
-        };
+      // 선택한 채팅방에 새 메시지 추가
+      setSelectedChat((prev) => {
+        if (!prev || prev.chatRoomId !== newMessage.chatRoomId) return prev;
+        return { ...prev, messages: [...(prev.messages || []), newMessage] };
       });
-    };
+    },
+    [setChats, setSelectedChat]
+  );
 
-    newSocket.onerror = (error) => console.error("WebSocket 오류:", error);
-    newSocket.onclose = () => console.log("WebSocket 연결 종료");
-
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, []);
+  // STOMP 클라이언트 세팅 및 채팅방들 구독
+  const stompClient = useStompClient(chats, onNewMessage);
 
   return (
     <div>
       <Header />
-      <div className="flex w-full h-auto bg-white justify-center items-center mt-20">
-        <div className="flex w-full max-w-[1300px] h-[90vh] bg-white rounded-lg overflow-hidden">
-          <ChatSidebar
-            setSelectedChat={setSelectedChat}
-            selectedChat={selectedChat}
-            chats={chats}
-            setChats={setChats}
-          />
-          {selectedChat ? (
-            <ChatWindow selectedChat={selectedChat} socket={socket} />
-          ) : (
-            <div className="flex-1 flex justify-center items-center text-gray-500">
-              채팅을 시작하세요
+      {/* 헤더가 fixed면 padding-top으로 헤더 높이만큼 공간 확보 */}
+      <main className="pt-20 flex justify-center items-center">
+        <div className="flex w-full h-[90vh] max-w-[1300px] bg-white rounded-lg overflow-auto">
+          {!selectedChat ? (
+            // 선택된 채팅방 없으면 사이드바만 크게 보여주기 + 가운데 정렬
+            <div className="flex-1 flex justify-center">
+              <ChatSidebar
+                chats={chats}
+                setChats={setChats}
+                setSelectedChat={setSelectedChat}
+                token={token}
+                className="w-full max-w-lg"
+              />
             </div>
+          ) : (
+            // 선택된 채팅방 있으면 채팅창만 크게 보여주기
+            <ChatWindow
+              selectedChat={selectedChat}
+              setSelectedChat={setSelectedChat}
+              socket={stompClient}
+              token={token}
+              className="flex-1"
+            />
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

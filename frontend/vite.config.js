@@ -13,7 +13,9 @@ export default defineConfig({
     hmr: {
       overlay: true, // 오류 오버레이 비활성화
     },
-    
+    proxy: {
+      '/notification': 'http://localhost:1271', // 백엔드 주소
+    }
   },
   define: {
     'process.env': {}  // 여기서 process.env를 정의
