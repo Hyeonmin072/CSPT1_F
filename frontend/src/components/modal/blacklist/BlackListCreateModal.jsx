@@ -1,90 +1,108 @@
-import { useState } from "react";
+// BlackListCreateModal.jsx (등록 모달)
+import { useState, useEffect } from "react";
 import axiosInstance from "../../sign/axios/AxiosInstance";
 
-export default function BlackListCreateModal({ showModal, setShowModal, setBlacklist, sId }) {
-    // 이후 리뷰페이지 제작 후, 그 고객 리뷰게시글에서 신고 버튼을 눌렀을 떄,유저 id와 name을 props로 받아 가져오도록 수정
-    const [newEntry, setNewEntry] = useState({ u_name: "", u_id: "", b_reason: "" });
-    
-    // 블랙리스트 등록 함수
+export default function BlackListCreateModal({ showModal, setShowModal, setBlacklist, blacklist, reservations }) {
+    const [selectedUserEmail, setSelectedUserEmail] = useState("");
+    const [reason, setReason] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    // 예약에서 중복 없이 유저 이메일 + 이름 목록 만들기 (props로 reservations 받음)
+    const uniqueUsers = [];
+    const emailSet = new Set();
+    for (const r of reservations) {
+        if (r.userEmail && !emailSet.has(r.userEmail)) {
+            emailSet.add(r.userEmail);
+            uniqueUsers.push({ userName: r.userName, userEmail: r.userEmail });
+        }
+    }
+
     const handleAdd = async () => {
-        if (newEntry.u_name && newEntry.u_id && newEntry.b_reason) {
-            try {
-                const isAlreadyBlacklisted = await axiosInstance.post(sId, newEntry.u_id);
-                if (isAlreadyBlacklisted) {
-                    alert("이미 등록되어있습니다.");
-                    return;
-                }
+        if (!selectedUserEmail) {
+            alert("블랙리스트에 등록할 유저를 선택해주세요.");
+            return;
+        }
+        if (!reason.trim()) {
+            alert("등록 사유를 입력해주세요.");
+            return;
+        }
 
-                const b_id = crypto.randomUUID(); // 랜덤 UUID 생성
-                const entryWithIds = {
-                    u_id: newEntry.u_id, // 유저 ID
-                    b_id, // 블랙리스트 고유 ID 
-                    s_id: sId, // 현재 사업자 ID
-                    b_reason: newEntry.b_reason, // 등록 사유
-                };
+        // 중복 체크: 이미 blacklist에 있으면 alert 후 중단
+        if (blacklist.some(entry => entry.userEmail === selectedUserEmail)) {
+            alert("이미 블랙리스트에 등록된 유저입니다.");
+            return;
+        }
 
-                const addedEntry = await axiosInstance.post(entryWithIds);
-                setBlacklist((prev) => [...prev, addedEntry]); // 상태 업데이트
-                setNewEntry({ u_name: "", u_id: "", b_reason: "" }); // 입력 필드 초기화
-                setShowModal(false);
-            } catch (error) {
-                console.error("Error adding entry:", error);
-                alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-            }
-        } else {
-            alert("모든 필드를 입력해주세요!");
+        setLoading(true);
+        try {
+            await axiosInstance.post("/shop/blacklists", {
+                userEmail: selectedUserEmail,
+                reason,
+            });
+
+            // 등록 후 전체 블랙리스트 다시 불러오기
+            const updatedList = await axiosInstance.get("/shop/blacklists");
+            setBlacklist(updatedList.data);
+
+            setSelectedUserEmail("");
+            setReason("");
+            setShowModal(false);
+        } catch (error) {
+            console.error("블랙리스트 등록 실패:", error);
+            alert("블랙리스트 등록 중 오류가 발생했습니다.");
+        } finally {
+            setLoading(false);
         }
     };
-
 
     return (
         <>
             {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="w-[600px] bg-white p-6 rounded shadow-lg space-y-2">
-                        <h2 className="text-lg font-bold mb-4">블랙리스트 등록</h2>
-                        <div className="flex flex-row space-x-3">
-                            <div className="mb-2">
-                                <label className="block text-sm font-medium">유저 ID</label>
-                                <input
-                                    type="text"
-                                    className="w-[270px] px-2 py-1 border rounded"
-                                    value={newEntry.u_id}
-                                    readOnly
-                                />
-                            </div>
-                            <div className="mb-2">
-                                <label className="block text-sm font-medium">이름</label>
-                                <input
-                                    type="text"
-                                    className="w-[270px] px-2 py-1 border rounded bg-gray-100"
-                                    value={newEntry.u_name}
-                                    readOnly
-                                />
-                            </div>
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="w-[600px] bg-white p-6 rounded shadow-lg space-y-4">
+                        <h2 className="text-lg font-bold mb-2">블랙리스트 등록</h2>
 
+                        <div>
+                            <label className="block mb-1 font-medium">유저 선택 (지난 7일 예약 기준)</label>
+                            <select
+                                className="w-full border rounded px-2 py-1"
+                                value={selectedUserEmail}
+                                onChange={(e) => setSelectedUserEmail(e.target.value)}
+                            >
+                                <option value="">-- 유저를 선택하세요 --</option>
+                                {uniqueUsers.map((user) => (
+                                    <option key={user.userEmail} value={user.userEmail}>
+                                        {user.userName} ({user.userEmail})
+                                    </option>
+                                ))}
+                            </select>
                         </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium">등록 사유</label>
+
+                        <div>
+                            <label className="block mb-1 font-medium">등록 사유</label>
                             <textarea
-                                className="w-full h-[250px] px-2 py-1 border rounded resize-none"
-                                value={newEntry.b_reason}
-                                onChange={(e) =>
-                                    setNewEntry((prev) => ({...prev, b_reason: e.target.value}))
-                                }
-                                rows={4}
+                                className="w-full border rounded px-2 py-1 resize-none"
+                                rows={6}
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
+                                placeholder="등록 사유를 입력하세요"
                             />
                         </div>
-                        <div className="flex justify-end">
+
+                        <div className="flex justify-end space-x-2">
                             <button
-                                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mr-2"
+                                className={`bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ${
+                                    loading ? "opacity-50 cursor-not-allowed" : ""
+                                }`}
                                 onClick={handleAdd}
+                                disabled={loading}
                             >
                                 등록
                             </button>
                             <button
-                                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 "
+                                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
                                 onClick={() => setShowModal(false)}
+                                disabled={loading}
                             >
                                 취소
                             </button>
