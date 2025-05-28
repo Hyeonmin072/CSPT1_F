@@ -128,7 +128,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
 
         //서버에서 test라고 이름이 지정 된 메세지 (최초 연결 확인)
         eventSource.addEventListener("test", (event) => {
-          console.log("📤 알림 이벤트:", event.data);
+          console.log("📤 최초 연결 성공 :", event.data);
         });
 
         //서버에서 connect라고 이름이 지정 된 메세지 (주 내용)
@@ -137,6 +137,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
         });
       } catch (err) {
         console.error("알림 서버 연결 실패:", err);
+        eventSource.close();
       }
 
       // 유저 타입에 따른 리다이렉트

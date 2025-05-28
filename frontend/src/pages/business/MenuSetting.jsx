@@ -74,7 +74,12 @@ export default function MenuSetting() {
     e.preventDefault();
 
     // 필수 필드 검증
-    if (!menuData.name || !menuData.desc || !menuData.category) {
+    if (
+      !menuData.name ||
+      !menuData.desc ||
+      !menuData.category ||
+      !menuData.price
+    ) {
       toast.error("필수 항목을 모두 입력해주세요.", {
         position: "bottom-right",
         autoClose: 2000,
@@ -99,23 +104,23 @@ export default function MenuSetting() {
       const requestDto = {
         name: menuData.name,
         desc: menuData.desc,
-        price: menuData.price,
+        price: parseInt(menuData.price), // 문자열을 숫자로 변환
         estimatedTime: menuData.estimatedTime,
         category: menuData.category,
-        designerEmail: menuData.designerEmail,
-        designerEmails: menuData.designerEmail ? [menuData.designerEmail] : [], // 리스트 형태로 변환
+        designerEmails: [menuData.designerEmail], // 단일 이메일을 리스트로 변환
       };
 
-      console.log("요청 DTO:", requestDto); // 요청 DTO 로깅
+      console.log("요청 DTO:", requestDto);
 
       const formData = new FormData();
 
-      // JSON을 문자열로 변환한 후 Blob으로 변환
-      const requestBlob = new Blob([JSON.stringify(requestDto)], {
-        type: "application/json",
-      });
-
-      formData.append("request", requestBlob);
+      // JSON 데이터를 직접 추가
+      formData.append(
+        "request",
+        new Blob([JSON.stringify(requestDto)], {
+          type: "application/json",
+        })
+      );
 
       // 이미지 파일 추가
       if (menuData.image) {
@@ -131,19 +136,18 @@ export default function MenuSetting() {
           console.log("- 파일크기:", value.size, "bytes");
           console.log("- 파일타입:", value.type);
         } else if (key === "request") {
-          console.log("요청 DTO (JSON)");
-          // FormData의 request 내용 확인을 위해 추가
           const reader = new FileReader();
           reader.onload = () => {
             console.log("request 내용:", reader.result);
           };
           reader.readAsText(value);
-        } else {
-          console.log(`${key}:`, value);
         }
       }
 
-      const response = await axiosInstance.post("/shop/menu", formData, {
+      const response = await axiosInstance.post("/menus", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         withCredentials: true,
       });
 
