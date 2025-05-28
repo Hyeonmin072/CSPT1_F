@@ -243,7 +243,7 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
         )}
 
         {messages.map((msg, idx) => {
-          const isMe = msg.sender === "me";
+          const isMe = msg.sender === currentUser.email && msg.senderType === currentUser.userType;
 
           return (
             <div

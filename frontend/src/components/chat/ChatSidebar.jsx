@@ -3,12 +3,16 @@ import axiosInstance from "../../axios/AxiosInstance";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
+import timezone from "dayjs/plugin/timezone"; 
+import utc from "dayjs/plugin/utc";
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 const DefaultProfileIcon = () => (
   <svg
@@ -39,41 +43,41 @@ const ChatSidebar = ({
       .get("/user/chatroom")
       .then((res) => {
         setChats(res.data);
+        console.log("채팅창 목록 데이터:",res.data);
       })
       .catch((err) => console.error("❌ 채팅방 목록 조회 실패", err));
   }, [setChats]);
 
   const handleDeleteChat = (chatRoomId) => {
     Swal.fire({
-      title: '정말 나가시겠어요?',
-      text: '채팅방을 나가면 대화 내용을 다시 볼 수 없습니다.',
-      icon: 'warning',
+      title: "정말 나가시겠어요?",
+      text: "채팅방을 나가면 대화 내용을 다시 볼 수 없습니다.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#aaa',
-      confirmButtonText: '나가기',
-      cancelButtonText: '취소',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "나가기",
+      cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosInstance
-          .delete(`/user/chatroom/${chatRoomId}`)
+          .delete(`/designer/chatroom/${chatRoomId}`)
           .then(() => {
             setChats((prev) => prev.filter((c) => c.chatRoomId !== chatRoomId));
             if (selectedChat?.chatRoomId === chatRoomId) {
               setSelectedChat(null);
             }
-
             Swal.fire({
-              title: '삭제 완료',
-              text: '채팅방을 나갔습니다.',
-              icon: 'success',
+              title: "삭제 완료",
+              text: "채팅방을 나갔습니다.",
+              icon: "success",
               timer: 1500,
               showConfirmButton: false,
             });
           })
           .catch((err) => {
             console.error("❌ 채팅방 삭제 실패", err);
-            Swal.fire('오류 발생', '채팅방을 나갈 수 없습니다.', 'error');
+            Swal.fire("오류 발생", "채팅방을 나갈 수 없습니다.", "error");
           });
       }
     });
@@ -102,20 +106,27 @@ const ChatSidebar = ({
                 hover:bg-blue-50
                 ${isSelected ? "bg-blue-100 shadow-md" : "bg-white"}`}
               style={{ minHeight: 60 }}
+              onClick={() => setSelectedChat(chat)}
             >
-              <div
-                className="flex items-center space-x-3 flex-1 min-w-0"
-                onClick={() => setSelectedChat(chat)}
-              >
-                {chat.profileImage ? (
-                  <img
-                    src={chat.profileImage}
-                    alt="프로필"
-                    className="w-14 h-14 rounded-full object-cover border border-gray-200"
-                  />
-                ) : (
-                  <DefaultProfileIcon />
-                )}
+              <div className="flex items-center space-x-3 flex-1 min-w-0">
+                <div className="relative">
+                  {chat.profileImage ? (
+                    <img
+                      src={chat.profileImage}
+                      alt="프로필"
+                      className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                    />
+                  ) : (
+                    <DefaultProfileIcon />
+                  )}
+
+                  {/* 안읽은 메시지 개수 빨간 배지 */}
+                  {chat.unreadCount > 0 && (
+                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                      {chat.unreadCount > 99 ? "99+" : chat.unreadCount}
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-center">
@@ -123,10 +134,10 @@ const ChatSidebar = ({
                       {chat.partnerName || "이름 없음"}
                     </p>
                     {chat.sendDate && (
-                        <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
-                            {dayjs(chat.sendDate).add(9, 'hour').fromNow()}
-                        </span>
-                        )}
+                      <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
+                        {dayjs(chat.sendDate).tz("Asia/Seoul").fromNow()}
+                      </span>
+                    )}
                   </div>
                   {chat.lastMessage && (
                     <p className="text-gray-600 text-sm truncate max-w-[240px] mt-1">

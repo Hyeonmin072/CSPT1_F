@@ -8,28 +8,45 @@ const DesignerChattingPage = ({ token }) => {
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
 
-  // 새 메시지 왔을 때 처리 함수
   const onNewMessage = useCallback(
     (newMessage) => {
-      setChats((prev) =>
-        prev.map((chat) =>
-          chat.chatRoomId === newMessage.chatRoomId
-            ? {
-                ...chat,
-                lastMessage: newMessage.content,
-                sendDate: newMessage.sendDate,
-              }
-            : chat
-        )
-      );
+      setChats((prev) => {
+        // 해당 채팅방 있으면 업데이트
+        const chatExists = prev.some(chat => chat.chatRoomId === newMessage.chatRoomId);
+        let updated;
+        console.log("새로온 메세지의 read:",newMessage.read);
+        if (chatExists) {
+          updated = prev.map(chat =>
+            chat.chatRoomId === newMessage.chatRoomId
+              ? {
+                  ...chat,
+                  lastMessage: newMessage.content,
+                  sendDate: newMessage.sendDate,
+                  hasNewMessage: true,
+                  unreadCount: (Number(chat.unreadCount) || 0) + (newMessage.read ? 0 : 1),
+                }
+              : chat
+          );
+        } else {
+          // 새 채팅방이라면 추가
+          updated = [
+            ...prev,
+            {
+              chatRoomId: newMessage.chatRoomId,
+              lastMessage: newMessage.content,
+              sendDate: newMessage.sendDate,
+              hasNewMessage: true,
+              // 필요한 다른 초기값도 넣어주세요.
+              partnerName: newMessage.sender, // 예시
+              messages: [newMessage],
+            },
+          ];
+        }
 
-      // 선택한 채팅방에 새 메시지 추가
-      setSelectedChat((prev) => {
-        if (!prev || prev.chatRoomId !== newMessage.chatRoomId) return prev;
-        return { ...prev, messages: [...(prev.messages || []), newMessage] };
+        console.log("Chats 업데이트:", updated);
+        return updated;
       });
-    },
-    [setChats, setSelectedChat]
+    }
   );
 
   // STOMP 클라이언트 세팅 및 채팅방들 구독
