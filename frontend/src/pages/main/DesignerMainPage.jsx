@@ -1,6 +1,5 @@
 import DesignerHeader from "../../components/common/DesignerHeader.jsx";
 import DesignerMain from "../../components/DesingerAbout/main/DesignerMain.jsx";
-import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { selectedDesigner } from "../../components/dummydata/DummydbDesigner.jsx";
 
 export default function DesignerMainPage() {
@@ -12,7 +11,6 @@ export default function DesignerMainPage() {
                 <DesignerMain />
             </div>
 
-            <DesignerID designer={selectedDesigner} />
         </div>
     );
 }

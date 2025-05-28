@@ -1,48 +1,53 @@
 import React from "react";
 
-export default function CouponDetailModal({ isCModalOpen, selectedItem, closeCouponModal }){
+export default function CouponDetailModal({ isCModalOpen, selectedItem, closeCouponModal }) {
     if (!isCModalOpen) return null; // 모달이 닫힌 상태에서는 렌더링하지 않음
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white rounded-md p-6 max-w-lg w-[700px] h-auto">
-                <h3 className="text-xl font-semibold mb-4">{selectedItem.c_name}</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white rounded-lg shadow-lg p-8 max-w-lg w-[700px]">
+                {/* 제목 */}
+                <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    {selectedItem.name || "쿠폰 상세 정보"}
+                </h3>
+                <h2 className="border-b mb-4"></h2>
 
-                {/* 쿠폰 수령 가능 종료일 */}
-                <p className="mt-4">수령 가능 기간</p>
-                <p className="mb-2">{selectedItem.c_get_date || "없음"}일</p>
-
-                <p className="mt-4">수령 후 사용 가능 기간</p>
-                <p className="mb-2">{selectedItem.c_use_date || "없음"}일</p>
-
-                {/* 할인 유형 */}
-                <p className="mt-4">할인 유형</p>
-                <p className="mb-2">{selectedItem.c_type || "없음"}</p>
-
-                {/* 할인 금액 */}
-                <p className="mt-4">할인 금액</p>
-                <div className="flex flex-row">
-                    <p className="mb-2">
-                        {selectedItem.c_type === "PERCENT"
-                            ? ` ${selectedItem.c_price}%`
-                            : selectedItem.c_type === "FIXED"
-                                ? ` ${selectedItem.c_price}원`
+                {/* 상세 정보 */}
+                <dl className="space-y-4">
+                    <div className="flex flex-row space-x-5 px-2 py-2">
+                        <dt className="text-sm font-semibold text-gray-600">수령 가능 기간 : </dt>
+                        <dd className="text-gray-800">{selectedItem.getDate || "없음"}</dd>
+                    </div>
+                    <div className="flex flex-row space-x-5 px-2 py-2">
+                        <dt className="text-sm font-semibold text-gray-600">수령 후 사용 가능 기간 : </dt>
+                        <dd className="text-gray-800">{selectedItem.useDate || "없음"}일</dd>
+                    </div>
+                    <div className="flex flex-row space-x-5 px-2 py-2">
+                        <dt className="text-sm font-semibold text-gray-600">할인 유형 : </dt>
+                        <dd className="text-gray-800">{selectedItem.type || "없음"}</dd>
+                    </div>
+                    <div className="flex flex-row space-x-5 px-2 py-2">
+                        <dt className="text-sm font-semibold text-gray-600">할인 금액 : </dt>
+                        <dd className="text-gray-800">
+                            {selectedItem.type === "PERCENT"
+                                ? `${selectedItem.price}%`
+                                : selectedItem.type === "FIXED"
+                                ? `${selectedItem.price}원`
                                 : "없음"}
-                    </p>
-
-                </div>
+                        </dd>
+                    </div>
+                </dl>
 
                 {/* 닫기 버튼 */}
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-end mt-6">
                     <button
                         onClick={closeCouponModal}
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-200"
                     >
                         닫기
                     </button>
                 </div>
             </div>
         </div>
-
     );
 }

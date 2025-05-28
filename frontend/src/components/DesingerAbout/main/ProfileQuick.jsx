@@ -13,9 +13,9 @@ export default function ProfileQuick() {
     useEffect(() => {
         const fetchProfileQuick = async () => {
             try {
-                // const response = await axiosInstance.get("/designer/profile"); // 이후 변경
-                // const data = response.data;
-                setDesigner(dummyProfile.data);
+                const response = await axiosInstance.get("/designer/profile");
+                const data = response.data;
+                setDesigner(data);
             } catch (err) {
                 console.error("Error fetching profileQuick:", err);
             } finally {

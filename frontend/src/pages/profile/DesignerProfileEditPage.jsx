@@ -1,6 +1,5 @@
 import DesignerHeader from "../../components/common/DesignerHeader.jsx";
 import DesignerProfileEdit from "../../components/DesingerAbout/profile/Edit/DesignerProfileEdit.jsx";
-import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { selectedDesigner } from "../../components/dummydata/DummydbDesigner.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -137,7 +136,6 @@ export default function DesignerProfileEditPage() {
         />
       </div>
 
-      <DesignerID designer={selectedDesigner} />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import DesignerHeader from "../../components/common/DesignerHeader.jsx";
 import GetJob from "../../components/DesingerAbout/getjob/GetJob.jsx";
-import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { selectedDesigner } from "../../components/dummydata/DummydbDesigner.jsx";
 
 export default function GetJobPage(){
@@ -12,7 +11,6 @@ export default function GetJobPage(){
                 <GetJob/>
             </div>
 
-            <DesignerID designer={selectedDesigner} />
         </div>
     );
 }

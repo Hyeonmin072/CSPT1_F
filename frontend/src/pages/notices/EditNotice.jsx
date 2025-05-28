@@ -22,7 +22,7 @@ export default function EditNotice() {
             try {
                 const response = await axiosInstance.get(`/shop/notice/${noticeId}`);
                 const data = response.data;
-
+                console.log("Fetched Data:", data); // 디버깅 로그
                 setNotice({
                     ...data,
                     title: data.title,
@@ -33,15 +33,15 @@ export default function EditNotice() {
                 console.error("Error fetching notice data:", error);
             }
         };
-
+    
         fetchNoticeData();
     }, [noticeId]);
 
     const convertTextToHTML = (text) => {
         return text
-            .split("\n") // 줄바꿈을 기준으로 분리
-            .map((line) => `<div>${line || "<br>"}</div>`) // 각 줄을 <div>로 감싸고 빈 줄은 <br>로 처리
-            .join(""); // 다시 합치기
+            .split("\n")
+            .map((line) => `<div>${line || "<br>"}</div>`)
+            .join(""); 
     };
 
     const handleUpdate = async () => {
@@ -51,6 +51,7 @@ export default function EditNotice() {
                 content: convertTextToHTML(notice.content),
                 importance: notice.importance,
             };
+            console.log("importance 확인 : ", updatedNotice.importance);
 
             const response = await axiosInstance.patch(`/shop/notice/${noticeId}`, updatedNotice);
             if (response.status === 200) {
@@ -64,7 +65,6 @@ export default function EditNotice() {
     };
     
     const stripHTML = (html) => {
-        console.log("HTML content:", html);
         const doc = new DOMParser().parseFromString(html, "text/html");
         return doc.body.innerHTML.replace(/<\/div>/g, "<br>").replace(/<br\s*\/?>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " "); // <br>은 \n으로, 나머지 태그는 제거
     };
@@ -90,7 +90,13 @@ export default function EditNotice() {
                     />
                     <select
                         value={notice.importance ? "important" : "normal"}
-                        onChange={(e) => setNotice({ ...notice, importance: e.target.value === "important" })}
+                        onChange={(e) => {
+                            const updatedImportance = e.target.value === "important";
+                            setNotice((prevNotice) => ({
+                                ...prevNotice,
+                                importance: updatedImportance,
+                            }));
+                        }}
                         className="p-2 border rounded w-1/4 border-gray-300"
                     >
                         <option value="normal">일반 공지사항</option>

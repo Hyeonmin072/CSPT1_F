@@ -1,6 +1,5 @@
 import DesignerHeader from "../../components/common/DesignerHeader.jsx";
 import DesignerProfile from "../../components/DesingerAbout/profile/DesignerProfile.jsx";
-import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { selectedDesigner } from "../../components/dummydata/DummydbDesigner.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -56,17 +55,6 @@ export default function DesignerProfilePage() {
           isSubmitting={isSubmitting}
         />
       </div>
-
-      <DesignerID
-        designer={{
-          ...selectedDesigner,
-          name: designerData.name,
-          email: designerData.email,
-          tel: designerData.tel,
-          shopName: designerData.shopName,
-          reviews: designerData.reviews,
-        }}
-      />
     </div>
   );
 }

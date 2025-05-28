@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import ApiEvent from "../../businessabout/eventmenu/axios/ApiEvent.jsx"; // 백엔드 호출 부분 주석 처리
 import { reservation } from "../../reservation/menuselect/MenuSelect.jsx"; // 예약 데이터 import
 
 export default function EventCreateModal({
