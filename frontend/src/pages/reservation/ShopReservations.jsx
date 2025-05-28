@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BusinessHeader from "../../components/common/BusinessHeader.jsx";
-
+import ReservationDetailModal from "./ReservationDetailModal.jsx";
 // 날짜 포맷 변환 함수
 const formatDate = (isoDate) => {
   const date = new Date(isoDate);
@@ -14,47 +14,6 @@ const formatDate = (isoDate) => {
 const formatPrice = (price) => {
   return price.toLocaleString() + "원";
 };
-
-// 상세 모달 컴포넌트 (내부에 같이 작성)
-function ReservationDetailModal({ reservationId, onClose }) {
-  const [reservation, setReservation] = useState(null);
-
-  useEffect(() => {
-    if (!reservationId) return;
-
-    const fetchDetail = async () => {
-      try {
-        const response = await axios.get(`/shop/reservations/${reservationId}`);
-        setReservation(response.data);
-      } catch (error) {
-        console.error("상세 예약 데이터를 불러오는 중 오류 발생:", error);
-      }
-    };
-
-    fetchDetail();
-  }, [reservationId]);
-
-  if (!reservation) return null;
-
-  return (
-      <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md relative">
-          <button
-              onClick={onClose}
-              className="absolute top-3 right-4 text-gray-500 hover:text-black"
-          >
-            ✕
-          </button>
-          <h3 className="text-xl font-bold mb-4">예약 상세 정보</h3>
-          <p><strong>고객:</strong> {reservation.userName}</p>
-          <p><strong>디자이너:</strong> {reservation.designerName}</p>
-          <p><strong>메뉴:</strong> {reservation.menuName}</p>
-          <p><strong>가격:</strong> {formatPrice(reservation.menuPrice)}</p>
-          <p><strong>일시:</strong> {formatDate(reservation.serviceDate)}</p>
-        </div>
-      </div>
-  );
-}
 
 export default function ShopReservationsPage() {
   const [reservations, setReservations] = useState([]);
