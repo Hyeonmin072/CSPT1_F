@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { MessageSquareText, Edit } from "lucide-react";
 import { selectedDesigner } from "../../dummydata/DummydbDesigner.jsx";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../axios/AxiosInstance.js";
 
 export default function LeftSection({ description, isViewMode = false }) {
   const [designer, setDesigner] = useState(null); // 디자이너 정보 상태
@@ -45,8 +46,18 @@ export default function LeftSection({ description, isViewMode = false }) {
     }
   };
 
-  const handleChat = () => {
-    navigate("/chat");
+  const handleChat = async () => {
+    if(!designer) return;
+    console.log("채팅 요청 할려는 디자이너 이메일:",designer.email);
+    axiosInstance.post("/user/chatroom/request",{
+      designerEmail : designer.email,
+    }).then((res) => {
+      console.log("채팅방 리퀘스트 성공:",res.data);
+      const chatRoomId = res.data.chatRoomId;
+      navigate("/userchat",{ state:{chatRoomId} });
+    }).catch((err) => {
+      console.error("채팅방 요청 실패:",err);
+    })
   };
 
   if (loading) {
