@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 // 공통 컴포넌트
 import Footer from "./components/common/Footer";
 
-import ChattingPage from "./pages/chatting/ChattingPage.jsx";
+
 
 // 고객
 import MainPage from "./pages/main/MainPage.jsx";
@@ -30,6 +30,7 @@ import DesignerMatchPage from "./pages/designer/DesignerMatchPage";
 import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.jsx";
 import ReservationLastCheckPage from "./pages/reservation/ReservationLastCheckPage.jsx";
 import DesignerInfoPage from "./pages/designer/DesignerInfoPage.jsx";
+import ChattingPage from "./pages/chatting/ChattingPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -42,6 +43,7 @@ import CVCheck from "./pages/cv/CVCheckPage.jsx";
 import DesignerProfilePage from "./pages/profile/DesignerProfilePage.jsx";
 import DesignerProfileEditPage from "./pages/profile/DesignerProfileEditPage.jsx";
 import WeekNotice from "./components/DesingerAbout/main/notice/WeekNotice.jsx";
+import DesignerChattingPage from "./pages/chatting/DesignerChattingPage.jsx";
 
 // 사업자
 import BusinessMainPage from "./pages/main/BusinessMainPage.jsx";
@@ -64,6 +66,7 @@ import RegisterJobPage from "./pages/searchjob/RegisterJobPage.jsx";
 import EditJobPage from "./pages/searchjob/EditJobPage.jsx";
 
 import ShopReservations from "./pages/reservation/ShopReservations.jsx";
+
 
 
 function App() {
@@ -198,10 +201,6 @@ function App() {
           {/* 공통 라우트 */}
           <Route path="/social/signup" element={<SocialSignup />} />
           <Route
-            path="/chat"
-            element={<ChattingPage onLoginClick={openLoginModal} />}
-          />
-          <Route
             path="/hairshop"
             element={<HairShopPage onLoginClick={openLoginModal} />}
           />
@@ -264,6 +263,10 @@ function App() {
                 path="/user/payment/success-page"
                 element={<ReservationLastCheckPage />}
               />
+              <Route
+                path="/userchat"
+                element={<ChattingPage onLoginClick={openLoginModal} />}
+              />
             </>
           )}
 
@@ -321,6 +324,10 @@ function App() {
                   <DesignerProfileEditPage onLoginClick={openLoginModal} />
                 }
               />
+              <Route
+                path="/designerchat"
+                element={<DesignerChattingPage onLoginClick={openLoginModal} />}
+             />
             </>
           )}
 

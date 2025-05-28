@@ -171,7 +171,7 @@ export default function Header() {
               <Link to="/designerpage" className="text-gray-700">
                 디자이너
               </Link>
-              <Link to="/chat" className="text-gray-700">
+              <Link to="/userchat" className="text-gray-700">
                 채팅
               </Link>
             </nav>

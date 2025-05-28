@@ -7,7 +7,7 @@ const useStompClient = (chats, onNewMessage) => {
   useEffect(() => {
     const client = new Client({
       brokerURL: "ws://localhost:1271/ws-connect",
-      reconnectDelay: 5000,
+      reconnectDelay: 30000,
     });
 
     client.onConnect = () => {
