@@ -19,7 +19,7 @@ export default function MainIcons() {
         { icon: <Newspaper />, label: "공지사항 등록", path: "/notices" },
         { icon: <Scissors />, label: "근태 관리" },
         { icon: <Gift />, label: "이벤트 및 쿠폰 관리", path: "/eventmenu" },
-        { icon: <Building2 />, label: "구인 구직" },
+        { icon: <Building2 />, label: "구인 구직", path: "/searchjob" },
         { icon: <UserX />, label: "블랙리스트 관리", path: "/blacklist" },
         { icon: <NotebookPen />, label: "메뉴 설정", path: "/menu-setting" },
       ].map((item, index) => (

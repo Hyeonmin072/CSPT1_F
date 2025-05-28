@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import CheckDetailModal from "../modal/reservationcheck/CheckDetailModal.jsx";
 import CheckList from "./CheckList.jsx";
 import CheckHeader from "./CheckHeader.jsx";
-import axios from "axios";
+import axiosInstance from "../sign/axios/AxiosInstance.jsx";
 
-import reviewEX from "../../assets/hairshop/reviewEX.jpg";
 
 export default function ReservationCheck() {
   const [selectedReservation, setSelectedReservation] = useState(null);
@@ -18,7 +17,7 @@ export default function ReservationCheck() {
     const fetchReservations = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/user/reservation");
+        const response = await axiosInstance.get("/user/reservation");
         console.log("예약 정보 응답 데이터:", response.data);
         setReservations(response.data);
         setError(null);
@@ -33,7 +32,6 @@ export default function ReservationCheck() {
     fetchReservations();
   }, []);
 
-  // id를 기준으로 정렬
   const sortedReservations = reservations.sort(
     (a, b) => new Date(b.serviceDate) - new Date(a.serviceDate)
   );
@@ -45,7 +43,6 @@ export default function ReservationCheck() {
         selectedYear
   );
 
-  // 검색어에 따라 필터링된 예약 목록
   const filteredSearch = sortedReservations.filter(
     (reservation) =>
       reservation?.serviceDate &&
@@ -69,7 +66,7 @@ export default function ReservationCheck() {
       date: reservation.serviceDate,
       salonName: reservation.shop,
       designer: reservation.designer,
-      menu: reservation.menu,
+      menu: reservation.menu || "메뉴 없음",
       price: reservation.price,
       status: "예약완료", // 기본값 설정
     });

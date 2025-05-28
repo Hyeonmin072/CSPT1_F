@@ -32,7 +32,7 @@ export default function CheckList({
                 </td>
                 <td className="border py-2 px-4">{reservation.shop}</td>
                 <td className="border py-2 px-4">{reservation.designer}</td>
-                <td className="border py-2 px-4">{reservation.menu}</td>
+                <td className="border py-2 px-4">{reservation.menu || ""}</td>
                 <td className="border py-2 px-4">
                   <span>{reservation.price}원</span>
                 </td>

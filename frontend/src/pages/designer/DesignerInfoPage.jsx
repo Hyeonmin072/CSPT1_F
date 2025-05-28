@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/common/Header.jsx";
 import DesignerProfile from "../../components/DesingerAbout/profile/DesignerProfile.jsx";
-import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -125,16 +124,6 @@ export default function DesignerInfoPage() {
           reviews={dummyData.reviews} // 리뷰 데이터 전달
         />
       </div>
-
-      <DesignerID
-        designer={{
-          name: dummyData.name,
-          email: dummyData.email,
-          tel: dummyData.tel,
-          shopName: dummyData.shopName,
-          reviews: dummyData.reviews,
-        }}
-      />
     </motion.div>
   );
 }

@@ -19,19 +19,23 @@ export default function GetJob() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await axiosInstance.get("/job/posts");
+                const response = await axiosInstance.get("/designer/job/posts");
                 
-                const data = response.data.map((job) => ({
+                const data = Array.isArray(response.data) ? response.data : [];
+                console.log("구인 목록 응답 데이터:", data);
+                
+                const formattedData = data.map((job) => ({
                     ...job,
-                    postedTime: Math.floor(
-                        (new Date() - new Date(job.postedAt)) / 60000 // 게시된 시간 계산
+                    postedTime: formatPostedTime(
+                        Math.floor((new Date() - new Date(job.postedAt)) / 60000)
                     ),
                 }));
                 
-                setJobs(data);
-                setFilteredJobs(data); // 초기 필터링된 데이터 설정
+                setJobs(formattedData);
+                setFilteredJobs(formattedData);
             } catch (error) {
                 console.error("Error fetching job data:", error);
+                alert("구인 목록을 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.");
             } finally {
                 setLoading(false);
             }

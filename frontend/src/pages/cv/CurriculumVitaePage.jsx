@@ -1,6 +1,5 @@
 import DesignerHeader from "../../components/common/DesignerHeader.jsx";
 import CurriculumVitae from "../../components/DesingerAbout/cv/CurriculumVitae.jsx";
-import DesignerID from "../../components/DesingerAbout/DesignerID.jsx";
 import { selectedDesigner } from "../../components/dummydata/DummydbDesigner.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -118,8 +117,6 @@ export default function CurriculumVitaePage() {
           formatResumeDataForApi={formatResumeDataForApi}
         />
       </div>
-
-      <DesignerID designer={selectedDesigner} />
     </div>
   );
 }

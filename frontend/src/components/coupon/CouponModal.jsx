@@ -1,15 +1,27 @@
 import { X } from 'lucide-react';
 import logo from "../../assets/logo/logo.png";
+import axiosInstance from '../sign/axios/AxiosInstance';
+import { useEffect, useState } from 'react';
 
 export default function CouponModal({ isOpen, onClose }) {
-    const coupons = [
-        { id: 1, image:logo, discount: '10,000원 할인', validity: '26-06-07까지', range:"100,000원 이상시 사용가능"},
-        { id: 2, image:logo, discount: '99% 할인', validity: '26-06-07까지', range: "???" },
-        { id: 3, image:logo, discount: '99% 할인', validity: '26-06-07까지', range: "마감세일"},
-        { id: 4, image:logo, discount: '1,000원 할인', validity: '26-06-07까지', range: "10,000원 이상시 사용가능" },
-        { id: 5, image:logo, discount: '5,000원 할인', validity: '26-06-07까지', range: "50,000원 이상시 사용가능" }
-    ];
+    const [couponlist, setCouponList] = useState([]);
 
+    useEffect(() => {
+        const fetchCoupon = async() =>{
+            try {
+                const response = await axiosInstance("/user/allcoupons");
+                const data = response.data;
+
+                console.log("쿠폰 데이터 : ", data);
+                setCouponList(data);
+            } catch (error) {
+                console.log("데이터를 가져오는 데 실패했습니다 : ", error);
+            }
+            
+        }
+
+        fetchCoupon();
+    }, []);
 
     if (!isOpen) return null;
     return (
@@ -29,7 +41,7 @@ export default function CouponModal({ isOpen, onClose }) {
                                 display: none;
                             }
                         `}</style>
-                    {coupons.map(coupon => (
+                    {couponlist.map(coupon => (
                         <div key={coupon.id}
                              className="border-b border-gray-200 py-4 px-6 my-4 rounded-lg shadow bg-gray-100 relative flex items-center gap-6">
                             <img src={logo} alt="로고" className="w-12 h-12 mr-4 relative z-10"/>
@@ -37,9 +49,10 @@ export default function CouponModal({ isOpen, onClose }) {
                                 className="border-dashed border-r-2 border-gray-400 absolute left-20 top-0 bottom-0"
                                 style={{width: '12px'}}></div>
                             <div className="ml-15">
-                                <h3 className="text-lg font-semibold">{coupon.discount}</h3>
-                                <p className="text-gray-500">{coupon.validity}</p>
-                                <p className="text-gray-500">{coupon.range}</p>
+                                <h3 className="text-lg font-semibold">가게 : {coupon.shopName}</h3>
+                                <p className="text-gray-500">할인 타입 : {coupon.discountType}</p>
+                                <p className="text-gray-500">할인 가격 : {coupon.price}</p>
+                                <p className="text-gray-500">만료 기간 : {coupon.expireDate}</p>
                             </div>
                         </div>
                     ))}
