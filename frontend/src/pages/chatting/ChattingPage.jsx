@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect  } from "react";
 import ChatSidebar from "../../components/chat/ChatSidebar";
 import ChatWindow from "../../components/chat/ChatWindow";
 import useStompClient from "./useStompClient";
@@ -7,6 +7,16 @@ import Header from "../../components/common/Header";
 const ChattingPage = ({ token }) => {
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
+  const chatRoomIdFromNav = location.state?.chatRoomId;
+
+  useEffect(() => {
+    
+    const foundChat = chats.find(chat => chat.chatRoomId === chatRoomIdFromNav);
+    if (foundChat) {
+      setSelectedChat(foundChat);
+    }
+    
+  }, [chatRoomIdFromNav, chats]);
 
   const onNewMessage = useCallback(
     (newMessage) => {

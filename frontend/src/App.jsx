@@ -417,12 +417,10 @@ function App() {
                 path="/searchjob/edit/:id"
                 element={<EditJobPage onLoginClick={openLoginModal} />}
               />
-
               {/* 사업자 예약 목록 페이지 */}
               <Route
                 path="/reservations"
                 element={<ShopReservations onLoginClick={openLoginModal} />}
-
               />
             </>
           )}
