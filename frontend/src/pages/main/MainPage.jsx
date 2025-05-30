@@ -6,6 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import SignIntergration from "../../components/sign/SignIntergration";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import bg1 from "../../assets/bg/bg1.png";
+import bg2 from "../../assets/bg/bg2.png";
+import bg3 from "../../assets/bg/bg3.png";
+import logo from "../../assets/logo/logo.png";
+import { motion } from "framer-motion";
 
 // 스크롤 애니메이션을 위한 커스텀 훅
 function useScrollAnimation() {
@@ -96,25 +101,47 @@ export default function MainPage() {
       <div className="h-20"></div>
 
       {/* 히어로 섹션 */}
-      <div className="relative h-[500px] bg-gradient-to-r from-teal-500 to-teal-700">
+      <div className="relative h-[700px]">
+        <img
+          src={bg1}
+          alt="배경"
+          className="absolute inset-0 w-full h-full object-cover blur-sm"
+        />
         <div className="absolute inset-0 bg-black/30" />
-        <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center">
+        <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
           <AnimatedSection>
-            <div className="text-white max-w-2xl">
-              <h1 className="text-5xl font-bold mb-4">
+            <div className="text-white max-w-2xl p-4">
+              <h1 className="text-5xl font-bold mb-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
                 당신의 스타일을 완성하는
                 <br />
                 최고의 헤어 파트너
               </h1>
-              <p className="text-xl mb-8">
+              <p className="text-xl mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
                 전문 디자이너와 함께 당신만의 특별한 스타일을 만들어보세요
               </p>
               <button
-                className="bg-white text-teal-700 px-8 py-3 rounded-lg font-bold hover:bg-teal-50 transition-colors"
+                className="bg-white text-teal-700 px-8 py-3 rounded-lg font-bold hover:bg-teal-50 transition-colors drop-shadow-lg"
                 onClick={navigateToHairshop}
               >
                 헤어샵 찾기
               </button>
+            </div>
+          </AnimatedSection>
+          <AnimatedSection delay={300}>
+            <div className="hidden lg:block mr-10">
+              <motion.img
+                src={logo}
+                alt="Hairism Logo"
+                className="w-96 h-96 object-contain drop-shadow-2xl"
+                animate={{
+                  y: [0, -20, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
             </div>
           </AnimatedSection>
         </div>
@@ -185,7 +212,13 @@ export default function MainPage() {
                   자세히 보기
                 </button>
               </div>
-              <div className="w-full md:w-1/2 h-48 bg-gray-200 rounded-lg" />
+              <div className="w-full md:w-1/2 h-48 rounded-lg overflow-hidden">
+                <img
+                  src={bg2}
+                  alt="프로모션 배너"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -240,7 +273,13 @@ export default function MainPage() {
           {[1, 2, 3].map((item, index) => (
             <AnimatedSection key={item} delay={index * 200}>
               <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                <div className="h-48 bg-gray-200" />
+                <div className="h-48 bg-gray-200 overflow-hidden">
+                  <img
+                    src={bg3}
+                    alt="헤어 트렌드"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div className="p-4">
                   <div className="flex items-center text-sm text-gray-500 mb-2">
                     <Calendar className="w-4 h-4 mr-1" />

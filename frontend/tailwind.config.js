@@ -12,9 +12,11 @@ export default {
       'main-green': '#4BEA70',
       'sub-green': '#C8F28F',
     },
-
-
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'spin 20s linear infinite',
+      },
+    },
   },
   plugins: [],
 }
