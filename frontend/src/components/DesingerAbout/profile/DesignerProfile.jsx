@@ -33,7 +33,7 @@ export default function DesignerProfile({
   reviews = [],
 }) {
   return (
-    <div className="max-w-6xl mx-auto p-10">
+    <div className="max-w-6xl mx-auto p-10 mt-24">
       {/* Header */}
       <div className="bg-white w-full h-[380px] relative border-b-2">
         <ProfileHeader
@@ -49,7 +49,11 @@ export default function DesignerProfile({
       <div className="grid grid-cols-12 gap-4 mt-10">
         {/* 왼쪽 사이드: 소개 및 버튼 */}
         <div className="col-span-3 bg-white p-4 rounded-lg">
-          <LeftSection description={description} isViewMode={isViewMode} />
+          <LeftSection
+            description={description}
+            isViewMode={isViewMode}
+            email={email}
+          />
         </div>
         {/* 중앙: 리뷰 섹션 */}
         <div className="col-span-6 bg-white p-4 rounded-lg h-full">
