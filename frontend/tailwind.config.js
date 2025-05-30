@@ -5,6 +5,15 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      sans: ['GmarketSansMedium', 'sans-serif'],
+    },
+    colors:{
+      'main-green': '#4BEA70',
+      'sub-green': '#C8F28F',
+    },
+
+
     extend: {},
   },
   plugins: [],

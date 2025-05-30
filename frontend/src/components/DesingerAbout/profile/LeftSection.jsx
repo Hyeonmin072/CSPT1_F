@@ -15,10 +15,6 @@ export default function LeftSection({ description, isViewMode = false }) {
   useEffect(() => {
     const fetchDesignerProfile = async () => {
       try {
-        // 실제 API 호출 시 아래 코드를 활성화
-        // const response = await fetch(`/api/designer/${currentProfileId}`);
-        // const data = await response.json();
-
         // 더미 데이터 사용
         const data = selectedDesigner;
         setDesigner(data); // 디자이너 데이터 상태 업데이트
