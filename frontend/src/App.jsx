@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -72,6 +72,7 @@ import ShopReservations from "./pages/reservation/ShopReservations.jsx";
 function App() {
   const [userRole, setUserRole] = useState("shop");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const eventSourceRef = useRef(null);
 
   useEffect(() => {
     const userType = localStorage.getItem("userType");
@@ -117,44 +118,14 @@ function App() {
     window.addEventListener("loginStatusChanged", handleLoginStatusChange);
 
     // SSE 연결 설정
-    const eventSource = new EventSource("/notification/connect", {
-      withCredentials: true,
-    });
-
-    // 기본 메시지 핸들러
-    eventSource.onmessage = (event) => {
-      console.log("기본 메시지:", event.data);
-      toast.info(event.data, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+    if (!eventSourceRef.current) {
+      eventSourceRef.current = new EventSource("/notification/connect", {
+        withCredentials: true,
       });
-    };
 
-    // 연결 성공 이벤트 핸들러
-    eventSource.addEventListener("test", (event) => {
-      console.log("📤 최초 연결 성공:", event.data);
-    });
-
-    // 알림 이벤트 핸들러
-    eventSource.addEventListener("connect", (event) => {
-      console.log("📤 알림 이벤트:", event.data);
-      try {
-        // JSON 형식인지 확인
-        const notification = JSON.parse(event.data);
-        toast.info(notification.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      } catch (e) {
-        // JSON이 아닌 경우 일반 텍스트로 처리
+      // 기본 메시지 핸들러
+      eventSourceRef.current.onmessage = (event) => {
+        console.log("기본 메시지:", event.data);
         toast.info(event.data, {
           position: "top-right",
           autoClose: 3000,
@@ -163,19 +134,43 @@ function App() {
           pauseOnHover: true,
           draggable: true,
         });
-      }
-    });
+      };
 
-    // 에러 핸들러
-    eventSource.onerror = (error) => {
-      console.error("SSE 연결 에러:", error);
-      eventSource.close();
-    };
+      // 연결 성공 이벤트 핸들러
+      eventSourceRef.current.addEventListener("test", (event) => {
+        console.log("📤 최초 연결 성공:", event.data);
+      });
+
+      // 알림 이벤트 핸들러
+      eventSourceRef.current.addEventListener("connect", (event) => {
+        console.log("📤 알림 이벤트:", event.data);
+        toast.info(event.data, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
+
+      // 에러 핸들러
+      eventSourceRef.current.onerror = (error) => {
+        console.error("SSE 연결 에러:", error);
+        if (eventSourceRef.current) {
+          eventSourceRef.current.close();
+          eventSourceRef.current = null;
+        }
+      };
+    }
 
     // 클린업 함수
     return () => {
       window.removeEventListener("loginStatusChanged", handleLoginStatusChange);
-      eventSource.close();
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
     };
   }, []);
 
@@ -441,12 +436,12 @@ function App() {
         <SignIntergration isOpen={isLoginModalOpen} onClose={closeLoginModal} />
         {/* ✅ 토스트 컨테이너 (알림창) */}
         <ToastContainer
-          position="top-center"
-          autoClose={1500}
+          position="top-right"
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
-          pauseOnHover={false}
+          pauseOnHover
           draggable
           theme="light"
         />
