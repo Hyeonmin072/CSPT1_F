@@ -33,7 +33,7 @@ export default function DesignerProfile({
   reviews = [],
 }) {
   return (
-    <div className="max-w-6xl mx-auto p-10 mt-24">
+    <div className="max-w-6xl mx-auto p-10 mt-2">
       {/* Header */}
       <div className="bg-white w-full h-[380px] relative border-b-2">
         <ProfileHeader
