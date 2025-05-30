@@ -57,7 +57,7 @@ export default function ProfileHeader({
         <div className="absolute top-[290px] left-[calc(50%+70px)] flex items-center space-x-2">
           <div className="flex flex-col">
             <Heart className="w-7 h-7 text-red-500 fill-current" />
-            <p className="left-[2px]">&nbsp;{like}</p>
+            <p className="ml-[5px]">&nbsp;{like}</p>
           </div>
         </div>
 
