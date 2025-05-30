@@ -31,6 +31,7 @@ export default function DesignerProfile({
   onUpdate,
   isSubmitting,
   reviews = [],
+  isLike,
 }) {
   return (
     <div className="max-w-6xl mx-auto p-10 mt-2">
@@ -40,9 +41,11 @@ export default function DesignerProfile({
           name={name}
           nickName={nickName}
           image={image}
-          like={like}
+          likeCnt={like}
           backgroundImage={backgroundImage}
           isViewMode={isViewMode}
+          isLike={isLike}
+          email={email}
         />
       </div>
 

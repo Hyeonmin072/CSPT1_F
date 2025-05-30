@@ -22,6 +22,7 @@ export default function DesignerInfoPage() {
         setLoading(true);
         const response = await axios.get(`/designer/profile/${designerEmail}`);
         console.log("디자이너 정보 데이터:", response.data);
+        console.log("like 값:", response.data.like);
         setDesignerData(response.data);
       } catch (error) {
         console.error("디자이너 정보 데이터 가져오기 실패:", error);
@@ -85,9 +86,9 @@ export default function DesignerInfoPage() {
     description: designerData.description || "디자이너 소개가 없습니다.",
     image:
       designerData.image || "https://via.placeholder.com/300x300?text=Designer",
-    age: designerData.age || "30",
+    age: designerData.age || "0",
     gender: designerData.gender || "남성",
-    like: designerData.like || 0,
+    likeCnt: designerData.likeCnt || 0,
     email: designerData.email || designerEmail,
     tel: designerData.tel || "010-0000-0000",
     backgroundImage:
@@ -110,18 +111,20 @@ export default function DesignerInfoPage() {
 
       <div className="p-4 mt-16">
         <DesignerProfile
-          name={dummyData.name}
-          nickName={dummyData.nickName}
-          description={dummyData.description}
-          image={dummyData.image}
-          age={dummyData.age}
-          gender={dummyData.gender}
-          like={dummyData.like}
-          email={dummyData.email}
-          tel={dummyData.tel}
-          backgroundImage={dummyData.backgroundImage}
-          isViewMode={true} // 유저 모드로 설정 (프로필 수정 버튼 숨김)
-          reviews={dummyData.reviews} // 리뷰 데이터 전달
+          name={designerData.name}
+          nickName={designerData.nickName}
+          description={designerData.description}
+          image={designerData.image}
+          age={designerData.age}
+          gender={designerData.gender}
+          like={designerData.likeCnt}
+          email={designerData.email}
+          tel={designerData.tel}
+          backgroundImage={designerData.backgroundImage}
+          isViewMode={true}
+          reviews={designerData.reviews}
+          shopName={designerData.shopName}
+          isLike={designerData.like}
         />
       </div>
     </motion.div>
