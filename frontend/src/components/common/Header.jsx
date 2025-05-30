@@ -9,6 +9,7 @@ import hairLogo from "../../assets/logo/hairlogo.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../context/AuthContext";
+import { MessageSquare } from "lucide-react";
 
 // 쿠키에서 값을 가져오는 함수
 const getCookie = (name) => {
@@ -146,18 +147,24 @@ export default function Header() {
   // 로그인 상태에 따른 네비게이션 메뉴 메모이제이션
   const navigationMenu = useMemo(
     () => (
-      <nav className="flex space-x-8 gap-[60px] font-bold">
-        <Link to="/" className="text-gray-700">
+      <nav className="flex space-x-8 gap-[60px] font-bold items-center">
+        <Link
+          to="/"
+          className="text-gray-700 hover:text-teal-600 transition-colors"
+        >
           홈
         </Link>
-        <Link to="/hairshop" className="text-gray-700">
+        <Link
+          to="/hairshop"
+          className="text-gray-700 hover:text-teal-600 transition-colors"
+        >
           헤어샵
         </Link>
-        <Link to="/designerpage" className="text-gray-700">
+        <Link
+          to="/designerpage"
+          className="text-gray-700 hover:text-teal-600 transition-colors"
+        >
           디자이너
-        </Link>
-        <Link to="/userchat" className="text-gray-700">
-          채팅
         </Link>
       </nav>
     ),
@@ -167,10 +174,17 @@ export default function Header() {
   // 로그인 상태에 따른 사용자 정보 영역 메모이제이션
   const userInfoSection = useMemo(
     () => (
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 items-center">
         {isLoggedIn ? (
           <>
             <span className="text-gray-700 font-bold mt-2">{userName}님</span>
+            <Link
+              to="/userchat"
+              className="text-gray-700 hover:text-teal-600 transition-colors mt-[3.5px]"
+              title="채팅"
+            >
+              <MessageSquare className="w-6 h-6" />
+            </Link>
             <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
           </>
         ) : (
