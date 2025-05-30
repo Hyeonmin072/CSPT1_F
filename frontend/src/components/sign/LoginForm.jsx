@@ -115,31 +115,6 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
 
       onClose();
 
-      try {
-        const eventSource = new EventSource("/notification/connect", {
-          withCredentials: true,
-        });
-        console.log("📤 알림 서버 연결 성공");
-
-        //서버에서 넘어오는 이름이 지정 되지 않은 모든 메세지
-        eventSource.onmessage = (event) => {
-          console.log("기본 메시지:", event.data);
-        };
-
-        //서버에서 test라고 이름이 지정 된 메세지 (최초 연결 확인)
-        eventSource.addEventListener("test", (event) => {
-          console.log("📤 최초 연결 성공 :", event.data);
-        });
-
-        //서버에서 connect라고 이름이 지정 된 메세지 (주 내용)
-        eventSource.addEventListener("connect", (event) => {
-          console.log("📤 알림 이벤트:", event.data);
-        });
-      } catch (err) {
-        console.error("알림 서버 연결 실패:", err);
-        eventSource.close();
-      }
-
       // 유저 타입에 따른 리다이렉트
       switch (userType) {
         case "SHOP":
@@ -179,7 +154,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
           onClick={() => setUserType("SHOP")}
           className={`px-2 py-1 text-xs rounded-lg border transition-colors duration-200 ${
             userType === "SHOP"
-              ? "bg-green-500 text-white border-green-500"
+              ? "bg-green-500 text-white border-green-500 hover:bg-green-600"
               : "bg-white text-gray-700 border-gray-300"
           }`}
         >
@@ -190,7 +165,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
           onClick={() => setUserType("USER")}
           className={`px-2 py-1 text-xs rounded-lg border transition-colors duration-200 ${
             userType === "USER"
-              ? "bg-green-500 text-white border-green-500"
+              ? "bg-green-500 text-white border-green-500 hover:bg-green-600"
               : "bg-white text-gray-700 border-gray-300"
           }`}
         >
@@ -201,7 +176,7 @@ const LoginForm = ({ userType, setUserType, toggleLoginMode, onClose }) => {
           onClick={() => setUserType("DESIGNER")}
           className={`px-2 py-1 text-xs rounded-lg border transition-colors duration-200 ${
             userType === "DESIGNER"
-              ? "bg-green-500 text-white border-green-500"
+              ? "bg-green-500 text-white border-green-500 hover:bg-green-600"
               : "bg-white text-gray-700 border-gray-300"
           }`}
         >
