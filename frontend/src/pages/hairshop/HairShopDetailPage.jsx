@@ -48,7 +48,7 @@ export default function HairShopDetailPage() {
       <div className="z-50 relative">
         <Header />
       </div>
-      <div className="px-4 z-10 relative">
+      <div className="px-4 z-10 relative mt-24">
         <ShopDetail handleModalOpen={handleModalOpen} shopEmail={shopEmail} />
       </div>
 
