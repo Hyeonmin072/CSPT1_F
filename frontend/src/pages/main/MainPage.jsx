@@ -120,7 +120,7 @@ export default function MainPage() {
                 전문 디자이너와 함께 당신만의 특별한 스타일을 만들어보세요
               </p>
               <button
-                className="bg-white text-teal-700 px-8 py-3 rounded-lg font-bold hover:bg-teal-50 transition-colors drop-shadow-lg"
+                className="bg-white text-green-800 px-8 py-3 rounded-lg font-bold hover:bg-teal-50 transition-colors drop-shadow-lg"
                 onClick={navigateToHairshop}
               >
                 헤어샵 찾기
