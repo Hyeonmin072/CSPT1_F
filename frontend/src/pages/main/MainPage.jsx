@@ -152,7 +152,7 @@ export default function MainPage() {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">인기 헤어샵</h2>
           <button
-            className="flex items-center text-teal-600 hover:text-teal-700"
+            className="flex items-center text-green-600 hover:text-teal-700"
             onClick={navigateToHairshop}
           >
             더보기 <ArrowRight className="ml-2" />
@@ -196,7 +196,7 @@ export default function MainPage() {
       </AnimatedSection>
 
       {/* 프로모션 배너 */}
-      <AnimatedSection className="bg-teal-50 py-16">
+      <AnimatedSection className="bg-green-100 py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-sm p-8">
             <div className="flex flex-col md:flex-row items-center justify-between">
@@ -206,7 +206,7 @@ export default function MainPage() {
                   신규 고객님을 위한 특별한 혜택
                 </p>
                 <button
-                  className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors"
+                  className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
                   onClick={navigateToHairshop}
                 >
                   자세히 보기
@@ -229,7 +229,7 @@ export default function MainPage() {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">인기 디자이너</h2>
           <button
-            className="flex items-center text-teal-600 hover:text-teal-700"
+            className="flex items-center text-green-600 hover:text-green-700"
             onClick={navigateToHairshop}
           >
             더보기 <ArrowRight className="ml-2" />
