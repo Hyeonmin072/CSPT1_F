@@ -1,22 +1,12 @@
-import { useState, useCallback, useEffect  } from "react";
-import ChatSidebar from "../../components/chat/ChatSidebar";
-import ChatWindow from "../../components/chat/ChatWindow";
+import { useState, useCallback } from "react";
+import ChatSidebar from "../../components/chat/DesignerChatSidebar";
+import ChatWindow from "../../components/chat/DesignerWindow";
 import useStompClient from "./useStompClient";
-import Header from "../../components/common/Header";
+import Header from "../../components/common/DesignerHeader";
 
-const ChattingPage = ({ token }) => {
+const DesignerChattingPage = ({ token }) => {
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
-  const chatRoomIdFromNav = location.state?.chatRoomId;
-
-  useEffect(() => {
-    
-    const foundChat = chats.find(chat => chat.chatRoomId === chatRoomIdFromNav);
-    if (foundChat) {
-      setSelectedChat(foundChat);
-    }
-    
-  }, [chatRoomIdFromNav, chats]);
 
   const onNewMessage = useCallback(
     (newMessage) => {
@@ -95,4 +85,4 @@ const ChattingPage = ({ token }) => {
   );
 };
 
-export default ChattingPage;
+export default DesignerChattingPage;

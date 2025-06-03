@@ -11,20 +11,20 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
   const [currentUser, setCurrentUser] = useState(null);
 
 
+  // 입장한 유저 정보 로드
   useEffect(() => {
     const loadUser = async () => {
-      axiosInstance.post("/user/info")
+      axiosInstance.post("/designer/info")
       .then((res) => {
         setCurrentUser(res.data);
         console.log("유저 데이터 로딩 :",res.data);
       })
       .catch((err) => {
-        console.log("유저 데이토 로딩 오류:",err);
+        console.log("유저 데이터 로딩 오류:",err);
       })
     }
     loadUser()
   }, []);
-
   // 뒤로가기 버튼
   const handleBack = () => {
     setSelectedChat(null);
@@ -42,20 +42,22 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
     if (!selectedChat) return;
 
     axiosInstance
-      .post(`/user/chatroom/join/${selectedChat.chatRoomId}`)
+      .post(`/designer/chatroom/join/${selectedChat.chatRoomId}`)
       .then((res) => {
         setMessages(res.data);
         setSelectedChat((prev) => ({
           ...prev,
           messages: res.data,
         }));
-        console.log("메세지 데이터:",res)
+        console.log("메세지 데이터:",res.data)
         console.log("메시지 불러오기 성공");
       })
       .catch((err) => {
         console.error("메시지 불러오기 실패", err);
       });
   }, [selectedChat?.chatRoomId, setSelectedChat]);
+
+
 
   useEffect(() => {
     if (!socket || !socket.connected || !selectedChat) return;
@@ -82,7 +84,7 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
    const enterSubscription = socket.subscribe(
         `/subscribe/chat/enter/${selectedChat.chatRoomId}`,
         (message) => {
-            const { unreadMessageIds, enteredUserEmail, enteredUserType } = JSON.parse(message.body); // ex) [1, 2, 3]
+           const { unreadMessageIds, enteredUserEmail, enteredUserType } = JSON.parse(message.body); // ex) [1, 2, 3]
 
             // 본인이 입장한 경우는 무시
             if(enteredUserEmail  === currentUser.email && enteredUserType === currentUser.userType) return;
@@ -133,7 +135,6 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
 
      // 컴포넌트 언마운트 시 구독 해제
     return () => {
-
             if (subscriptionRef.current) {
                 subscriptionRef.current.unsubscribe();
                 subscriptionRef.current = null;
@@ -144,8 +145,7 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
         };
     }, [socket, selectedChat, setSelectedChat]);
 
-
-    // 컴포넌트 언마운트 시 퇴장 이벤트 한 번 보내기
+     // 컴포넌트 언마운트 시 퇴장 이벤트 한 번 보내기
   useEffect(() => {
     return () => {
       if (socket && socket.connected && selectedChat) {
@@ -168,9 +168,6 @@ const ChatWindow = ({ selectedChat, setSelectedChat, socket }) => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
-
-
-
 
   const sendMessage = async () => {
     if (!input.trim() && files.length === 0) return;

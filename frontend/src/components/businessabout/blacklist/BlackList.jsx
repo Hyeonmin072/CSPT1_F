@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 import { Trash2, Search } from "lucide-react";
-import axios from "axios";
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 
 import BlackListCreateModal from "../../modal/blacklist/BlackListCreateModal.jsx";
 import BlackListDetailModal from "../../modal/blacklist/BlackListDetailModal.jsx";
-import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 
 export default function BlackList() {
   const [blacklist, setBlacklist] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [reservations, setReservations] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
+  const [loadingDetail, setLoadingDetail] = useState(false);
 
   useEffect(() => {
     const fetchBlacklists = async () => {
       try {
         const response = await axiosInstance.get("/shop/blacklists");
-        console.log("블랙리스트 데이터:", response.data);
         setBlacklist(response.data);
       } catch (error) {
         console.error("블랙리스트 데이터를 불러오는 중 오류 발생:", error);
@@ -25,153 +25,219 @@ export default function BlackList() {
     fetchBlacklists();
   }, []);
 
-  const toggleCheck = (id) => {
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const res = await axiosInstance.get("/shop/reservations/seven");
+        setReservations(res.data);
+      } catch (error) {
+        console.error("최근 7일 예약을 불러오는 중 오류 발생:", error);
+      }
+    };
+    fetchReservations();
+  }, []);
+
+  const toggleCheck = (email) => {
     setCheckedItems((prev) => ({
       ...prev,
-      [id]: !prev[id],
+      [email]: !prev[email],
     }));
   };
 
-  const handleDelete = async (name) => {
+  const toggleAllCheck = () => {
+    const allChecked =
+        blacklist.length > 0 &&
+        Object.keys(checkedItems).length === blacklist.length &&
+        Object.values(checkedItems).every(Boolean);
+    if (allChecked) {
+      setCheckedItems({});
+    } else {
+      const newChecked = {};
+      blacklist.forEach((item) => {
+        newChecked[item.userEmail] = true;
+      });
+      setCheckedItems(newChecked);
+    }
+  };
+
+  const handleDelete = async () => {
     try {
-      const result = await axiosInstance.deleteBlacklist("/shop/blacklist"); // 배열로 전달
-      if (result) {
-        setBlacklist((prev) => prev.filter((entry) => entry.userName !== name));
+      const emailsToDelete = Object.entries(checkedItems)
+          .filter(([_, checked]) => checked)
+          .map(([email]) => email);
+
+      if (emailsToDelete.length === 0) {
+        alert("삭제할 항목을 선택해주세요.");
+        return;
       }
+
+      await axiosInstance.delete("/shop/blacklists", { data: emailsToDelete });
+
+      setBlacklist((prev) => prev.filter((entry) => !emailsToDelete.includes(entry.userEmail)));
+      setCheckedItems({});
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
       alert("삭제에 실패했습니다.");
     }
   };
 
-  const [clickCounts, setClickCounts] = useState({}); // 유저별 클릭 횟수 관리
+  const handleSingleDelete = async (email) => {
+    try {
+      await axiosInstance.delete("/shop/blacklists", { data: [email] });
 
-  const handleRowClick = (item) => {
-    setClickCounts((prev) => {
-      const currentCount = prev[item.userEmail] || 0; // 해당 유저의 현재 클릭 횟수 가져오기
+      setBlacklist((prev) => prev.filter((entry) => entry.userEmail !== email));
 
-      if (currentCount + 1 === 2) {
-        // 두 번 클릭된 경우 모달 열기
-        setSelectedItem(item);
-        return { ...prev, [item.userEmail]: 0 }; // 클릭 횟수 초기화
-      } else {
-        return { ...prev, [item.userEmail]: currentCount + 1 };
-      }
-    });
+      setCheckedItems((prev) => {
+        const newChecked = { ...prev };
+        delete newChecked[email];
+        return newChecked;
+      });
+    } catch (error) {
+      console.error("삭제 중 오류 발생:", error);
+      alert("삭제에 실패했습니다.");
+    }
+  };
 
-    setTimeout(() => {
-      setClickCounts((prev) => ({ ...prev, [item.userEmail]: 0 })); // 타이머 종료 후 해당 유저 클릭 횟수 초기화
-    }, 1000);
+  const handleRowClick = async (item) => {
+    if (!item.blackListId) {
+      alert("상세 정보 조회에 필요한 ID가 없습니다.");
+      return;
+    }
+
+    setLoadingDetail(true);
+    try {
+      const response = await axiosInstance.get(`/shop/blacklists/${item.blackListId}`);
+      setSelectedItem(response.data);
+    } catch (error) {
+      console.error("상세 데이터 불러오기 실패:", error);
+      alert("상세 정보를 불러오는 중 오류가 발생했습니다.");
+    } finally {
+      setLoadingDetail(false);
+    }
   };
 
   return (
-    <div className="max-w-8xl p-6 flex flex-col items-center">
-      <div className="w-[1000px] flex flex-row justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">블랙리스트</h1>
+      <div className="max-w-7xl p-6 flex flex-col items-center">
+        <div className="w-full max-w-[1000px] flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-semibold text-gray-800">블랙리스트</h1>
 
-        <div className="flex flex-row space-x-5">
-          <div className="flex-1 flex items-center border rounded-xl px-2">
-            <input
-              type="text"
-              placeholder="이름 검색"
-              className="w-full outline-none"
-            />
-            <Search className="w-5 h-5 text-gray-400" />
+          <div className="flex items-center space-x-3">
+            <div className="relative text-gray-400 focus-within:text-gray-600">
+              <input
+                  type="text"
+                  placeholder="이름 검색"
+                  className="w-64 border border-gray-300 rounded-md py-2 pl-10 pr-4 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-green-500" />
+            </div>
+
+            <button
+                onClick={() => setShowCreateModal(true)}
+                className="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700 transition"
+            >
+              블랙리스트 등록
+            </button>
+
+            <button
+                onClick={handleDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition"
+            >
+              삭제
+            </button>
           </div>
-          <button
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-            onClick={() => setShowModal(true)}
-          >
-            블랙리스트 등록
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-            onClick={handleDelete}
-          >
-            삭제
-          </button>
         </div>
-      </div>
 
-      <div className="w-[1000px] max-h-[500px] overflow-y-auto">
-        <table className="table-auto w-full rounded overflow-hidden border-collapse">
-          <thead className="bg-gray-200">
+        <div className="w-full max-w-[1000px] overflow-auto rounded-md border border-gray-200 shadow-sm">
+          <table className="w-full table-auto border-collapse text-sm text-gray-700">
+            <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-6 py-4 border-gray-300 flex items-center justify-center">
-                <button
-                  className="text-gray bg-white flex items-center justify-center font-bold h-5 w-5"
-                  onClick={() => setCheckedItems({})}
-                >
-                  {Object.keys(checkedItems).length > 0 ? "−" : ""}
-                </button>
-              </th>
-              <th className="px-6 py-4 border-gray-300">유저 이름</th>
-              <th className="px-6 py-4 border-gray-300">유저 이메일</th>
-              <th className="px-6 py-4 border-gray-300">사유</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blacklist.length > 0 ? (
-              blacklist.map((item) => (
-                <tr
-                  key={item.userEmail}
-                  className="hover:bg-gray-100"
-                  onClick={() => handleRowClick(item)}
-                >
-                  <td className="px-6 py-4 border text-center">
-                    <input
+              <th className="px-4 py-3 text-center w-12">
+                <label className="inline-flex cursor-pointer select-none items-center">
+                  <input
                       type="checkbox"
-                      className="form-checkbox h-5 w-5 text-blue-500"
-                      checked={checkedItems[item.userEmail] || false}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        toggleCheck(item.userEmail);
-                      }}
-                    />
-                  </td>
-                  <td className="px-6 py-5 border">{item.userName}</td>
-                  <td className="px-6 py-5 border">{item.userEmail}</td>
-                  <td className="px-6 py-5 flex flex-row justify-between items-center border">
-                    <span>{item.reason}</span>
-                    <button
-                      className="text-red-500 hover:text-red-700 ml-auto"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(item.userEmail);
-                      }}
+                      className="hidden peer"
+                      onChange={toggleAllCheck}
+                      checked={
+                          blacklist.length > 0 &&
+                          Object.keys(checkedItems).length === blacklist.length &&
+                          Object.values(checkedItems).every(Boolean)
+                      }
+                      aria-label="전체 선택"
+                  />
+                  <span className="w-5 h-5 inline-block rounded border border-gray-400 peer-checked:bg-green-600 peer-checked:border-green-600 transition"></span>
+                </label>
+              </th>
+              <th className="px-4 py-3 text-left font-medium">유저 이름</th>
+              <th className="px-4 py-3 text-left font-medium">유저 이메일</th>
+              <th className="px-4 py-3 text-left font-medium">사유</th>
+            </tr>
+            </thead>
+            <tbody>
+            {blacklist.length > 0 ? (
+                blacklist.map((item) => (
+                    <tr
+                        key={item.userEmail}
+                        className="hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleRowClick(item)}
                     >
-                      <Trash2 size={18} />
-                    </button>
+                      <td className="px-4 py-3 text-center border-b border-gray-200">
+                        <label
+                            className="inline-flex cursor-pointer select-none items-center"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                          <input
+                              type="checkbox"
+                              checked={checkedItems[item.userEmail] || false}
+                              onChange={() => toggleCheck(item.userEmail)}
+                              className="hidden peer"
+                              aria-label={`${item.userName} 선택`}
+                          />
+                          <span className="w-5 h-5 inline-block rounded border border-gray-400 peer-checked:bg-green-600 peer-checked:border-green-600 transition"></span>
+                        </label>
+                      </td>
+                      <td className="px-4 py-3 border-b border-gray-200">{item.userName}</td>
+                      <td className="px-4 py-3 border-b border-gray-200">{item.userEmail}</td>
+                      <td className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+                        <span>{item.reason}</span>
+                        <button
+                            className="text-red-500 hover:text-red-700 ml-4"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSingleDelete(item.userEmail);
+                            }}
+                            aria-label="삭제"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                ))
+            ) : (
+                <tr>
+                  <td colSpan="4" className="px-4 py-10 text-center text-gray-400">
+                    등록된 블랙리스트가 없습니다
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="4"
-                  className="px-6 py-10 border text-center text-gray-500"
-                >
-                  등록된 블랙리스트가 없습니다
-                </td>
-              </tr>
             )}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
+
+        <BlackListCreateModal
+            showModal={showCreateModal}
+            setShowModal={setShowCreateModal}
+            setBlacklist={setBlacklist}
+            reservations={reservations}
+            blacklist={blacklist}
+        />
+
+        {selectedItem && (
+            <BlackListDetailModal
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
+                loading={loadingDetail}
+            />
+        )}
       </div>
-
-      {/* 모달 창 */}
-      <BlackListCreateModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        setBlacklist={setBlacklist}
-      />
-
-      {/* 상세 모달 */}
-      <BlackListDetailModal
-        setShowModal={setShowModal}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-      />
-    </div>
   );
 }

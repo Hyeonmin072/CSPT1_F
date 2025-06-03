@@ -1,16 +1,37 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Heart, UserRound, Image } from "lucide-react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function ProfileHeader({
   name,
   nickName,
   image,
-  like,
+  likeCnt,
   backgroundImage,
   isViewMode = false,
+  isLike,
+  email,
 }) {
   const { d_id } = useParams();
   const navigate = useNavigate();
+  const [like, setLike] = useState(isLike);
+  const [likeCount, setLikeCount] = useState(likeCnt);
+
+  const handleLikeClick = async () => {
+    try {
+      const response = await axios.post("user/designerlike", {
+        designerEmail: email,
+      });
+
+      if (response.status === 200) {
+        setLike(!like);
+        setLikeCount((prev) => (like ? prev - 1 : prev + 1));
+      }
+    } catch (error) {
+      console.error("좋아요 처리 중 오류 발생:", error);
+    }
+  };
 
   return (
     <>
@@ -56,8 +77,14 @@ export default function ProfileHeader({
         {/* 좋아요 표시 */}
         <div className="absolute top-[290px] left-[calc(50%+70px)] flex items-center space-x-2">
           <div className="flex flex-col">
-            <Heart className="w-7 h-7 text-red-500 fill-current" />
-            <p className="left-[2px]">&nbsp;{like}</p>
+            <button onClick={handleLikeClick} className="focus:outline-none">
+              <Heart
+                className={`w-7 h-7 text-red-500 ${
+                  like ? "fill-current" : "fill-none"
+                }`}
+              />
+            </button>
+            <p className="ml-[5px]">&nbsp;{likeCount}</p>
           </div>
         </div>
 

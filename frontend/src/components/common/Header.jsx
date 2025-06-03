@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoginButton from "../button/LoginButton";
 import UserHamburgerButton from "../button/UserHamburgerButton";
@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import hairLogo from "../../assets/logo/hairlogo.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../../context/AuthContext";
+import { MessageSquare } from "lucide-react";
 
 // 쿠키에서 값을 가져오는 함수
 const getCookie = (name) => {
@@ -20,8 +22,7 @@ const getCookie = (name) => {
 export default function Header() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, userName, setIsLoggedIn, setUserName } = useAuth();
 
   // 유저 홈페이지 데이터 가져오기
   const fetchUserHomeData = async () => {
@@ -102,19 +103,16 @@ export default function Header() {
       });
 
       if (result.isConfirmed) {
-        // 로그아웃 API 호출
         const response = await axiosInstance.post("/user/logout", null, {
           withCredentials: true,
         });
 
         if (response.status === 200) {
-          // 로컬 스토리지 초기화
           localStorage.clear();
-
-          // 로그인 상태 변경 이벤트 발생
+          setIsLoggedIn(false);
+          setUserName("");
           window.dispatchEvent(new Event("loginStatusChanged"));
 
-          // 토스트 메시지 표시
           toast.success("로그아웃 되었습니다!", {
             position: "bottom-right",
             autoClose: 2000,
@@ -124,7 +122,6 @@ export default function Header() {
             draggable: true,
           });
 
-          // 메인 페이지로 이동
           navigate("/");
         }
       }
@@ -141,10 +138,78 @@ export default function Header() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   // 메뉴닫기
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  // 로그인 상태에 따른 네비게이션 메뉴 메모이제이션
+  const navigationMenu = useMemo(
+    () => (
+      <nav className="flex space-x-8 gap-[60px] font-bold items-center">
+        <Link
+          to="/"
+          className="text-gray-700 hover:text-teal-600 transition-colors"
+        >
+          홈
+        </Link>
+        <Link
+          to="/hairshop"
+          className="text-gray-700 hover:text-teal-600 transition-colors"
+        >
+          헤어샵
+        </Link>
+        <Link
+          to="/designerpage"
+          className="text-gray-700 hover:text-teal-600 transition-colors"
+        >
+          디자이너
+        </Link>
+      </nav>
+    ),
+    []
+  );
+
+  // 로그인 상태에 따른 사용자 정보 영역 메모이제이션
+  const userInfoSection = useMemo(
+    () => (
+      <div className="flex space-x-4 items-center">
+        {isLoggedIn ? (
+          <>
+            <span className="text-gray-700 font-bold mt-2">{userName}님</span>
+            <Link
+              to="/userchat"
+              className="text-gray-700 hover:text-teal-600 transition-colors mt-[3.5px]"
+              title="채팅"
+            >
+              <MessageSquare className="w-6 h-6" />
+            </Link>
+            <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
+          </>
+        ) : (
+          <LoginButton />
+        )}
+      </div>
+    ),
+    [isLoggedIn, userName, isOpen]
+  );
+
+  // 로고 영역 메모이제이션
+  const logoSection = useMemo(
+    () => (
+      <div className="flex items-center">
+        <img src={hairLogo} alt="Hairism Logo" className="h-12 mr-3" />
+        <div className="leading-[0.85]">
+          <h1 className="text-[26px] font-[900] font-sans">HAIRISM</h1>
+          <span className="text-[13px] text-black font-[700] flex justify-center">
+            My Hair Partner
+          </span>
+        </div>
+      </div>
+    ),
+    []
+  );
 
   return (
     <>
@@ -152,41 +217,9 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md w-full z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 w-full">
           <div className="flex justify-between items-center w-full">
-            <div className="flex items-center">
-              <img src={hairLogo} alt="Hairism Logo" className="h-12 mr-3" />
-              <div className="leading-[0.85]">
-                <h1 className="text-[26px] font-[900] font-sans">HAIRISM</h1>
-                <span className="text-[13px] text-black font-[700] flex justify-center">
-                  My Hair Partner
-                </span>
-              </div>
-            </div>
-            <nav className="flex space-x-8 gap-[60px] font-bold">
-              <Link to="/" className="text-gray-700">
-                홈
-              </Link>
-              <Link to="/hairshop" className="text-gray-700">
-                헤어샵
-              </Link>
-              <Link to="/designerpage" className="text-gray-700">
-                디자이너
-              </Link>
-              <Link to="/chat" className="text-gray-700">
-                채팅
-              </Link>
-            </nav>
-            <div className="flex space-x-4">
-              {isLoggedIn ? (
-                <>
-                  <span className="text-gray-700 font-bold mt-2">
-                    {userName}님
-                  </span>
-                  <UserHamburgerButton isOpen={isOpen} onClick={toggleMenu} />
-                </>
-              ) : (
-                <LoginButton />
-              )}
-            </div>
+            {logoSection}
+            {navigationMenu}
+            {userInfoSection}
           </div>
         </div>
       </header>

@@ -2,8 +2,13 @@ import { useState, useEffect } from "react";
 import { MessageSquareText, Edit } from "lucide-react";
 import { selectedDesigner } from "../../dummydata/DummydbDesigner.jsx";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../axios/AxiosInstance.js";
 
-export default function LeftSection({ description, isViewMode = false }) {
+export default function LeftSection({
+  description,
+  isViewMode = false,
+  email,
+}) {
   const [designer, setDesigner] = useState(null); // 디자이너 정보 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const navigate = useNavigate();
@@ -14,10 +19,6 @@ export default function LeftSection({ description, isViewMode = false }) {
   useEffect(() => {
     const fetchDesignerProfile = async () => {
       try {
-        // 실제 API 호출 시 아래 코드를 활성화
-        // const response = await fetch(`/api/designer/${currentProfileId}`);
-        // const data = await response.json();
-
         // 더미 데이터 사용
         const data = selectedDesigner;
         setDesigner(data); // 디자이너 데이터 상태 업데이트
@@ -45,8 +46,20 @@ export default function LeftSection({ description, isViewMode = false }) {
     }
   };
 
-  const handleChat = () => {
-    navigate("/chat");
+  const handleChat = async () => {
+    console.log("채팅 요청 할려는 디자이너 이메일:", email);
+    axiosInstance
+      .post("/user/chatroom/request", {
+        designerEmail: email,
+      })
+      .then((res) => {
+        console.log("채팅방 리퀘스트 성공:", res.data);
+        const chatRoomId = res.data.chatRoomId;
+        navigate("/userchat", { state: { chatRoomId } });
+      })
+      .catch((err) => {
+        console.error("채팅방 요청 실패:", err);
+      });
   };
 
   if (loading) {

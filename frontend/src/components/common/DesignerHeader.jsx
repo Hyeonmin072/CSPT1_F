@@ -80,6 +80,9 @@ export default function DesignerHeader() {
               <Link to="/sales" className="text-gray-700">
                 실적확인
               </Link>
+              <Link to="/designerchat" className="text-gray-700">
+                채팅
+              </Link>
             </nav>
             <div className="flex space-x-4">
               {isLoggedIn ? (

@@ -67,8 +67,10 @@ export default function DesignerSetting() {
     setIsLoading(true);
     try {
       console.log("디자이너 검색 시작:", searchQuery);
-      const response = await axiosInstance.post("/shop/designer/search", {
-        designerEmail: searchQuery,
+      const response = await axiosInstance.get("/shop/designers/search", {
+        params: {
+          designerEmail: searchQuery,
+        },
       });
       console.log("서버 응답 전체:", response);
       console.log("응답 데이터:", response.data);
