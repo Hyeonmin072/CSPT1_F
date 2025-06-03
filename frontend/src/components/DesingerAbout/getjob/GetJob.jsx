@@ -20,19 +20,11 @@ export default function GetJob() {
         const fetchJobs = async () => {
             try {
                 const response = await axiosInstance.get("/designer/job/posts");
-                
-                const data = Array.isArray(response.data) ? response.data : [];
-                console.log("구인 목록 응답 데이터:", data);
-                
-                const formattedData = data.map((job) => ({
-                    ...job,
-                    postedTime: formatPostedTime(
-                        Math.floor((new Date() - new Date(job.postedAt)) / 60000)
-                    ),
-                }));
-                
-                setJobs(formattedData);
-                setFilteredJobs(formattedData);
+                console.log("API 응답 데이터 구조:", response.data); // 로그 찍기
+
+                const data = Array.isArray(response.data.jobPosts) ? response.data.jobPosts : [];
+                setJobs(data);
+                setFilteredJobs(data);
             } catch (error) {
                 console.error("Error fetching job data:", error);
                 alert("구인 목록을 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.");

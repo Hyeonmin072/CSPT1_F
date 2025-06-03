@@ -288,7 +288,7 @@ function App() {
                   element={<GetJobPage onLoginClick={openLoginModal} />}
                 />
                 <Route
-                  path="/job/detail"
+                  path="/job/detail/:id"
                   element={<GetJobDetailPage onLoginClick={openLoginModal} />}
                 />
                 <Route

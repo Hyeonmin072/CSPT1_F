@@ -10,6 +10,8 @@ import CouponDetailModal from "../../modal/event-coupon/CouponDetailModal.jsx";
 export default function EventCouponMenu() {
     const navigate = useNavigate();
     const [view, setView] = useState("coupon");
+    const [sortOrder, setSortOrder] = useState("recently");
+    
     const [coupons, setCoupons] = useState([]);
     const [events, setEvents] = useState([]);
     
@@ -23,18 +25,25 @@ export default function EventCouponMenu() {
         const fetchData = async () => {
             setIsLoading(true);
             try {
+
+                let response;
                 if (view === "coupon") {
-                    const response = await axiosInstance.get("/shop/coupons");
-                    setCoupons(response.data);
+                    response = await axiosInstance.get("/shop/coupons");
+                    await axiosInstance.delete("/shop/coupon/delete");
+    
+                    const sortedCoupons = sortOrder === "recently"
+                        ? response.data.sort((a, b) => new Date(b.getDate) - new Date(a.getDate)) // 최신순
+                        : response.data.sort((a, b) => new Date(a.getDate) - new Date(b.getDate)); // 마감일 순
+    
+                    setCoupons(sortedCoupons);
                 } else if (view === "event") {
-                    const response = await axiosInstance.get("/shop/events");
-                    console.log("이벤트 데이터 : ", response.data);
-                    setEvents(response.data.map(event => ({
-                        id: event.id,
-                        name: event.name,
-                        startDate: event.startDate,
-                        endDate: event.endDate,
-                    })));
+                    response = await axiosInstance.get("/shop/events");
+    
+                    const sortedEvents = sortOrder === "recently"
+                        ? response.data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate)) // 최신순
+                        : response.data.sort((a, b) => new Date(a.endDate) - new Date(b.endDate)); // 마감일 순
+    
+                    setEvents(sortedEvents);
                 }
             } catch (error) {
                 console.error("데이터를 가져오는 중 오류 발생:", error);
@@ -42,11 +51,10 @@ export default function EventCouponMenu() {
                 setIsLoading(false);
             }
         };
-
+    
         fetchData();
-    }, [view]);
-
-    const [sortOrder, setSortOrder] = useState("recently");
+    }, [view, sortOrder]);
+    
 
     const openCouponModal = (coupon) => {
         setSelectedItem(coupon);
@@ -146,23 +154,21 @@ export default function EventCouponMenu() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {coupons.map((coupon) => {
+                                    {coupons.map(coupon => {
                                         const currentDate = new Date(); // 현재 날짜
                                         const getDate = new Date(coupon.getDate); // 쿠폰의 수령 가능 날짜
                                         const remainingDays = Math.ceil((getDate - currentDate) / (1000 * 60 * 60 * 24)); // 남은 일수 계산
 
-                                        return (
+                                        return remainingDays > 0 ? (
                                             <tr
                                                 key={coupon.id}
                                                 className="border-b hover:bg-gray-100 transition duration-200"
                                                 onClick={() => openCouponModal(coupon)}
                                             >
                                                 <td className="p-4 text-gray-800">{coupon.name}</td>
-                                                <td className="p-4 text-gray-800">
-                                                    {remainingDays > 0 ? `${remainingDays}일` : "기간 만료"}
-                                                </td>
+                                                <td className="p-4 text-gray-800">{`${remainingDays}일`}</td>
                                             </tr>
-                                        );
+                                        ) : null; // 만료된 쿠폰을 화면에서 제거
                                     })}
                                 </tbody>
                             </table>

@@ -61,19 +61,33 @@ export default function EditJob() {
         fetchJobData();
     }, [id, navigate]);
 
-    const formatTime = (timeValue) => {
-        if (!timeValue) return "";
+    const formatTime = (timeStr) => {
+        if (!timeStr) return "";
     
-        const [hours, minutes] = timeValue.split(":").map(Number);
+        const cleanedTime = timeStr.trim(); // 앞뒤 공백 제거
     
-        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`; // HH:mm 형식 유지
+        if (!/^\d{2}:\d{2}$/.test(cleanedTime)) return ""; // HH:mm 형식인지 확인
+    
+        return cleanedTime; // 브라우저가 올바른 HH:mm 형식을 유지하므로 변환 필요 없음
     };
-
-
+    
+    const handleTimeChange = (e) => {
+        const { name, value } = e.target;
+    
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: formatTime(value), // e.target.value 사용
+        }));
+    };
+    
+    
     const handleContentChange = (e) => {
-        const updateContent = e.target.innerHTML;
-        setFormData({ ...formData, content: updateContent});
-    }
+        setFormData((next) => ({
+            ...next,
+            content: e.target.innerText,
+        }));
+    };
+    
 
     const handeUpdateJob = async (e) => {
         e.preventDefault();
@@ -214,38 +228,41 @@ export default function EditJob() {
                             <span className="font-bold">근무시간</span>
                         </div>
                         <div className="border-r border-gray-300"></div>
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="time"
-                                value={formData.workTime}
-                                onChange={(e) => setFormData({ ...formData, workTime: formatTime(e.target.value) })}
-                                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-                                placeholder="출근 시간을 입력해주세요"
-                            />
-                            <span className="font-bold">-</span>
-                            <input
-                                type="time"
-                                value={formData.leaveTime}
-                                onChange={(e) => setFormData({ ...formData, leaveTime: formatTime(e.target.value) })}
-                                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-                                placeholder="퇴근 시간을 입력해주세요"
-                            />
-                        </div>
+                        <input
+                            type="time"
+                            name="workTime"
+                            value={formData.workTime}
+                            onChange={handleTimeChange} // onInput → onChange 수정
+                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+                        />
+
+                        <span className="font-bold">-</span>
+
+                        <input
+                            type="time"
+                            name="leaveTime"
+                            value={formData.leaveTime}
+                            onChange={handleTimeChange} // onInput → onChange 수정
+                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+                        />
+
+
                     </div>
 
                     {/* 내용 */}
                     <div className="w-full flex flex-col space-y-2 mt-4">
                         <div className="font-bold">내용</div>
-                        <div
+                        <input
                             value={formData.content}
-                            contentEditable = "true"
+                            type="text"
                             name = "content"
-                            onInput={handleContentChange}
+                            onChange={(e) => setFormData({ ...formData, content:e.target.value })}
                             className="w-full h-auto p-2 border rounded resize-none focus:outline-none focus:ring-2 focus:ring-gray-500"
                             placeholder="내용을 입력해주세요"
-                            rows="4"
                         />
                     </div>
+
+
 
                     {/* 등록 버튼 */}
                     <div className="flex w-full justify-end mb-4 px-4 space-x-4">
