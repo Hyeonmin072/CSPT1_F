@@ -88,88 +88,85 @@ const DesignerChatSidebar = ({
   };
 
   return (
-    <div
-      className={`flex flex-col items-center justify-start p-4 bg-white shadow-md h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 rounded-l-lg ${className}`}
-    >
-      <h2 className="text-2xl font-bold mb-6 w-full text-center text-gray-800 border-b border-gray-300 pb-3 select-none">
-        💬 채팅방 목록
-      </h2>
-
-      {chats.length === 0 ? (
-        <div className="text-gray-400 mt-20 text-center text-lg select-none">
-          아직 대화가 없어요.
-        </div>
-      ) : (
-        chats.map((chat) => {
-          const isSelected = selectedChat?.chatRoomId === chat.chatRoomId;
-          return (
-            <div
-              key={chat.chatRoomId}
-              className={`flex items-center justify-between cursor-pointer p-3 mb-2 rounded-xl
-                transition-colors duration-200
-                hover:bg-blue-50
-                ${isSelected ? "bg-blue-100 shadow-md" : "bg-white"}`}
-              style={{ minHeight: 60 }}
-              onClick={() => setSelectedChat(chat)}
-            >
-              <div className="flex items-center space-x-3 flex-1 min-w-0">
-                <div className="relative">
-                  {chat.profileImage ? (
-                    <img
-                      src={chat.profileImage}
-                      alt="프로필"
-                      className="w-14 h-14 rounded-full object-cover border border-gray-200"
-                    />
-                  ) : (
-                    <DefaultProfileIcon />
-                  )}
-
-                  {/* 안읽은 메시지 개수 빨간 배지 */}
-                  {chat.unreadCount > 0 && (
-                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                      {chat.unreadCount > 99 ? "99+" : chat.unreadCount}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-center">
-                    <p className="font-semibold text-gray-900 truncate max-w-[180px]">
-                      {chat.partnerName || "이름 없음"}
-                    </p>
-                    {chat.sendDate && (
-                      <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
-                        {dayjs(chat.sendDate).tz("Asia/Seoul").fromNow()}
-                      </span>
+      <div
+        className={`w-pull flex flex-col items-center justify-start p-4 bg-white shadow-md h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 rounded-l-lg ${className}`}
+      >
+        <h2 className="text-2xl font-bold mb-6 w-full text-center text-gray-800 border-b border-gray-300 pb-3 select-none">
+          💬 채팅방 목록
+        </h2>
+  
+        {chats.length === 0 ? (
+          <div className="text-gray-400 mt-20 text-center text-lg select-none">
+            아직 대화가 없어요.
+          </div>
+        ) : (
+          chats.map((chat) => {
+            const isSelected = selectedChat?.chatRoomId === chat.chatRoomId;
+            return (
+              <div
+                key={chat.chatRoomId}
+                className={`w-full flex items-center justify-between cursor-pointer px-4 py-3 mb-2 rounded-xl transition-colors duration-200 hover:bg-blue-50 ${
+                  isSelected ? "bg-blue-100 shadow-md" : "bg-white"
+                }`}
+                style={{ height: 90 }}
+                onClick={() => setSelectedChat(chat)}
+              >
+                <div className="flex items-center space-x-3 flex-1 min-w-0">
+                  <div className="relative">
+                    {chat.partnerImage ? (
+                      <img
+                        src={chat.partnerImage}
+                        alt="프로필"
+                        className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                      />
+                    ) : (
+                      <DefaultProfileIcon />
+                    )}
+  
+                    {chat.unreadCount > 0 && (
+                      <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                        {chat.unreadCount > 99 ? "99+" : chat.unreadCount}
+                      </div>
                     )}
                   </div>
-                  {chat.lastMessage && (
-                    <p className="text-gray-600 text-sm truncate max-w-[240px] mt-1">
-                      {chat.lastMessage}
+  
+                  <div className="flex-1 min-w-0 h-full flex flex-col justify-between leading-tight">
+                    <div className="flex justify-between items-center">
+                      <p className="font-semibold text-gray-900 truncate max-w-[160px]">
+                        {chat.partnerName || "이름 없음"}
+                      </p>
+                      {chat.sendDate && (
+                        <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
+                          {dayjs(chat.sendDate).tz("Asia/Seoul").fromNow()}
+                        </span>
+                      )}
+                    </div>
+  
+                    <p className="text-gray-600 text-sm mt-1 line-clamp-1 max-w-[240px]">
+                      {chat.lastMessage || ""}
                     </p>
-                  )}
+                  </div>
                 </div>
+  
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteChat(chat.chatRoomId);
+                  }}
+                  className="ml-3 p-2 rounded-full hover:bg-red-100 text-red-600 transition-colors duration-150 flex items-center justify-center"
+                  aria-label="채팅방 나가기"
+                  title="채팅방 나가기"
+                  type="button"
+                  style={{ minWidth: 38, minHeight: 38 }}
+                >
+                  <FaTrashAlt size={18} />
+                </button>
               </div>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteChat(chat.chatRoomId);
-                }}
-                className="ml-3 p-2 rounded-full hover:bg-red-100 text-red-600 transition-colors duration-150 flex items-center justify-center"
-                aria-label="채팅방 나가기"
-                title="채팅방 나가기"
-                type="button"
-                style={{ minWidth: 38, minHeight: 38 }}
-              >
-                <FaTrashAlt size={18} />
-              </button>
-            </div>
-          );
-        })
-      )}
-    </div>
-  );
+            );
+          })
+        )}
+      </div>
+    );
 };
 
 export default DesignerChatSidebar;

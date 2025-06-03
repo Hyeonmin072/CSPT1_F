@@ -15,9 +15,13 @@ export default defineConfig({
     },
     proxy: {
       '/notification': 'http://localhost:1271', // 백엔드 주소
+    },
+    fs: {
+      allow: ['..']
     }
   },
   define: {
-    'process.env': {}  // 여기서 process.env를 정의
+    'process.env': {}  // 여기서 process.env를 정의'
+    
   }
 })
