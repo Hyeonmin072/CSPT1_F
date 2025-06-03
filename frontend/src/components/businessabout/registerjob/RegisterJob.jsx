@@ -27,23 +27,6 @@ export default function RegisterJobPage() {
             formData.content
         );
     };
-
-    const formatTime = (timeValue) => {
-        if (!timeValue) return "";
-    
-        const [hours, minutes] = timeValue.split(":").map(Number);
-    
-        // 앞에 0을 붙이는 minutes 처리
-        const formattedMinutes = minutes === 0 ? "00" : minutes.toString().padStart(2, "0");
-    
-        // 오전 시간 제한 (01:00 ~ 12:00)
-        if (hours >= 1 && hours <= 12) return `0${hours}:${formattedMinutes}`;
-    
-        // 오후 시간 제한 (13:00 ~ 00:00)
-        if (hours >= 13 || hours === 0) return `${hours}:${formattedMinutes}`;
-        
-        return `${hours.toString().padStart(2, "0")}:${formattedMinutes}`;
-    };
     
 
     const handleSubmit = async (e) => {
@@ -90,10 +73,19 @@ export default function RegisterJobPage() {
         setFormData({ ...formData, content: updateContent});
     }
 
+    const handleTimeChange = (e, key) => {
+        const value = e.target.value; // input[type="time"]이므로 HH:mm 형식 보장됨
+    
+        setFormData((prev) => ({
+            ...prev,
+            [key]: value, // 그대로 업데이트
+        }));
+    };
+
     return (
         <div>
             <div className="p-10 mt-20 flex flex-col justify-center w-full mx-auto max-w-6xl">
-                <form className="bg-white p-6 rounded-lg border h-auto space-y-4">
+                <form className="bg-white p-6 rounded-lg border border-gray-400 h-auto space-y-4">
                     {/* 제목 */}
                     <div className="border w-full flex flex-row">
                         <div className="flex items-center px-6 whitespace-nowrap">
@@ -186,30 +178,36 @@ export default function RegisterJobPage() {
                         <div className="flex items-center space-x-2">
                             <input
                                 type="time"
+                                name="workTime"
                                 value={formData.workTime}
-                                onChange={(e) => setFormData({ ...formData, workTime: formatTime(e.target.value) })}
-                                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-                                placeholder="출근 시간을 입력해주세요"
-                            />
+                                className="w-full min-w-[100px] p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+                                onChange={(e) => handleTimeChange(e, "workTime")}
+                            >
+                            </input>
+
                             <span className="font-bold">-</span>
+                            
                             <input
                                 type="time"
+                                name="leaveTime"
                                 value={formData.leaveTime}
-                                onChange={(e) => setFormData({ ...formData, leaveTime: formatTime(e.target.value) })}
-                                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-                                placeholder="퇴근 시간을 입력해주세요"
-                            />
+                                className="w-full min-w-[100px] p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+                                onChange={(e) => handleTimeChange(e, "leaveTime")}
+                            >
+                                
+                            </input>
                         </div>
                     </div>
+
 
                     {/* 내용 */}
                     <div className="w-full flex flex-col space-y-2 mt-4">
                         <div className="font-bold">내용</div>
-                        <div
+                        <input
                             value={formData.content}
-                            contentEditable = "true"
+                            type="text"
                             name = "content"
-                            onInput={handleContentChange}
+                            onChange={(e) => setFormData({ ...formData, content:e.target.value })}
                             className="w-full h-auto p-2 border rounded resize-none focus:outline-none focus:ring-2 focus:ring-gray-500"
                             placeholder="내용을 입력해주세요"
                         />

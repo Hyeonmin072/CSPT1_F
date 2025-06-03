@@ -1,16 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { Check, MapPin, CalendarCheck } from "lucide-react";
+import { Check, MapPin, CalendarCheck, ChevronLeft } from "lucide-react";
 import axiosInstance from "../../../sign/axios/AxiosInstance";
 
 export default function GetJobDetail() {
     const navigate = useNavigate();
+    const { id } = useParams(); // URL 파라미터에서 id 추출
     const [jobData, setJobData] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosInstance.get("/designer/job/post");
+                const response = await axiosInstance.get(`/designer/job/post/${id}`);
                 setJobData(response.data);
             } catch (error) {
                 console.error("데이터 불러오기 실패:", error);
@@ -18,7 +19,7 @@ export default function GetJobDetail() {
         };
 
         fetchData();
-    }, []);
+    }, [id]);
 
     if (!jobData) {
         return <p className="text-center text-gray-500 mt-20">데이터를 불러오는 중입니다...</p>;
@@ -27,8 +28,12 @@ export default function GetJobDetail() {
     return (
         <div className="max-w-5xl mx-auto p-6 mt-20">
             {/* Header */}
-            <header className="mb-8 text-center">
+            <header className="flex flex-row justify-between mb-8 text-center">
+                <ChevronLeft className="h-10 w-10 cursor-pointer text-gray-600 hover:text-gray-800"
+                 aria-label="뒤로가기"
+                onClick={() => window.history.back()}/>
                 <h1 className="text-3xl font-bold text-gray-800">구인구직 상세정보</h1>
+                <div> &nbsp; </div>
             </header>
 
             {/* 직업 정보 */}
@@ -51,7 +56,7 @@ export default function GetJobDetail() {
                             <ul className="text-sm text-gray-500">
                                 <li>가게 이름: {jobData.shopName || "정보 없음"}</li>
                                 <li>근무 지역: {jobData.address || "정보 없음"}</li>
-                                <li>성별: {jobData.gender || "정보 없음"}</li>
+                                <li>담당자: {jobData.gender || "정보 없음"}</li>
                             </ul>
                         </div>
                         <div className="p-3 flex flex-col">
@@ -80,6 +85,10 @@ export default function GetJobDetail() {
                             <p className="w-2/3">{jobData.salary || "정보 없음"}</p>
                         </div>
                         <div className="flex flex-row mb-4">
+                            <h2 className="font-bold w-1/3">우대성별</h2> 
+                            <p className="w-2/3">{jobData.gender || "정보 없음"}</p>
+                        </div>
+                        <div className="flex flex-row mb-4">
                             <h2 className="font-bold w-1/3">근무 시간</h2>
                             <p className="w-2/3">
                                 {jobData.workTime || "정보 없음"} - {jobData.leaveTime || "정보 없음"}
@@ -88,6 +97,22 @@ export default function GetJobDetail() {
                         <div className="flex flex-row mb-4">
                             <h2 className="font-bold w-1/3">등록된 시간</h2>
                             <p className="w-2/3">{jobData.postedAgo || "정보 없음"}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 내용 */}
+            <section>
+                <div className="bg-white p-6 shadow border rounded-lg mb-6">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4">내용</h2>
+                    <div className="flex flex-col gap-4">
+                        <div className="border p-4 rounded-lg bg-gray-50 min-h-[200px]">
+                            {jobData.content ? (
+                                <p className="text-gray-700">{jobData.content}</p>
+                            ) : (
+                                <p className="text-gray-500">내용이 없습니다.</p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -111,14 +136,14 @@ export default function GetJobDetail() {
             </section>
 
             {/* 모집 방법 */}
-            <section className="bg-white p-6 shadow border rounded-lg">
+            <section className="bg-white p-6 shadow border rounded-lg min-h-[250px]">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">모집 방법</h2>
-                <div className="flex flex-row">
+                <div className="flex flex-row min-h-[150px]">
                     <div className="w-1/3 bg-gray-100 rounded-lg flex items-center justify-center">
                         <CalendarCheck className="w-16 h-16 text-green-600" strokeWidth={1} />
                     </div>
-                    <div className="w-2/3 px-4">
-                        <p className="text-sm text-gray-700">
+                    <div className="w-2/3 px-4 flex items-center justify-center">
+                        <p className="text-m text-gray-700">
                             모집 방법 및 상세 내용은 지원 페이지에서 확인하세요.
                         </p>
                     </div>

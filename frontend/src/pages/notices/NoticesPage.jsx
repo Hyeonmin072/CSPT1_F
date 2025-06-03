@@ -22,32 +22,33 @@ export default function NoticesPage() {
     useEffect(() => {
         const fetchNoticeData = async () => {
             try {
+                // 전체 공지사항 조회
                 const response = await axiosInstance.get("/shop/notices");
                 const data = response.data;
-
+    
                 // 공지사항 분류
                 const normalNotice = data
                     .filter((notice) => !notice.importance)
                     .map((notice) => ({
                         ...notice,
-                        date: new Date(notice.createDate).toISOString().slice(0, 10), 
+                        date: new Date(notice.createDate).toISOString().slice(0, 10),
                     }))
-                    .sort((a, b) => new Date(b.createDate) - new Date(a.createDate)); 
-
+                    .sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+    
                 const importantNotice = data
                     .filter((notice) => notice.importance)
                     .map((notice) => ({
                         ...notice,
-                        date: new Date(notice.createDate).toISOString().slice(0, 10), 
-                }))
+                        date: new Date(notice.createDate).toISOString().slice(0, 10),
+                    }))
                     .sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
-
+    
                 setSelectedNotice({ normalNotice, importantNotice });
             } catch (error) {
                 console.error("Error fetching notice data:", error);
             }
         };
-
+    
         fetchNoticeData();
     }, []);
     

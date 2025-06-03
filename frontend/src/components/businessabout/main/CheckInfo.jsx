@@ -18,7 +18,7 @@ export default function CheckInfo({ remainReservation, monthSales }) {
         </p>
         <button
           className="text-white bg-black rounded-lg h-10 w-[200px]"
-          onClick={() => navigate("/schedulecheck")}
+          onClick={() => navigate("/reservations")}
         >
           예약 확인하기
         </button>
