@@ -3,7 +3,7 @@ import axiosInstance from "../../axios/AxiosInstance";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import timezone from "dayjs/plugin/timezone"; 
+import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -43,7 +43,7 @@ const ChatSidebar = ({
       .get("/user/chatroom")
       .then((res) => {
         setChats(res.data);
-        console.log("채팅창 목록 데이터:",res.data);
+        console.log("채팅창 목록 데이터:", res.data);
       })
       .catch((err) => console.error("❌ 채팅방 목록 조회 실패", err));
   }, [setChats]);
@@ -85,7 +85,7 @@ const ChatSidebar = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-start p-4 bg-white shadow-md h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 rounded-l-lg ${className}`}
+      className={`w-pull flex flex-col items-center justify-start p-4 bg-white shadow-md h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 rounded-l-lg ${className}`}
     >
       <h2 className="text-2xl font-bold mb-6 w-full text-center text-gray-800 border-b border-gray-300 pb-3 select-none">
         💬 채팅방 목록
@@ -101,18 +101,17 @@ const ChatSidebar = ({
           return (
             <div
               key={chat.chatRoomId}
-              className={`flex items-center justify-between cursor-pointer p-3 mb-2 rounded-xl
-                transition-colors duration-200
-                hover:bg-blue-50
-                ${isSelected ? "bg-blue-100 shadow-md" : "bg-white"}`}
-              style={{ minHeight: 60 }}
+              className={`w-full flex items-center justify-between cursor-pointer px-4 py-3 mb-2 rounded-xl transition-colors duration-200 hover:bg-blue-50 ${
+                isSelected ? "bg-blue-100 shadow-md" : "bg-white"
+              }`}
+              style={{ height: 90 }}
               onClick={() => setSelectedChat(chat)}
             >
               <div className="flex items-center space-x-3 flex-1 min-w-0">
                 <div className="relative">
-                  {chat.profileImage ? (
+                  {chat.partnerImage ? (
                     <img
-                      src={chat.profileImage}
+                      src={chat.partnerImage}
                       alt="프로필"
                       className="w-14 h-14 rounded-full object-cover border border-gray-200"
                     />
@@ -120,7 +119,6 @@ const ChatSidebar = ({
                     <DefaultProfileIcon />
                   )}
 
-                  {/* 안읽은 메시지 개수 빨간 배지 */}
                   {chat.unreadCount > 0 && (
                     <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                       {chat.unreadCount > 99 ? "99+" : chat.unreadCount}
@@ -128,9 +126,9 @@ const ChatSidebar = ({
                   )}
                 </div>
 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 h-full flex flex-col justify-between leading-tight">
                   <div className="flex justify-between items-center">
-                    <p className="font-semibold text-gray-900 truncate max-w-[180px]">
+                    <p className="font-semibold text-gray-900 truncate max-w-[160px]">
                       {chat.partnerName || "이름 없음"}
                     </p>
                     {chat.sendDate && (
@@ -139,11 +137,10 @@ const ChatSidebar = ({
                       </span>
                     )}
                   </div>
-                  {chat.lastMessage && (
-                    <p className="text-gray-600 text-sm truncate max-w-[240px] mt-1">
-                      {chat.lastMessage}
-                    </p>
-                  )}
+
+                  <p className="text-gray-600 text-sm mt-1 line-clamp-1 max-w-[240px]">
+                    {chat.lastMessage || ""}
+                  </p>
                 </div>
               </div>
 
