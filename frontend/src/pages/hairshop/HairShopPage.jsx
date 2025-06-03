@@ -4,7 +4,7 @@ import Header from "../../components/common/Header.jsx";
 import { Search, Star, Clock } from "lucide-react";
 import axiosInstance from "../../components/sign/axios/AxiosInstance";
 import HairSearch from "../../components/hairshop/HairSearch.jsx";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 
 export default function HairShopPage() {
   const [isVisible, setIsVisible] = useState({});
@@ -18,31 +18,48 @@ export default function HairShopPage() {
   });
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    const fetchHairShops = async () => {
-      try {
-        const response = await axiosInstance.get("/user/hairshop", {
+  // 검색 API 호출 함수
+  const searchHairShops = async (searchText) => {
+    try {
+      const response = await axiosInstance.get(
+        `/user/hairshop/search?searchText=${encodeURIComponent(searchText)}`,
+        {
           withCredentials: true,
-        });
-        // 데이터가 변경되었을 때만 로그 출력
-        if (JSON.stringify(hairShops) !== JSON.stringify(response.data.shops)) {
-          console.log("헤어샵 데이터:", response.data);
         }
-        setHairShops(response.data.shops || []); // shops 배열 설정
-        // 통계 데이터가 변경되었을 때만 설정
-        const newStats = {
-          registeredShopCnt: response.data.registeredShopCnt || 0,
-          registeredDesignerCnt: response.data.registeredDesignerCnt || 0,
-          registeredReviewCnt: response.data.registeredReviewCnt || 0,
-        };
-        setStats(newStats);
-      } catch (error) {
-        console.error("헤어샵 데이터 로드 실패:", error);
-      }
-    };
+      );
+      console.log("검색 결과:", response.data);
+      setHairShops(response.data || []);
+    } catch (error) {
+      console.error("검색 실패:", error);
+    }
+  };
 
-    fetchHairShops();
-  }, []);
+  // 원래 데이터 불러오기
+  const fetchOriginalHairShops = async () => {
+    try {
+      const response = await axiosInstance.get("/user/hairshop", {
+        withCredentials: true,
+      });
+      console.log("원래 헤어샵 데이터:", response.data);
+      setHairShops(response.data.shops || []);
+      setStats({
+        registeredShopCnt: response.data.registeredShopCnt || 0,
+        registeredDesignerCnt: response.data.registeredDesignerCnt || 0,
+        registeredReviewCnt: response.data.registeredReviewCnt || 0,
+      });
+    } catch (error) {
+      console.error("헤어샵 데이터 로드 실패:", error);
+    }
+  };
+
+  // 검색어 변경 시 API 호출
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      searchHairShops(searchQuery);
+    } else {
+      fetchOriginalHairShops(); // 검색어가 비어있으면 원래 데이터 불러오기
+    }
+  }, [searchQuery]);
 
   /* 애니메이션 효과 */
   useEffect(() => {
@@ -116,9 +133,9 @@ export default function HairShopPage() {
             <div className="bg-green-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-green-600 mb-1">
                 <CountUp
-                  start={0} 
-                  end={stats.registeredShopCnt+234429} 
-                  duration={3} 
+                  start={0}
+                  end={stats.registeredShopCnt + 234429}
+                  duration={3}
                   separator=","
                   decimal="."
                   delay={0.5}
@@ -129,9 +146,9 @@ export default function HairShopPage() {
             <div className="bg-teal-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-teal-600 mb-1">
                 <CountUp
-                  start={0} 
-                  end={stats.registeredDesignerCnt+12654} 
-                  duration={3} 
+                  start={0}
+                  end={stats.registeredDesignerCnt + 12654}
+                  duration={3}
                   separator=","
                   decimal="."
                   delay={0.5}
@@ -142,9 +159,9 @@ export default function HairShopPage() {
             <div className="bg-emerald-50 p-4 rounded-lg text-center">
               <div className="text-3xl font-bold text-emerald-600 mb-1">
                 <CountUp
-                  start={0} 
-                  end={stats.registeredReviewCnt+99239}
-                  duration={3} 
+                  start={0}
+                  end={stats.registeredReviewCnt + 99239}
+                  duration={3}
                   separator=","
                   decimal="."
                   delay={0.5}
