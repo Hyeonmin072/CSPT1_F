@@ -14,7 +14,7 @@ export default function Notice() {
     useEffect(() => {
         const fetchNoticeData = async () => {
             try {
-                const response = await axiosInstance.get("/notices");
+                const response = await axiosInstance.get("/designer/notices");
                 const data = response.data;
 
                 // 공지사항 분류

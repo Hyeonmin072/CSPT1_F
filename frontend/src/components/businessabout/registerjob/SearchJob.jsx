@@ -71,6 +71,12 @@ export default function SearchJobPage() {
         }
     };
 
+    const formatTime = (timeStr) => {
+        if (!timeStr) return "";
+        return timeStr.slice(0, 5); // "09:30:00" -> "09:30"
+    };
+      
+
     return (
         <div className="flex flex-col w-full h-auto min-h-[700px] bg-gray-50">
             {/* 등록 버튼 */}
@@ -118,12 +124,13 @@ export default function SearchJobPage() {
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-800">출근시간</div>
-                                        <div>{job.workTime}</div>
+                                        <div>{formatTime(job?.workTime || "")}</div>
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-800">퇴근시간</div>
-                                        <div>{job.leaveTime}</div>
+                                        <div>{formatTime(job?.leaveTime || "")}</div>
                                     </div>
+
                                 </div>
     
                                 {/* 버튼 그룹 */}

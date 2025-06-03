@@ -106,15 +106,9 @@ export default function EventCouponCreate() {
             });
             return;
         }
-    
-        const formattedEvent = {
-            ...newEvent,
-            startDate: newEvent.startDate.replace(/-/g, ""),
-            endDate: newEvent.endDate.replace(/-/g, ""),
-        };
-    
+
         try {
-            const response = await axiosInstance.post("/shop/event", formattedEvent);
+            const response = await axiosInstance.post("/shop/event", newEvent);
             console.log("이벤트 등록 성공:", response.data);
     
             Swal.fire({
