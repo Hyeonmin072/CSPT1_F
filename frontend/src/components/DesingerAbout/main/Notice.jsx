@@ -1,15 +1,14 @@
 import { NotebookText, ChevronRight, Check, Star } from 'lucide-react';
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import axiosInstance from '../../sign/axios/AxiosInstance.jsx';
 
-import { dummyNotices } from "../../dummydata/DummyNotice.jsx";
-
 export default function Notice() {
     const [loading, setLoading] = useState(true); 
-    const [notices, setNotices] = useState({ weekNotice: [], importantNotice: [] });
-    const [selectedNotice, setSelectedNotice] = useState(null); 
+    const [notices, setNotices] = useState({ normalNotice: [], importantNotice: [] });
+    const [selectedNotice, setSelectedNotice] = useState(false); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNoticeData = async () => {
@@ -18,10 +17,10 @@ export default function Notice() {
                 const data = response.data;
 
                 // 공지사항 분류
-                const weekNotice = data.filter((notice) => notice.category === "weekly");
-                const importantNotice = data.filter((notice) => notice.category === "important");
+                const normalNotice = data.filter((notice) => notice.importance === false);
+                const importantNotice = data.filter((notice) => notice.importance === true);
 
-                setNotices({ weekNotice, importantNotice }); // 분류된 공지사항 상태 업데이트
+                setNotices({ normalNotice, importantNotice }); // 분류된 공지사항 상태 업데이트
             } catch (error) {
                 console.error("Error fetching notice data:", error);
             } finally {
@@ -31,9 +30,17 @@ export default function Notice() {
 
         fetchNoticeData();
     }, []);
-    if (loading) {
-        return <div>로딩 중...</div>;
-    }
+
+    const handleNoticeClick = async (noticeId) => {
+        try {
+            const response = await axiosInstance.get(`/designer/notice/${noticeId}`);
+            const noticeDetail = response.data;
+
+            navigate(`/notice/${noticeId}`, { state: noticeDetail });
+        } catch (error) {
+            console.error("Error fetching notice detail:", error);
+        }
+    };
 
     if (loading) {
         return <div className="text-center mt-4">로딩 중...</div>; 
@@ -51,11 +58,11 @@ export default function Notice() {
                 <div className="flex flex-col w-full lg:w-1/4">
                     <button
                         className={`flex items-center justify-between w-full p-2 py-4 rounded-lg transition-all duration-300 ${
-                            selectedNotice?.type === "weekNotice"
+                            selectedNotice?.type === "normalNotice"
                                 ? "bg-green-200 text-green-700 shadow-[inset_0_2px_6px_rgba(4,109,90,0.3)]"
                                 : "bg-gray-100 hover:bg-gray-300"
                         }`}
-                        onClick={() => setSelectedNotice({ type: "weekNotice" })}
+                        onClick={() => setSelectedNotice({ type: "normalNotice" })}
                     >
                         <span className="flex items-center">
                             <Check className="w-5 h-5 mr-2 text-green-600" />
@@ -82,7 +89,7 @@ export default function Notice() {
                 {/* 공지사항 목록 */}
                 <div className="flex flex-col bg-gray-50 rounded-lg shadow p-4 w-full lg:w-3/4 max-h-[480px] overflow-y-auto">
                     {/* 선택된 공지사항 유형에 따라 헤더 표시 */}
-                    {selectedNotice?.type === "weekNotice" && (
+                    {selectedNotice?.type === "normalNotice" && (
                         <div className="mb-4">
                             <h3 className="text-xl font-bold text-green-700">이번주 공지사항</h3>
                         </div>
@@ -96,22 +103,23 @@ export default function Notice() {
                     {/* 선택된 공지사항 유형에 따라 목록 표시 */}
                     {selectedNotice?.type && (
                         <div className="flex flex-col gap-4">
-                            {(selectedNotice.type === "weekNotice"
-                                ? notices.weekNotice
+                            {(selectedNotice.type === "normalNotice"
+                                ? notices.normalNotice
                                 : notices.importantNotice
                             ).map((notice) => (
-                                <Link
+                                <div
                                     key={notice.id}
-                                    to="/notice"
-                                    state={notice}
-                                    className="flex items-center border justify-between p-4 bg-gray-50 rounded shadow hover:shadow-lg transition-shadow duration-300"
+                                    onClick={() => handleNoticeClick(notice.id)}
+                                    className="flex items-center border justify-between p-4 bg-gray-50 rounded shadow hover:shadow-lg transition-shadow duration-300 cursor-pointer"
                                 >
                                     <div className="flex flex-col">
                                         <p className="text-gray-800 font-medium">{notice.title}</p>
-                                        <p className="text-xs text-gray-400">{notice.date}</p>
+                                        <p className="text-xs text-gray-400">
+                                            {new Date(notice.createDate).toISOString().slice(0, 10) || "날짜 없음"}
+                                        </p>
                                     </div>
                                     <ChevronRight className="text-gray-500" />
-                                </Link>
+                                </div>
                             ))}
                         </div>
                     )}

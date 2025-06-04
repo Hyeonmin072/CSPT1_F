@@ -46,7 +46,7 @@ export default function RegisterJobPage() {
             });
 
             if (result.isConfirmed) {
-                const response = await axiosInstance.post("/shop/jobpost", formData);
+                const response = await axiosInstance.post("/shop/jobposts", formData);
                 console.log("등록 응답:", response.data);
 
                 await Swal.fire({

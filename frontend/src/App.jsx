@@ -272,7 +272,7 @@ function App() {
                   element={<DesignerMainPage onLoginClick={openLoginModal} />}
                 />
                 <Route
-                  path="/notice"
+                  path="/notice/:id"
                   element={<WeekNotice onLoginClick={openLoginModal} />}
                 />
 

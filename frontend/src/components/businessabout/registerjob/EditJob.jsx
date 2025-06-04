@@ -30,9 +30,9 @@ export default function EditJob() {
             return;
         }
 
-        const fetchJobData = async () => {
+        const fetchJobData = async (jobId) => {
             try {
-                const response = await axiosInstance.get(`/shop/jobpost/${id}`);
+                const response = await axiosInstance.get(`/shop/jobposts/${jobId}`);
                 const data = response.data;
                 
                 console.log(data);
@@ -58,17 +58,12 @@ export default function EditJob() {
             }
         };
 
-        fetchJobData();
-    }, [id, navigate]);
+        fetchJobData(id);
+    }, [ navigate]);
 
     const formatTime = (timeStr) => {
         if (!timeStr) return "";
-    
-        const cleanedTime = timeStr.trim(); // 앞뒤 공백 제거
-    
-        if (!/^\d{2}:\d{2}$/.test(cleanedTime)) return ""; // HH:mm 형식인지 확인
-    
-        return cleanedTime; // 브라우저가 올바른 HH:mm 형식을 유지하므로 변환 필요 없음
+        return timeStr.slice(0, 5); 
     };
     
     const handleTimeChange = (e) => {
@@ -89,7 +84,7 @@ export default function EditJob() {
     };
     
 
-    const handeUpdateJob = async (e) => {
+    const handleUpdateJob = async (e, jobId) => {
         e.preventDefault();
     
         try {
@@ -107,10 +102,9 @@ export default function EditJob() {
             if (result.isConfirmed) {
                 const updatedFormData = {
                     ...formData,
-                    id: id,  // id 추가
                 };
     
-                const response = await axiosInstance.patch(`/shop/jobpost/${id}`, updatedFormData);
+                const response = await axiosInstance.patch(`/shop/jobposts/${jobId}`, updatedFormData);
                 console.log("수정 응답:", response.data);
     
                 await Swal.fire({
@@ -269,7 +263,8 @@ export default function EditJob() {
                         <button
                             type="submit"
                             className={`w-[130px] px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-md`}
-                            onClick={handeUpdateJob}
+                            onClick={(e) => handleUpdateJob(e, id)}
+
                         >
                             수정하기
                         </button>

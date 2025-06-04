@@ -1,13 +1,14 @@
 import { useCallback, useState, useEffect } from "react";
 import axiosInstance from "../../sign/axios/AxiosInstance";
 import { MailPlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
 export default function SearchJobPage() {
     const navigate = useNavigate();
     const [jobList, setJobList] = useState([]);
+    const { id } = useParams();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -30,7 +31,7 @@ export default function SearchJobPage() {
         fetchJobList();
     }, [fetchJobList]);
 
-    const handleCloseJob = async (id, work, title, content, gender) => {
+    const handleCloseJob = async (jobId) => {
         try {
             const result = await Swal.fire({
                 title: "게시글 마감",
@@ -44,11 +45,9 @@ export default function SearchJobPage() {
             });
     
             if (result.isConfirmed) {
-                const response = await axiosInstance.request({
-                    method: "DELETE",
-                    url: `/shop/jobpost`,
-                    data: { id, work, title, content, gender }, // 모든 필드 전달
-                });
+                console.log("삭제 요청 jobpostId:", jobId);
+    
+                const response = await axiosInstance.delete(`/shop/jobposts/${jobId}`);              
                 console.log("게시글 마감 응답:", response.data);
     
                 await Swal.fire({
@@ -70,10 +69,11 @@ export default function SearchJobPage() {
             });
         }
     };
+    
 
     const formatTime = (timeStr) => {
         if (!timeStr) return "";
-        return timeStr.slice(0, 5); // "09:30:00" -> "09:30"
+        return timeStr.slice(0, 5); 
     };
       
 
@@ -149,7 +149,9 @@ export default function SearchJobPage() {
                                     </button>
                                     <button
                                         className="px-4 py-2 bg-red-100 rounded-lg hover:bg-red-200 text-red-700 shadow-sm"
-                                        onClick={() => handleCloseJob(job.id, job.work, job.title, job.content, job.gender)}
+                                        onClick={() => {handleCloseJob(job.id)
+                                            console.log("마감 버튼 클릭됨", job.id)}
+                                        }
                                     >
                                         마감하기
                                     </button>
