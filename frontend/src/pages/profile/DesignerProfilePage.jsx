@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 // axios 기본 설정
-axios.defaults.baseURL = "http://localhost:1271"; // 백엔드 서버 URL
+axios.defaults.baseURL = import.meta.env.VITE_API_URL; // 백엔드 서버 URL
 axios.defaults.withCredentials = true; // CORS 인증 설정
 
 export default function DesignerProfilePage() {

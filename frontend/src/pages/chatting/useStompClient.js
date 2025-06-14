@@ -45,7 +45,7 @@ const useStompClient = (chats, onNewMessage) => {
   // STOMP 클라이언트 연결 설정
   useEffect(() => {
     const client = new Client({
-      brokerURL: "ws://localhost:1271/ws-connect",
+      brokerURL: "ws://13.125.168.206:1271/ws-connect",
       reconnectDelay: 30000,
     });
 
