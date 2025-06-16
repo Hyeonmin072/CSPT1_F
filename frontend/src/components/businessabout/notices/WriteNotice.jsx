@@ -67,16 +67,21 @@ export default function WriteNotice() {
     {/* 공지사항 등록 */}
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        const formattedDate = new Date().toISOString().split("T")[0];
-        const formattedContent = notice.content.replace(/\n/g, "<br>");
-        console.log("notice content:", notice.content);
-    
+        if (!notice.title.trim() || !notice.content.trim()) {
+            Swal.fire({
+                icon: "warning",
+                title: "입력 오류",
+                text: "제목과 내용을 모두 입력해주세요.",
+                confirmButtonColor: "#D33",
+            });
+            return;
+        }
+        
         try {
             const response = await axiosInstance.post("/shop/notice", {
-                ...notice,
-                content: formattedContent,
-                date: formattedDate,
+                title: notice.title,
+                content: notice.content,
+                importance: notice.importance,
             });
             if (response.status === 200) {
                 Swal.fire({
@@ -165,62 +170,13 @@ export default function WriteNotice() {
             </div>
                 
             <div className="w-full border border-gray-300 rounded">
-                {/* Toolbar */}
-                <div className="flex items-center space-x-4 border-b border-gray-300 pb-2 mt-2">
-                    <button className="p-2" onClick={() => toggleStyle("bold")}>
-                        <Bold size={20} //strokeWidth={activeStyles.bold ? 3 : 1} 
-                        />
-                    </button>
-                    <button className="p-2" onClick={() => toggleStyle("italic")}>
-                        <Italic size={20} // strokeWidth={activeStyles.italic ? 3 : 1}
-                         />
-                    </button>
-                    <button className="p-2" onClick={() => toggleStyle("underline")}>
-                        <Underline size={20} strokeWidth={activeStyles.underline ? 3 : 1} />
-                    </button>
-                    <button className="p-2" onClick={() => toggleStyle("strikeThrough")}>
-                        <Strikethrough size={20} strokeWidth={activeStyles.strikeThrough ? 3 : 1} />
-                    </button>
-
-                    <select 
-                        className="p-1 border rounded" 
-                        value={fontSize}
-                        onChange={changeFontSize}
-                    >
-                        <option value="16px">16px</option>
-                        <option value="18px">18px</option>
-                        <option value="20px">20px</option>
-                    </select>
-                    
-                    <button className="p-2 text-gray-600 hover:text-black"><Link size={20} /></button>
-                    <button className="p-2 text-gray-600 hover:text-black"><Image size={20} /></button>
-                    <button className="p-2 text-gray-600 hover:text-black"><Video size={20} /></button>
-                </div>
-
                 {/* 공지사항 내용 */}
                 <div
                     className="w-full h-[500px] p-4 focus:outline-none focus:border-black mt-2"
                     contentEditable={true}
                     onInput={(e) => {
-                        let content = e.currentTarget.innerHTML;
-
-                        // 첫 문단과 첫 문장을 <div>로 감싸기
-                        if (!content.startsWith("<div>")) {
-                            content = `<div>${content}</div>`;
-                            e.currentTarget.innerHTML = content;
-                        }
-
+                        const content = e.currentTarget.textContent.replace(/\n/g, "<br>");
                         setNotice({ ...notice, content });
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            const selection = window.getSelection();
-                            if (!selection.rangeCount) return;
-                
-                            const range = selection.getRangeAt(0);
-                            const newDiv = document.createElement("div");
-                            range.insertNode(newDiv);
-                        }
                     }}
                     ref={editorRef}
                     suppressContentEditableWarning={true}
