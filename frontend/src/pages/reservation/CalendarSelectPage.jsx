@@ -16,36 +16,35 @@ export default function CalendarSelectPage() {
   const [error, setError] = useState(null);
   const [step, setStep] = useState(0);
   const [slideDirection, setSlideDirection] = useState("enter"); // 'enter' 또는 'exit'
-
-  // timeSlots 배열 추가
-  const timeSlots = [
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30",
-    "20:00",
-  ];
+  const [availableTimes, setAvailableTimes] = useState([]);
 
   // 날짜 선택 핸들러
-  const handleDateSelect = (date) => {
+  const handleDateSelect = async (date) => {
+    console.log("=== 날짜 선택 시작 ===");
     console.log("선택된 날짜:", date);
+    console.log("디자이너 이메일:", designerEmail);
     setSelectedDate(date);
+
+    try {
+      console.log("예약 가능 시간 API 요청 시작");
+      const response = await axiosInstance.get(
+        `/user/reservation/selecttime/available-time?designeremail=${designerEmail}&day=${date}`
+      );
+      console.log("API 응답 데이터:", response.data);
+      console.log("예약 가능 시간 목록:", response.data.availableTimes);
+
+      setAvailableTimes(response.data.availableTimes || []);
+      console.log("availableTimes 상태 업데이트 완료");
+
+      goToNextStep(2);
+      console.log("다음 단계(시간 선택)로 이동");
+    } catch (error) {
+      console.error("=== 예약 가능 시간 조회 실패 ===");
+      console.error("에러 메시지:", error.message);
+      console.error("에러 상세:", error);
+      toast.error("예약 가능 시간을 불러오는데 실패했습니다.");
+    }
+    console.log("=== 날짜 선택 프로세스 종료 ===");
   };
 
   // 시간 선택 핸들러
@@ -156,10 +155,7 @@ export default function CalendarSelectPage() {
             {dates.map((item) => (
               <button
                 key={item.fullDate}
-                onClick={() => {
-                  setSelectedDate(item.fullDate);
-                  goToNextStep(2);
-                }}
+                onClick={() => handleDateSelect(item.fullDate)}
                 className={`
                   flex flex-col items-center justify-center p-3 rounded-lg
                   min-w-[60px] transition-all duration-200
@@ -199,37 +195,55 @@ export default function CalendarSelectPage() {
   };
 
   // 시간 선택 컴포넌트
-  const renderTimeSelect = () => (
-    <div
-      className={`
-        transform transition-all duration-300 ease-in-out w-full max-w-2xl
-        ${
-          slideDirection === "enter"
-            ? "translate-x-0 opacity-100"
-            : "translate-x-[-100%] opacity-0"
-        }
-      `}
-    >
-      <div className="bg-white rounded-xl p-6 shadow-lg">
-        <h2 className="text-xl font-medium mb-6 text-center">시간 선택</h2>
-        <div className="grid grid-cols-4 gap-4">
-          {timeSlots.map((time) => (
-            <button
-              key={time}
-              className={`p-3 rounded-lg border text-center ${
-                selectedTime === time
-                  ? "bg-green-500 text-white border-green-600"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-green-600"
-              }`}
-              onClick={() => handleTimeSelect(time)}
-            >
-              {time}
-            </button>
-          ))}
+  const renderTimeSelect = () => {
+    const now = new Date();
+    const currentTime = now.toTimeString().split(" ")[0].substring(0, 5); // "HH:mm"
+    const today = now.toISOString().split("T")[0];
+
+    // 오늘이면 현재 시간 이후만, 아니면 모두 표시
+    const filteredTimes = availableTimes.filter((time) => {
+      const timeWithoutSeconds = time.substring(0, 5);
+      const isToday = selectedDate === today;
+      return !isToday || timeWithoutSeconds > currentTime;
+    });
+
+    if (filteredTimes.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[200px]">
+          <span className="text-lg text-gray-500 font-semibold">
+            현재 날짜는 예약이 불가능합니다
+          </span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white rounded-xl p-8 shadow-2xl mt-12">
+        <h2 className="text-2xl font-bold mb-8 text-center text-green-600 tracking-wide">
+          예약 가능한 시간
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          {filteredTimes.map((time) => {
+            const timeWithoutSeconds = time.substring(0, 5);
+            return (
+              <button
+                key={time}
+                className={
+                  "p-5 rounded-2xl shadow-md border-2 text-xl font-semibold transition-all duration-200 hover:bg-green-100 hover:scale-105 " +
+                  (selectedTime === time
+                    ? "bg-green-500 text-white border-green-500 scale-105"
+                    : "bg-white text-green-700 border-green-100")
+                }
+                onClick={() => handleTimeSelect(time)}
+              >
+                <span className="font-semibold">{timeWithoutSeconds}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // 다음 페이지로 이동하는 함수 수정
   const handleNext = async () => {

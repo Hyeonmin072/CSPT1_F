@@ -8,12 +8,12 @@ import { toast } from "react-hot-toast";
 export default function MenuSetting() {
   const navigate = useNavigate();
   const [menuData, setMenuData] = useState({
-    designerEmail: "",
+    designerEmails: [],
     name: "",
     desc: "",
     price: "",
     estimatedTime: "",
-    category: "NONE", // 기본값 NONE으로 설정
+    category: "NONE",
   });
   const [designers, setDesigners] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
@@ -63,10 +63,23 @@ export default function MenuSetting() {
 
   // 디자이너 선택 처리
   const handleDesignerSelect = (designerEmail) => {
-    setMenuData((prev) => ({
-      ...prev,
-      designerEmail: designerEmail,
-    }));
+    setMenuData((prev) => {
+      const currentEmails = [...prev.designerEmails];
+      const index = currentEmails.indexOf(designerEmail);
+
+      if (index === -1) {
+        // 선택되지 않은 경우 추가
+        currentEmails.push(designerEmail);
+      } else {
+        // 이미 선택된 경우 제거
+        currentEmails.splice(index, 1);
+      }
+
+      return {
+        ...prev,
+        designerEmails: currentEmails,
+      };
+    });
   };
 
   // 메뉴 저장 처리
@@ -88,8 +101,8 @@ export default function MenuSetting() {
     }
 
     // 디자이너 선택 검증
-    if (!menuData.designerEmail) {
-      toast.error("담당 디자이너를 선택해주세요.", {
+    if (menuData.designerEmails.length === 0) {
+      toast.error("최소 한 명의 담당 디자이너를 선택해주세요.", {
         position: "bottom-right",
         autoClose: 2000,
       });
@@ -102,12 +115,12 @@ export default function MenuSetting() {
 
       // 요청 DTO 객체 생성
       const requestDto = {
+        designerEmails: menuData.designerEmails,
         name: menuData.name,
         desc: menuData.desc,
-        price: parseInt(menuData.price), // 문자열을 숫자로 변환
-        estimatedTime: menuData.estimatedTime,
         category: menuData.category,
-        designerEmails: [menuData.designerEmail], // 단일 이메일을 리스트로 변환
+        price: parseInt(menuData.price),
+        image: menuData.image ? menuData.image.name : "",
       };
 
       console.log("요청 DTO:", requestDto);
@@ -145,9 +158,6 @@ export default function MenuSetting() {
       }
 
       const response = await axiosInstance.post("/menus", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
         withCredentials: true,
       });
 
@@ -327,7 +337,7 @@ export default function MenuSetting() {
                   <div
                     key={designer.id}
                     className={`p-4 border rounded-lg cursor-pointer ${
-                      menuData.designerEmail === designer.email
+                      menuData.designerEmails.includes(designer.email)
                         ? "border-green-500 bg-green-50"
                         : "border-gray-300"
                     }`}
@@ -335,8 +345,10 @@ export default function MenuSetting() {
                   >
                     <div className="flex items-center space-x-2">
                       <input
-                        type="radio"
-                        checked={menuData.designerEmail === designer.email}
+                        type="checkbox"
+                        checked={menuData.designerEmails.includes(
+                          designer.email
+                        )}
                         onChange={() => {}}
                         className="h-4 w-4 text-green-500"
                       />
