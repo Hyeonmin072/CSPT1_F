@@ -34,6 +34,12 @@ export default function CalendarSelectPage() {
       console.log("예약 가능 시간 목록:", response.data.availableTimes);
 
       setAvailableTimes(response.data.availableTimes || []);
+      // 영업 시간 정보 저장
+      setDesignerInfo((prev) => ({
+        ...prev,
+        openTime: response.data.opentime,
+        closeTime: response.data.closetime,
+      }));
       console.log("availableTimes 상태 업데이트 완료");
 
       goToNextStep(2);
@@ -213,6 +219,13 @@ export default function CalendarSelectPage() {
           <span className="text-lg text-gray-500 font-semibold">
             현재 날짜는 예약이 불가능합니다
           </span>
+          {designerInfo?.openTime && designerInfo?.closeTime && (
+            <div className="mt-4 text-sm text-gray-500">
+              <p>
+                영업 시간: {designerInfo.openTime} - {designerInfo.closeTime}
+              </p>
+            </div>
+          )}
         </div>
       );
     }

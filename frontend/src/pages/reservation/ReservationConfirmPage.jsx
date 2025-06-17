@@ -27,6 +27,12 @@ export default function ReservationConfirmPage() {
     })`;
   };
 
+  // 시간 형식 변환 함수
+  const formatTime = (time) => {
+    // HH:mm 형식의 시간을 HH:mm:ss 형식으로 변환
+    return time + ":00";
+  };
+
   // TossPayments 스크립트 로드
   useEffect(() => {
     const script = document.createElement("script");
@@ -48,11 +54,14 @@ export default function ReservationConfirmPage() {
       // 서버에 보낼 데이터 형식 맞추기
       const requestData = {
         price: reservationData.menuInfo.finalPrice,
-        serviceDate: `${reservationData.reservationDate}T${reservationData.reservationTime}:00`,
+        serviceDate: `${reservationData.reservationDate}T${reservationData.reservationTime}`,
         designerEmail: reservationData.designerEmail,
         shopEmail: reservationData.shopInfo.shopEmail,
         menuId: reservationData.menuInfo.menuId,
       };
+
+      // 시간 형식 검증 및 로깅
+      console.log("전송할 날짜/시간 데이터:", requestData.serviceDate);
 
       console.log("임시 예약 요청 데이터:", requestData);
 

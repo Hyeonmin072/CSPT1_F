@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/AuthContext";
+import { NotificationProvider } from "./context/NotificationContext";
 //npm install react-toastify
 
 // 공통 컴포넌트
@@ -120,10 +121,12 @@ function App() {
         withCredentials: true,
       });
 
-      // 기본 메시지 핸들러
       eventSourceRef.current.onmessage = (event) => {
-        console.log("기본 메시지:", event.data);
-        toast.info(event.data, {
+        const notification = JSON.parse(event.data);
+        // Context를 통해 알림 추가
+        addNotification(notification);
+        // 토스트 메시지 표시
+        toast.info(notification.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -180,286 +183,297 @@ function App() {
   };
 
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col">
-          <Routes>
-            {/* 기본 라우트 */}
-            <Route
-              path="/"
-              element={<MainPage onLoginClick={openLoginModal} />}
-            />
-            <Route path="/map" element={<MapPage />} />
+    <NotificationProvider>
+      <AuthProvider>
+        <Router>
+          <div className="min-h-screen flex flex-col">
+            <Routes>
+              {/* 기본 라우트 */}
+              <Route
+                path="/"
+                element={<MainPage onLoginClick={openLoginModal} />}
+              />
+              <Route path="/map" element={<MapPage />} />
 
-            {/* 공통 라우트 */}
-            <Route path="/social/signup" element={<SocialSignup />} />
-            <Route
-              path="/hairshop"
-              element={<HairShopPage onLoginClick={openLoginModal} />}
-            />
-            <Route
-              path="/shopdetails/:shopEmail"
-              element={<HairShopDetailPage onLoginClick={openLoginModal} />}
-            />
-            <Route
-              path="/reviews"
-              element={<ReviewsPage onLoginClick={openLoginModal} />}
-            />
-            <Route
-              path="/reviews/photo"
-              element={<PhotoReview onLoginClick={openLoginModal} />}
-            />
+              {/* 공통 라우트 */}
+              <Route path="/social/signup" element={<SocialSignup />} />
+              <Route
+                path="/hairshop"
+                element={<HairShopPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/shopdetails/:shopEmail"
+                element={<HairShopDetailPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/reviews"
+                element={<ReviewsPage onLoginClick={openLoginModal} />}
+              />
+              <Route
+                path="/reviews/photo"
+                element={<PhotoReview onLoginClick={openLoginModal} />}
+              />
 
-            {/* 고객 전용 라우트 */}
-            {userRole === "user" && (
-              <>
-                <Route
-                  path="/designerpage"
-                  element={<DesignerPage onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/designerinfo/:designerEmail"
-                  element={<DesignerInfoPage />}
-                />
-                <Route
-                  path="/userprofile"
-                  element={<UserProfile onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/userprofileedit"
-                  element={<UserProfileEdit onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/designerselect/:shopEmail"
-                  element={<DesignerSelectPage />}
-                />
-                <Route
-                  path="/calendarselect/:designerEmail"
-                  element={<CalendarSelectPage />}
-                />
-                <Route
-                  path="/menuselect/:designerEmail"
-                  element={<MenuSelectPage />}
-                />
-                <Route
-                  path="/reservationcheck"
-                  element={<ReservationCheckPage />}
-                />
-                <Route
-                  path="/subscriptdesigner"
-                  element={
-                    <SubscriptDesignerPage onLoginClick={openLoginModal} />
-                  }
-                />
-                <Route path="/designer/match" element={<DesignerMatchPage />} />
-                <Route
-                  path="/user/payment/success-page"
-                  element={<ReservationLastCheckPage />}
-                />
-                <Route
-                  path="/userchat"
-                  element={<ChattingPage onLoginClick={openLoginModal} />}
-                />
-              </>
-            )}
+              {/* 고객 전용 라우트 */}
+              {userRole === "user" && (
+                <>
+                  <Route
+                    path="/designerpage"
+                    element={<DesignerPage onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/designerinfo/:designerEmail"
+                    element={<DesignerInfoPage />}
+                  />
+                  <Route
+                    path="/userprofile"
+                    element={<UserProfile onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/userprofileedit"
+                    element={<UserProfileEdit onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/designerselect/:shopEmail"
+                    element={<DesignerSelectPage />}
+                  />
+                  <Route
+                    path="/calendarselect/:designerEmail"
+                    element={<CalendarSelectPage />}
+                  />
+                  <Route
+                    path="/menuselect/:designerEmail"
+                    element={<MenuSelectPage />}
+                  />
+                  <Route
+                    path="/reservationcheck"
+                    element={<ReservationCheckPage />}
+                  />
+                  <Route
+                    path="/subscriptdesigner"
+                    element={
+                      <SubscriptDesignerPage onLoginClick={openLoginModal} />
+                    }
+                  />
+                  <Route
+                    path="/designer/match"
+                    element={<DesignerMatchPage />}
+                  />
+                  <Route
+                    path="/user/payment/success-page"
+                    element={<ReservationLastCheckPage />}
+                  />
+                  <Route
+                    path="/userchat"
+                    element={<ChattingPage onLoginClick={openLoginModal} />}
+                  />
+                </>
+              )}
 
-            {/* 디자이너 전용 라우트 */}
-            {userRole === "designer" && (
-              <>
-                {/* 메인 페이지 */}
-                <Route
-                  path="/designer"
-                  element={<DesignerMainPage onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/notice/:id"
-                  element={<WeekNotice onLoginClick={openLoginModal} />}
-                />
+              {/* 디자이너 전용 라우트 */}
+              {userRole === "designer" && (
+                <>
+                  {/* 메인 페이지 */}
+                  <Route
+                    path="/designer"
+                    element={<DesignerMainPage onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/notice/:id"
+                    element={<WeekNotice onLoginClick={openLoginModal} />}
+                  />
 
-                {/* 고객 확인 페이지 */}
-                <Route
-                  path="/client"
-                  element={<ClientCheckPage onLoginClick={openLoginModal} />}
-                />
+                  {/* 고객 확인 페이지 */}
+                  <Route
+                    path="/client"
+                    element={<ClientCheckPage onLoginClick={openLoginModal} />}
+                  />
 
-                {/* 구인구직 페이지 */}
-                <Route
-                  path="/job"
-                  element={<GetJobPage onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/job/detail/:id"
-                  element={<GetJobDetailPage onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/job/detail/cv"
-                  element={<CVCheck onLoginClick={openLoginModal} />}
-                />
-                {/* 이력서 페이지 */}
-                <Route
-                  path="/cv"
-                  element={
-                    <CurriculumVitaePage onLoginClick={openLoginModal} />
-                  }
-                />
-                {/* 매출확인 페이지 */}
-                <Route
-                  path="/sales"
-                  element={<SalesPage onLoginClick={openLoginModal} />}
-                />
+                  {/* 구인구직 페이지 */}
+                  <Route
+                    path="/job"
+                    element={<GetJobPage onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/job/detail/:id"
+                    element={<GetJobDetailPage onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/job/detail/cv"
+                    element={<CVCheck onLoginClick={openLoginModal} />}
+                  />
+                  {/* 이력서 페이지 */}
+                  <Route
+                    path="/cv"
+                    element={
+                      <CurriculumVitaePage onLoginClick={openLoginModal} />
+                    }
+                  />
+                  {/* 매출확인 페이지 */}
+                  <Route
+                    path="/sales"
+                    element={<SalesPage onLoginClick={openLoginModal} />}
+                  />
 
-                {/* 프로필 페이지 */}
-                <Route
-                  path="/profile"
-                  element={
-                    <DesignerProfilePage onLoginClick={openLoginModal} />
-                  }
-                />
-                <Route
-                  path="/profileedit"
-                  element={
-                    <DesignerProfileEditPage onLoginClick={openLoginModal} />
-                  }
-                />
-                <Route
-                  path="/designerchat"
-                  element={
-                    <DesignerChattingPage onLoginClick={openLoginModal} />
-                  }
-                />
-              </>
-            )}
+                  {/* 프로필 페이지 */}
+                  <Route
+                    path="/profile"
+                    element={
+                      <DesignerProfilePage onLoginClick={openLoginModal} />
+                    }
+                  />
+                  <Route
+                    path="/profileedit"
+                    element={
+                      <DesignerProfileEditPage onLoginClick={openLoginModal} />
+                    }
+                  />
+                  <Route
+                    path="/designerchat"
+                    element={
+                      <DesignerChattingPage onLoginClick={openLoginModal} />
+                    }
+                  />
+                </>
+              )}
 
-            {/* 사업자 전용 */}
-            {userRole === "shop" && (
-              <>
-                {/* 메인 페이지 */}
-                <Route
-                  path="/shop"
-                  element={<BusinessMainPage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 매출 페이지 */}
-                <Route
-                  path="/sales"
-                  element={<BusinessSalesPage onLoginClick={openLoginModal} />}
-                />
+              {/* 사업자 전용 */}
+              {userRole === "shop" && (
+                <>
+                  {/* 메인 페이지 */}
+                  <Route
+                    path="/shop"
+                    element={<BusinessMainPage onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 매출 페이지 */}
+                  <Route
+                    path="/sales"
+                    element={
+                      <BusinessSalesPage onLoginClick={openLoginModal} />
+                    }
+                  />
 
-                {/* 사업자 매출 상세 페이지 */}
-                <Route
-                  path="/sales/calendar/:designerEmail"
-                  element={<SalesCalendar onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 블랙리스트 페이지 */}
-                <Route
-                  path="/blacklist"
-                  element={<BlackListPage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 이벤트-쿠폰 등록 페이지 */}
-                <Route
-                  path="/eventmenu"
-                  element={
-                    <EventCouponMenuPage onLoginClick={openLoginModal} />
-                  }
-                />
-                <Route
-                  path="/eventmenu/create"
-                  element={<EventCouponCreate onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 디자이너 관리 페이지 */}
-                <Route
-                  path="/designermanage"
-                  element={<DesignerManagePage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 프로필 페이지 */}
-                <Route
-                  path="/shop/profile"
-                  element={<ShopProfile onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 메뉴 설정 페이지 */}
-                <Route
-                  path="/menu-setting"
-                  element={<MenuSetting onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 공지사항 작성/등록 페이지 */}
-                <Route
-                  path="/notices"
-                  element={<NoticesPage onLoginClick={openLoginModal} />}
-                />
-                <Route
-                  path="/notices/register"
-                  element={<RegisterNotice onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 공지사항 상세 페이지 */}
-                <Route
-                  path="/notices/detail/:noticeId"
-                  element={<DetailNotice onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 공지사항 수정 페이지 */}
-                <Route
-                  path="/notices/edit/:noticeId"
-                  element={<EditNotice onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 리뷰 관리 페이지 */}
-                <Route
-                  path="/reviewsmanage"
-                  element={<ReviewManagePage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 구인구직 페이지 */}
-                <Route
-                  path="/searchjob"
-                  element={<SearchJobPage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 구인구직 등록 페이지 */}
-                <Route
-                  path="/searchjob/register"
-                  element={<RegisterJobPage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 구인구직 수정 페이지 */}
-                <Route
-                  path="/searchjob/edit/:id"
-                  element={<EditJobPage onLoginClick={openLoginModal} />}
-                />
-                {/* 사업자 예약 목록 페이지 */}
-                <Route
-                  path="/reservations"
-                  element={<ShopReservations onLoginClick={openLoginModal} />}
-                />
-              </>
-            )}
-            <Route
-              path="/reservation/confirm"
-              element={<ReservationConfirmPage />}
+                  {/* 사업자 매출 상세 페이지 */}
+                  <Route
+                    path="/sales/calendar/:designerEmail"
+                    element={<SalesCalendar onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 블랙리스트 페이지 */}
+                  <Route
+                    path="/blacklist"
+                    element={<BlackListPage onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 이벤트-쿠폰 등록 페이지 */}
+                  <Route
+                    path="/eventmenu"
+                    element={
+                      <EventCouponMenuPage onLoginClick={openLoginModal} />
+                    }
+                  />
+                  <Route
+                    path="/eventmenu/create"
+                    element={
+                      <EventCouponCreate onLoginClick={openLoginModal} />
+                    }
+                  />
+                  {/* 사업자 디자이너 관리 페이지 */}
+                  <Route
+                    path="/designermanage"
+                    element={
+                      <DesignerManagePage onLoginClick={openLoginModal} />
+                    }
+                  />
+                  {/* 사업자 프로필 페이지 */}
+                  <Route
+                    path="/shop/profile"
+                    element={<ShopProfile onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 메뉴 설정 페이지 */}
+                  <Route
+                    path="/menu-setting"
+                    element={<MenuSetting onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 공지사항 작성/등록 페이지 */}
+                  <Route
+                    path="/notices"
+                    element={<NoticesPage onLoginClick={openLoginModal} />}
+                  />
+                  <Route
+                    path="/notices/register"
+                    element={<RegisterNotice onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 공지사항 상세 페이지 */}
+                  <Route
+                    path="/notices/detail/:noticeId"
+                    element={<DetailNotice onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 공지사항 수정 페이지 */}
+                  <Route
+                    path="/notices/edit/:noticeId"
+                    element={<EditNotice onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 리뷰 관리 페이지 */}
+                  <Route
+                    path="/reviewsmanage"
+                    element={<ReviewManagePage onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 구인구직 페이지 */}
+                  <Route
+                    path="/searchjob"
+                    element={<SearchJobPage onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 구인구직 등록 페이지 */}
+                  <Route
+                    path="/searchjob/register"
+                    element={<RegisterJobPage onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 구인구직 수정 페이지 */}
+                  <Route
+                    path="/searchjob/edit/:id"
+                    element={<EditJobPage onLoginClick={openLoginModal} />}
+                  />
+                  {/* 사업자 예약 목록 페이지 */}
+                  <Route
+                    path="/reservations"
+                    element={<ShopReservations onLoginClick={openLoginModal} />}
+                  />
+                </>
+              )}
+              <Route
+                path="/reservation/confirm"
+                element={<ReservationConfirmPage />}
+              />
+              <Route
+                path="/user/payment/success"
+                element={<ReservationLastCheckPage />}
+              />
+              <Route
+                path="/user/payment/fail"
+                element={<ReservationLastCheckPage />}
+              />
+            </Routes>
+            {/* 로그인 모달 */}
+            <SignIntergration
+              isOpen={isLoginModalOpen}
+              onClose={closeLoginModal}
             />
-            <Route
-              path="/user/payment/success"
-              element={<ReservationLastCheckPage />}
+            {/* ✅ 토스트 컨테이너 (알림창) */}
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              theme="light"
             />
-            <Route
-              path="/user/payment/fail"
-              element={<ReservationLastCheckPage />}
-            />
-          </Routes>
-          {/* 로그인 모달 */}
-          <SignIntergration
-            isOpen={isLoginModalOpen}
-            onClose={closeLoginModal}
-          />
-          {/* ✅ 토스트 컨테이너 (알림창) */}
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            pauseOnHover
-            draggable
-            theme="light"
-          />
-          {/* Footer 컴포넌트 */}
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+            {/* Footer 컴포넌트 */}
+            <Footer />
+          </div>
+        </Router>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 
