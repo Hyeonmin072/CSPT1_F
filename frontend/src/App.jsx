@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./context/AuthContext";
 import { NotificationProvider } from "./context/NotificationContext";
+import ScrollToTop from "./components/common/ScrollToTop";
 //npm install react-toastify
 
 // 공통 컴포넌트
@@ -121,19 +122,46 @@ function App() {
         withCredentials: true,
       });
 
+      // 기본 메시지 핸들러
       eventSourceRef.current.onmessage = (event) => {
-        const notification = JSON.parse(event.data);
-        // Context를 통해 알림 추가
-        addNotification(notification);
-        // 토스트 메시지 표시
-        toast.info(notification.message, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        try {
+          const notification = JSON.parse(event.data);
+          const { title, content, time } = notification;
+
+          // localStorage에서 기존 알림 가져오기
+          const existingNotifications = JSON.parse(
+            localStorage.getItem("notifications") || "[]"
+          );
+
+          // 새 알림 추가
+          const updatedNotifications = [
+            {
+              title,
+              content,
+              time,
+              isRead: false,
+            },
+            ...existingNotifications,
+          ];
+
+          // localStorage에 저장
+          localStorage.setItem(
+            "notifications",
+            JSON.stringify(updatedNotifications)
+          );
+
+          // 토스트 메시지 표시
+          toast.info(content, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } catch (error) {
+          console.error("알림 데이터 파싱 실패:", error);
+        }
       };
 
       // 연결 성공 이벤트 핸들러
@@ -143,15 +171,44 @@ function App() {
 
       // 알림 이벤트 핸들러
       eventSourceRef.current.addEventListener("connect", (event) => {
-        console.log("📤 알림 이벤트:", event.data);
-        toast.info(event.data, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        try {
+          const notification = JSON.parse(event.data);
+          console.log("📤 알림 이벤트:", notification);
+
+          // localStorage에서 기존 알림 가져오기
+          const existingNotifications = JSON.parse(
+            localStorage.getItem("notifications") || "[]"
+          );
+
+          // 새 알림 추가
+          const updatedNotifications = [
+            {
+              title: notification.title,
+              content: notification.content,
+              time: notification.time,
+              isRead: false,
+            },
+            ...existingNotifications,
+          ];
+
+          // localStorage에 저장
+          localStorage.setItem(
+            "notifications",
+            JSON.stringify(updatedNotifications)
+          );
+
+          // 토스트 메시지 표시
+          toast.info(notification.content, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } catch (error) {
+          console.error("알림 데이터 파싱 실패:", error);
+        }
       });
 
       // 에러 핸들러
@@ -186,6 +243,7 @@ function App() {
     <NotificationProvider>
       <AuthProvider>
         <Router>
+          <ScrollToTop />
           <div className="min-h-screen flex flex-col">
             <Routes>
               {/* 기본 라우트 */}
