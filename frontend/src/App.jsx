@@ -275,7 +275,6 @@ function App() {
                   path="/notice/:id"
                   element={<WeekNotice onLoginClick={openLoginModal} />}
                 />
-
                 {/* 고객 확인 페이지 */}
                 <Route
                   path="/client"

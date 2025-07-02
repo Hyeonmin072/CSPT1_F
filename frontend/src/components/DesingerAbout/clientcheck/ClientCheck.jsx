@@ -1,8 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { format, addDays, subDays } from "date-fns"; // 날짜를 다루는 JS 라이브러리
-import { ko } from "date-fns/locale"; // 날짜를 주어진 포맷 문자열에 맞춰 형식화하는 함수
-
-import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
 import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 
 import ScheduleDate from "./ScheduleDate.jsx";
@@ -13,21 +9,21 @@ import ClientCheckModal from "../../modal/clientcheck/ClientCheckModal.jsx";
 export default function Clientcheck({ onClose }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState(null);
-
-
-    // 디자이너 스케줄 관련
     const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {
         setSelectedDate(new Date());
     }, []);
 
+    // 디자이너 프로필 관련
     const [designerprofile, setDesignerProfile] = useState("");
+    // 디자이너 예약
+    const [designerSchedule, setDesignerSchedule] = useState([]);
 
     useEffect(() => {
-        const fetchDummyData = async () => {
+        const fetchProfileData = async () => {
             try {
-                const response = await axiosInstance.get("/designer/profile"); // 이후 변경
+                const response = await axiosInstance.get("/designer/profile");
                 const data = response.data;
                 setDesignerProfile(data);
             } catch (error) {
@@ -35,8 +31,19 @@ export default function Clientcheck({ onClose }) {
             }
         };
 
-        fetchDummyData();
-    }, []);
+        const handleClickOutside = (e) => {
+            if (isModalOpen && !e.target.closest(".modal-container")) {
+              setIsModalOpen(false);
+            }
+          };
+        
+        fetchProfileData();
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isModalOpen]);
+
+
 
     return (
         <div className="p-10 mt-10 mx-auto max-w-7xl">
