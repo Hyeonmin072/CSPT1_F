@@ -19,8 +19,11 @@ axiosInstance.interceptors.request.use(
 
     // 그 외의 요청에는 토큰 추가
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && token !== "undefined" && token !== "null") {
       config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      // 토큰이 없거나 유효하지 않으면 Authorization 헤더 제거
+      delete config.headers.Authorization;
     }
     return config;
   },

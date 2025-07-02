@@ -179,85 +179,88 @@ export default function ShopProfile() {
         bannerImageFile,
       });
 
-      const formData = new FormData();
-
-      // shopData에서 이미지 URL 제외
-      const shopDataWithoutImages = {
-        ...shopData,
-        // 이미지 URL은 서버에 전송하지 않음 (파일은 별도로 전송)
-        profileImage: undefined,
-        thumbnail: undefined,
-        bannerImage: undefined,
-        // bannerImages가 필요한 경우 빈 배열로 초기화
-        bannerImages: [],
+      // 백엔드 파라미터에 맞게 FormData 구성
+      const updateData = {
+        name: shopData.name,
+        address: shopData.address,
+        post: shopData.post,
+        tel: shopData.tel,
+        desc: shopData.desc,
+        open: shopData.open,
+        close: shopData.close,
+        regularHoliday: shopData.regularHoliday,
+        newPwd: shopData.newPwd || "",
+        newPwdConfirm: shopData.newPwdConfirm || ""
       };
 
-      console.log("서버로 전송할 데이터:", shopDataWithoutImages);
-
+      const formData = new FormData();
       formData.append(
         "request",
-        new Blob([JSON.stringify(shopDataWithoutImages)], {
-          type: "application/json",
-        })
+        new Blob([JSON.stringify(updateData)], { type: "application/json" })
       );
-
-      // 프로필 이미지 파일이 있으면 추가
       if (profileImageFile) {
-        console.log(
-          "프로필 이미지 파일 추가 (thumbnail):",
-          profileImageFile.name
-        );
         formData.append("thumbnail", profileImageFile);
       }
-
-      // 배너 이미지 파일이 있으면 추가
-      if (bannerImageFile) {
-        console.log("배너 이미지 파일 추가 (banner):", bannerImageFile.name);
+      // bannerImageFile이 배열일 경우 여러 개 지원, 아니면 단일 파일만
+      if (Array.isArray(bannerImageFile)) {
+        bannerImageFile.forEach((file) => {
+          if (file) formData.append("banner", file);
+        });
+      } else if (bannerImageFile) {
         formData.append("banner", bannerImageFile);
       }
 
-      // === 서버로 전송하는 데이터 로깅 ===
-      console.log("=== 서버 전송 데이터 로깅 시작 ===");
+      // 실제 FormData 내용 콘솔 출력
       for (let pair of formData.entries()) {
-        if (pair[0] === "request") {
-          try {
-            const requestData = JSON.parse(await pair[1].text());
-            console.log("request 데이터:", requestData);
-          } catch (error) {
-            console.error("request 데이터 파싱 실패:", error);
-          }
-        } else {
+        if (pair[1] instanceof File) {
           console.log(
-            `${pair[0]}: ${pair[1] instanceof File ? "파일 객체" : pair[1]} ${
-              pair[1] instanceof File
-                ? `(파일명: ${pair[1].name}, 타입: ${pair[1].type}, 크기: ${pair[1].size} bytes)`
-                : ""
-            }`
+            `${pair[0]}: 파일명=${pair[1].name}, 타입=${pair[1].type}, 크기=${pair[1].size}`
           );
+        } else if (pair[1] instanceof Blob) {
+          pair[1].text().then((txt) => {
+            console.log(`${pair[0]}: Blob(JSON)=${txt}`);
+          });
+        } else {
+          console.log(`${pair[0]}:`, pair[1]);
         }
       }
-      console.log("=== 서버 전송 데이터 로깅 종료 ===");
 
-      // Content-Type을 지정하지 않고 axios가 알아서 설정하도록 함
+      // Content-Type을 직접 지정하지 않음!
       const response = await axiosInstance.patch("/shop/profile", formData, {
         withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       });
 
-      // 성공 시 처리
+      console.log("서버 응답:", response);
+
       if (response.status === 200) {
         toast.success("프로필이 성공적으로 업데이트되었습니다.");
         setIsEditing(false);
-        // 이미지 파일 상태 초기화
         setProfileImageFile(null);
         setBannerImageFile(null);
-        fetchShopData(); // 업데이트된 데이터 다시 불러오기
+        fetchShopData();
       }
     } catch (error) {
       console.error("프로필 업데이트 중 오류 발생:", error);
-      toast.error("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("에러 상세 정보:", error.response?.data);
+      console.error("에러 상태 코드:", error.response?.status);
+      let errorMessage = "프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.";
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.status === 500) {
+        errorMessage = "서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+      } else if (error.response?.status === 400) {
+        errorMessage = "잘못된 요청입니다. 입력 데이터를 확인해주세요.";
+      } else if (error.response?.status === 401) {
+        errorMessage = "인증이 필요합니다. 다시 로그인해주세요.";
+      } else if (error.response?.status === 403) {
+        errorMessage = "접근 권한이 없습니다.";
+      }
+      const token = localStorage.getItem("token");
+      console.log("현재 토큰 상태:", token);
+      if (!token || token === "undefined" || token === "null") {
+        errorMessage += " (토큰이 없습니다. 로그인을 확인해주세요.)";
+      }
+      toast.error(errorMessage);
     } finally {
       setIsSaving(false);
     }
