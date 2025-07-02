@@ -271,7 +271,6 @@ function App() {
                 path="/reviews/photo"
                 element={<PhotoReview onLoginClick={openLoginModal} />}
               />
-
               {/* 고객 전용 라우트 */}
               {userRole === "user" && (
                 <>
