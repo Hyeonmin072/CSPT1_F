@@ -61,6 +61,19 @@ export default function HairShopPage() {
     }
   }, [searchQuery]);
 
+  // 최신순 정렬 함수
+  const sortByNewest = async () => {
+    try {
+      const response = await axiosInstance.get("/user/hairshop/sort-newest", {
+        withCredentials: true,
+      });
+      console.log("최신순 정렬 결과:", response.data);
+      setHairShops(response.data || []);
+    } catch (error) {
+      console.error("최신순 정렬 실패:", error);
+    }
+  };
+
   /* 애니메이션 효과 */
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -181,7 +194,7 @@ export default function HairShopPage() {
             <button className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
               <Star size={18} className="inline mr-1" /> 평점순
             </button>
-            <button className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+            <button className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition" onClick={sortByNewest}>
               <Clock size={18} className="inline mr-1" /> 최신순
             </button>
           </div>

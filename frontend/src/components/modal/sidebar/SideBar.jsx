@@ -201,9 +201,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       </div>
 
       {/* 쿠폰 모달 */}
-      <CouponModal
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} />
+      <CouponModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       {/* 알림모달 */}
       <NotificationModal
         isOpen={isNotificationOpen}

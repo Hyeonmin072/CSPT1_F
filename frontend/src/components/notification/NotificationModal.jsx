@@ -1,46 +1,36 @@
+import { useState, useEffect } from "react";
+
 const NotificationModal = ({ isOpen, onClose }) => {
-  const notifications = [
-    {
-      id: 1,
-      title: "예약 알림",
-      message: "내일 오후 2시 예약이 확정되었습니다.",
-      timestamp: new Date(),
-      isRead: false,
-    },
-    {
-      id: 2,
-      title: "예약 알림",
-      message: "알빠노",
-      timestamp: new Date(),
-      isRead: true,
-    },
-    {
-      id: 3,
-      title: "예약 알림",
-      message: "형섭이 바보",
-      timestamp: new Date(),
-      isRead: true,
-    },
-    {
-      id: 4,
-      title: "예약 알림",
-      message: "천수야 아침에 나온다고 했잖아아",
-      timestamp: new Date(),
-      isRead: true,
-    },
-    {
-      id: 5,
-      title: "예약 알림",
-      message: "이러면 디자이너가 저희 앱을 왜 씁니까",
-      timestamp: new Date(),
-      isRead: true,
-    },
-  ];
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    // SSE로 받은 알림 데이터를 localStorage에서 가져오기
+    const storedNotifications = localStorage.getItem("notifications");
+    if (storedNotifications) {
+      // receiverEmail을 제외한 필요한 데이터만 추출
+      const parsedNotifications = JSON.parse(storedNotifications).map(
+        ({ title, content, time }) => ({
+          title,
+          content,
+          time,
+        })
+      );
+      setNotifications(parsedNotifications);
+    }
+  }, []);
 
   return (
     <>
+      {/* 오버레이 */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[85]"
+          onClick={onClose}
+        />
+      )}
+
       <div
-        className={`fixed top-0 right-0 w-[370px] h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50
+        className={`fixed top-0 right-0 w-[370px] h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-[90]
         ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="p-4 border-b">
@@ -59,15 +49,15 @@ const NotificationModal = ({ isOpen, onClose }) => {
           {notifications.length > 0 ? (
             notifications.map((notification) => (
               <div
-                key={notification.id}
+                key={notification.time}
                 className={`p-4 border-b ${
                   notification.isRead ? "bg-white" : "bg-blue-50"
                 }`}
               >
                 <p className="font-bold">{notification.title}</p>
-                <p className="text-sm text-gray-600">{notification.message}</p>
+                <p className="text-sm text-gray-600">{notification.content}</p>
                 <span className="text-xs text-gray-400">
-                  {notification.timestamp.toLocaleString()}
+                  {new Date(notification.time).toLocaleString()}
                 </span>
               </div>
             ))
