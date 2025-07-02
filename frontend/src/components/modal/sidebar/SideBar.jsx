@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   // 각각 페이지가 완성되면 path 추가
   const menuItems = [
-    { id: 1, title: "현재 예약", path: "/reservations" },
+    { id: 1, title: "현재 예약", path: "/reservationcheck" },
     { id: 2, title: "헤어샵", path: "/hairshop" },
     { id: 3, title: "디자이너", path: "/designerpage" },
     { id: 4, title: "채팅" },
@@ -59,6 +59,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { id: 6, title: "쿠폰함", modal: true },
     { id: 7, title: "좋아하는 디자이너", path: "/subscriptdesigner" },
     { id: 8, title: "나만의 디자이너 찾기", path: "/designer/match" },
+    { id: 9, title: "내가 남긴 리뷰 ", path: "/myreviewpage" },
   ];
 
   //클릭 핸들러

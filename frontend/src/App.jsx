@@ -32,6 +32,7 @@ import ReservationConfirmPage from "./pages/reservation/ReservationConfirmPage.j
 import ReservationLastCheckPage from "./pages/reservation/ReservationLastCheckPage.jsx";
 import DesignerInfoPage from "./pages/designer/DesignerInfoPage.jsx";
 import ChattingPage from "./pages/chatting/ChattingPage.jsx";
+import MyReviewPage from "./pages/reviews/MyReviewPage.jsx";
 
 // 디자이너
 import DesignerMainPage from "./pages/main/DesignerMainPage.jsx";
@@ -313,6 +314,10 @@ function App() {
                     }
                   />
                   <Route
+                    path="/myreviewpage"
+                    element={<MyReviewPage onLoginClick={openLoginModal} />}
+                  />
+                  <Route
                     path="/designer/match"
                     element={<DesignerMatchPage />}
                   />
@@ -324,6 +329,7 @@ function App() {
                     path="/userchat"
                     element={<ChattingPage onLoginClick={openLoginModal} />}
                   />
+
                 </>
               )}
 

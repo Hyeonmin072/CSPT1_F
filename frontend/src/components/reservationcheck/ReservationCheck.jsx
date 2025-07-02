@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CheckDetailModal from "../modal/reservationcheck/CheckDetailModal.jsx";
 import CheckList from "./CheckList.jsx";
 import CheckHeader from "./CheckHeader.jsx";
-import axiosInstance from "../sign/axios/AxiosInstance.jsx";
+import axiosInstance from "../../axios/AxiosInstance.js";
 
 
 export default function ReservationCheck() {
@@ -17,13 +17,20 @@ export default function ReservationCheck() {
     const fetchReservations = async () => {
       try {
         setLoading(true);
+        
         const response = await axiosInstance.get("/user/reservation");
         console.log("예약 정보 응답 데이터:", response.data);
         setReservations(response.data);
         setError(null);
       } catch (err) {
-        setError("예약 데이터를 불러오는데 실패했습니다.");
         console.error("예약 데이터 로딩 에러:", err);
+        if (err.response?.status === 401) {
+          setError("로그인이 만료되었습니다. 다시 로그인해주세요.");
+        } else if (err.response?.status === 500) {
+          setError("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        } else {
+          setError("예약 데이터를 불러오는데 실패했습니다.");
+        }
       } finally {
         setLoading(false);
       }

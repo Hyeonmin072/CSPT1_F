@@ -8,26 +8,12 @@ const axiosInstance = axios.create({
   }
 });
 
-// 요청 인터셉터
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
 // 응답 인터셉터
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // 토큰이 만료되었거나 유효하지 않은 경우
+      // 인증 실패 시 로그인 페이지로 리다이렉트
       localStorage.removeItem('token');
       localStorage.removeItem('userType');
       localStorage.removeItem('userName');
