@@ -240,7 +240,9 @@ export default function MainPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {homepageData?.top4Designers?.map((designer, index) => (
             <AnimatedSection key={index} delay={index * 150}>
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <div 
+                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => navigate(`/designerinfo/${designer.designerEmail}`)}>
                 <div className="h-48 bg-gray-200">
                   {designer.designerImage && (
                     <img
