@@ -161,7 +161,9 @@ export default function MainPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {homepageData?.top3Shops?.map((shop, index) => (
             <AnimatedSection key={index} delay={index * 200}>
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <div 
+                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => navigate(`/shopdetails/${shop.shopEmail}`)}>
                 <div className="h-48 bg-gray-200">
                   {shop.shopThumbnail && (
                     <img
