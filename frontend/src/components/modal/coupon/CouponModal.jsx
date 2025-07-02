@@ -38,11 +38,11 @@ export default function CouponModal({ isOpen, onClose }) {
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 no-scrollbar z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 no-scrollbar z-[80]"
       onClick={onClose}
     >
       <div
-        className="bg-white p-8 rounded-lg shadow-lg"
+        className="bg-white p-8 rounded-lg shadow-lg z-[85]"
         style={{ width: "600px", height: "85vh" }}
       >
         <div className="flex justify-between items-center mb-4">
