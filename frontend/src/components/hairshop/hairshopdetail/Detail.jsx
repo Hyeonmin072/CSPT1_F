@@ -128,13 +128,13 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
               {shopData.highestPriceCoupon && (
                 <div className="mb-4 flex flex-col justify-center items-center w-full">
                   <button
-                    className="bg-ㅎㄱㄷ text-black px-6 py-3 rounded-lg flex items-center gap-2"
+                    className="bg-green-500 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-green-600 transition-colors"
                     onClick={() => {
                       console.log("쿠폰 받기 클릭확인");
                       handleModalOpen();
                     }}
                   >
-                    최대 {shopData.highestPriceCoupon}원 할인 쿠폰 받기
+                    최대 {shopData.highestPriceCoupon} 할인 쿠폰 받기
                   </button>
                 </div>
               )}

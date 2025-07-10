@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Header from "../../components/common/Header.jsx";
-import { Star, X, Edit, Trash2 } from "lucide-react";
+import { Star, X, Trash2 } from "lucide-react";
 import axiosInstance from "../../axios/AxiosInstance.js";
 import Swal from "sweetalert2";
 
@@ -9,15 +9,15 @@ export default function MyReviewPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedReview, setSelectedReview] = useState(null);
-  const [sortOrder, setSortOrder] = useState('최신순');
-  const [selectedTab, setSelectedTab] = useState('전체');
+  const [sortOrder, setSortOrder] = useState("최신순");
+  const [selectedTab, setSelectedTab] = useState("전체");
 
   // 리뷰 데이터 가져오기
   useEffect(() => {
     const fetchMyReviews = async () => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get("/user/reviews");
+        const response = await axiosInstance.get("/user/review");
         console.log("내 리뷰 데이터:", response.data);
         setMyReviews(response.data);
         setError(null);
@@ -54,7 +54,7 @@ export default function MyReviewPage() {
     if (result.isConfirmed) {
       try {
         await axiosInstance.delete(`/user/reviews/${reviewId}`);
-        setMyReviews(myReviews.filter(review => review.id !== reviewId));
+        setMyReviews(myReviews.filter((review) => review.id !== reviewId));
         Swal.fire({
           title: "삭제 완료",
           text: "리뷰가 성공적으로 삭제되었습니다.",
@@ -73,13 +73,6 @@ export default function MyReviewPage() {
     }
   };
 
-  // 리뷰 수정 함수
-  const handleEditReview = (review) => {
-    // 리뷰 수정 페이지로 이동하거나 모달 열기
-    console.log("리뷰 수정:", review);
-    // TODO: 리뷰 수정 기능 구현
-  };
-
   // 모달 관련 함수
   const openModal = (review) => setSelectedReview(review);
   const closeModal = () => setSelectedReview(null);
@@ -91,7 +84,7 @@ export default function MyReviewPage() {
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 1) return "어제";
     if (diffDays < 7) return `${diffDays}일 전`;
     if (diffDays < 30) return `${Math.floor(diffDays / 7)}주 전`;
@@ -101,13 +94,15 @@ export default function MyReviewPage() {
 
   // 필터링 및 정렬된 리뷰
   const filteredAndSortedReviews = myReviews
-    .filter(review => selectedTab === '전체' || review.category === selectedTab)
+    .filter(
+      (review) => selectedTab === "전체" || review.category === selectedTab
+    )
     .sort((a, b) => {
-      if (sortOrder === '최신순') {
+      if (sortOrder === "최신순") {
         return new Date(b.createdAt) - new Date(a.createdAt);
       }
-      if (sortOrder === '평점순') {
-        return b.rating - a.rating;
+      if (sortOrder === "평점순") {
+        return b.reviewRating - a.reviewRating;
       }
       return 0;
     });
@@ -137,31 +132,33 @@ export default function MyReviewPage() {
   return (
     <div>
       <Header />
-      
+
       <div className="container mx-auto px-10 m-10 pt-20 mt-10">
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-4">내가 작성한 리뷰</h1>
-          <p className="text-gray-600">총 {myReviews.length}개의 리뷰를 작성하셨습니다.</p>
+          <p className="text-gray-600">
+            총 {myReviews.length}개의 리뷰를 작성하셨습니다.
+          </p>
         </div>
 
         {/* 정렬 및 필터 */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex space-x-4">
-            {['전체', '커트', '펌', '염색', '클리닉'].map((tab) => (
+            {["전체", "커트", "펌", "염색", "클리닉"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setSelectedTab(tab)}
                 className={`px-4 py-2 rounded-lg ${
                   selectedTab === tab
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
                 {tab}
               </button>
             ))}
           </div>
-          
+
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
@@ -176,49 +173,55 @@ export default function MyReviewPage() {
         <div className="space-y-4">
           {filteredAndSortedReviews.length > 0 ? (
             filteredAndSortedReviews.map((review) => (
-              <div key={review.id} className="border rounded-lg p-6 bg-white shadow-sm">
+              <div
+                key={review.id}
+                className="border rounded-lg p-6 bg-white shadow-sm"
+              >
                 <div className="flex justify-between items-start">
                   <div className="flex-grow">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center space-x-4">
-                        <h3 className="text-lg font-semibold">{review.shopName}</h3>
+                        <h3 className="text-lg font-semibold">
+                          {review.shopName}
+                        </h3>
                         <span className="text-gray-500">|</span>
-                        <span className="text-gray-600">{review.designerName}</span>
+                        <span className="text-gray-600">
+                          {review.designerName}
+                        </span>
                         <span className="text-gray-500">|</span>
                         <span className="text-gray-600">{review.menuName}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleEditReview(review)}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded"
-                        >
-                          <Edit size={16} />
-                        </button>
-                        <button
                           onClick={() => handleDeleteReview(review.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded"
+                          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center space-x-1"
                         >
                           <Trash2 size={16} />
+                          <span>삭제</span>
                         </button>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center mb-3">
                       {Array.from({ length: 5 }).map((_, idx) => (
                         <Star
                           key={idx}
                           className={`w-5 h-5 ${
-                            idx < review.rating
-                              ? 'text-yellow-400 fill-current'
-                              : 'text-gray-300'
+                            idx < review.reviewRating
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
-                      <span className="ml-2 text-gray-600">{review.rating.toFixed(1)}</span>
+                      <span className="ml-2 text-gray-600">
+                        {review.reviewRating.toFixed(1)}
+                      </span>
                     </div>
-                    
-                    <p className="text-gray-700 mb-3 line-clamp-2">{review.content}</p>
-                    
+
+                    <p className="text-gray-700 mb-3 line-clamp-2">
+                      {review.reviewContent}
+                    </p>
+
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <span>{formatDate(review.createdAt)}</span>
                       {review.reply && (
@@ -231,11 +234,11 @@ export default function MyReviewPage() {
                       )}
                     </div>
                   </div>
-                  
-                  {review.image && (
+
+                  {review.reviewImg && review.reviewImg !== "" && (
                     <div className="ml-4 flex-shrink-0">
                       <img
-                        src={review.image}
+                        src={review.reviewImg}
                         alt="리뷰 이미지"
                         className="w-20 h-20 object-cover rounded-lg cursor-pointer"
                         onClick={() => openModal(review)}
@@ -265,50 +268,63 @@ export default function MyReviewPage() {
                   <X size={24} />
                 </button>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
-                  <h3 className="text-lg font-semibold">{selectedReview.shopName}</h3>
+                  <h3 className="text-lg font-semibold">
+                    {selectedReview.shopName}
+                  </h3>
                   <span className="text-gray-500">|</span>
-                  <span className="text-gray-600">{selectedReview.designerName}</span>
+                  <span className="text-gray-600">
+                    {selectedReview.designerName}
+                  </span>
                   <span className="text-gray-500">|</span>
-                  <span className="text-gray-600">{selectedReview.menuName}</span>
+                  <span className="text-gray-600">
+                    {selectedReview.menuName}
+                  </span>
                 </div>
-                
+
                 <div className="flex items-center">
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <Star
                       key={idx}
                       className={`w-5 h-5 ${
-                        idx < selectedReview.rating
-                          ? 'text-yellow-400 fill-current'
-                          : 'text-gray-300'
+                        idx < selectedReview.reviewRating
+                          ? "text-yellow-400 fill-current"
+                          : "text-gray-300"
                       }`}
                     />
                   ))}
-                  <span className="ml-2 text-gray-600">{selectedReview.rating.toFixed(1)}</span>
+                  <span className="ml-2 text-gray-600">
+                    {selectedReview.reviewRating.toFixed(1)}
+                  </span>
                 </div>
-                
-                <p className="text-gray-700 whitespace-pre-wrap">{selectedReview.content}</p>
-                
-                {selectedReview.image && (
-                  <img
-                    src={selectedReview.image}
-                    alt="리뷰 이미지"
-                    className="w-full max-w-md mx-auto rounded-lg"
-                  />
-                )}
-                
+
+                <p className="text-gray-700 whitespace-pre-wrap">
+                  {selectedReview.reviewContent}
+                </p>
+
+                {selectedReview.reviewImg &&
+                  selectedReview.reviewImg !== "" && (
+                    <img
+                      src={selectedReview.reviewImg}
+                      alt="리뷰 이미지"
+                      className="w-full max-w-md mx-auto rounded-lg"
+                    />
+                  )}
+
                 {selectedReview.reply && (
                   <div className="bg-gray-100 p-4 rounded-lg">
                     <h4 className="font-semibold mb-2">매장 답글</h4>
-                    <p className="text-gray-700">{selectedReview.reply.content}</p>
+                    <p className="text-gray-700">
+                      {selectedReview.reply.content}
+                    </p>
                     <p className="text-sm text-gray-500 mt-2">
                       {formatDate(selectedReview.reply.createdAt)}
                     </p>
                   </div>
                 )}
-                
+
                 <div className="text-sm text-gray-500">
                   작성일: {formatDate(selectedReview.createdAt)}
                 </div>
