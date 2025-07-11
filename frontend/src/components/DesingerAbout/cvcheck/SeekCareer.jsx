@@ -1,10 +1,14 @@
-export default function SeekCareer({ employmentHistory }) {
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
+
+export default function SeekCareer({ CurriculumVitae }) {
+    
     return (
         <div className="flex flex-col w-full max-w-4xl p-3 border-b-2 pb-8">
-            {employmentHistory.length > 0 ? (
+            {CurriculumVitae.length > 0 ? (
                 <div>
                     <h3 className="text-2xl font-semibold mb-4">경력</h3>
-                    {employmentHistory.map((entry, index) => (
+                    {CurriculumVitae.map((entry, index) => (
                         <div key={index} className="border p-4 mb-4 rounded">
                             <div className="flex items-center">
                                 {/* 회사 이름 */}

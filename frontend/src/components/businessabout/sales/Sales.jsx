@@ -14,8 +14,6 @@ import { motion } from "framer-motion";
 import axiosInstance from "../../sign/axios/AxiosInstance";
 
 import DesignerSales from "./DesignerSales.jsx";
-import { dummySalesData } from "../../dummydata/DummySalesData.jsx";
-import { dummyData } from "../../dummydata/DummyGraph.jsx";
 
 export default function Sales() {
   const [selectedDate, setSelectedDate] = useState(new Date());

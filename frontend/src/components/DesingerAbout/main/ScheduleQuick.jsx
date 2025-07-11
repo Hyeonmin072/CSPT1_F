@@ -20,8 +20,6 @@ export default function ScheduleQuick() {
     }, []);
 
     useEffect(() => {
-        console.log("selectedDate : ", selectedDate);
-
         if (!selectedDate || isNaN(new Date(selectedDate).getTime())) {
             return;
         }
@@ -44,8 +42,6 @@ export default function ScheduleQuick() {
                     menu: { name: item.menuName, price: item.menuPrice },
                     reservationStatus: item.reservationStatus,
                 }));
-        
-                console.log("Processed Data:", data);
         
                 // 오늘 날짜와 현재 시간 이후의 예약만 필터링
                 const today = format(new Date(), "yyyy-MM-dd");
