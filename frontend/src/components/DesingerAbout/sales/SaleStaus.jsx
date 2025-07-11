@@ -1,28 +1,38 @@
 import React, { useState, useEffect } from "react";
-
 import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
-import d1 from "../../../assets/designer/d1.png";
 import { format } from "date-fns";
-import { dummyProfile } from "../../dummydata/DummyProfile.jsx";
-import { dummySalesData } from "../../dummydata/DummySalesData.jsx";
+import Graph from "./Graph.jsx";
 
 export default function SaleStaus() {
     const [salesData, setSalesData] = useState(null); // 매출 데이터 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [period, setPeriod] = useState("ONE_WEEK"); // 기간 상태 (기본값: 1주일)
     const [designerProfile, setDesignerProfile] = useState(null); // 디자이너 데이터 상태
 
+    // 매출 데이터 및 프로필 데이터 가져오기
     useEffect(() => {
+        const fetchProfileQuick = async () => {
+            try {
+                const response = await axiosInstance.get("/designer/profile");
+                setDesignerProfile(response.data);
+            } catch (err) {
+                console.error("Error fetching profileQuick:", err);
+            }
+        };
+
         const fetchSalesData = async () => {
             try {
-                // const response = await axiosInstance.get("/designer/sales");
-                
-                const data = dummySalesData;
-                // const data = await response.json();
-                setSalesData(data);
-
-                const profile = dummyProfile;
-                setDesignerProfile(profile);
+                let periodParam = "ONE_WEEK";
+                if (period === "ONE_MONTH") periodParam = "ONE_MONTH";
+                else if (period === "ONE_YEAR") periodParam = "ONE_YEAR";
+        
+                // 디자이너 프로필에서 이메일 가져오기
+                const email = designerProfile?.email;
+        
+                const response = await axiosInstance.get("/designer/sales", {
+                    params: { email, period: periodParam },
+                });
+                setSalesData(response.data);
             } catch (error) {
                 console.error("Error fetching sales data:", error);
             } finally {
@@ -30,8 +40,17 @@ export default function SaleStaus() {
             }
         };
 
-        fetchSalesData();
-    }, []);
+        const fetchData = async () => {
+            await fetchProfileQuick();
+            if (designerProfile?.email) {
+                fetchSalesData(); 
+            } else {
+                console.error("Designer email is missing after fetching profile:", designerProfile);
+            }
+        };
+    
+        fetchData();
+    }, [designerProfile, period]);
 
     if (loading) {
         return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
@@ -42,69 +61,60 @@ export default function SaleStaus() {
     }
 
     return (
-        <>
+        <div className="flex flex-col w-full max-w-6xl mx-auto p-8">
             {/* 매출 현황 */}
-            <div
-                className="w-3/4 mr-10 ml-10 flex flex-col mb-8 justify-center space-x-4 bg-white shadow-md rounded">
-                <div className="p-3 text-gray-400">
-                    오늘 날짜 : {selectedDate ? format(selectedDate, "MM월 dd일") : "Null"}
+            <div className="w-full flex flex-col mb-8 justify-center bg-white border border-gray-200 shadow-md rounded">
+                <div className="p-3 text-gray-400 text-center border-b border-gray-200">
+                    오늘 날짜: {format(new Date(), "yyyy-MM-dd")}
                 </div>
                 <div className="flex flex-row">
-                    <div className="p-4 w-1/2 text-center">
-                        <h2 className="text-lg font-semibold mb-4">이번 달 매출</h2>
+                    {/* 기간별 매출 */}
+                    <div className="p-4 w-1/2 text-center border-r border-gray-200">
+                        <h2 className="text-lg font-semibold mb-4">{period} 매출</h2>
                         <p className="text-3xl font-bold text-green-500">
-                            {salesData.monthlySales.toLocaleString()}원
-                        </p>
-                        <p className="text-sm text-gray-500 mt-2">
-                            증가: {salesData.monthlyIncrease}%
+                            {salesData.totalAmount.toLocaleString()}원
                         </p>
                     </div>
+                    {/* 디자이너 프로필 */}
                     <div className="p-4 w-1/2 text-center">
-                        <h2 className="text-lg font-semibold mb-4">오늘 매출</h2>
-                        <p className="text-3xl font-bold text-red-500">
-                            {salesData.dailySales.toLocaleString()}원
-                        </p>
-                        <p className="text-sm text-gray-500 mt-2">
-                            감소: {salesData.dailyDecrease}%
-                        </p>
-                        <p className="text-sm text-gray-500">
-                            오늘 주문: {salesData.dailyOrders}개
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {/* 디자이너 정보 */}
-            <div className="w-[310px] mr-10 ml-10 mb-8 bg-white rounded-lg shadow-md ">
-                <div className="flex flex-col">
-                    <div className="flex flex-row p-3 ml-3">
-                        {designerProfile && designerProfile.imageURL ? (
-                            <img
-                                src={designerProfile.imageURL}
-                                className="w-[70px] h-[70px] rounded-full flex items-center justify-center mb-4"
-                                alt="Designer Profile"
-                            />
-                        ) : (
-                            <div
-                                className="w-[70px] h-[70px] rounded-full bg-gray-300 flex items-center justify-center mb-4"
-                            >
-                                <span className="text-white">
-                                    {designerProfile ? designerProfile.name : ""}
-                                </span>
+                        <h2 className="text-lg font-semibold mb-4">디자이너 정보</h2>
+                        {designerProfile ? (
+                            <div>
+                                <p className="text-xl font-bold">{designerProfile.name}</p>
                             </div>
+                        ) : (
+                            <p className="text-gray-500">디자이너 정보를 불러올 수 없습니다.</p>
                         )}
-                        <div className="ml-4 py-5 p-3">
-                            <p className="font-bold text-gray-500 text-m">
-                                이름: {designerProfile ? designerProfile.name : "이름 없음"}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-center">
-                        <p className="font-semibold text-gray-500 text-xl">{designerProfile ? designerProfile.roll : "소속 없음"}</p>
                     </div>
                 </div>
             </div>
-        </>
+
+            {/* 기간 선택과 그래프 */}
+            <div className="flex flex-col bg-white shadow-md rounded-lg p-6">
+                {/* 기간 선택 */}
+                <div className="flex justify-end mb-4">
+                    <label htmlFor="period" className="mr-2 font-semibold text-gray-500">
+                        기간 선택:
+                    </label>
+                    <select
+                        id="period"
+                        className="border border-gray-300 rounded px-2 py-1 text-gray-500"
+                        onChange={(e) => setPeriod(e.target.value)}
+                        value={period}
+                    >
+                        <option value="ONE_WEEK">최근 1주일</option>
+                        <option value="ONE_MONTH">최근 1개월</option>
+                        <option value="ONE_YEAR">최근 1년</option>
+                    </select>
+                </div>
+
+                {/* 그래프 */}
+                <div className="flex justify-center">
+                    <div className="w-full max-w-4xl">
+                        <Graph graphData={salesData.graph} />
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

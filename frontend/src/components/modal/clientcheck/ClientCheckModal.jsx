@@ -21,24 +21,33 @@ export default function ClientCheckModal({ isModalOpen, setIsModalOpen, modalDat
                         {/* 예약 정보 */}
                         {modalData ? (
                             <div className="space-y-4">
+                                {/* 고객 이름 */}
                                 <div className="flex justify-between">
                                     <span className="font-medium text-gray-700">고객 이름:</span>
                                     <span className="text-gray-900">{modalData.userName}</span>
                                 </div>
+
+                                {/* 메뉴 */}
                                 <div className="flex justify-between">
                                     <span className="font-medium text-gray-700">메뉴:</span>
                                     <span className="text-gray-900">{modalData.menu.name}</span>
                                 </div>
+
+                                {/* 시간 */}
                                 <div className="flex justify-between">
                                     <span className="font-medium text-gray-700">시간:</span>
                                     <span className="text-gray-900">
                                         {format(parseISO(modalData.serviceDate), "yyyy-MM-dd HH:mm")}
                                     </span>
                                 </div>
+
+                                {/* 가격 */}
                                 <div className="flex justify-between">
                                     <span className="font-medium text-gray-700">가격:</span>
                                     <span className="text-gray-900">{modalData.menu.price}원</span>
                                 </div>
+
+                                {/* 상태 */}
                                 <div className="flex justify-between">
                                     <span className="font-medium text-gray-700">상태:</span>
                                     <span

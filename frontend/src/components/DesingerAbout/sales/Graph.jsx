@@ -1,89 +1,92 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { LineChart, AreaChart , Line, Area,  XAxis, YAxis,
-    CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { dummyData } from "../../dummydata/DummyGraph.jsx";
+import React from "react";
+import {
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    Tooltip,
+    ResponsiveContainer,
+} from "recharts";
 
-export default function Graph(){
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true); // 로딩 상태
-    const [period, setPeriod] = useState("이번 주"); // 선택된 기간
-    const chartRef = useRef(null);
+export default function Graph({ graphData }) {
 
-    // 백엔드 데이터 가져오기
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result =
-                    period === "이번 주"
-                        ? dummyData.weekly
-                        : period === "이번 달"
-                            ? dummyData.monthly
-                            : dummyData.yearly;
+    // 그래프 데이터 변환
+    const formattedData = Object.entries(graphData).map(([key, value]) => ({
+        name: key, // x축 값 (요일, 날짜, 월 등)
+        sales: value, // y축 값 (매출)
+    }));
 
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching sales data:", error);
-            } finally {
-                setLoading(false); // 로딩 상태 종료
-            }
-        };
 
-        fetchData();
-    }, [period]); // 기간이 변경될 때마다 실행
+    const tickFormatter = (name) => {
+        if (period === "이번 주") {
+          // 요일 이름이 이미 한글인 경우 그대로 반환
+          if (name.includes("요일")) {
+            return name;
+          }
+    
+          // 영어 요일명을 한글로 변환
+          switch (name) {
+            case "MONDAY":
+              return "월요일";
+            case "TUESDAY":
+              return "화요일";
+            case "WEDNESDAY":
+              return "수요일";
+            case "THURSDAY":
+              return "목요일";
+            case "FRIDAY":
+              return "금요일";
+            case "SATURDAY":
+              return "토요일";
+            case "SUNDAY":
+              return "일요일";
+            default:
+              return name;
+          }
+        } else if (period === "이번 달") {
+          // 이미 일 표시가 되어 있으면 그대로 반환
+          return name.includes("일") ? name : `${name}일`;
+        } else if (period === "이번 년도") {
+          // 이미 월 표시가 되어 있으면 그대로 반환
+          return name.includes("월") ? name : `${name}월`;
+        }
+        return name;
+      };
 
-    const handlePeriodChange = (event) => {
-        setPeriod(event.target.value);
-        setLoading(true); // 로딩 상태 재설정
-    };
-
-    if (loading) {
-        return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
+      // 그래프 데이터가 0인 경우
+    if (formattedData.length === 0) {
+        return <div className="text-center mt-4">매출이 0입니다</div>;
     }
 
     return (
-        <>
-            <div className="flex flex-row">
-                <h2 className="flex text-xl font-semibold mb-4 items-start">매출 현황</h2>
-                <div className="flex ml-auto">
-                    <div>
-                        <label htmlFor="period" className="mr-2 font-semibold text-gray-500">기간 선택:</label>
-                        <select
-                            id="period"
-                            className="border border-gray-300 rounded px-1 py-1 text-gray-500"
-                            onChange={handlePeriodChange}
-                            value={period}
-                        >
-                            <option value="이번 주">이번 주</option>
-                            <option value="이번 달">이번 달</option>
-                            <option value="근 1년">이번 년도</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+        <div className="relative h-64">
+            <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={formattedData}>
+                    {/* 그라데이션 정의 */}
+                    <defs>
+                    <linearGradient
+                      id="salesGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#00FF00" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="green" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
 
-            <div className="relative h-64" ref={chartRef}>
-                <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data}>
-                        {/* 그라데이션 정의 */}
-                        <defs>
-                            <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#00FF00" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                        </defs>
-
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Area
-                            type="monotone"
-                            dataKey="sales"
-                            rokste="green"
-                            fill="url(#salesGradient)"
-                        />
-                    </AreaChart>
-                </ResponsiveContainer>
-            </div>
-        </>
+                    <XAxis dataKey="name" tickFormatter={tickFormatter} />
+                    <YAxis />
+                    <Tooltip />
+                    <Area
+                        type="monotone"
+                        dataKey="sales"
+                        stroke="green"
+                        fill="url(#salesGradient)"
+                    />
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
     );
 }
