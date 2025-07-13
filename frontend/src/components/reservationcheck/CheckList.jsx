@@ -1,4 +1,6 @@
 import { Button } from "@mui/material";
+import { useState } from "react";
+import ReviewWriteModal from "./ReviewWriteModal";
 
 export default function CheckList({
   handleRowClick,
@@ -6,6 +8,31 @@ export default function CheckList({
   reservation,
   formatDate,
 }) {
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [reviewedReservations, setReviewedReservations] = useState(new Set());
+
+  const handleReviewClick = (e, reservation) => {
+    e.stopPropagation(); // 행 클릭 이벤트 전파 방지
+    setSelectedReservation(reservation);
+    setReviewModalOpen(true);
+  };
+
+  const handleReviewModalClose = () => {
+    setReviewModalOpen(false);
+    setSelectedReservation(null);
+  };
+
+  const handleReviewSubmit = (reservationId) => {
+    // 리뷰 작성 완료된 예약 ID를 Set에 추가
+    setReviewedReservations((prev) => new Set([...prev, reservationId]));
+    setReviewModalOpen(false);
+    setSelectedReservation(null);
+  };
+
+  const isReviewSubmitted = (reservationId) => {
+    return reviewedReservations.has(reservationId);
+  };
   return (
     <>
       <table className="min-w-full bg-white text-center">
@@ -38,7 +65,24 @@ export default function CheckList({
                 </td>
                 <td className="border py-2 px-4">
                   <span>
-                    <Button>리뷰 작성</Button>
+                    {isReviewSubmitted(reservation.reservationId) ? (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled
+                        sx={{ color: "gray", borderColor: "gray" }}
+                      >
+                        리뷰 완료
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={(e) => handleReviewClick(e, reservation)}
+                        variant="contained"
+                        size="small"
+                      >
+                        리뷰 작성
+                      </Button>
+                    )}
                   </span>
                 </td>
               </tr>
@@ -52,6 +96,13 @@ export default function CheckList({
           )}
         </tbody>
       </table>
+
+      <ReviewWriteModal
+        open={reviewModalOpen}
+        handleClose={handleReviewModalClose}
+        reservation={selectedReservation}
+        onReviewSubmit={handleReviewSubmit}
+      />
     </>
   );
 }
