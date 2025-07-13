@@ -53,7 +53,7 @@ export default function MyReviewPage() {
 
     if (result.isConfirmed) {
       try {
-        await axiosInstance.delete(`/user/reviews/${reviewId}`);
+        await axiosInstance.post("/user/review/remove", { id: reviewId });
         setMyReviews(myReviews.filter((review) => review.id !== reviewId));
         Swal.fire({
           title: "삭제 완료",
