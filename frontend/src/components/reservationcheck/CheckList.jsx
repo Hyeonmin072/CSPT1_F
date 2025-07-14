@@ -74,13 +74,50 @@ export default function CheckList({
                       >
                         리뷰 완료
                       </Button>
-                    ) : (
+                    ) : reservation.status === "NEEDED_REVIEW" ? (
                       <Button
                         onClick={(e) => handleReviewClick(e, reservation)}
                         variant="contained"
                         size="small"
+                        sx={{ backgroundColor: "#4CAF50", color: "white" }}
                       >
                         리뷰 작성
+                      </Button>
+                    ) : reservation.status === "COMPLETED" ? (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled
+                        sx={{ color: "gray", borderColor: "gray" }}
+                      >
+                        서비스 완료
+                      </Button>
+                    ) : reservation.status === "CANCELLED" ? (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled
+                        sx={{ color: "red", borderColor: "red" }}
+                      >
+                        취소됨
+                      </Button>
+                    ) : reservation.status === "REVIEWED" ? (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled
+                        sx={{ color: "gray", borderColor: "gray" }}
+                      >
+                        리뷰 완료
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        disabled
+                        sx={{ color: "gray", borderColor: "gray" }}
+                      >
+                        {reservation.status || "대기중"}
                       </Button>
                     )}
                   </span>

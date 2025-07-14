@@ -51,9 +51,9 @@ export default function ReviewWriteModal({
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // 파일 크기 체크 (5MB 제한)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("파일 크기는 5MB 이하여야 합니다.");
+      // 파일 크기 체크 (2MB 제한으로 줄임)
+      if (file.size > 2 * 1024 * 1024) {
+        alert("파일 크기는 2MB 이하여야 합니다.");
         return;
       }
 
@@ -65,12 +65,33 @@ export default function ReviewWriteModal({
 
       setReviewImg(file);
 
-      // 미리보기 생성
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreviewImg(e.target.result);
+      // 미리보기 생성 (압축된 이미지로)
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+
+      img.onload = () => {
+        // 미리보기용 크기 (200x200)
+        const previewSize = 200;
+        let { width, height } = img;
+
+        if (width > height) {
+          height = (height * previewSize) / width;
+          width = previewSize;
+        } else {
+          width = (width * previewSize) / height;
+          height = previewSize;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const previewDataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        setPreviewImg(previewDataUrl);
       };
-      reader.readAsDataURL(file);
+
+      img.src = URL.createObjectURL(file);
     }
   };
 
@@ -87,22 +108,73 @@ export default function ReviewWriteModal({
 
     setIsSubmitting(true);
     try {
-      // JSON 데이터 생성
-      const reviewData = {
-        reviewRating: reviewRating.toString(), // String으로 변환
-        reviewContent: reviewContent,
-        reviewImg: reviewImg ? "이미지_있음" : "", // 빈 문자열로 설정
-        reservationId: reservation?.reservationId, // UUID 문자열
+      // 이미지 파일을 압축하고 Base64로 변환하는 함수
+      const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          // 이미지 압축을 위한 Canvas 사용
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          const img = new Image();
+
+          img.onload = () => {
+            // 최대 크기 설정 (800x800)
+            const maxSize = 800;
+            let { width, height } = img;
+
+            if (width > height) {
+              if (width > maxSize) {
+                height = (height * maxSize) / width;
+                width = maxSize;
+              }
+            } else {
+              if (height > maxSize) {
+                width = (width * maxSize) / height;
+                height = maxSize;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // 이미지 그리기 (압축)
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // JPEG로 압축 (품질 0.7)
+            const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7);
+            resolve(compressedDataUrl);
+          };
+
+          img.onerror = reject;
+          img.src = URL.createObjectURL(file);
+        });
       };
 
-      console.log("전송할 데이터 타입 확인:", {
-        reviewRating: typeof reviewData.reviewRating,
-        reviewContent: typeof reviewData.reviewContent,
-        reservationId: typeof reviewData.reservationId,
-        reservationIdValue: reviewData.reservationId,
-      });
+      // JSON 데이터 생성
+      const reviewData = {
+        reviewRating: reviewRating.toString(),
+        reviewContent: reviewContent,
+        reservationId: reservation?.reservationId,
+      };
 
-      console.log("리뷰 등록 요청 데이터:", reviewData);
+      // 이미지가 있으면 Base64로 변환하여 추가
+      if (reviewImg) {
+        try {
+          const base64Image = await convertImageToBase64(reviewImg);
+          reviewData.reviewImg = base64Image;
+        } catch (error) {
+          console.error("이미지 변환 실패:", error);
+          alert("이미지 처리 중 오류가 발생했습니다.");
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      console.log("전송할 데이터 확인:", {
+        reviewRating: reviewData.reviewRating,
+        reviewContent: reviewData.reviewContent,
+        reservationId: reviewData.reservationId,
+        hasImage: !!reviewData.reviewImg,
+      });
 
       // API 호출 (JSON 형태로 전송)
       const response = await axiosInstance.post(
