@@ -53,8 +53,13 @@ export default function MyReviewPage() {
 
     if (result.isConfirmed) {
       try {
-        await axiosInstance.post("/user/review/remove", { id: reviewId });
-        setMyReviews(myReviews.filter((review) => review.id !== reviewId));
+        console.log("삭제 요청 데이터:", { reviewId: reviewId });
+        console.log("삭제할 리뷰 ID:", reviewId);
+
+        await axiosInstance.post("/user/review/remove", { reviewId: reviewId });
+        setMyReviews(
+          myReviews.filter((review) => review.reviewId !== reviewId)
+        );
         Swal.fire({
           title: "삭제 완료",
           text: "리뷰가 성공적으로 삭제되었습니다.",
@@ -63,9 +68,25 @@ export default function MyReviewPage() {
         });
       } catch (err) {
         console.error("리뷰 삭제 에러:", err);
+        console.error("에러 응답 데이터:", err.response?.data);
+        console.error("에러 상태 코드:", err.response?.status);
+
+        let errorMessage = "리뷰 삭제에 실패했습니다.";
+        if (err.response?.status === 400) {
+          errorMessage = "잘못된 요청입니다.";
+        } else if (err.response?.status === 401) {
+          errorMessage = "로그인이 필요합니다.";
+        } else if (err.response?.status === 403) {
+          errorMessage = "삭제 권한이 없습니다.";
+        } else if (err.response?.status === 404) {
+          errorMessage = "리뷰를 찾을 수 없습니다.";
+        } else if (err.response?.status === 500) {
+          errorMessage = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        }
+
         Swal.fire({
           title: "삭제 실패",
-          text: "리뷰 삭제에 실패했습니다.",
+          text: errorMessage,
           icon: "error",
           confirmButtonText: "확인",
         });
@@ -174,7 +195,7 @@ export default function MyReviewPage() {
           {filteredAndSortedReviews.length > 0 ? (
             filteredAndSortedReviews.map((review) => (
               <div
-                key={review.id}
+                key={review.reviewId}
                 className="border rounded-lg p-6 bg-white shadow-sm"
               >
                 <div className="flex justify-between items-start">
@@ -193,7 +214,7 @@ export default function MyReviewPage() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleDeleteReview(review.id)}
+                          onClick={() => handleDeleteReview(review.reviewId)}
                           className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 flex items-center space-x-1"
                         >
                           <Trash2 size={16} />
