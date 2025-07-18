@@ -8,11 +8,16 @@ export default function SeekCVProfile({ CurriculumVitae }) {
             {/* 프로필 이미지 섹션 */}
             <div className="p-8 flex justify-center">
                 <div className="w-[240px] h-[280px] border-dashed border-4 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center">
+                {CurriculumVitae.image ? (
                     <img
                         src={CurriculumVitae.image}
                         alt="프로필 이미지"
                         className="w-full h-full object-cover rounded-lg"
                     />
+                    ) : (
+                    <span className="text-gray-400">이미지가 없습니다</span>
+                    )}
+
                 </div>
             </div>
 
