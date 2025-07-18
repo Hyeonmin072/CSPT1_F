@@ -32,42 +32,39 @@ export default function MiddleSection({ reviewData = [] }) {
   ];
 
   // 데이터 가져오기
+  const [prevData, setPrevData] = useState(null);
+
   useEffect(() => {
-    // props로 리뷰 데이터가 전달되었으면 그것을 사용
-    if (reviewData && reviewData.length > 0) {
-      // 전달받은 리뷰 데이터의 형태를 맞춤
-      const formattedReviews = reviewData.map((review, index) => ({
-        id: index + 1,
-        name: review.userName || "익명",
-        rating: review.reviewRating || 0,
-        comment: review.reviewContent || "내용 없음",
-        date: new Date().toISOString().split("T")[0], // 현재 날짜로 설정
-        menuName: review.menuName || "",
-        // 리뷰 이미지가 빈 문자열이면 null로 설정하여 기본 이미지를 표시하지 않도록 함
-        reviewImage:
-          review.reviewImage && review.reviewImage.trim() !== ""
-            ? review.reviewImage
-            : null,
-      }));
-      setReviews(formattedReviews);
-      setLoading(false);
-    } else {
-      // 전달받은 리뷰 데이터가 없으면 더미 데이터를 사용
-      try {
-        const data = dummyReviews;
+    if (JSON.stringify(prevData) !== JSON.stringify(reviewData)) {
+      setPrevData(reviewData);
+
+      if (reviewData && reviewData.length > 0) {
+        const formattedReviews = reviewData.map((review, index) => ({
+          id: index + 1,
+          name: review.userName || "익명",
+          rating: review.reviewRating || 0,
+          comment: review.reviewContent || "내용 없음",
+          date: new Date().toISOString().split("T")[0],
+          menuName: review.menuName || "",
+          reviewImage:
+            review.reviewImage && review.reviewImage.trim() !== ""
+              ? review.reviewImage
+              : null,
+        }));
+        setReviews(formattedReviews);
+      } else {
         setReviews(
-          data.filter(
+          dummyReviews.filter(
             (review) =>
-              differenceInDays(new Date(), new Date(review.date)) <= 14 // 2주(14일) 이내 리뷰만 필터링
+              differenceInDays(new Date(), new Date(review.date)) <= 14
           )
         );
-      } catch (error) {
-        console.error("Error processing reviews:", error);
-      } finally {
-        setLoading(false); // 로딩 상태 종료
       }
+
+      setLoading(false);
     }
   }, [reviewData]);
+
 
   // 중앙 섹션 관련 슬라이더 설정
   const sliderSettings = {
