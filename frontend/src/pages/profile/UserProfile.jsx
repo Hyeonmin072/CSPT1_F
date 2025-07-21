@@ -14,16 +14,16 @@ import axiosInstance from "../../components/sign/axios/AxiosInstance";
 
 const UserProfile = () => {
   const [userData, setUserData] = useState({
-    name: "홍길동",
-    phone: "010-3579-1271",
-    email: "test@gmail.com",
-    membership: "일반",
+    userName: "",
+    userEmail: "",
+    userAdress: "",
+    userTel: "",
+    userGrade: "",
+    reservationCnt: 0,
+    reviewedCnt: 0,
+    likedDesignerCnt: 0,
     profileImage: d1,
     bannerImage: d1,
-    joinDate: "2023-01-15",
-    reservationCount: 12,
-    reviewCount: 8,
-    favoriteShops: 5,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -37,10 +37,7 @@ const UserProfile = () => {
         });
         console.log("load된 유저 데이터", response.data);
         if (response.data) {
-          setUserData((prevData) => ({
-            ...prevData,
-            ...response.data,
-          }));
+          setUserData({ ...response.data });
         }
       } catch (error) {
         console.error("프로필 데이터 로드 실패:", error);
@@ -73,10 +70,7 @@ const UserProfile = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-
-      {/* 헤더 높이만큼 여백 추가 */}
       <div className="h-24"></div>
-
       {isLoading ? (
         <div className="flex justify-center items-center h-[calc(100vh-5rem)]">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-500"></div>
@@ -88,7 +82,7 @@ const UserProfile = () => {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center w-full"
         >
-          {/* 프로필 배너 섹션 */}
+          {/* 프로필 배너 섹션 - 필요시 별도 관리 */}
           <div className="w-full max-w-5xl mb-8">
             <div className="h-48 rounded-xl overflow-hidden shadow-lg">
               {isEditing ? (
@@ -107,7 +101,7 @@ const UserProfile = () => {
           {/* 프로필 정보 섹션 */}
           <div className="w-full max-w-5xl px-4 pb-12">
             <div className="bg-white rounded-xl shadow-md p-6 relative">
-              {/* 프로필 이미지를 카드 위로 올림 */}
+              {/* 프로필 이미지를 카드 위로 올림 - 필요시 별도 관리 */}
               <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
                 <div className="relative">
                   {isEditing ? (
@@ -123,9 +117,9 @@ const UserProfile = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pt-16">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pt-4">
                 <h1 className="text-2xl font-bold text-gray-800">
-                  {userData.name}님의 프로필
+                  {userData.userName}님의 프로필
                 </h1>
                 <div className="flex space-x-3">
                   <MyCouponButton />
@@ -144,8 +138,13 @@ const UserProfile = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
+                  {/* ProfileInfo 컴포넌트가 내부에서 필드명을 맞춰서 사용해야 함 */}
                   <ProfileInfo
-                    {...userData}
+                    userName={userData.userName}
+                    userEmail={userData.userEmail}
+                    userAdress={userData.userAdress}
+                    userTel={userData.userTel}
+                    userGrade={userData.userGrade}
                     isEditing={isEditing}
                     onDataChange={setUserData}
                   />
@@ -159,25 +158,27 @@ const UserProfile = () => {
                     <div className="bg-white p-3 rounded-lg shadow-sm">
                       <p className="text-sm text-green-600">예약 횟수</p>
                       <p className="text-xl font-bold text-green-700">
-                        {userData.reservationCount}
+                        {userData.reservationCnt}
                       </p>
                     </div>
                     <div className="bg-white p-3 rounded-lg shadow-sm">
                       <p className="text-sm text-green-600">리뷰 작성</p>
                       <p className="text-xl font-bold text-green-700">
-                        {userData.reviewCount}
+                        {userData.reviewedCnt}
                       </p>
                     </div>
                     <div className="bg-white p-3 rounded-lg shadow-sm">
-                      <p className="text-sm text-green-600">즐겨찾기</p>
+                      <p className="text-sm text-green-600">
+                        즐겨찾기 디자이너
+                      </p>
                       <p className="text-xl font-bold text-green-700">
-                        {userData.favoriteShops}
+                        {userData.likedDesignerCnt}
                       </p>
                     </div>
                     <div className="bg-white p-3 rounded-lg shadow-sm">
-                      <p className="text-sm text-green-600">가입일</p>
+                      <p className="text-sm text-green-600">등급</p>
                       <p className="text-base font-bold text-green-700">
-                        {userData.joinDate}
+                        {userData.userGrade}
                       </p>
                     </div>
                   </div>
