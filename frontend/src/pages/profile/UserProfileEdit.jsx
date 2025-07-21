@@ -1,73 +1,45 @@
 // components/profile/UserProfileEdit.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 //import ProfileBannerEdit from "../../components/profile/userprofile/ProfileBannerEdit";
 //import ProfileImageEdit from "../../components/profile/userprofile/ProfileImageEdit";
 
-import ProfileBannerEdit from "../../components/profile/userprofile/ProfileBannerEdit";
-import ProfileImageEdit from "../../components/profile/userprofile/ProfileImageEdit";
-import d1 from "../../assets/designer/d1.png";
 import Header from "../../components/common/Header";
-
-// 비밀번호 검증용 함수
-const validatePassword = (password) => {
-  const hasLetter = /[A-Za-z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  const hasSpecial = /[@$!%*#?&]/.test(password);
-  const isValidLength = password.length >= 8 && password.length <= 20;
-
-  const requirements = {
-    hasLetter,
-    hasNumber,
-    hasSpecial,
-    isValidLength,
-  };
-
-  return requirements;
-};
-
-const isPasswordValid = (requirements) => {
-  return Object.values(requirements).every(Boolean);
-};
-
-//eslint-disable-next-line
-const PasswordRequirement = ({ met, text }) => (
-  <div className="flex items-center gap-2">
-    <div
-      className={`w-2 h-2 rounded-full ${met ? "bg-green-500" : "bg-gray-300"}`}
-    />
-    <span className={`text-sm ${met ? "text-green-500" : "text-gray-500"}`}>
-      {text}
-    </span>
-  </div>
-);
+import axiosInstance from "../../components/sign/axios/AxiosInstance";
+import PasswordChangeModal from "./PasswordChangeModal";
 
 const UserProfileEdit = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    name: "홍길동",
-    phone: "010-3579-1271",
-    email: "test@gmail.com",
-    membership: "일반",
+    userName: "",
+    userEmail: "",
+    userAdress: "",
+    userTel: "",
+    userGrade: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [bannerImage, setBannerImage] = useState(d1);
-  const [profileImage, setProfileImage] = useState(d1);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-
-  const [passwordRequirements, setPasswordRequirements] = useState({
-    hasLetter: false,
-    hasNumber: false,
-    hasSpecial: false,
-    isValidLength: false,
-  });
-
-  const [passwordError, setPasswordError] = useState("");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axiosInstance.get("/user/profile", {
+          withCredentials: true,
+        });
+        if (response.data) {
+          setUserData({ ...response.data });
+        }
+      } catch (error) {
+        console.error("프로필 데이터 로드 실패:", error);
+        // 필요시 에러 처리
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const handleInputChange = (key, value) => {
     setUserData((prev) => ({
@@ -76,72 +48,34 @@ const UserProfileEdit = () => {
     }));
   };
 
-  const handlePasswordChange = (key, value) => {
-    setPasswordData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-
-    // 새 비밀번호 입력 시 실시간 유효성 검사
-    if (key === "newPassword") {
-      const requirements = validatePassword(value);
-      setPasswordRequirements(requirements);
-      setPasswordError("");
-
-      // 비밀번호 확인과 일치 여부 체크
-      if (
-        passwordData.confirmPassword &&
-        value !== passwordData.confirmPassword
-      ) {
-        setPasswordError("비밀번호가 일치하지 않습니다.");
-      }
-    }
-
-    // 비밀번호 확인 실시간 체크
-    if (key === "confirmPassword") {
-      if (value !== passwordData.newPassword) {
-        setPasswordError("비밀번호가 일치하지 않습니다.");
-      } else {
-        setPasswordError("");
-      }
+  const handlePasswordChange = async (passwordData) => {
+    try {
+      // 비밀번호 변경 API 호출
+      await axiosInstance.put("/user/password", passwordData, {
+        withCredentials: true,
+      });
+      alert("비밀번호가 성공적으로 변경되었습니다.");
+    } catch (error) {
+      console.error("비밀번호 변경 실패:", error);
+      alert("비밀번호 변경에 실패했습니다.");
     }
   };
 
-  const handleSubmit = () => {
-    // 비밀번호 변경 시도 시 검증
-    if (
-      passwordData.newPassword ||
-      passwordData.confirmPassword ||
-      passwordData.currentPassword
-    ) {
-      if (!passwordData.currentPassword) {
-        alert("현재 비밀번호를 입력해주세요.");
-        return;
-      }
-
-      if (!isPasswordValid(passwordRequirements)) {
-        alert("새 비밀번호가 요구사항을 충족하지 않습니다.");
-        return;
-      }
-
-      if (passwordData.newPassword !== passwordData.confirmPassword) {
-        alert("새 비밀번호가 일치하지 않습니다.");
-        return;
-      }
-
-      if (passwordData.newPassword === passwordData.currentPassword) {
-        alert("새 비밀번호는 현재 비밀번호와 달라야 합니다.");
-        return;
-      }
+  const handleSubmit = async () => {
+    try {
+      await axiosInstance.put("/user/profile", userData, {
+        withCredentials: true,
+      });
+      // 성공 시 프로필 페이지로 이동
+      navigate("/profile");
+    } catch (error) {
+      console.error("프로필 업데이트 실패:", error);
+      alert("프로필 업데이트에 실패했습니다.");
     }
-
-    // API 호출하여 변경된 정보 저장
-    // 성공 시 프로필 페이지로 이동
-    navigate("/profile");
   };
 
   const handleCancel = () => {
-    navigate("/userprofileedit");
+    navigate(-1);
   };
 
   return (
@@ -152,174 +86,110 @@ const UserProfileEdit = () => {
       <div className="h-24"></div>
 
       <div className="flex flex-col items-center w-full">
-        {/* 프로필 배너 섹션 */}
-        <div className="w-full max-w-5xl mb-8">
-          <div className="h-48 rounded-xl overflow-hidden shadow-lg">
-            <ProfileBannerEdit
-              bannerImage={bannerImage}
-              onImageChange={setBannerImage}
-            />
+        {isLoading ? (
+          <div className="flex justify-center items-center h-[calc(100vh-5rem)]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-500"></div>
           </div>
-        </div>
-
-        {/* 프로필 정보 섹션 */}
-        <div className="w-full max-w-5xl px-4 pb-12">
-          <div className="bg-white rounded-xl shadow-md p-6 relative">
-            {/* 프로필 이미지를 카드 위로 올림 */}
-            <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-              <div className="relative">
-                <ProfileImageEdit
-                  profileImage={profileImage}
-                  onImageChange={setProfileImage}
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pt-16">
-              <h1 className="text-2xl font-bold text-gray-800">프로필 수정</h1>
-            </div>
-
-            {/* 프로필 정보 수정 폼 */}
-            <div className="grid grid-cols-2 gap-y-8 gap-x-16 mb-6">
-              {/* 이름 입력 */}
-              <div>
-                <h2 className="text-gray-600 text-sm mb-2">이름</h2>
-                <input
-                  type="text"
-                  value={userData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  className="w-96 p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
+        ) : (
+          <div className="w-full max-w-5xl px-4 pb-12">
+            <div className="bg-white rounded-xl shadow-md p-6 relative">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pt-16">
+                <h1 className="text-2xl font-bold text-gray-800">
+                  프로필 수정
+                </h1>
               </div>
 
-              {/* 연락처 입력 */}
-              <div>
-                <h2 className="text-gray-600 text-sm mb-2">연락처</h2>
-                <input
-                  type="tel"
-                  value={userData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  className="w-96 p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-
-              {/* 이메일 입력 */}
-              <div>
-                <h2 className="text-gray-600 text-sm mb-2">이메일</h2>
-                <input
-                  type="email"
-                  value={userData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="w-96 p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-
-              {/* 멤버십 등급 (읽기 전용) */}
-              <div>
-                <h2 className="text-gray-600 text-sm mb-2">내 멤버십 등급</h2>
-                <div className="w-96 p-3 bg-gray-100 rounded text-gray-500">
-                  {userData.membership}
+              {/* 프로필 정보 수정 폼 */}
+              <div className="grid grid-cols-2 gap-y-8 gap-x-16 mb-6">
+                {/* 이름 입력 */}
+                <div>
+                  <h2 className="text-gray-600 text-sm mb-2">이름</h2>
+                  <input
+                    type="text"
+                    value={userData.userName}
+                    readOnly
+                    className="w-96 p-3 bg-gray-100 rounded focus:outline-none cursor-not-allowed text-gray-500"
+                  />
                 </div>
-              </div>
-            </div>
-
-            {/* 비밀번호 변경 섹션 */}
-            <div className="flex flex-col items-center w-full">
-              <h2 className="text-xl font-bold flex justify-center">
-                비밀번호 변경
-              </h2>
-              <div className="w-[830px]">
-                <div className="grid grid-cols-1 gap-y-6">
-                  {/* 현재 비밀번호 */}
-                  <div>
-                    <h2 className="text-gray-600 text-sm mb-2">
-                      현재 비밀번호
-                    </h2>
-                    <input
-                      type="password"
-                      value={passwordData.currentPassword}
-                      onChange={(e) =>
-                        handlePasswordChange("currentPassword", e.target.value)
-                      }
-                      className="w-full p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="현재 비밀번호를 입력하세요"
-                    />
-                  </div>
-
-                  {/* 새 비밀번호 */}
-                  <div>
-                    <h2 className="text-gray-600 text-sm mb-2">새 비밀번호</h2>
-                    <input
-                      type="password"
-                      value={passwordData.newPassword}
-                      onChange={(e) =>
-                        handlePasswordChange("newPassword", e.target.value)
-                      }
-                      className="w-full p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="새 비밀번호를 입력하세요"
-                    />
-                    <div className="mt-2 space-y-1">
-                      <PasswordRequirement
-                        met={passwordRequirements.hasLetter}
-                        text="영문자 포함"
-                      />
-                      <PasswordRequirement
-                        met={passwordRequirements.hasNumber}
-                        text="숫자 포함"
-                      />
-                      <PasswordRequirement
-                        met={passwordRequirements.hasSpecial}
-                        text="특수문자 포함"
-                      />
-                      <PasswordRequirement
-                        met={passwordRequirements.isValidLength}
-                        text="8-20자 길이"
-                      />
-                    </div>
-                  </div>
-
-                  {/* 새 비밀번호 확인 */}
-                  <div>
-                    <h2 className="text-gray-600 text-sm mb-2">
-                      새 비밀번호 확인
-                    </h2>
-                    <input
-                      type="password"
-                      value={passwordData.confirmPassword}
-                      onChange={(e) =>
-                        handlePasswordChange("confirmPassword", e.target.value)
-                      }
-                      className="w-full p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="새 비밀번호를 다시 입력하세요"
-                    />
-                    {passwordError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {passwordError}
-                      </p>
-                    )}
+                {/* 연락처 입력 */}
+                <div>
+                  <h2 className="text-gray-600 text-sm mb-2">연락처</h2>
+                  <input
+                    type="tel"
+                    value={userData.userTel}
+                    readOnly
+                    className="w-96 p-3 bg-gray-100 rounded focus:outline-none cursor-not-allowed text-gray-500"
+                  />
+                </div>
+                {/* 이메일 입력 */}
+                <div>
+                  <h2 className="text-gray-600 text-sm mb-2">이메일</h2>
+                  <input
+                    type="email"
+                    value={userData.userEmail}
+                    onChange={(e) =>
+                      handleInputChange("userEmail", e.target.value)
+                    }
+                    className="w-96 p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+                {/* 주소 입력 */}
+                <div>
+                  <h2 className="text-gray-600 text-sm mb-2">주소</h2>
+                  <input
+                    type="text"
+                    value={userData.userAdress}
+                    onChange={(e) =>
+                      handleInputChange("userAdress", e.target.value)
+                    }
+                    className="w-96 p-3 bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
+                {/* 멤버십 등급 (읽기 전용) */}
+                <div>
+                  <h2 className="text-gray-600 text-sm mb-2">내 멤버십 등급</h2>
+                  <div className="w-96 p-3 bg-gray-100 rounded text-gray-500">
+                    {userData.userGrade}
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* 버튼 섹션 */}
-            <div className="flex justify-center gap-4 mt-8">
-              <button
-                onClick={handleCancel}
-                className="px-6 py-2 text-gray-500 rounded-lg hover:text-gray-600 transition-colors bg-gray-100 hover:bg-gray-200"
-              >
-                취소
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="px-6 py-2 text-white rounded-lg hover:bg-teal-600 transition-colors bg-teal-500"
-              >
-                저장
-              </button>
+              {/* 비밀번호 변경 버튼 */}
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  className="px-6 py-2 text-white rounded-lg hover:bg-blue-600 transition-colors bg-blue-500"
+                >
+                  비밀번호 변경
+                </button>
+              </div>
+
+              {/* 버튼 섹션 */}
+              <div className="flex justify-center gap-4 mt-8">
+                <button
+                  onClick={handleCancel}
+                  className="px-6 py-2 text-gray-500 rounded-lg hover:text-gray-600 transition-colors bg-gray-100 hover:bg-gray-200"
+                >
+                  취소
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  className="px-6 py-2 text-white rounded-lg hover:bg-teal-600 transition-colors bg-teal-500"
+                >
+                  저장
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
+
+      {/* 비밀번호 변경 모달 */}
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        onPasswordChange={handlePasswordChange}
+      />
     </div>
   );
 };

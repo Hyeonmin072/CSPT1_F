@@ -22,8 +22,6 @@ const UserProfile = () => {
     reservationCnt: 0,
     reviewedCnt: 0,
     likedDesignerCnt: 0,
-    profileImage: d1,
-    bannerImage: d1,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -35,7 +33,7 @@ const UserProfile = () => {
         const response = await axiosInstance.get("/user/profile", {
           withCredentials: true,
         });
-        console.log("load된 유저 데이터", response.data);
+        console.log("유저 프로필 데이터", response.data);
         if (response.data) {
           setUserData({ ...response.data });
         }
@@ -83,7 +81,7 @@ const UserProfile = () => {
           className="flex flex-col items-center w-full"
         >
           {/* 프로필 배너 섹션 - 필요시 별도 관리 */}
-          <div className="w-full max-w-5xl mb-8">
+          {/* <div className="w-full max-w-5xl mb-8">
             <div className="h-48 rounded-xl overflow-hidden shadow-lg">
               {isEditing ? (
                 <ProfileBannerEdit
@@ -96,13 +94,13 @@ const UserProfile = () => {
                 <ProfileBanner bannerImage={userData.bannerImage} />
               )}
             </div>
-          </div>
+          </div> */}
 
           {/* 프로필 정보 섹션 */}
           <div className="w-full max-w-5xl px-4 pb-12">
             <div className="bg-white rounded-xl shadow-md p-6 relative">
               {/* 프로필 이미지를 카드 위로 올림 - 필요시 별도 관리 */}
-              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+              {/* <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
                 <div className="relative">
                   {isEditing ? (
                     <ProfileImageEdit
@@ -115,7 +113,7 @@ const UserProfile = () => {
                     <ProfileImage profileImage={userData.profileImage} />
                   )}
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pt-4">
                 <h1 className="text-2xl font-bold text-gray-800">

@@ -69,20 +69,27 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
   if (!shopData) return <div>미용실 정보를 찾을 수 없습니다.</div>;
 
   return (
-    <div className="max-w-6xl mx-auto flex flex-row justify-center items-start px-20 gap-6">
+    <div className="max-w-6xl mx-auto flex flex-col items-center px-20 gap-6">
       {/* 왼쪽: 가게 상세 정보 */}
-      <div className="flex flex-col w-4/5 mb-0 bg-white">
+      <div className="flex flex-col w-full mb-6 bg-white">
         <DetailHeader shopData={shopData.shop} />
         <div className="relative">
+          {/* 샵 이름 - 이미지 길이만큼 박스로 감싸기 */}
+          <div className="w-full h-[70px] bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg flex items-center justify-center mb-4 mt-12 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+            <span className="text-gray-800 px-6 py-3 text-2xl font-bold drop-shadow-sm">
+              {shopData.shop.shopName || "샵 이름"}
+            </span>
+          </div>
+
           {/* 샵 이미지 */}
           {shopData.shop.shopThumbnail ? (
             <img
               src={shopData.shop.shopThumbnail}
               alt="샵 사진"
-              className="w-[890px] h-[370px] rounded-lg object-cover"
+              className="w-full h-[370px] rounded-lg object-cover"
             />
           ) : (
-            <div className="w-[890px] h-[370px] rounded-lg bg-gray-200 flex items-center justify-center">
+            <div className="w-full h-[370px] rounded-lg bg-gray-200 flex items-center justify-center">
               <span className="text-gray-500">이미지가 없습니다</span>
             </div>
           )}
@@ -106,20 +113,22 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5" />
                   <h2 className="text-xl font-bold ml-2">
-                    {shopData.shop.shopName}
+                    {shopData.shop.shopName || "샵 이름"}
                   </h2>
                 </div>
                 <p className="text-gray-500 mt-2">
-                  장소: {shopData.shop.shopAddress}
+                  장소: {shopData.shop.shopAddress || "주소 정보 없음"}
                 </p>
                 <p className="text-gray-500">
-                  운영 시간: {shopData.shop.shopOpenTime} -{" "}
-                  {shopData.shop.shopCloseTime}
+                  운영 시간: {shopData.shop.shopOpenTime || "00:00"} -{" "}
+                  {shopData.shop.shopCloseTime || "23:00"}
                 </p>
                 <p className="text-gray-500">
-                  전화번호: {shopData.shop.shopTel}
+                  전화번호: {shopData.shop.shopTel || "전화번호 정보 없음"}
                 </p>
-                <p className="text-gray-500">설명: {shopData.shop.shopDesc}</p>
+                <p className="text-gray-500">
+                  설명: {shopData.shop.shopDesc || "설명 없음"}
+                </p>
               </div>
               <div>
                 <DetailIcon shopData={shopData.shop} />
@@ -141,19 +150,22 @@ export default function ShopDetail({ handleModalOpen, shopEmail }) {
 
               <div className="mb-6">
                 <ReviewImg
-                  reviewImages={shopData.reviewImageUrl}
+                  reviewImages={shopData.reviewImageUrl || []}
                   handleReviewClick={handleReviewClick}
                 />
-                <HairShopDetailReview reviews={shopData.reviews} />
+                <HairShopDetailReview reviews={shopData.reviews || []} />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 오른쪽: 디자이너 정보 */}
-      <div className="flex flex-row w-1/5">
-        <DesignerInfo shopEmail={shopEmail} designers={shopData.designers} />
+      {/* 아래쪽: 디자이너 정보 */}
+      <div className="w-full">
+        <DesignerInfo
+          shopEmail={shopEmail}
+          designers={shopData.designers || []}
+        />
       </div>
     </div>
   );

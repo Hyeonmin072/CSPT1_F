@@ -38,7 +38,7 @@ export default function DetailTab({
         </div>
 
         {/* 예약하기 버튼 (오른쪽으로 이동) */}
-        <div className="flex bg-[#03DAC5] text-white rounded-lg ml-auto">
+        <div className="flex bg-green-500 text-white rounded-lg ml-auto">
           <HairReservationButton shopEmail={shopEmail} />
         </div>
       </div>
