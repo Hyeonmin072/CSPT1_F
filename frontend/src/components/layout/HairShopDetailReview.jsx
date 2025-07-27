@@ -44,6 +44,18 @@ export default function HairShopDetailReview({ reviews = [] }) {
                   {review.rating.toFixed(1)}
                 </span>
               </div>
+              
+              {/* 리뷰 이미지 */}
+              {review.reviewImage && (
+                <div className="mb-4">
+                  <img
+                    src={review.reviewImage}
+                    alt="리뷰 이미지"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                </div>
+              )}
+              
               {/* 리뷰 글 */}
               <div className="text-gray-700 mt-4">
                 <p className="text-center">{review.content}</p>

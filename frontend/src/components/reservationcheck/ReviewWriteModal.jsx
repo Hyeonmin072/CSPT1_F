@@ -111,38 +111,38 @@ export default function ReviewWriteModal({
       // 이미지 파일을 압축하고 Base64로 변환하는 함수
       const convertImageToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-          // 이미지 압축을 위한 Canvas 사용
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          const img = new Image();
+                // 이미지 압축을 위한 Canvas 사용
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
 
-          img.onload = () => {
-            // 최대 크기 설정 (800x800)
-            const maxSize = 800;
-            let { width, height } = img;
+      img.onload = () => {
+        // 최대 크기 설정 (400x400으로 줄임)
+        const maxSize = 400;
+        let { width, height } = img;
 
-            if (width > height) {
-              if (width > maxSize) {
-                height = (height * maxSize) / width;
-                width = maxSize;
-              }
-            } else {
-              if (height > maxSize) {
-                width = (width * maxSize) / height;
-                height = maxSize;
-              }
-            }
+        if (width > height) {
+          if (width > maxSize) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+        }
 
-            canvas.width = width;
-            canvas.height = height;
+        canvas.width = width;
+        canvas.height = height;
 
-            // 이미지 그리기 (압축)
-            ctx.drawImage(img, 0, 0, width, height);
+        // 이미지 그리기 (압축)
+        ctx.drawImage(img, 0, 0, width, height);
 
-            // JPEG로 압축 (품질 0.7)
-            const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7);
-            resolve(compressedDataUrl);
-          };
+        // JPEG로 압축 (품질 0.5로 더 압축)
+        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.5);
+        resolve(compressedDataUrl);
+      };
 
           img.onerror = reject;
           img.src = URL.createObjectURL(file);
@@ -156,33 +156,33 @@ export default function ReviewWriteModal({
         reservationId: reservation?.reservationId,
       };
 
-      // 이미지가 있으면 Base64로 변환하여 추가
-      if (reviewImg) {
-        try {
-          const base64Image = await convertImageToBase64(reviewImg);
-          reviewData.reviewImg = base64Image;
-        } catch (error) {
-          console.error("이미지 변환 실패:", error);
-          alert("이미지 처리 중 오류가 발생했습니다.");
-          setIsSubmitting(false);
-          return;
-        }
-      }
-
       console.log("전송할 데이터 확인:", {
         reviewRating: reviewData.reviewRating,
         reviewContent: reviewData.reviewContent,
         reservationId: reviewData.reservationId,
-        hasImage: !!reviewData.reviewImg,
+        hasImage: !!reviewImg,
       });
 
-      // API 호출 (JSON 형태로 전송)
+      // FormData 생성 - MultipartFile 방식
+      const formData = new FormData();
+      
+      // 각 필드를 개별적으로 추가
+      formData.append('reviewRating', reviewData.reviewRating);
+      formData.append('reviewContent', reviewData.reviewContent);
+      formData.append('reservationId', reviewData.reservationId);
+      
+      // 이미지가 있으면 파일로 추가
+      if (reviewImg) {
+        formData.append('reviewImg', reviewImg);
+      }
+
+      // API 호출 (FormData로 전송)
       const response = await axiosInstance.post(
         "/user/review/register",
-        reviewData,
+        formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
