@@ -111,6 +111,7 @@ export default function EditJob() {
                     title: "수정 완료",
                     text: "게시글이 성공적으로 수정되었습니다.",
                     icon: "success",
+                    confirmButtonColor: "#22C55E",
                     confirmButtonText: "확인",
                 });
                 navigate("/searchjob");
