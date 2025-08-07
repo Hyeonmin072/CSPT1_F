@@ -34,7 +34,10 @@ export default function CVCheck() {
     <div className="container mx-auto max-w-5xl p-10 space-y-10">
       {/* 프로필 */}
       <section className="flex flex-col items-center w-full">
-        <SeekCVProfile CurriculumVitae={CurriculumVitae} />
+            <SeekCVProfile
+              CurriculumVitae={CurriculumVitae}
+              setCurriculumVitae={setCurriculumVitae}
+            />
       </section>
 
       {/* 경력 */}

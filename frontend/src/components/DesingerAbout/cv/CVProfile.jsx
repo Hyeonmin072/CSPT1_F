@@ -13,7 +13,8 @@ export default function CVProfile({ isEditable, resumeData, image, setImage }) {
     d_image: "",
   }); // 프로필 데이터 상태
   const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [loading, setLoading] = useState(true); // 로딩 상태  
+  const [dDesc, setDDesc] = useState(""); // 디자이너 설명 상태
 
   // 프로필 데이터 가져오기
   useEffect(() => {
@@ -68,16 +69,31 @@ export default function CVProfile({ isEditable, resumeData, image, setImage }) {
     if (file) {
       setImage(file); // File 객체만 저장
       setPreview(URL.createObjectURL(file));
+
+      // 저장 트리거 (선택적)
+    if (isEditable && handleSave) {
+      handleSave();
+    }
     }
   };
 
   const handleSave = () => {
     const formData = new FormData();
+    formData.append("image", image); // File 객체
+
+    formData.append("data", JSON.stringify({
+      content: dDesc,
+      exp: "EXP",
+      image: "",
+      portfolio: "",
+    }));
+    
+
     if (image && image instanceof File) {
       formData.append("image", image);
     }
     // ...다른 데이터 append
-    axios.post("/api/your-endpoint", formData, {
+    axios.post("/designer/resume", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   };

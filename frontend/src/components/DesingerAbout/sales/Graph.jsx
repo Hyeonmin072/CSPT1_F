@@ -76,8 +76,23 @@ export default function Graph({ graphData }) {
                     </linearGradient>
                   </defs>
 
-                    <XAxis dataKey="name" tickFormatter={tickFormatter} />
-                    <YAxis />
+                    <XAxis
+                      dataKey="name"
+                      tickFormatter={(value) => {
+                        if (!isNaN(value)) {
+                          return value.toLocaleString(); // 10000 → "10,000"
+                        }
+                        return tickFormatter(value); // 기존 포맷 유지
+                      }}
+                    />
+                    <YAxis
+                      type="number"
+                      tickFormatter={(value) => value.toLocaleString()}
+                      tick={{ fontSize: 13 }}
+                      width={80}
+                    />
+
+
                     <Tooltip />
                     <Area
                         type="monotone"
