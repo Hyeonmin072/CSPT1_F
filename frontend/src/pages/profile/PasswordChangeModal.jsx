@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 // 비밀번호 검증용 함수
 const validatePassword = (password) => {
@@ -47,6 +48,7 @@ const PasswordChangeModal = ({ isOpen, onClose, onPasswordChange }) => {
   });
 
   const [passwordError, setPasswordError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePasswordChange = (key, value) => {
     setPasswordData((prev) => ({
@@ -79,7 +81,7 @@ const PasswordChangeModal = ({ isOpen, onClose, onPasswordChange }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 비밀번호 변경 시도 시 검증
     if (!passwordData.currentPassword) {
       alert("현재 비밀번호를 입력해주세요.");
@@ -101,25 +103,50 @@ const PasswordChangeModal = ({ isOpen, onClose, onPasswordChange }) => {
       return;
     }
 
-    // 비밀번호 변경 처리
-    onPasswordChange(passwordData);
+    setIsLoading(true);
 
-    // 모달 닫기
-    onClose();
+    try {
+      const response = await axios.post("/user/password/update", {
+        curPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+        newPasswordConfirm: passwordData.confirmPassword,
+      });
 
-    // 입력값 초기화
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-    setPasswordRequirements({
-      hasLetter: false,
-      hasNumber: false,
-      hasSpecial: false,
-      isValidLength: false,
-    });
-    setPasswordError("");
+      if (response.status === 200) {
+        alert("비밀번호가 성공적으로 변경되었습니다.");
+
+        // 비밀번호 변경 처리
+        onPasswordChange(passwordData);
+
+        // 모달 닫기
+        onClose();
+
+        // 입력값 초기화
+        setPasswordData({
+          currentPassword: "",
+          newPassword: "",
+          newPasswordConfirm: "",
+        });
+        setPasswordRequirements({
+          hasLetter: false,
+          hasNumber: false,
+          hasSpecial: false,
+          isValidLength: false,
+        });
+        setPasswordError("");
+      }
+    } catch (error) {
+      console.error("비밀번호 변경 오류:", error);
+      if (error.response?.status === 400) {
+        alert("현재 비밀번호가 올바르지 않습니다.");
+      } else if (error.response?.status === 500) {
+        alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      } else {
+        alert("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -221,15 +248,17 @@ const PasswordChangeModal = ({ isOpen, onClose, onPasswordChange }) => {
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={handleCancel}
-            className="px-4 py-2 text-gray-500 rounded-lg hover:text-gray-600 transition-colors bg-gray-100 hover:bg-gray-200"
+            disabled={isLoading}
+            className="px-4 py-2 text-gray-500 rounded-lg hover:text-gray-600 transition-colors bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             취소
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 text-white rounded-lg hover:bg-teal-600 transition-colors bg-teal-500"
+            disabled={isLoading}
+            className="px-4 py-2 text-white rounded-lg hover:bg-teal-600 transition-colors bg-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            변경
+            {isLoading ? "변경 중..." : "변경"}
           </button>
         </div>
       </div>

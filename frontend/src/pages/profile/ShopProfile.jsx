@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import BusinessHeader from "../../components/common/BusinessHeader";
 import { motion } from "framer-motion";
 import ImageUploader from "../../components/DesingerAbout/profile/ImageUploader";
+import ProfileHeader from "../../components/DesingerAbout/profile/ProfileHeader";
 
 export default function ShopProfile() {
   const navigate = useNavigate();
@@ -190,7 +191,7 @@ export default function ShopProfile() {
         close: shopData.close,
         regularHoliday: shopData.regularHoliday,
         newPwd: shopData.newPwd || "",
-        newPwdConfirm: shopData.newPwdConfirm || ""
+        newPwdConfirm: shopData.newPwdConfirm || "",
       };
 
       const formData = new FormData();
@@ -243,11 +244,13 @@ export default function ShopProfile() {
       console.error("프로필 업데이트 중 오류 발생:", error);
       console.error("에러 상세 정보:", error.response?.data);
       console.error("에러 상태 코드:", error.response?.status);
-      let errorMessage = "프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.";
+      let errorMessage =
+        "프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.";
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.response?.status === 500) {
-        errorMessage = "서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        errorMessage =
+          "서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
       } else if (error.response?.status === 400) {
         errorMessage = "잘못된 요청입니다. 입력 데이터를 확인해주세요.";
       } else if (error.response?.status === 401) {
@@ -314,10 +317,18 @@ export default function ShopProfile() {
           <div className="w-full max-w-5xl px-4 pb-12">
             <div className="bg-white rounded-xl shadow-md p-6 relative">
               {/* 프로필 이미지를 카드 위로 올림 */}
-              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-                <div className="relative">
-                  <div className="w-40 h-40 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
-                    {isEditing ? (
+              {!isEditing ? (
+                <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                  <ProfileHeader
+                    name={shopData.name}
+                    image={shopData.profileImage}
+                    backgroundImage={shopData.bannerImage}
+                  />
+                </div>
+              ) : (
+                <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                  <div className="relative">
+                    <div className="w-40 h-40 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
                       <ImageUploader
                         imageType="profile"
                         defaultImage={shopData.profileImage}
@@ -326,20 +337,10 @@ export default function ShopProfile() {
                         }
                         className="w-full h-full"
                       />
-                    ) : shopData.profileImage ? (
-                      <img
-                        src={shopData.profileImage}
-                        alt="샵 프로필"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                        <span className="text-gray-400">이미지 없음</span>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 pt-16">
                 <h1 className="text-2xl font-bold text-gray-800">
