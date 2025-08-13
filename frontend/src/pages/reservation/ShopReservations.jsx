@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import BusinessHeader from "../../components/common/BusinessHeader.jsx";
 import ReservationDetailModal from "./ReservationDetailModal.jsx";
+
 // 날짜 포맷 변환 함수
 const formatDate = (isoDate) => {
   const date = new Date(isoDate);
@@ -11,9 +12,7 @@ const formatDate = (isoDate) => {
 };
 
 // 가격 포맷 변환 함수 (천 단위 쉼표 추가)
-const formatPrice = (price) => {
-  return price.toLocaleString() + "원";
-};
+const formatPrice = (price) => price.toLocaleString() + "원";
 
 export default function ShopReservationsPage() {
   const [reservations, setReservations] = useState([]);
@@ -23,22 +22,28 @@ export default function ShopReservationsPage() {
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
-  useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const response = await axios.get("/shop/reservations", {
-          params: { date, latest, order, search },
-        });
-        setReservations(response.data);
-      } catch (error) {
-        console.error("예약 데이터를 불러오는 중 오류 발생:", error);
-      }
-    };
-
-    fetchReservations();
+  // 예약 리스트 가져오기 (재사용 가능)
+  const fetchReservations = useCallback(async () => {
+    try {
+      const response = await axios.get("/shop/reservations", {
+        params: { date, latest, order, search },
+      });
+      setReservations(response.data);
+    } catch (error) {
+      console.error("예약 데이터를 불러오는 중 오류 발생:", error);
+    }
   }, [date, latest, order, search]);
 
-  const handleCloseModal = () => setSelectedId(null);
+  // 컴포넌트 마운트 및 필터 변경 시 예약 리스트 갱신
+  useEffect(() => {
+    fetchReservations();
+  }, [fetchReservations]);
+
+  // 모달 닫기 시 선택 초기화 + 예약 리스트 갱신
+  const handleCloseModal = () => {
+    setSelectedId(null);
+    fetchReservations();
+  };
 
   return (
       <div className="max-w-4xl mx-auto p-6">
