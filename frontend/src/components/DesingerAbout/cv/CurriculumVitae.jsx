@@ -5,6 +5,7 @@ import Career from "./Career.jsx";
 import DesiredWorkDays from "./DesiredWorkDays.jsx";
 import Certification from "./Certification.jsx";
 import axios from "axios";
+import axiosInstance from "../../sign/axios/AxiosInstance.jsx";
 
 export default function CurriculumVitae({
   isEditable: isEditableProp,
@@ -96,7 +97,6 @@ export default function CurriculumVitae({
 
           if (formattedData.d_image) {
             setPreview(formattedData.d_image);
-            setImage(null);
           }
         } else {
           // API에서 데이터 가져오기
@@ -176,74 +176,90 @@ export default function CurriculumVitae({
     setCertifications(updatedCertifications);
   };
 
-  const handleSave = async () => {
-    setShowMessage(true);
-    setIsEditable(false); // 저장 후 수정 모드 종료
-    setFadeOut(false);
+const [selectedImage, setSelectedImage] = useState(null);
+const [previewImage, setPreviewImage] = useState(null);
+const [isSaving, setIsSaving] = useState(false);
 
-    try {
-      // API 요청 데이터 형식으로 변환
-      const updateData = formatResumeDataForApi
-        ? formatResumeDataForApi({
-            d_desc: dDesc,
-            d_exp: resumeData?.d_exp || "",
-            employmentHistory: careers.map((career) => ({
-              id: career.id,
-              shopName: career.shopName,
-              joinDate: career.joinDate,
-              outDate: career.outDate,
-              position: career.position,
-            })),
-            certifications: certifications,
-            wantedDays: wantedDays.map((day) => ({
-              wantedDay: convertDayToFull(day.wantedDay || day),
-            })),
-            d_image: image && image instanceof File ? image : null,
-          })
-        : {
-            content: dDesc,
-            exp: resumeData?.d_exp || "",
-            portfolio: "",
-            image: image && image instanceof File ? image : null,
-            careers: careers.map((career) => ({
-              id: career.id,
-              shopName: career.shopName,
-              joinDate: career.joinDate,
-              outDate: career.outDate,
-              position: career.position,
-            })),
-            certifications: certifications,
-            wantedDays: wantedDays.map((day) => ({
-              wantedDay: convertDayToFull(day.wantedDay || day),
-            })),
-          };
-
-      console.log("전송할 데이터:", updateData);
-      console.log("전송할 데이터 상세:", JSON.stringify(updateData, null, 2));
-      console.log("희망 근무일 데이터:", updateData.wantedDays);
-      console.log("경력 데이터:", updateData.careers);
-      console.log(
-        "자격증 데이터:",
-        updateData.certificates || updateData.certifications
-      );
-
-      // API 호출
-      const response = await axios.post("/designer/resume/update", updateData);
-      console.log("저장 응답:", response.data);
-    } catch (error) {
-      console.error("이력서 저장 실패:", error);
+const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log("선택된 파일:", file);
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
-
-    // 1초 후 메시지 서서히 사라짐
-    setTimeout(() => {
-      setFadeOut(true);
-    }, 1000);
-
-    // 2초 후 메시지 숨김
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 2000);
   };
+
+const handleSave = async () => {
+  if (isSaving) return;
+  setIsSaving(true);
+
+  setShowMessage(true);
+  setIsEditable(false);
+  setFadeOut(false);
+
+  try {
+    const formData = new FormData();
+
+    // 이력서 전체 JSON 객체 생성
+    const resumePayload = {
+      content: dDesc,
+      exp: resumeData?.d_exp || "",
+      portfolio: "",
+      image: "", // 초기값, 백엔드에서 새 이미지 업로드 시 덮어씀
+      careers: careers.map((career) => ({
+        shopName: career.shopName,
+        joinDate: career.joinDate,
+        outDate: career.outDate,
+        position: career.position,
+      })),
+      certifications: certifications.map((cert) => ({
+        name: cert.name,
+      })),
+      wantedDays: wantedDays.map((day) => ({
+        wantedDay: convertDayToFull(day.wantedDay || day),
+      })),
+    };
+
+    // JSON 객체를 Blob으로 감싸서 formData에 추가
+    formData.append("resumeDto", new Blob([JSON.stringify(resumePayload)], { type: "application/json" }));
+
+    // 이미지 파일 포함
+    if (selectedImage instanceof File) {
+      formData.append("image", selectedImage);
+    }
+    
+
+    // 저장 요청
+    const response = await axios.post("/designer/resume/update", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    console.log("저장 응답:", response.data);
+    
+    console.log("selectedImage:", selectedImage);
+    console.log("typeof selectedImage:", typeof selectedImage);
+    console.log("instanceof File:", selectedImage instanceof File);
+    console.log("selectedImage.constructor.name:", selectedImage?.constructor?.name);
+
+
+  } catch (error) {
+    console.error("이력서 저장 실패:", error);
+  } finally {
+    setIsSaving(false);
+  }
+
+  setTimeout(() => setFadeOut(true), 1000);
+  setTimeout(() => setShowMessage(false), 2000);
+};
+
+
+
 
   const handleCancel = () => {
     setIsEditable(false);
@@ -273,6 +289,7 @@ export default function CurriculumVitae({
           setImage={setImage}
           preview={preview}
           setPreview={setPreview}
+          handleImageChange={handleImageChange}
         />
       </section>
 

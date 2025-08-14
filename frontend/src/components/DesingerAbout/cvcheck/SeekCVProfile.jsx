@@ -1,25 +1,14 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../sign/axios/AxiosInstance";
 
-export default function SeekCVProfile({ CurriculumVitae, setCurriculumVitae }) {
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const imageUrl = URL.createObjectURL(file);
-          setCurriculumVitae((prev) => ({
-            ...prev,
-            image: imageUrl,
-          }));
-        }
-      };
+export default function SeekCVProfile({ CurriculumVitae }) {
 
     return (
         <div className="flex w-full max-w-4xl border-b-2">
             {/* 프로필 이미지 섹션 */}
             <div className="p-8 flex justify-center">
                 <div
-                className="w-[240px] h-[280px] border-dashed border-4 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer"
-                onClick={() => document.getElementById("fileInput").click()}
+                className="w-[240px] h-[280px] border-dashed border-4 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center"
                 >
                 {CurriculumVitae.image ? (
                     <img
@@ -30,13 +19,8 @@ export default function SeekCVProfile({ CurriculumVitae, setCurriculumVitae }) {
                 ) : (
                     <span className="text-gray-400">이미지가 없습니다</span>
                 )}
-                <input
-                    id="fileInput"
-                    type="file"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                />
                 </div>
+
             </div>
 
             {/* 프로필 정보 섹션 */}

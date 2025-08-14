@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Upload, UserRound } from "lucide-react";
 import axios from "axios";
 
-export default function CVProfile({ isEditable, resumeData, image, setImage }) {
+export default function CVProfile({ isEditable, resumeData, image, handleImageChange, setImage }) {
   const [profile, setProfile] = useState({
     d_id: "",
     d_name: "",
@@ -64,39 +64,6 @@ export default function CVProfile({ isEditable, resumeData, image, setImage }) {
     e.preventDefault();
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file); // File 객체만 저장
-      setPreview(URL.createObjectURL(file));
-
-      // 저장 트리거 (선택적)
-    if (isEditable && handleSave) {
-      handleSave();
-    }
-    }
-  };
-
-  const handleSave = () => {
-    const formData = new FormData();
-    formData.append("image", image); // File 객체
-
-    formData.append("data", JSON.stringify({
-      content: dDesc,
-      exp: "EXP",
-      image: "",
-      portfolio: "",
-    }));
-    
-
-    if (image && image instanceof File) {
-      formData.append("image", image);
-    }
-    // ...다른 데이터 append
-    axios.post("/designer/resume", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-  };
 
   if (loading) {
     return <div className="text-center mt-4">로딩 중...</div>; // 로딩 상태 표시
@@ -137,9 +104,10 @@ export default function CVProfile({ isEditable, resumeData, image, setImage }) {
           )}
           <input
             id="fileInput"
+            accept="image/*"
             type="file"
             className="hidden"
-            onChange={handleImageUpload}
+            onChange={handleImageChange}
             disabled={!isEditable}
           />
         </div>

@@ -7,23 +7,38 @@ import SeekWorkDays from './SeekWorkDays.jsx';
 import SeekCertification from './SeekCertification.jsx';
 
 export default function CVCheck() {
-  const [CurriculumVitae, setCurriculumVitae] = useState(null);
+  const [CurriculumVitae, setCurriculumVitae] = useState({
+    image: "",
+    name: "",
+    email: "",
+    tel: "",
+    gender: "",
+    age: "",
+    content: "",
+    exp: "",
+    careers: [],
+    certifications: [],
+    wantedDays: [],
+  });
+  
 
   useEffect(() => {
     const fetchCurriculumVitae = async () => {
       try {
-        const response = await axiosInstance.get('/designer/resume');
+        const response = await axiosInstance.get("/designer/resume");
         const data = response.data;
   
         setCurriculumVitae(data);
+        console.log("받아온 이력서 데이터:", data);
 
       } catch (error) {
-        console.error('이력서 데이터를 가져오는 데 실패했습니다:', error);
+        console.error("이력서 데이터를 가져오는 데 실패했습니다:", error);
       }
     };
   
     fetchCurriculumVitae();
   }, []);
+  
   
 
   if (!CurriculumVitae) {
@@ -36,7 +51,6 @@ export default function CVCheck() {
       <section className="flex flex-col items-center w-full">
             <SeekCVProfile
               CurriculumVitae={CurriculumVitae}
-              setCurriculumVitae={setCurriculumVitae}
             />
       </section>
 
