@@ -17,6 +17,7 @@ export default function ReservationDetailModal({ reservationId, onClose }) {
     const [reservation, setReservation] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [cancelReason, setCancelReason] = useState("");
 
     useEffect(() => {
         if (!reservationId) return;
@@ -36,6 +37,24 @@ export default function ReservationDetailModal({ reservationId, onClose }) {
 
         fetchDetail();
     }, [reservationId]);
+
+    const handleReject = async () => {
+        if (!cancelReason.trim()) {
+            alert("예약 거절 사유를 입력해주세요.");
+            return;
+        }
+        if (!window.confirm("정말 이 예약을 거절하시겠습니까?")) return;
+
+        try {
+            await axios.delete(`/shop/reservations/${reservationId}`, {
+                params: { cancelReason }
+            });
+            alert("예약이 거절되었습니다.");
+            onClose(); // 모달 닫기
+        } catch (e) {
+            alert("예약 거절 처리 중 오류가 발생했습니다.");
+        }
+    };
 
     if (loading)
         return (
@@ -62,6 +81,9 @@ export default function ReservationDetailModal({ reservationId, onClose }) {
         );
 
     if (!reservation) return null;
+
+    // 예약 시간이 현재보다 이후인지 체크
+    const isFutureReservation = new Date(reservation.serviceDate) > new Date();
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
@@ -100,6 +122,41 @@ export default function ReservationDetailModal({ reservationId, onClose }) {
                         <span>{formatDate(reservation.serviceDate)}</span>
                     </div>
                 </div>
+
+                {/* 거절 사유 입력 */}
+                <div className="mt-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        거절 사유
+                    </label>
+                    <input
+                        type="text"
+                        value={cancelReason}
+                        onChange={(e) => setCancelReason(e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+                        placeholder="간략한 사유를 입력하세요"
+                        disabled={!isFutureReservation}
+                    />
+                </div>
+
+                {/* 예약 거절 버튼 */}
+                <div className="mt-4 flex justify-end">
+                    <button
+                        onClick={handleReject}
+                        disabled={!isFutureReservation}
+                        className={`px-4 py-2 rounded-lg shadow font-semibold ${
+                            isFutureReservation
+                                ? "bg-red-500 hover:bg-red-600 text-white"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}
+                    >
+                        예약 거절
+                    </button>
+                </div>
+                {!isFutureReservation && (
+                    <p className="text-sm text-red-500 my-2 font-medium">
+                        지난 예약은 거절이 불가능합니다.
+                    </p>
+                )}
             </div>
         </div>
     );

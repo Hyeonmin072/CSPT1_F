@@ -3,6 +3,7 @@ import d1 from "../../../assets/designer/d1.png";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import axiosInstance from "../../../components/sign/axios/AxiosInstance";
 import Swal from "sweetalert2";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DesignerSetting() {
   const [selectedDesigner, setSelectedDesigner] = useState(null); // 모달창 표시 여부
@@ -18,6 +19,9 @@ export default function DesignerSetting() {
   const [editModalOpen, setEditModalOpen] = useState(false); // 수정 모달 열림/닫힘 상태
   const [error, setError] = useState(""); // 에러 메시지
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+  const [designerMenus, setDesignerMenus] = useState([]); // 디자이너 메뉴 목록
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false); // 메뉴 모달 열림/닫힘 상태
+  const [selectedDesignerEmail, setSelectedDesignerEmail] = useState(""); // 선택된 디자이너 이메일
 
   const [newdesigner, setNewDesigner] = useState({
     d_id: "",
@@ -238,6 +242,42 @@ export default function DesignerSetting() {
 
   const clickCountRef = useRef({}); // 클릭 카운트를 저장
 
+  // 메뉴 모달 닫기 함수
+  const closeMenuModal = () => {
+    setIsMenuModalOpen(false);
+    setDesignerMenus([]);
+    setSelectedDesignerEmail("");
+  };
+
+  // 디자이너 메뉴 불러오기
+  const fetchDesignerMenus = async (designerEmail) => {
+    setIsLoading(true);
+    try {
+      console.log("디자이너 메뉴 불러오기 시작:", designerEmail);
+      const response = await axiosInstance.get(`/shop/${designerEmail}/menus`, {
+        withCredentials: true,
+      });
+      console.log("디자이너 메뉴 불러오기 성공:", response.data);
+      setDesignerMenus(response.data);
+      setSelectedDesignerEmail(designerEmail);
+      setIsMenuModalOpen(true);
+    } catch (err) {
+      console.error(
+        "디자이너 메뉴 불러오기 실패:",
+        err.response?.data || err.message
+      );
+      setError("디자이너 메뉴를 불러오는데 실패했습니다.");
+      Swal.fire({
+        icon: "error",
+        title: "메뉴 불러오기 실패",
+        text: "디자이너 메뉴를 불러오는데 실패했습니다.",
+        confirmButtonColor: "#d33",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // 더블 클릭시, 상세보기 열리기 카운트
   const handleDivClick = (designer) => {
     // 클릭 횟수 계산
@@ -300,7 +340,6 @@ export default function DesignerSetting() {
         {
           position: newPosition,
         }
-
       );
       console.log("디자이너 직함 변경 성공:", response.data);
 
@@ -479,6 +518,17 @@ export default function DesignerSetting() {
                         <span>❤️ {designer.like || 0}</span>
                       </span>
                     </div>
+                    {/* 메뉴 보기 버튼 추가 */}
+                    <button
+                      className="mt-2 bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation(); // 이벤트 버블링 방지
+                        fetchDesignerMenus(designer.email);
+                      }}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "로딩 중..." : "메뉴 보기"}
+                    </button>
                   </div>
                 </div>
               </button>
@@ -864,6 +914,130 @@ export default function DesignerSetting() {
           </div>
         </div>
       )}
+
+      {/* 디자이너 메뉴 모달 */}
+      <AnimatePresence>
+        {isMenuModalOpen && (
+          <motion.div
+            className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <motion.div
+              className="bg-white p-8 rounded-xl w-[600px] max-h-[80vh] flex flex-col relative shadow-2xl overflow-y-auto"
+              initial={{
+                opacity: 0,
+                scale: 0.9,
+                y: -20,
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.9,
+                y: -20,
+              }}
+              transition={{
+                duration: 0.3,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              }}
+            >
+              {/* 오른쪽 상단 X 버튼 */}
+              <button
+                className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors"
+                onClick={closeMenuModal}
+              >
+                <X size={24} />
+              </button>
+
+              <h2 className="font-bold text-2xl mb-6 text-gray-800">
+                디자이너 메뉴 목록
+              </h2>
+
+              {designerMenus.length > 0 ? (
+                <div className="space-y-4">
+                  {designerMenus.map((menu, index) => (
+                    <motion.div
+                      key={index}
+                      className="border border-gray-200 p-4 rounded-lg bg-gray-50"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.3,
+                        delay: index * 0.1,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-semibold text-lg text-gray-800">
+                          {menu.name || "메뉴명 없음"}
+                        </h3>
+                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">
+                          {menu.price
+                            ? `${menu.price.toLocaleString()}원`
+                            : "가격 미설정"}
+                        </span>
+                      </div>
+                      {menu.description && (
+                        <p className="text-gray-600 text-sm mb-2">
+                          {menu.description}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-2">
+                        {menu.category && (
+                          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                            {menu.category}
+                          </span>
+                        )}
+                        {menu.duration && (
+                          <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">
+                            소요시간: {menu.duration}분
+                          </span>
+                        )}
+                        {menu.isActive !== undefined && (
+                          <span
+                            className={`px-2 py-1 rounded text-xs ${
+                              menu.isActive
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {menu.isActive ? "활성화" : "비활성화"}
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">등록된 메뉴가 없습니다.</p>
+                  <p className="text-sm text-gray-400 mt-2">
+                    해당 디자이너에게 등록된 메뉴가 없습니다.
+                  </p>
+                </div>
+              )}
+
+              <div className="flex justify-end mt-6">
+                <button
+                  className="border-2 border-gray-300 px-6 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition-colors font-medium"
+                  onClick={closeMenuModal}
+                >
+                  닫기
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
