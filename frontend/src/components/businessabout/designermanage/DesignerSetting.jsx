@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import d1 from "../../../assets/designer/d1.png";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import axiosInstance from "../../../components/sign/axios/AxiosInstance";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
@@ -275,6 +275,55 @@ export default function DesignerSetting() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // 메뉴 삭제 함수
+  const handleDeleteMenu = async (menuId) => {
+    try {
+      // 삭제 확인 다이얼로그
+      const result = await Swal.fire({
+        title: "메뉴 삭제",
+        text: "정말로 이 메뉴를 삭제하시겠습니까?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "삭제",
+        cancelButtonText: "취소",
+      });
+
+      if (result.isConfirmed) {
+        console.log("메뉴 삭제 시작:", menuId);
+        const response = await axiosInstance.delete(`/shop/menus/${menuId}`, {
+          withCredentials: true,
+        });
+        console.log("메뉴 삭제 성공:", response.data);
+
+        // 성공 메시지
+        Swal.fire({
+          icon: "success",
+          title: "삭제 완료",
+          text: "메뉴가 성공적으로 삭제되었습니다.",
+          confirmButtonColor: "#22C55E",
+        });
+
+        // 메뉴 목록 새로고침
+        if (selectedDesignerEmail) {
+          const updatedMenusResponse = await axiosInstance.get(`/shop/${selectedDesignerEmail}/menus`, {
+            withCredentials: true,
+          });
+          setDesignerMenus(updatedMenusResponse.data);
+        }
+      }
+    } catch (err) {
+      console.error("메뉴 삭제 실패:", err.response?.data || err.message);
+      Swal.fire({
+        icon: "error",
+        title: "삭제 실패",
+        text: "메뉴 삭제에 실패했습니다: " + (err.response?.data?.message || err.message),
+        confirmButtonColor: "#d33",
+      });
     }
   };
 
@@ -967,7 +1016,7 @@ export default function DesignerSetting() {
                   {designerMenus.map((menu, index) => (
                     <motion.div
                       key={index}
-                      className="border border-gray-200 p-4 rounded-lg bg-gray-50"
+                      className="border border-gray-200 p-4 rounded-lg bg-gray-50 relative"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
@@ -976,7 +1025,16 @@ export default function DesignerSetting() {
                         ease: "easeOut",
                       }}
                     >
-                      <div className="flex justify-between items-start mb-2">
+                      {/* 삭제 버튼 */}
+                      <button
+                        className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition-colors p-1"
+                        onClick={() => handleDeleteMenu(menu.id)}
+                        title="메뉴 삭제"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                      
+                      <div className="flex justify-between items-start mb-2 pr-8">
                         <h3 className="font-semibold text-lg text-gray-800">
                           {menu.name || "메뉴명 없음"}
                         </h3>
