@@ -88,7 +88,7 @@ export default function ProfileInfo({ shopName, rating, reviewCount }) {
           <div className="flex flex-row items-center gap-2">
             <Star className="w-4 h-4 text-yellow-400 fill-current" />
             <p className="text-gray-500">
-              {rating} ({reviewCount} 리뷰)
+              {rating ? rating.toFixed(2) : "0.00"} ({reviewCount} 리뷰)
             </p>
           </div>
         </div>

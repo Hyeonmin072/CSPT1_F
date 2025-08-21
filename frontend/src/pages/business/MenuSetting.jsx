@@ -93,10 +93,7 @@ export default function MenuSetting() {
       !menuData.category ||
       !menuData.price
     ) {
-      toast.error("필수 항목을 모두 입력해주세요.", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      alert("모든 항목을 입력해주세요.")
       return;
     }
 
@@ -120,7 +117,6 @@ export default function MenuSetting() {
         desc: menuData.desc,
         category: menuData.category,
         price: parseInt(menuData.price),
-        image: menuData.image ? menuData.image.name : "",
       };
 
       console.log("요청 DTO:", requestDto);
@@ -157,17 +153,13 @@ export default function MenuSetting() {
         }
       }
 
-      const response = await axiosInstance.post("/menus", formData, {
+      const response = await axiosInstance.post("shop/menus", formData, {
         withCredentials: true,
       });
 
       console.log("\n=== 메뉴 등록 성공 ===");
       console.log("서버 응답:", response.data);
-
-      toast.success("메뉴가 성공적으로 등록되었습니다.", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      alert("메뉴가 성공적으로 등록되었습니다.");
 
       navigate("/shop");
     } catch (err) {
@@ -277,7 +269,7 @@ export default function MenuSetting() {
           {/* 가격 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              가격
+              가격 <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -295,7 +287,7 @@ export default function MenuSetting() {
           {/* 예상 소요시간 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              예상 소요시간
+              예상 소요시간 <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -329,7 +321,7 @@ export default function MenuSetting() {
           {/* 담당 디자이너 선택 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              담당 디자이너 <span className="text-red-500">*</span>
+              담당 디자이너 (여러 명 선택 가능) <span className="text-red-500">*</span>
             </label>
             {designers.length > 0 ? (
               <div className="grid grid-cols-3 gap-4">
