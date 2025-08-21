@@ -176,87 +176,87 @@ export default function CurriculumVitae({
     setCertifications(updatedCertifications);
   };
 
-const [selectedImage, setSelectedImage] = useState(null);
-const [previewImage, setPreviewImage] = useState(null);
-const [isSaving, setIsSaving] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
-const handleImageChange = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log("선택된 파일:", file);
-    if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (file instanceof File) {
+        setSelectedImage(file); // File 객체 저장
+        setPreviewImage(URL.createObjectURL(file)); // 미리보기 설정
+        console.log("handleImageChange: File 객체 저장됨", file);
+    } else {
+        console.error("handleImageChange: 선택된 파일이 File 객체가 아닙니다.");
     }
   };
 
-const handleSave = async () => {
-  if (isSaving) return;
-  setIsSaving(true);
+  const handleSave = async () => {
+    if (isSaving) return;
+    setIsSaving(true);
 
-  setShowMessage(true);
-  setIsEditable(false);
-  setFadeOut(false);
+    setShowMessage(true);
+    setIsEditable(false);
+    setFadeOut(false);
 
-  try {
-    const formData = new FormData();
+    try {
+      const formData = new FormData();
 
-    // 이력서 전체 JSON 객체 생성
-    const resumePayload = {
-      content: dDesc,
-      exp: resumeData?.d_exp || "",
-      portfolio: "",
-      image: "", // 초기값, 백엔드에서 새 이미지 업로드 시 덮어씀
-      careers: careers.map((career) => ({
-        shopName: career.shopName,
-        joinDate: career.joinDate,
-        outDate: career.outDate,
-        position: career.position,
-      })),
-      certifications: certifications.map((cert) => ({
-        name: cert.name,
-      })),
-      wantedDays: wantedDays.map((day) => ({
-        wantedDay: convertDayToFull(day.wantedDay || day),
-      })),
-    };
+      // JSON 객체를 Blob으로 감싸서 추가
+      const resumePayload = {
+          content: dDesc,
+          exp: resumeData?.d_exp || "",
+          portfolio: "",
+          image: "", // 초기값
+          careers: careers.map((career) => ({
+              shopName: career.shopName,
+              joinDate: career.joinDate,
+              outDate: career.outDate,
+              position: career.position,
+          })),
+          certifications: certifications.map((cert) => ({
+              name: cert.name,
+          })),
+          wantedDays: wantedDays.map((day) => ({
+              wantedDay: convertDayToFull(day.wantedDay || day),
+          })),
+      };
+      formData.append("resumeDto", new Blob([JSON.stringify(resumePayload)], { type: "application/json" }));
 
-    // JSON 객체를 Blob으로 감싸서 formData에 추가
-    formData.append("resumeDto", new Blob([JSON.stringify(resumePayload)], { type: "application/json" }));
-
-    // 이미지 파일 포함
-    if (selectedImage instanceof File) {
-      formData.append("image", selectedImage);
+       // FormData 확인
+       for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
     }
-    
 
-    // 저장 요청
-    const response = await axios.post("/designer/resume/update", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      // 이미지 파일 포함
+      if (selectedImage instanceof File) {
+          formData.append("image", selectedImage);
+      } else {
+          console.error("handleSave: selectedImage is not a File object");
+          return;
+      }
 
-    console.log("저장 응답:", response.data);
-    
+      // 저장 요청
+      const response = await axios.post("/designer/resume/update", formData, {
+          headers: {
+              "Content-Type": "multipart/form-data",
+          },
+      });
+
+      console.log("저장 응답:", response.data);
+    } catch (error) {
+        console.error("이력서 저장 실패:", error);
+    } finally {
+        setIsSaving(false);
+    }
+
     console.log("selectedImage:", selectedImage);
     console.log("typeof selectedImage:", typeof selectedImage);
     console.log("instanceof File:", selectedImage instanceof File);
-    console.log("selectedImage.constructor.name:", selectedImage?.constructor?.name);
 
-
-  } catch (error) {
-    console.error("이력서 저장 실패:", error);
-  } finally {
-    setIsSaving(false);
-  }
-
-  setTimeout(() => setFadeOut(true), 1000);
-  setTimeout(() => setShowMessage(false), 2000);
-};
+    setTimeout(() => setFadeOut(true), 1000);
+    setTimeout(() => setShowMessage(false), 2000);
+  };
 
 
 
@@ -268,9 +268,11 @@ const handleSave = async () => {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file) {
-      setImage(file); // 반드시 File 객체로!
-      setPreview(URL.createObjectURL(file));
+    if (file instanceof File) {
+        setSelectedImage(file); // File 객체 저장
+        setPreviewImage(URL.createObjectURL(file)); // 미리보기 설정
+    } else {
+        console.error("handleDrop: 드롭된 파일이 File 객체가 아닙니다.");
     }
   };
 

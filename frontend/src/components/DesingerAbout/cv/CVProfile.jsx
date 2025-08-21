@@ -22,13 +22,13 @@ export default function CVProfile({ isEditable, resumeData, image, handleImageCh
       try {
         if (resumeData) {
           const profileData = {
-            d_id: resumeData.d_id || "",
-            d_name: resumeData.d_name || "",
-            d_email: resumeData.d_email || "",
-            d_tel: resumeData.d_tel || "",
-            d_gender: resumeData.d_gender || "",
-            d_age: resumeData.d_age || "",
-            d_image: resumeData.d_image || "",
+              d_id: resumeData.d_id || "",
+              d_name: resumeData.d_name || "",
+              d_email: resumeData.d_email || "",
+              d_tel: resumeData.d_tel || "",
+              d_gender: resumeData.d_gender || "",
+              d_age: resumeData.d_age || "",
+              d_image: resumeData.d_image || "",
           };
 
           console.log(profileData);
@@ -36,15 +36,23 @@ export default function CVProfile({ isEditable, resumeData, image, handleImageCh
 
           // d_image가 null이 아니면 초기 이미지로 설정
           if (resumeData.d_image) {
-            console.log("CVProfile - 이미지 설정:", resumeData.d_image);
-            setImage(resumeData.d_image);
-            setPreview(URL.createObjectURL(resumeData.d_image));
+              console.log("CVProfile - 이미지 설정:", resumeData.d_image);
+              setImage(resumeData.d_image);
+
+              // S3 URL인지 확인
+              if (typeof resumeData.d_image === "string") {
+                  setPreview(resumeData.d_image); // URL 그대로 사용
+              } else if (resumeData.d_image instanceof File) {
+                  setPreview(URL.createObjectURL(resumeData.d_image)); // File 객체 처리
+              } else {
+                  console.error("resumeData.d_image는 처리할 수 없는 타입입니다.");
+              }
           }
         }
       } catch (error) {
-        console.error("Error fetching profile data:", error);
+          console.error("Error fetching profile data:", error);
       } finally {
-        setLoading(false); // 로딩 상태 종료
+          setLoading(false); // 로딩 상태 종료
       }
     };
 
