@@ -120,7 +120,6 @@ export default function MenuSetting() {
         desc: menuData.desc,
         category: menuData.category,
         price: parseInt(menuData.price),
-        image: menuData.image ? menuData.image.name : "",
       };
 
       console.log("요청 DTO:", requestDto);
@@ -157,7 +156,7 @@ export default function MenuSetting() {
         }
       }
 
-      const response = await axiosInstance.post("/menus", formData, {
+      const response = await axiosInstance.post("shop/menus", formData, {
         withCredentials: true,
       });
 
